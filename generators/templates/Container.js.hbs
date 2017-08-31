@@ -1,0 +1,46 @@
+import React from 'react';
+import { connect } from 'react-redux';
+
+import { Description, Bold } from '../../components/Text';
+import { ViewContainer, Centered } from '../../components/Layout';
+import CounterCard from '../../components/CounterCard';
+
+import { increment, reset } from '../../state/{{ camelCase name }}';
+
+const mapStateToProps = state => ({
+  value: state.{{ camelCase name }}.value,
+});
+
+const mapDispatchToProps = dispatch => ({
+  onIncrement: () => dispatch(increment()),
+  onReset: () => dispatch(reset()),
+});
+
+export class {{ properCase name }} extends React.Component {
+  static navigationOptions = {
+    title: '{{ properCase name }}',
+  };
+
+  renderDescription = () =>
+    <Description>
+      This is an example of <Bold>Redux</Bold> usage with the{' '}
+      <Bold>Pepperoni app kit</Bold>.
+    </Description>;
+
+  render = () =>
+    <ViewContainer>
+      <Centered>
+        <CounterCard
+          value={this.props.value}
+          increment={this.props.onIncrement}
+          reset={this.props.onReset}
+        />
+      </Centered>
+      {this.renderDescription()}
+    </ViewContainer>;
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)({{ properCase name }});
