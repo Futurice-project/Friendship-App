@@ -1,13 +1,12 @@
-const createView = require('./createView');
+const path = require('path');
+const fs = require('fs');
 
-module.exports = {
-  description: 'Generates initial welcome screens',
-  actions: [
-    ...createView('generators/templates/Welcome.js.hbs'),
-    ...createView(
-      'generators/templates/Settings.js.hbs',
-      'StackNavigator',
-      'src/containers/navigator/Stack.js',
-    ),
-  ],
-};
+const generators = fs
+  .readdirSync(path.join(__dirname, '..'))
+  .filter(filename => filename.match(/.*\.js$/))
+  .map(filename => filename.match(/(.*)\.js$/)[1]);
+
+module.exports = plop =>
+  generators.forEach(generator =>
+    plop.setGenerator(generator, require(`../${generator}`)),
+  );
