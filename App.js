@@ -23,22 +23,23 @@ export default class App extends React.Component {
   };
 
   renderActivityIndicator = () =>
-    this.state.rehydrated
-      ? null
-      : <FullscreenCentered>
-          <ActivityIndicator size="large" />
-        </FullscreenCentered>;
+    this.state.rehydrated ? null : (
+      <FullscreenCentered>
+        <ActivityIndicator size="large" />
+      </FullscreenCentered>
+    );
 
   renderApp = () =>
-    this.state.rehydrated
-      ? <Provider store={store}>
-          <Navigator />
-        </Provider>
-      : null;
+    this.state.rehydrated ? (
+      <Provider store={store}>
+        <Navigator />
+      </Provider>
+    ) : null;
 
-  render = () =>
+  render = () => (
     <AppContainer>
       {this.renderActivityIndicator()}
       {this.renderApp()}
-    </AppContainer>;
+    </AppContainer>
+  );
 }
