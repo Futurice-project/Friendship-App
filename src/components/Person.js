@@ -14,17 +14,15 @@ import { FlexRow } from './Layout';
 
 const styles = StyleSheet.create({
   main: {
-    height: 250,
+    height: 300,
     width: 200,
-    borderStyle: 'solid',
-    borderWidth: 1,
     marginLeft: 20,
-    backgroundColor: 'red',
+    backgroundColor: '#939795',
   },
   userName: {
-    width: 199,
+    width: 200,
     padding: 5,
-    backgroundColor: '#faf',
+    backgroundColor: '#E8E9E8',
     flex: 2,
     alignSelf: 'flex-end',
   },
@@ -39,15 +37,40 @@ export default class Person extends React.Component {
       }
     >
       <View style={{ flex: 4 }}>
-        <Text>{this.props.data.description}</Text>
+        <Text
+          style={{
+            color: 'white',
+            marginTop: 5,
+            marginLeft: 10,
+            fontSize: 18,
+            fontFamily: 'Avenir',
+          }}
+        >
+          {this.props.data.description}
+        </Text>
       </View>
 
       <FlexRow style={styles.userName}>
-        <Text
-          style={{ flex: 1, width: 20, height: 20, backgroundColor: 'white' }}
+        <View
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 100 / 2,
+            backgroundColor: 'white',
+          }}
         >
-          {this.props.data.emoji}
-        </Text>
+          <Text
+            style={{
+              backgroundColor: 'transparent',
+              alignSelf: 'center',
+              fontSize: 30,
+              paddingTop: 8,
+            }}
+          >
+            {this.props.data.emoji}
+          </Text>
+        </View>
+
         <Text style={{ flex: 5 }}>{this.props.data.username}</Text>
       </FlexRow>
     </View>
