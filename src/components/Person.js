@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     width: 200,
-    padding: 5,
+    padding: 10,
     backgroundColor: '#E8E9E8',
     flex: 2,
     alignSelf: 'flex-end',
@@ -30,12 +30,7 @@ const styles = StyleSheet.create({
 
 export default class Person extends React.Component {
   render = () => (
-    <View
-      style={
-        styles.main
-        // { height: 250, width: 200, borderStyle: "solid", borderWidth: 1, marginLeft: 20, padding: 5, backgroundColor: this.props.color}
-      }
-    >
+    <View style={styles.main}>
       <View style={{ flex: 4 }}>
         <Text
           style={{
@@ -62,7 +57,7 @@ export default class Person extends React.Component {
           <Text
             style={{
               backgroundColor: 'transparent',
-              alignSelf: 'center',
+              textAlign: 'center',
               fontSize: 30,
               paddingTop: 8,
             }}
@@ -71,7 +66,7 @@ export default class Person extends React.Component {
           </Text>
         </View>
 
-        <Text style={{ flex: 5 }}>{this.props.data.username}</Text>
+        <Text> {this.props.data.username}</Text>
       </FlexRow>
     </View>
   );

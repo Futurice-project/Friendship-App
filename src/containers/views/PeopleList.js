@@ -22,7 +22,7 @@ export class PeopleView extends React.Component {
   state = { data: {} };
 
   keyExtractor = item => item.id;
-  renderItem = ({ item }) => <Person color="#939795" data={item} />;
+  renderItem = ({ item }) => <Person color="#f23" data={item} />;
 
   componentDidMount() {
     fetch('http://0.0.0.0:3888/users', {
