@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   bottomPart: {
     width: 200,
-    padding: 5,
+    padding: 10,
     backgroundColor: '#E8E9E8',
     flex: 30,
     alignSelf: 'flex-end',
