@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, Text, StyleSheet } from 'react-native';
+import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
 import { FlexRow } from './Layout';
@@ -16,9 +16,14 @@ export default class Person extends React.Component {
           <Text style={styles.emoji}>{this.props.data.emoji}</Text>
         </View>
         {/* with flex:1 long username don't go exceed the bottom part  */}
-        <View style={{ flex: 1 }}>
+        <TouchableOpacity
+          style={{ flex: 1 }}
+          onPress={() => {
+            alert('does not work');
+          }}
+        >
           <Text>{this.props.data.username}</Text>
-        </View>
+        </TouchableOpacity>
       </FlexRow>
     </View>
   );
