@@ -6,6 +6,7 @@ import Header from './Header';
 // ## View Imports ##
 import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
+import PeopleView from './../views/PeopleList';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -24,7 +25,14 @@ export default StackNavigator(
       screen: Tabs,
       navigationOptions: { title: 'Welcome to Pepperoni!' },
     },
-    Settings: { screen: SettingsView },
+    People: {
+      screen: PeopleView,
+      navigationOptions: { title: 'People page' },
+    },
+    Settings: {
+      screen: SettingsView,
+      navigationOptions: { title: 'Settings page' },
+    },
     // ## End StackNavigator Views ##
   },
   StackNavigatorConfig,
