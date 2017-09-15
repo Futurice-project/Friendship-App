@@ -25,7 +25,14 @@ export default StackNavigator(
       screen: Tabs,
       navigationOptions: { title: 'Welcome to Pepperoni!' },
     },
-    People: { screen: PeopleView },
+    People: {
+      screen: PeopleView,
+      navigationOptions: { title: 'People page' },
+    },
+    Settings: {
+      screen: SettingsView,
+      navigationOptions: { title: 'Settings page' },
+    },
     // ## End StackNavigator Views ##
   },
   StackNavigatorConfig,
