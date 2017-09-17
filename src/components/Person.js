@@ -1,6 +1,5 @@
 import React from 'react';
 import { Image, View, Text, StyleSheet } from 'react-native';
-import styled from 'styled-components/native';
 
 import { FlexRow } from './Layout';
 

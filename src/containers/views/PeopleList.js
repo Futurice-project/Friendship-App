@@ -14,6 +14,7 @@ import { PepperoniLogo, IconButton } from '../../components/Pepperoni';
 import { Title, Description, Bold } from '../../components/Text';
 import { ViewContainer, Centered, FlexRow } from '../../components/Layout';
 import Person from '../../components/Person';
+import TabProfile from '../../components/TabProfile';
 
 const mapStateToProps = state => ({});
 
@@ -51,6 +52,7 @@ export class PeopleView extends React.Component {
           horizontal={true}
         />
       </Centered>
+      <TabProfile />
     </ViewContainer>
   );
 }
