@@ -6,13 +6,13 @@ import { Image, View, Text, FlatList } from 'react-native';
 import { PepperoniLogo, IconButton } from '../../components/Pepperoni';
 import { Title, Description, Bold } from '../../components/Text';
 import { ViewContainer, Centered } from '../../components/Layout';
-
+//mapStateToProps data from reducer to this props
+//mapDispatchToProps data from action this this props
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({
   openSettings: () =>
     dispatch(NavigationActions.navigate({ routeName: 'Settings' })),
-  openPeople: () =>
-    dispatch(NavigationActions.navigate({ routeName: 'People' })),
+  openPeople: () => dispatch(NavigationActions.navigate({ routeName: 'Tabs' })),
 });
 
 export class WelcomeView extends React.Component {
