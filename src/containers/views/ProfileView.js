@@ -1,5 +1,12 @@
 import React from 'react';
-import { Image, View, Text, FlatList, ScrollView } from 'react-native';
+import {
+  Image,
+  View,
+  Text,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 import { connect } from 'react-redux';
 
 import { Title } from '../../components/Text';
@@ -29,30 +36,82 @@ class ProfileView extends React.Component {
   }
 
   render = () => (
-    <ViewContainer style={signUpFinalStepHate}>
-      <Centered>
-        <Text
-          style={{
-            backgroundColor: 'transparent',
-            textAlign: 'center',
-            fontSize: 30,
-            paddingTop: 8,
-          }}
-        >
-          {this.state.data.emoji}
+    <ViewContainer style={styles.signUpFinalStepHate}>
+      <View style={styles.topPart}>
+        <View style={styles.oval}>
+          <Text style={styles.emoji}>{this.state.data.emoji}</Text>
+        </View>
+        <Text style={styles.username}>{this.state.data.username}</Text>
+        <Text style={styles.iLoveCampingRapA}>25, male, Helsinki</Text>
+        <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
+        <Text style={styles.lookingFor}>LOOKING FOR</Text>
+        <Text style={styles.lookingForText}>
+          The events you will actively look friends for will be visible here
         </Text>
-        <Title>{this.state.data.username}</Title>
-        <Text>age, gender, location data</Text>
-        <Text>Compatible? {this.state.data.compatibility}</Text>
-        <Text>I love ... and hate...</Text>
-        <Text>LOOKING FOR</Text>
-      </Centered>
+      </View>
     </ViewContainer>
   );
 }
 
-const signUpFinalStepHate = {
-  backgroundColor: '#ededed',
-};
+const styles = StyleSheet.create({
+  signUpFinalStepHate: {
+    backgroundColor: '#e8e9e8',
+  },
+  topPart: {
+    height: 300,
+    alignItems: 'center',
+  },
+  oval: {
+    width: 64,
+    height: 64,
+    borderRadius: 64,
+    backgroundColor: '#ffffff',
+  },
+  emoji: {
+    backgroundColor: 'transparent',
+    alignSelf: 'center',
+    fontSize: 30,
+    paddingTop: 8,
+  },
+  username: {
+    width: 223,
+    height: 27,
+    fontSize: 20,
+    fontWeight: 'bold',
+    letterSpacing: 2.44,
+    textAlign: 'center',
+    color: '#60686d',
+    marginTop: 7,
+    marginBottom: 15,
+  },
+  iLoveCampingRapA: {
+    width: 300,
+    height: 24,
+    fontSize: 16,
+    fontWeight: '300',
+    lineHeight: 24,
+    textAlign: 'center',
+    color: '#4a4a4a',
+    marginBottom: 13,
+  },
+  lookingFor: {
+    width: 104,
+    height: 18,
+    fontSize: 13,
+    letterSpacing: 1.59,
+    textAlign: 'center',
+    color: '#3b3b3d',
+    marginBottom: 14,
+  },
+  lookingForText: {
+    width: 300,
+    height: 72,
+    fontSize: 16,
+    fontWeight: '300',
+    lineHeight: 24,
+    textAlign: 'left',
+    color: '#4a4a4a',
+  },
+});
 
 export default connect(mapStateToProps)(ProfileView);
