@@ -53,6 +53,15 @@ const ButtonText = styled.Text`
   }};
 `;
 
+/* Button Component :
+ *
+ * Props :
+ *  - primary : boolean indicating button nature
+ *  - title : button's text
+ *  - color : either "light" or "dark"
+ *  - link : indicating if it is a link button
+ *  - border : indicating the presence or not of border
+  * */
 export default class Button extends React.Component {
   render = () => (
     <ButtonWrapper
