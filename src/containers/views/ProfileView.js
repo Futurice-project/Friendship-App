@@ -9,9 +9,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import { Title } from '../../components/Text';
-import { ViewContainer, Centered } from '../../components/Layout';
-
 const mapStateToProps = state => {
   return { personId: state.personId };
 };
@@ -36,7 +33,7 @@ class ProfileView extends React.Component {
   }
 
   render = () => (
-    <ViewContainer style={styles.signUpFinalStepHate}>
+    <View style={styles.signUpFinalStepHate}>
       <View style={styles.topPart}>
         <View style={styles.oval}>
           <Text style={styles.emoji}>{this.state.data.emoji}</Text>
@@ -49,13 +46,14 @@ class ProfileView extends React.Component {
           The events you will actively look friends for will be visible here
         </Text>
       </View>
-    </ViewContainer>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   signUpFinalStepHate: {
     backgroundColor: '#e8e9e8',
+    marginTop: 23,
   },
   topPart: {
     height: 300,
@@ -82,7 +80,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#60686d',
     marginTop: 7,
-    marginBottom: 15,
   },
   iLoveCampingRapA: {
     width: 300,
@@ -92,10 +89,9 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'center',
     color: '#4a4a4a',
-    marginBottom: 13,
+    marginBottom: 14,
   },
   lookingFor: {
-    width: 104,
     height: 18,
     fontSize: 13,
     letterSpacing: 1.59,
