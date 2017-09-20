@@ -34,42 +34,49 @@ export class PeopleView extends React.Component {
   keyExtractor = (x, i) => i;
   // what does (x , i) => i mean. If I didn't change this, it'd say the id for every list item is the same. So this somehow changes the id for each item
 
-  renderItem = ({ item }) => (
-    <ListItem
-      roundAvatar
-      avatar={{ uri: item.picture.thumbnail }}
-      title={`${item.name.first} ${item.name.last}`}
-    />
-  );
-  // <Person color="#939795" data={item} />
+  // renderItem = ({ item }) => (
+  //   <ListItem
+  //     roundAvatar
+  //     avatar={{ uri: item.picture.thumbnail }}
+  //     title={`${item.name.first} ${item.name.last}`}
+  //   />
+  // );
+  renderItem = ({ item }) => <Person color="#939795" data={item} />;
 
   componentDidMount() {
     this.fetchData();
   }
 
-  // fetchData = async () => {
-  //  // this.setState({ loading: true });
-  //   const response = await fetch (
-  //     `http://0.0.0.0:3888/users/page/${this.state.page}`, {
-  //         method: 'get',
-  //         headers: {
-  //           Authorization:        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
-  //         }, });
-  //   const json = await response.json();
-  //   this.setState(state => ({ data: [...state.data, ...json.results], loading: false}));
-  // };
-  // // // // // // // // //
   fetchData = async () => {
     // this.setState({ loading: true });
     const response = await fetch(
-      `https://randomuser.me/api?results=15&seed=hi&page=${this.state.page}`,
+      `http://0.0.0.0:3888/users/page/${this.state.page}`,
+      {
+        method: 'get',
+        headers: {
+          Authorization:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
+        },
+      },
     );
     const json = await response.json();
     this.setState(state => ({
-      data: [...state.data, ...json.results],
+      data: [...state.data, ...json],
       loading: false,
     }));
   };
+  // // // // // // // // //
+  // fetchData = async () => {
+  //   // this.setState({ loading: true });
+  //   const response = await fetch(
+  //     `https://randomuser.me/api?results=15&seed=hi&page=${this.state.page}`,
+  //   );
+  //   const json = await response.json();
+  //   this.setState(state => ({
+  //     data: [...state.data, ...json.results],
+  //     loading: false,
+  //   }));
+  // };
 
   // componentDidMount() {
   //   fetch('http://0.0.0.0:3888/users/page/4', {
