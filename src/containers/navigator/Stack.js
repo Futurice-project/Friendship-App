@@ -7,6 +7,7 @@ import Header from './Header';
 import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import PeopleView from './../views/PeopleList';
+import ProfileView from './../views/ProfileView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -32,6 +33,10 @@ export default StackNavigator(
     Settings: {
       screen: SettingsView,
       navigationOptions: { title: 'Settings page' },
+    },
+    Profile: {
+      screen: ProfileView,
+      navigationOptions: { title: 'Profile page' },
     },
     // ## End StackNavigator Views ##
   },
