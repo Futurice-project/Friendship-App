@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 10,
     fontSize: 18,
-    fontFamily: 'nunito-sans-regular',
+    fontFamily: 'NunitoSans-Regular',
   },
   bottomPart: {
     width: 200,
