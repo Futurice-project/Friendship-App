@@ -27,7 +27,7 @@ export default class App extends React.Component {
 
     //  Load fonts and wait untill this is done before rendering
     await Font.loadAsync({
-      'nunito-sans-regular': require('./assets/fonts/Nunito Sans/NunitoSans-Regular.ttf'),
+      'nunito-sans-regular': require('./assets/fonts/NunitoSans/NunitoSans-Regular.ttf'),
     });
     this.setState({ fontLoaded: true });
   };
