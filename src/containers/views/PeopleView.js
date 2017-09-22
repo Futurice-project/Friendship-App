@@ -14,14 +14,26 @@ import { List, ListItem } from 'react-native-elements';
 
 import { PepperoniLogo, IconButton } from '../../components/Pepperoni';
 import { Title, Description, Bold } from '../../components/Text';
-import { ViewContainer, Centered, FlexRow } from '../../components/Layout';
+import {
+  ViewContainer,
+  Centered,
+  FlexRow,
+  IconImage,
+} from '../../components/Layout';
 import Person from '../../components/Person';
+import TabProfile from '../../components/TabProfile';
 
 const mapStateToProps = state => ({});
 
 export class PeopleView extends React.Component {
   static navigationOptions = {
-    title: 'People',
+    title: 'Search',
+    tabBarIcon: ({ tintColor }) => (
+      <IconImage
+        source={require('../../../assets/search0.png')}
+        tintColor={tintColor}
+      />
+    ),
   };
 
   state = {
