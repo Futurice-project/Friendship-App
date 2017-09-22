@@ -8,7 +8,10 @@ export default class TextInputView extends React.Component {
   static navigationOptions = {
     title: 'TextInput',
   };
-
+  state = {
+    nickname: '',
+    password: '',
+  };
   renderDescription = () => (
     <Description>
       Here's a sample view using your <Bold>TextInput</Bold> component.
@@ -19,16 +22,25 @@ export default class TextInputView extends React.Component {
     <ViewContainer>
       <Centered>
         <Padding>
-          <TextInput placeholder="E-mail" hint="Visible" backColor="#faf6f0" />
+          <TextInput
+            titleColor="#87df91"
+            title="EMAIL"
+            placeholder="HELLO@FRIENDSHIP.COM"
+            backColor="#faf6f0"
+            onChangeText={nickname => this.setState({ nickname })}
+            value={this.state.nickname}
+          />
           <TextInput
             secure
-            placeholder="Password"
-            hint="Visible"
+            title="PASSWORD"
+            titleColor="#87df91"
+            placeholder="*******"
             backColor="#faf6f0"
+            onChangeText={password => this.setState({ password })}
+            value={this.state.password}
           />
         </Padding>
       </Centered>
-      {this.renderDescription()}
     </ViewContainer>
   );
 }

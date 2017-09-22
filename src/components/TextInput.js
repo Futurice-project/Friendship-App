@@ -34,7 +34,6 @@ const HorizontalLine = styled.View`
 //the hint text is displaed under the input field, not mandatory
 const HintText = styled.Text`
     color : #9b9b9b
-    width: 100;
     height: 25;
     font-size: 14;
     line-height: 25;
@@ -42,21 +41,35 @@ const HintText = styled.Text`
     padding-left:20px;
     margin-bottom:10px;
 `;
+//The title is displayed in bold over the input
+const InputTitle = styled.Text`
+  color: ${props => props.titleColor || '#2d4359'};
+  font-weight: 600;
+  width: 100;
+  height: 25;
+  font-size: 13;
+  letter-spacing: 1.5;
+  text-align: left;
+  padding-left: 20px;
+`;
+
 //export our component
 export default class TextInput extends React.Component {
   //state sets the text for the input, if empty, it will take the value of the placeholder
-  state = { text: '' };
 
   render = () => (
     <Container>
+      <InputTitle titleColor={this.props.titleColor}>
+        {this.props.title}
+      </InputTitle>
       <Input
         //add the secure attribute to hide the text f.e password
         secure={this.props.secure}
         //specify the background color swith the backColor attribute
         backColor={this.props.backColor}
         placeholder={this.props.placeholder}
-        value={this.state.text}
-        onChangeText={text => this.setState({ text })}
+        value={this.props.value}
+        onChangeText={this.props.onChangeText}
       />
       <HorizontalLine />
       <HintText>{this.props.hint}</HintText>
