@@ -23,8 +23,10 @@ const ButtonWrapper = styled.TouchableOpacity`
     }
   }};
 
-  height: 47px;
-  width: 270px;
+  height: 55px;
+  width: ${props => {
+    return props.size === 'half' ? '160px' : '270px';
+  }};
   border-radius: 50px;
 `;
 
@@ -38,16 +40,18 @@ const TextWrapper = styled.View`
 /* Styling for button text */
 const ButtonText = styled.Text`
   color: ${props => {
-    switch (props.primary) {
-      case true:
-        return props.color === 'light' ? '#60686d' : '#ffffff';
+    switch (props.textColor) {
+      case 'white':
+        return '#ffffff';
+      case 'black':
+        return '#60686d';
       default:
-        return props.color === 'light' ? '#ffffff' : '#60686d';
+        return '#87df91';
     }
   }};
   font-weight: bold;
   ${props => {
-    if (props.link) {
+    if (props.underlined) {
       return 'text-decoration-line: underline;';
     }
   }};
@@ -59,7 +63,9 @@ const ButtonText = styled.Text`
  * @param {boolean} border - Enable or disable a border
  * @param {string} title - Button's text
  * @param {string} color - Either "light" or "dark"
- * @param {boolean} link - Indicating if the button has a link
+ * @param {boolean} underlined - Indicating if the button's text is underlined
+ * @param {string} size - Either "half" or "full"
+ * @paran {string} textColor - Either "white", "black" or "green"
  */
 export default class Button extends React.Component {
   render = () => (
@@ -67,12 +73,13 @@ export default class Button extends React.Component {
       primary={this.props.primary}
       color={this.props.color}
       border={this.props.border}
+      size={this.props.size}
+      onPress={this.props.onPress}
     >
       <TextWrapper>
         <ButtonText
-          primary={this.props.primary}
-          color={this.props.color}
-          link={this.props.link}
+          underlined={this.props.underlined}
+          textColor={this.props.textColor}
         >
           {this.props.title}
         </ButtonText>
