@@ -3,6 +3,7 @@ import { Image, View, Text, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 
 import { FlexRow } from './Layout';
+import { Font } from 'expo';
 
 export default class Person extends React.Component {
   render = () => (
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 10,
     fontSize: 18,
-    fontFamily: 'Avenir',
+    fontFamily: 'NunitoSans-Regular',
   },
   bottomPart: {
     width: 200,
