@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { connect } from 'react-redux';
-
+import { ViewContainer, Centered, FlexRow } from '../../components/Layout';
 import TextRectangle from '../../components/TextRectangle';
 import TabProfile from '../../components/TabProfile';
 
@@ -36,7 +36,7 @@ class ProfileView extends React.Component {
   }
 
   render = () => (
-    <View style={styles.signUpFinalStepHate}>
+    <ViewContainer style={styles.signUpFinalStepHate}>
       <View style={styles.topPart}>
         <View style={styles.oval}>
           <Text style={styles.emoji}>{this.state.data.emoji}</Text>
@@ -49,8 +49,8 @@ class ProfileView extends React.Component {
           The events you will actively look friends for will be visible here
         </Text>
       </View>
-      <TabProfile style={styles.botPart} />
-    </View>
+      <TabProfile />
+    </ViewContainer>
   );
 }
 

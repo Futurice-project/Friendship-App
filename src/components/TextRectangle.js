@@ -12,11 +12,6 @@ export default class TextRectangle extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  rec: {
-    height: 81,
-    backgroundColor: '#596386',
-    marginTop: 6,
-  },
   recContent: {
     height: 61,
     marginTop: 'auto',
