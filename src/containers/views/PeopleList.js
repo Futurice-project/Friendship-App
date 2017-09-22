@@ -52,7 +52,6 @@ export class PeopleView extends React.Component {
           horizontal={true}
         />
       </Centered>
-      <TabProfile />
     </ViewContainer>
   );
 }

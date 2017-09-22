@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
+import TextRectangle from '../../components/TextRectangle';
+import TabProfile from '../../components/TabProfile';
+
 const mapStateToProps = state => {
   return { personId: state.personId };
 };
@@ -46,6 +49,7 @@ class ProfileView extends React.Component {
           The events you will actively look friends for will be visible here
         </Text>
       </View>
+      <TabProfile style={styles.botPart} />
     </View>
   );
 }
@@ -56,8 +60,11 @@ const styles = StyleSheet.create({
     marginTop: 23,
   },
   topPart: {
-    height: 300,
     alignItems: 'center',
+    height: 300,
+  },
+  botPart: {
+    height: 500,
   },
   oval: {
     width: 64,

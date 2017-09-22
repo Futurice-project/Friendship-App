@@ -6,12 +6,6 @@ import ScrollableTabView, {
 } from 'react-native-scrollable-tab-view';
 import styled from 'styled-components/native';
 
-const Bottom = styled.View`
-  height: 57px;
-  background-color: #3b3b3d;
-  margin-top: 10px;
-`;
-
 export default class TabProfile extends PureComponent {
   render = () => (
     <View>
@@ -31,7 +25,6 @@ export default class TabProfile extends PureComponent {
           <TextRectangle Text="reading" style={styles.rec} />
         </View>
       </ScrollableTabView>
-      <TextRectangle Text="Confirm" style={styles.Confirm} />
     </View>
   );
 }
