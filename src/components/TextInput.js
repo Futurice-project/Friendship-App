@@ -55,8 +55,6 @@ const InputTitle = styled.Text`
 
 //export our component
 export default class TextInput extends React.Component {
-  //state sets the text for the input, if empty, it will take the value of the placeholder
-
   render = () => (
     <Container>
       <InputTitle titleColor={this.props.titleColor}>
