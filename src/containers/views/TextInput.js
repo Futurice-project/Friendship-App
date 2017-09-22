@@ -43,14 +43,15 @@ export default class TextInputView extends React.Component {
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
         />
-        <Text style={styles.textStyle}>Need help with your password?</Text>
+        <Text style={styles.textStyle}>NEED HELP WITH YOUR PASSWORD?</Text>
       </Centered>
       <RoundTab>
         <TouchableOpacity
           style={styles.buttonStyle}
+          //TODO set the press function
           onPress={() => this._handlePress()}
         >
-          <Text style={styles.buttonTextStyle}>Submit</Text>
+          <Text style={styles.buttonTextStyle}>Done</Text>
         </TouchableOpacity>
       </RoundTab>
     </ViewContainer>
@@ -66,6 +67,7 @@ const styles = {
     height: 27,
     fontSize: 20,
     fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Regular',
     textAlign: 'center',
     color: '#2d4359',
   },
@@ -73,6 +75,7 @@ const styles = {
     width: 205,
     height: 20,
     fontSize: 14,
+    fontFamily: 'Futurice',
     textAlign: 'center',
     color: '#87df91',
     marginBottom: 10,

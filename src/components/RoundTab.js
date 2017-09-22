@@ -16,8 +16,8 @@ const ImageContainer = styled.Image.attrs({
   right: 0;
   left: 0;
   bottom: 0;
-  justifycontent: center;
-  alignitems: center;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default class RoundTab extends React.Component {
