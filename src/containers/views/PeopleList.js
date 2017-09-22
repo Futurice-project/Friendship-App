@@ -72,7 +72,7 @@ export class PeopleView extends React.Component {
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
           onEndReached={this.handleEnd}
-          onEndReachedThreshold={0}
+          onEndReachedThreshold={0.4}
           //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
           horizontal
         />
