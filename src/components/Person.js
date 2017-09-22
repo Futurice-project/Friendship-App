@@ -4,6 +4,7 @@ import { NavigationActions } from 'react-navigation';
 import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { FlexRow } from './Layout';
+import { Font } from 'expo';
 import styled from 'styled-components/native';
 
 const mapStateToProps = state => ({});
@@ -77,13 +78,12 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     backgroundColor: '#939795',
   },
-
   topText: {
     color: 'white',
     marginTop: 5,
     marginLeft: 10,
     fontSize: 18,
-    /*    fontFamily: 'Avenir', */
+    fontFamily: 'NunitoSans-Regular',
   },
   bottomPart: {
     width: 200,
