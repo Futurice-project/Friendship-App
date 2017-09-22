@@ -23,7 +23,7 @@ const TabNavigatorConfig = {
     },
   },
 };
-
+// demo abcbadfa
 export default TabNavigator(
   {
     Search: { screen: PeopleView },
