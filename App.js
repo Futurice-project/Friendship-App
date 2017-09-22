@@ -11,26 +11,36 @@ import {
   FullscreenCentered,
   AppContainer,
 } from './src/components/Layout';
+import { Font } from 'expo';
 
 export default class App extends React.Component {
-  state = { rehydrated: false };
+  state = {
+    rehydrated: false,
+    fontLoaded: false,
+  };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     persistStore(store, () => this.setState({ rehydrated: true }));
     BackHandler.addEventListener('hardwareBackPress', () =>
       handleBackButton(store.getState(), store.dispatch),
     );
+
+    //  Load fonts and wait untill this is done before rendering
+    await Font.loadAsync({
+      'nunito-sans-regular': require('./assets/fonts/Nunito Sans/NunitoSans-Regular.ttf'),
+    });
+    this.setState({ fontLoaded: true });
   };
 
   renderActivityIndicator = () =>
-    this.state.rehydrated ? null : (
+    this.state.rehydrated && this.state.fontLoaded ? null : (
       <FullscreenCentered>
         <ActivityIndicator size="large" />
       </FullscreenCentered>
     );
 
   renderApp = () =>
-    this.state.rehydrated ? (
+    this.state.rehydrated && this.state.fontLoaded ? (
       <Provider store={store}>
         <Navigator />
       </Provider>
