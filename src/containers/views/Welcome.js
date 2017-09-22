@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import { Image, View, Text, FlatList } from 'react-native';
 
 import { IconButton } from '../../components/Pepperoni';
 import { Bold, Description, Title } from '../../components/Text';
@@ -19,6 +20,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(NavigationActions.navigate({ routeName: 'Settings' })),
   openPreview: () =>
     dispatch(NavigationActions.navigate({ routeName: 'Settings' })),
+  openPeople: () =>
+    dispatch(NavigationActions.navigate({ routeName: 'People' })),
 });
 
 const WelcomePageWrapper = styled.ScrollView.attrs({
@@ -58,15 +61,19 @@ export class WelcomeView extends React.Component {
 
   render = () => (
     <WelcomePageWrapper>
-      <Centered>
-        <LaunchingPageLogo />
-        <LaunchingPageMessage>Test</LaunchingPageMessage>
-        <Title>Hello, world!</Title>
-        <Description>
-          This is a sample view from the <Bold>Pepperoni app kit</Bold>.
-        </Description>
-        <IconButton name="settings" onPress={this.props.openSettings} />
-      </Centered>
+      <ViewContainer>
+        <Centered>
+          <LaunchingPageLogo />
+          <LaunchingPageMessage>Test</LaunchingPageMessage>
+          <Title>Hello, world!</Title>
+          <IconButton name="perm-identity" onPress={this.props.openPeople} />
+          <Description>
+            This is a sample view from the
+            <Bold>Pepperoni sapp kit</Bold>.
+          </Description>
+          <IconButton name="settings" onPress={this.props.openSettings} />
+        </Centered>
+      </ViewContainer>
     </WelcomePageWrapper>
   );
 }

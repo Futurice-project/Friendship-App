@@ -7,6 +7,7 @@ import Header from './Header';
 import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import WelcomeView from '../views/Welcome';
+import PeopleView from './../views/PeopleList';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -25,7 +26,14 @@ export default StackNavigator(
       screen: Tabs,
       navigationOptions: { title: 'Friendship App' },
     },
-    Settings: { screen: SettingsView },
+    People: {
+      screen: PeopleView,
+      navigationOptions: { title: 'People page' },
+    },
+    Settings: {
+      screen: SettingsView,
+      navigationOptions: { title: 'Settings page' },
+    },
     // ## End StackNavigator Views ##
   },
   StackNavigatorConfig,

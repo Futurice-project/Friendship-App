@@ -11,34 +11,50 @@ import {
   FullscreenCentered,
   AppContainer,
 } from './src/components/Layout';
+import { Font } from 'expo';
 
 export default class App extends React.Component {
-  state = { rehydrated: false };
+  state = {
+    rehydrated: false,
+    fontLoaded: false,
+  };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     persistStore(store, () => this.setState({ rehydrated: true }));
     BackHandler.addEventListener('hardwareBackPress', () =>
       handleBackButton(store.getState(), store.dispatch),
     );
+
+    //  Load fonts and wait untill this is done before rendering
+    await Font.loadAsync({
+      'NunitoSans-Regular': require('./assets/fonts/NunitoSans/NunitoSans-Regular.ttf'),
+      'NunitoSans-Bold': require('./assets/fonts/NunitoSans/NunitoSans-Bold.ttf'),
+      'NunitoSans-LightItalic': require('./assets/fonts/NunitoSans/NunitoSans-LightItalic.ttf'),
+      'NunitoSans-SemiBold': require('./assets/fonts/NunitoSans/NunitoSans-SemiBold.ttf'),
+      'NunitoSans-ExtraBold': require('./assets/fonts/NunitoSans/NunitoSans-ExtraBold.ttf'),
+      'NunitoSans-Light': require('./assets/fonts/NunitoSans/NunitoSans-Light.ttf'),
+    });
+    this.setState({ fontLoaded: true });
   };
 
   renderActivityIndicator = () =>
-    this.state.rehydrated
-      ? null
-      : <FullscreenCentered>
-          <ActivityIndicator size="large" />
-        </FullscreenCentered>;
+    this.state.rehydrated && this.state.fontLoaded ? null : (
+      <FullscreenCentered>
+        <ActivityIndicator size="large" />
+      </FullscreenCentered>
+    );
 
   renderApp = () =>
-    this.state.rehydrated
-      ? <Provider store={store}>
-          <Navigator />
-        </Provider>
-      : null;
+    this.state.rehydrated && this.state.fontLoaded ? (
+      <Provider store={store}>
+        <Navigator />
+      </Provider>
+    ) : null;
 
-  render = () =>
+  render = () => (
     <AppContainer>
       {this.renderActivityIndicator()}
       {this.renderApp()}
-    </AppContainer>;
+    </AppContainer>
+  );
 }

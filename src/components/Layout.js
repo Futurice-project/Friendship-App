@@ -13,7 +13,11 @@ const styles = StyleSheet.create({
 export const ViewContainer = styled.ScrollView.attrs({
   contentContainerStyle: styles.contentContainerStyle,
 })`
+<<<<<<< HEAD
 
+=======
+  background-color: white;
+>>>>>>> origin/master
 `;
 
 export const Padding = styled.View`padding: 16px;`;

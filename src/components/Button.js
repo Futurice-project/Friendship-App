@@ -53,6 +53,14 @@ const ButtonText = styled.Text`
   }};
 `;
 
+/**
+ * Styled button component
+ * @param {boolean} primary - Indicating button nature
+ * @param {boolean} border - Enable or disable a border
+ * @param {string} title - Button's text
+ * @param {string} color - Either "light" or "dark"
+ * @param {boolean} link - Indicating if the button has a link
+ */
 export default class Button extends React.Component {
   render = () => (
     <ButtonWrapper

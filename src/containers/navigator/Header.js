@@ -19,15 +19,16 @@ export default class Header extends React.Component {
 
     if (!headerStyle || !headerStyle.backgroundColor) {
       // https://github.com/react-community/react-navigation/blob/681e1c6e3129b9adb3d7a5b5a0af2e4a06ab986b/src/views/Header/Header.js#L321
-      return Platform.OS === 'ios' ? '#F7F7F7' : '#FFF';
+      return Platform.OS === 'ios' ? '#FFF' : '#FFF';
     }
 
     return headerStyle.backgroundColor;
   };
 
-  render = () =>
+  render = () => (
     <View>
       <StatusBarPadding backgroundColor={this.getBackgroundColor()} />
       <ReactNavigationHeader {...this.props} />
-    </View>;
+    </View>
+  );
 }
