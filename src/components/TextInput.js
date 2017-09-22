@@ -14,7 +14,7 @@ const Input = styled.TextInput.attrs({
   color: #4a4a4a;
   font-size: 13;
   border-radius: 27;
-  fontfamily: 'NunitoSans-Regular';
+  font-family: 'NunitoSans-Regular';
   letter-spacing: 1.59;
   border-bottom-width: 2;
   padding-left: 20px;
@@ -38,7 +38,7 @@ const HintText = styled.Text`
     height: 25;
     font-size: 14;
     line-height: 25;
-    fontFamily: "NunitoSans-Regular";
+    font-family: "NunitoSans-Regular";
     text-align: left;
     padding-left:20px;
     margin-bottom:10px;
@@ -49,7 +49,7 @@ const InputTitle = styled.Text`
   font-weight: 600;
   width: 100;
   height: 25;
-  fontfamily: 'NunitoSans-Regular';
+  font-family: 'NunitoSans-Regular';
   font-size: 13;
   letter-spacing: 1.5;
   text-align: left;
