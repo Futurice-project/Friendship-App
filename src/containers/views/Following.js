@@ -16,7 +16,7 @@ export class FollowingView extends React.Component {
   };
   render = () => (
     <View>
-      <Text>Welcome to Following Page</Text>
+      <Text>Welcome to Following Pagesssssss</Text>
     </View>
   );
 }
