@@ -33,3 +33,9 @@ export const FlexRow = styled.View`
 `;
 
 export const AppContainer = styled.View`flex: 1;`;
+// test
+export const IconImage = styled.Image`
+  width: 22;
+  height: 20;
+  ${props => (props.tintColor ? `tintColor: ${props.tintColor}` : undefined)};
+`;
