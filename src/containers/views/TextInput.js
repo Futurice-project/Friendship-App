@@ -3,6 +3,7 @@ import React from 'react';
 import { Description, Bold } from '../../components/Text';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
+import { TouchableOpacity, Text } from 'react-native';
 
 export default class TextInputView extends React.Component {
   static navigationOptions = {
@@ -12,6 +13,9 @@ export default class TextInputView extends React.Component {
     nickname: '',
     password: '',
   };
+  _handlePress() {
+    console.log('Pressed!');
+  }
   renderDescription = () => (
     <Description>
       Here's a sample view using your <Bold>TextInput</Bold> component.
@@ -39,8 +43,20 @@ export default class TextInputView extends React.Component {
             onChangeText={password => this.setState({ password })}
             value={this.state.password}
           />
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={() => this._handlePress()}
+          >
+            <Text>Submit</Text>
+          </TouchableOpacity>
         </Padding>
       </Centered>
     </ViewContainer>
   );
 }
+const styles = {
+  buttonStyle: {
+    bottom: 0,
+    alignItems: 'center',
+  },
+};
