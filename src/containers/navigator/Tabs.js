@@ -1,21 +1,35 @@
-import { TabNavigator } from 'react-navigation';
+import { TabNavigator, TabBarBottom } from 'react-navigation';
 
 // ## View Imports ##
-import WelcomeView from '../views/Welcome';
-//import PeopleView from '../views/PeopleList';
+import PeopleView from '../views/PeopleList';
+import FollowingView from '../views/Following';
+import InboxView from '../views/Inbox';
+import ProfileView from '../views/Profile';
 
 const TabNavigatorConfig = {
   tabBarOptions: {
-    activeTintColor: 'white',
-    style: { backgroundColor: '#39babd' },
+    tintColor: 'black',
+    activeTintColor: '#219412',
+    inactiveTintColor: '#000000',
+    style: {
+      backgroundColor: 'white',
+    },
     scrollEnabled: true,
+    tabBarComponent: TabBarBottom,
+    showIcon: true,
+    labelStyle: {
+      fontSize: 11,
+      paddingBottom: 2,
+    },
   },
 };
-
+// demo abcbadfa
 export default TabNavigator(
   {
-    Welcome: { screen: WelcomeView },
-    //People:{ screen: PeopleView}
+    Search: { screen: PeopleView },
+    Following: { screen: FollowingView },
+    Inbox: { screen: InboxView },
+    Profile: { screen: ProfileView },
     // ## End TabNavigator Views ##
   },
   TabNavigatorConfig,

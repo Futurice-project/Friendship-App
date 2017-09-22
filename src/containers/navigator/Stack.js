@@ -4,6 +4,7 @@ import { StackNavigator } from 'react-navigation';
 import Header from './Header';
 
 // ## View Imports ##
+import WelcomeView from '../views/Welcome';
 import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import PeopleView from './../views/PeopleList';
@@ -21,13 +22,10 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
+    Welcome: { screen: WelcomeView },
     Tabs: {
       screen: Tabs,
       navigationOptions: { title: 'Welcome to Pepperoni!' },
-    },
-    People: {
-      screen: PeopleView,
-      navigationOptions: { title: 'People page' },
     },
     Settings: {
       screen: SettingsView,
