@@ -19,6 +19,7 @@ import {
   IconImage,
 } from '../../components/Layout';
 import Person from '../../components/Person';
+import TabProfile from '../../components/TabProfile';
 
 const mapStateToProps = state => ({});
 

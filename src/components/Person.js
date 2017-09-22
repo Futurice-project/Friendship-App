@@ -1,10 +1,25 @@
 import React from 'react';
-import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+
 import styled from 'styled-components/native';
 
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
+import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import StackNavigator from '../containers/navigator/Stack';
 import { FlexRow } from './Layout';
 
-export default class Person extends React.Component {
+const mapStateToProps = state => ({});
+const mapDispatchToProps = dispatch => ({
+  openProfile: personId =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'Profile',
+        params: { personId },
+      }),
+    ),
+});
+
+class Person extends React.Component {
   render = () => (
     <View style={styles.topPart}>
       <View style={{ flex: 70 }}>
@@ -20,7 +35,12 @@ export default class Person extends React.Component {
           </View>
 
           <View style={styles.nameView}>
-            <Text style={styles.TextName}> lalal </Text>
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              onPress={() => this.props.openProfile(this.props.data.id)}
+            >
+              <Text style={styles.TextName}>{this.props.data.username}</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -89,3 +109,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Person);
