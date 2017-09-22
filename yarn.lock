@@ -4707,10 +4707,11 @@ react-native-scripts@1.1.0:
     rimraf "^2.6.1"
     xdl "43.0.0"
 
-react-native-scrollable-tab-view@^0.6.7:
-  version "0.6.7"
-  resolved "https://registry.yarnpkg.com/react-native-scrollable-tab-view/-/react-native-scrollable-tab-view-0.6.7.tgz#3a5fe8a4bd5bc7eb023f306099323bbd9cc284a2"
+react-native-scrollable-tab-view@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/react-native-scrollable-tab-view/-/react-native-scrollable-tab-view-0.7.4.tgz#623a047cbfab35a27b8689095af524e9aac74b62"
   dependencies:
+    react-static-container "^1.0.1"
     react-timer-mixin "^0.13.3"
 
 react-native-side-menu@^1.0.2:
@@ -4865,6 +4866,10 @@ react-redux@^5.0.2, react-redux@^5.0.6:
     lodash-es "^4.2.0"
     loose-envify "^1.1.0"
     prop-types "^15.5.10"
+
+react-static-container@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-static-container/-/react-static-container-1.0.1.tgz#694c0dd68a896b879519afb548399cc1989c9ab0"
 
 react-test-renderer@16.0.0-alpha.12:
   version "16.0.0-alpha.12"
