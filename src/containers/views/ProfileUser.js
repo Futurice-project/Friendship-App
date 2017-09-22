@@ -16,7 +16,7 @@ const mapStateToProps = state => {
   return { personId: state.personId };
 };
 
-class ProfileView extends React.Component {
+class ProfileUser extends React.Component {
   static navigationOptions = {
     title: '',
   };
@@ -117,4 +117,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps)(ProfileView);
+export default connect(mapStateToProps)(ProfileUser);

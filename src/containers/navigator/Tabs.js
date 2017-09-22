@@ -1,10 +1,10 @@
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 
 // ## View Imports ##
-import PeopleView from '../views/PeopleList';
+import PeopleView from '../views/PeopleView';
 import FollowingView from '../views/Following';
 import InboxView from '../views/Inbox';
-import ProfileView from '../views/Profile';
+import MyProfile from '../views/MyProfile';
 
 const TabNavigatorConfig = {
   tabBarOptions: {
@@ -29,7 +29,7 @@ export default TabNavigator(
     Search: { screen: PeopleView },
     Following: { screen: FollowingView },
     Inbox: { screen: InboxView },
-    Profile: { screen: ProfileView },
+    MyProfile: { screen: MyProfile },
     // ## End TabNavigator Views ##
   },
   TabNavigatorConfig,

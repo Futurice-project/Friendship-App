@@ -1,19 +1,17 @@
 import React from 'react';
-
-import styled from 'styled-components/native';
-
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import StackNavigator from '../containers/navigator/Stack';
+
 import { FlexRow } from './Layout';
+import styled from 'styled-components/native';
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({
   openProfile: personId =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'Profile',
+        routeName: 'ProfileUser',
         params: { personId },
       }),
     ),

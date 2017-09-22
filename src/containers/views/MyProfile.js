@@ -4,7 +4,7 @@ import { NavigationActions } from 'react-navigation';
 import { Text, Image, View, StyleSheet } from 'react-native';
 //import { IconImage } from '../../components/Layout';
 
-export class ProfileView extends React.Component {
+export class MyProfile extends React.Component {
   static navigationOptions = {
     title: 'Profile',
     tabBarIcon: ({ tintColor }) => (
@@ -26,4 +26,4 @@ const styles = StyleSheet.create({
     height: 20,
   },
 });
-export default connect(undefined)(ProfileView);
+export default connect(undefined)(MyProfile);
