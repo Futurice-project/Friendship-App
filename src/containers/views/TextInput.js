@@ -16,12 +16,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  signIn: (credentials) => {
-    dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) } ));
+  signIn: credentials => {
+    dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) }));
   },
-  signUp: (credentials) => {
-    dispatch(rest.actions.users.post({}, { body: JSON.stringify(credentials) }));
-  }
+  signUp: credentials => {
+    dispatch(
+      rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
+    );
+  },
 });
 
 class TextInputView extends React.Component {
@@ -44,10 +46,10 @@ class TextInputView extends React.Component {
   renderStatus() {
     // render method to show status & data to user here?
     if (this.props.auth.error) {
-      return <Text style={styles.textStyle}>Error!!!</Text>
+      return <Text style={styles.textStyle}>Error!!!</Text>;
     }
     if (!this.props.auth.error) {
-      return <Text style={styles.textStyle}>Logging In successfully!!</Text>      
+      return <Text style={styles.textStyle}>Logging In successfully!!</Text>;
     }
 
     // need new logic to render error when signing up also
@@ -55,7 +57,7 @@ class TextInputView extends React.Component {
 
   signIn() {
     const { email, password } = this.state;
-    this.props.signIn({ email, password })
+    this.props.signIn({ email, password });
     // console.log(this.props.auth);
   }
 
@@ -89,7 +91,7 @@ class TextInputView extends React.Component {
             value={this.state.password}
           />
           {/* <Text style={styles.textStyle}>{this.state.status}</Text> */}
-          { this.renderStatus() }
+          {this.renderStatus()}
         </Centered>
         <RoundTab>
           <TouchableOpacity

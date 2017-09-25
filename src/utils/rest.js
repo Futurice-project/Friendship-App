@@ -22,7 +22,7 @@ Information about request: `state.teams.error`, `state.teams.sync`, `state.teams
 let apiRoot;
 
 if (process.env.NODE_ENV === 'development') {
-  apiRoot = 'http://192.168.0.108:3888';
+  apiRoot = 'http://localhost:3888';
 } else {
   apiRoot = 'https://my-app.herokuapp.com';
 }
@@ -31,7 +31,7 @@ const rest = reduxApi({
   users: {
     url: `${apiRoot}/users`,
     // transformer: transformers.array,
-    crud: true, 
+    crud: true,
   },
   userDetails: {
     url: `${apiRoot}/users/:userId`,
@@ -93,7 +93,7 @@ const rest = reduxApi({
   .use('fetch', adapterFetch(fetch))
   .use('responseHandler', (err, data) => {
     if (err) {
-      console.log('Error' , err);      
+      console.log('Error', err);
     }
     if (data) {
       console.log('Success', data);
@@ -120,7 +120,6 @@ const rest = reduxApi({
     //   throw err;
     // }
   });
-
 
 export default rest;
 export const reducers = rest.reducers;
