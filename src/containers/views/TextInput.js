@@ -1,17 +1,35 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { TouchableOpacity, Text } from 'react-native';
+import rest from '../../utils/rest';
 
 import { Description, Bold } from '../../components/Text';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
-import { TouchableOpacity, Text } from 'react-native';
 
-export default class TextInputView extends React.Component {
+const mapStateToProps = state => ({
+  // users: state.users,
+  // usersLoading: state.users.loading,
+  auth: state.auth,
+  users: state.users,
+});
+
+const mapDispatchToProps = dispatch => ({
+  signIn: (credentials) => {
+    dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) } ));
+  },
+  signUp: (credentials) => {
+    dispatch(rest.actions.users.post({}, { body: JSON.stringify(credentials) }));
+  }
+});
+
+class TextInputView extends React.Component {
   static navigationOptions = {
     title: 'TextInput',
   };
   state = {
-    nickname: '',
+    email: '',
     password: '',
   };
   _handlePress() {
@@ -23,44 +41,83 @@ export default class TextInputView extends React.Component {
     </Description>
   );
 
-  render = () => (
-    <ViewContainer>
-      <Centered>
-        <TextInput
-          titleColor="#87df91"
-          title="EMAIL"
-          placeholder="HELLO@FRIENDSHIP.COM"
-          backColor="#faf6f0"
-          onChangeText={nickname => this.setState({ nickname })}
-          value={this.state.nickname}
-        />
-        <TextInput
-          secure
-          title="PASSWORD"
-          titleColor="#87df91"
-          placeholder="*******"
-          backColor="#faf6f0"
-          onChangeText={password => this.setState({ password })}
-          value={this.state.password}
-        />
-        <Text style={styles.textStyle}>NEED HELP WITH YOUR PASSWORD?</Text>
-      </Centered>
-      <RoundTab>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          //TODO set the press function
-          onPress={() => this._handlePress()}
-        >
-          <Text style={styles.buttonTextStyle}>Done</Text>
-        </TouchableOpacity>
-      </RoundTab>
-    </ViewContainer>
-  );
+  renderStatus() {
+    // render method to show status & data to user here?
+    if (this.props.auth.error) {
+      return <Text style={styles.textStyle}>Error!!!</Text>
+    }
+    if (!this.props.auth.error) {
+      return <Text style={styles.textStyle}>Logging In successfully!!</Text>      
+    }
+
+    // need new logic to render error when signing up also
+  }
+
+  signIn() {
+    const { email, password } = this.state;
+    this.props.signIn({ email, password })
+    // console.log(this.props.auth);
+  }
+
+  signUp() {
+    const { email, password } = this.state;
+    this.props.signUp({ email, password });
+  }
+
+  render() {
+    // console.log(this.props);
+    const { auth } = this.props;
+
+    return (
+      <ViewContainer>
+        <Centered>
+          <TextInput
+            titleColor="#87df91"
+            title="EMAIL"
+            placeholder="HELLO@FRIENDSHIP.COM"
+            backColor="#faf6f0"
+            onChangeText={email => this.setState({ email })}
+            value={this.state.email}
+          />
+          <TextInput
+            secure
+            title="PASSWORD"
+            titleColor="#87df91"
+            placeholder="*******"
+            backColor="#faf6f0"
+            onChangeText={password => this.setState({ password })}
+            value={this.state.password}
+          />
+          {/* <Text style={styles.textStyle}>{this.state.status}</Text> */}
+          { this.renderStatus() }
+        </Centered>
+        <RoundTab>
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            //TODO set the press function
+            onPress={() => this.signIn()}
+          >
+            <Text style={styles.buttonTextStyle}>Sign In</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            //TODO set the press function
+            onPress={() => this.signUp()}
+          >
+            <Text style={styles.buttonTextStyle}>Sign Up</Text>
+          </TouchableOpacity>
+        </RoundTab>
+      </ViewContainer>
+    );
+  }
 }
+
 const styles = {
   buttonStyle: {
     bottom: 0,
     alignItems: 'center',
+    marginBottom: 5,
   },
   buttonTextStyle: {
     width: 230,
@@ -69,15 +126,17 @@ const styles = {
     fontWeight: 'bold',
     fontFamily: 'NunitoSans-Regular',
     textAlign: 'center',
-    color: '#2d4359',
+    color: 'white',
   },
   textStyle: {
     width: 205,
     height: 20,
     fontSize: 14,
-    fontFamily: 'Futurice',
+    // fontFamily: 'Futurice',
     textAlign: 'center',
     color: '#87df91',
     marginBottom: 10,
   },
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(TextInputView);
