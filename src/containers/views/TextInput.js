@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TouchableOpacity, Text } from 'react-native';
 import rest from '../../utils/rest';
 
 import { Description, Bold } from '../../components/Text';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
+import { TouchableOpacity, Text, KeyboardAvoidingView } from 'react-native';
 
 const mapStateToProps = state => ({
   // users: state.users,
@@ -71,46 +71,48 @@ class TextInputView extends React.Component {
     const { auth } = this.props;
 
     return (
-      <ViewContainer>
-        <Centered>
-          <TextInput
-            titleColor="#87df91"
-            title="EMAIL"
-            placeholder="HELLO@FRIENDSHIP.COM"
-            backColor="#faf6f0"
-            onChangeText={email => this.setState({ email })}
-            value={this.state.email}
-          />
-          <TextInput
-            secure
-            title="PASSWORD"
-            titleColor="#87df91"
-            placeholder="*******"
-            backColor="#faf6f0"
-            onChangeText={password => this.setState({ password })}
-            value={this.state.password}
-          />
-          {/* <Text style={styles.textStyle}>{this.state.status}</Text> */}
-          {this.renderStatus()}
-        </Centered>
-        <RoundTab>
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            //TODO set the press function
-            onPress={() => this.signIn()}
-          >
-            <Text style={styles.buttonTextStyle}>Sign In</Text>
-          </TouchableOpacity>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <ViewContainer>
+          <Centered>
+            <TextInput
+              titleColor="#87df91"
+              title="EMAIL"
+              placeholder="HELLO@FRIENDSHIP.COM"
+              backColor="#faf6f0"
+              onChangeText={email => this.setState({ email })}
+              value={this.state.email}
+            />
+            <TextInput
+              secure
+              title="PASSWORD"
+              titleColor="#87df91"
+              placeholder="*******"
+              backColor="#faf6f0"
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+            />
+            {/* <Text style={styles.textStyle}>{this.state.status}</Text> */}
+            {this.renderStatus()}
+          </Centered>
+          <RoundTab>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              //TODO set the press function
+              onPress={() => this.signIn()}
+            >
+              <Text style={styles.buttonTextStyle}>Sign In</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            //TODO set the press function
-            onPress={() => this.signUp()}
-          >
-            <Text style={styles.buttonTextStyle}>Sign Up</Text>
-          </TouchableOpacity>
-        </RoundTab>
-      </ViewContainer>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              //TODO set the press function
+              onPress={() => this.signUp()}
+            >
+              <Text style={styles.buttonTextStyle}>Sign Up</Text>
+            </TouchableOpacity>
+          </RoundTab>
+        </ViewContainer>
+      </KeyboardAvoidingView>
     );
   }
 }
