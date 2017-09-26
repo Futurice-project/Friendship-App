@@ -26,9 +26,9 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-class TextInputView extends React.Component {
+class LoginView extends React.Component {
   static navigationOptions = {
-    title: 'TextInput',
+    title: 'Login',
   };
   state = {
     email: '',
@@ -143,4 +143,4 @@ const styles = {
   },
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TextInputView);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginView);

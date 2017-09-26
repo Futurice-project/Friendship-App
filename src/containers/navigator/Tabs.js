@@ -1,7 +1,7 @@
 import { TabNavigator } from 'react-navigation';
 
 // ## View Imports ##
-import TextInputView from '../views/TextInput';
+import LoginView from '../views/Login';
 import WelcomeView from '../views/Welcome';
 //import PeopleView from '../views/PeopleList';
 
@@ -17,7 +17,7 @@ export default TabNavigator(
   {
     Welcome: { screen: WelcomeView },
     //People:{ screen: PeopleView}
-    TextInput: { screen: TextInputView },
+    Login: { screen: LoginView },
 
     // ## End TabNavigator Views ##
   },
