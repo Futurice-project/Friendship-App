@@ -4,7 +4,7 @@ import { Description, Bold } from '../../components/Text';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text, KeyboardAvoidingView } from 'react-native';
 
 export default class TextInputView extends React.Component {
   static navigationOptions = {
@@ -17,44 +17,40 @@ export default class TextInputView extends React.Component {
   _handlePress() {
     console.log('Pressed!');
   }
-  renderDescription = () => (
-    <Description>
-      Here's a sample view using your <Bold>TextInput</Bold> component.
-    </Description>
-  );
-
   render = () => (
-    <ViewContainer>
-      <Centered>
-        <TextInput
-          titleColor="#87df91"
-          title="EMAIL"
-          placeholder="HELLO@FRIENDSHIP.COM"
-          backColor="#faf6f0"
-          onChangeText={nickname => this.setState({ nickname })}
-          value={this.state.nickname}
-        />
-        <TextInput
-          secure
-          title="PASSWORD"
-          titleColor="#87df91"
-          placeholder="*******"
-          backColor="#faf6f0"
-          onChangeText={password => this.setState({ password })}
-          value={this.state.password}
-        />
-        <Text style={styles.textStyle}>NEED HELP WITH YOUR PASSWORD?</Text>
-      </Centered>
-      <RoundTab>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          //TODO set the press function
-          onPress={() => this._handlePress()}
-        >
-          <Text style={styles.buttonTextStyle}>Done</Text>
-        </TouchableOpacity>
-      </RoundTab>
-    </ViewContainer>
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <ViewContainer>
+        <Centered>
+          <TextInput
+            titleColor="#87df91"
+            title="EMAIL"
+            placeholder="HELLO@FRIENDSHIP.COM"
+            backColor="#faf6f0"
+            onChangeText={nickname => this.setState({ nickname })}
+            value={this.state.nickname}
+          />
+          <TextInput
+            secure
+            title="PASSWORD"
+            titleColor="#87df91"
+            placeholder="*******"
+            backColor="#faf6f0"
+            onChangeText={password => this.setState({ password })}
+            value={this.state.password}
+          />
+          <Text style={styles.textStyle}>NEED HELP WITH YOUR PASSWORD?</Text>
+        </Centered>
+        <RoundTab>
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            //TODO set the press function
+            onPress={() => this._handlePress()}
+          >
+            <Text style={styles.buttonTextStyle}>Done</Text>
+          </TouchableOpacity>
+        </RoundTab>
+      </ViewContainer>
+    </KeyboardAvoidingView>
   );
 }
 const styles = {
