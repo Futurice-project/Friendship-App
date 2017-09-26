@@ -44,15 +44,14 @@ class LoginView extends React.Component {
   );
 
   renderStatus() {
-    // render method to show status & data to user here?
-    if (this.props.auth.error) {
-      return <Text style={styles.textStyle}>Error!!!</Text>;
+    if (this.props.users.loading) {
+      return <Text style={styles.textStyle}>Pending request</Text>;
     }
-    if (!this.props.auth.error) {
-      return <Text style={styles.textStyle}>Logging In successfully!!</Text>;
+    if (this.props.users.error) {
+      return (
+        <Text style={styles.textStyle}>{this.props.users.error.message}</Text>
+      );
     }
-
-    // need new logic to render error when signing up also
   }
 
   signIn() {
