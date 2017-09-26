@@ -9,8 +9,6 @@ import RoundTab from '../../components/RoundTab';
 import { TouchableOpacity, Text, KeyboardAvoidingView } from 'react-native';
 
 const mapStateToProps = state => ({
-  // users: state.users,
-  // usersLoading: state.users.loading,
   auth: state.auth,
   users: state.users,
 });
@@ -34,9 +32,7 @@ class LoginView extends React.Component {
     email: '',
     password: '',
   };
-  _handlePress() {
-    console.log('Pressed!');
-  }
+
   renderDescription = () => (
     <Description>
       Here's a sample view using your <Bold>TextInput</Bold> component.
@@ -57,7 +53,6 @@ class LoginView extends React.Component {
   signIn() {
     const { email, password } = this.state;
     this.props.signIn({ email, password });
-    // console.log(this.props.auth);
   }
 
   signUp() {
@@ -66,9 +61,6 @@ class LoginView extends React.Component {
   }
 
   render() {
-    // console.log(this.props);
-    const { auth } = this.props;
-
     return (
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
         <ViewContainer>
@@ -90,13 +82,11 @@ class LoginView extends React.Component {
               onChangeText={password => this.setState({ password })}
               value={this.state.password}
             />
-            {/* <Text style={styles.textStyle}>{this.state.status}</Text> */}
             {this.renderStatus()}
           </Centered>
           <RoundTab>
             <TouchableOpacity
               style={styles.buttonStyle}
-              //TODO set the press function
               onPress={() => this.signIn()}
             >
               <Text style={styles.buttonTextStyle}>Sign In</Text>
@@ -104,7 +94,6 @@ class LoginView extends React.Component {
 
             <TouchableOpacity
               style={styles.buttonStyle}
-              //TODO set the press function
               onPress={() => this.signUp()}
             >
               <Text style={styles.buttonTextStyle}>Sign Up</Text>
@@ -135,7 +124,6 @@ const styles = {
     width: 205,
     height: 20,
     fontSize: 14,
-    // fontFamily: 'Futurice',
     textAlign: 'center',
     color: '#87df91',
     marginBottom: 10,
