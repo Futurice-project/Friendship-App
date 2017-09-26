@@ -40,12 +40,17 @@ class LoginView extends React.Component {
   );
 
   renderStatus() {
-    if (this.props.users.loading) {
+    if (this.props.users.loading || this.props.auth.loading) {
       return <Text style={styles.textStyle}>Pending request</Text>;
     }
     if (this.props.users.error) {
       return (
         <Text style={styles.textStyle}>{this.props.users.error.message}</Text>
+      );
+    }
+    if (this.props.auth.error) {
+      return (
+        <Text style={styles.textStyle}>{this.props.auth.error.message}</Text>
       );
     }
   }
