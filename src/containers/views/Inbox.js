@@ -9,7 +9,7 @@ export class InboxView extends React.Component {
     title: 'Inbox',
     tabBarIcon: ({ tintColor }) => (
       <IconImage
-        source={require('../../../assets/pepperoni-icon.png')}
+        source={require('../../../assets/inbox.png')}
         tintColor={tintColor}
       />
     ),

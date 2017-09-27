@@ -9,7 +9,7 @@ export class MyProfile extends React.Component {
     title: 'Profile',
     tabBarIcon: ({ tintColor }) => (
       <Image
-        source={require('../../../assets/contact0.png')}
+        source={require('../../../assets/profile.png')}
         style={[styles.icon, { tintColor: tintColor }]}
       />
     ),

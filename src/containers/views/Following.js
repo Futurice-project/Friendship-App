@@ -9,7 +9,7 @@ export class FollowingView extends React.Component {
     title: 'Following',
     tabBarIcon: ({ tintColor }) => (
       <IconImage
-        source={require('../../../assets/pepperoni-icon.png')}
+        source={require('../../../assets/following.png')}
         tintColor={tintColor}
       />
     ),

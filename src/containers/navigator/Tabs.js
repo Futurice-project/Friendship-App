@@ -14,6 +14,7 @@ const TabNavigatorConfig = {
     style: {
       backgroundColor: 'white',
     },
+    tabBarPosition: 'bottom',
     scrollEnabled: true,
     tabBarComponent: TabBarBottom,
     showIcon: true,
