@@ -66,7 +66,7 @@ const ButtonText = styled.Text`
  * @param {string} color - Either "light" or "dark"
  * @param {boolean} underlined - Indicating if the button's text is underlined
  * @param {string} size - Either "half" or "full"
- * @paran {string} textColor - Either "white", "black" or "green"
+ * @param {string} textColor - Either "white", "black" or "green"
  */
 export default class Button extends React.Component {
   render = () => (

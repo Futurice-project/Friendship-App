@@ -34,6 +34,7 @@ export default class App extends React.Component {
       'NunitoSans-ExtraBold': require('./assets/fonts/NunitoSans/NunitoSans-ExtraBold.ttf'),
       'NunitoSans-Light': require('./assets/fonts/NunitoSans/NunitoSans-Light.ttf'),
       Friendship_version_2: require('./assets/fonts/Friendship/Friendship.ttf'),
+      Futurice: require('./assets/fonts/Friendship/Friendship-Regular.ttf'),
     });
     this.setState({ fontLoaded: true });
   };

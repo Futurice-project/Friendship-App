@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch => ({
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'Signup',
+        routeName: 'SignUp',
       }),
     ),
   openLogIn: () =>
@@ -158,7 +158,7 @@ export class WelcomeView extends React.Component {
                 textColor="green"
                 size="half"
                 color="light"
-                onPress={this.props.openSettings}
+                onPress={this.props.openSignUp}
               />
             </ConnectionOption>
             <ConnectionOption>
