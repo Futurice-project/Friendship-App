@@ -6,7 +6,10 @@ import Header from './Header';
 // ## View Imports ##
 import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
-import PeopleView from './../views/PeopleList';
+import WelcomeView from '../views/Welcome';
+import PeopleView from './../views/PeopleView';
+import LoginView from '../views/Login';
+import ProfileUser from './../views/ProfileUser';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -21,9 +24,10 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
+    Welcome: { screen: WelcomeView },
     Tabs: {
       screen: Tabs,
-      navigationOptions: { title: 'Welcome to Pepperoni!' },
+      navigationOptions: { title: 'Friendship App' },
     },
     People: {
       screen: PeopleView,
@@ -32,6 +36,14 @@ export default StackNavigator(
     Settings: {
       screen: SettingsView,
       navigationOptions: { title: 'Settings page' },
+    },
+    SignUp: {
+      screen: LoginView,
+      navigationOptions: { title: 'SignUp Page' },
+    },
+    ProfileUser: {
+      screen: ProfileUser,
+      navigationOptions: { title: 'Profile page' },
     },
     // ## End StackNavigator Views ##
   },
