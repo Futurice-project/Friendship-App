@@ -27,19 +27,17 @@ class Person extends React.Component {
       <FlexRow style={styles.bottomPart}>
         {/* with flex:1 long username don't go exceed the bottom part  */}
 
-        <View style={{ flexDirection: 'row' }}>
+        <View style={styles.viewBottom}>
           <View style={styles.whiteCircle}>
             <Text style={styles.emoji}>{this.props.data.emoji}</Text>
           </View>
 
-          <View style={styles.nameView}>
-            <TouchableOpacity
-              style={{ flex: 1 }}
-              onPress={() => this.props.openProfile(this.props.data.id)}
-            >
-              <Text style={styles.TextName}>{this.props.data.username}</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={styles.nameView}
+            onPress={() => this.props.openProfile(this.props.data.id)}
+          >
+            <Text style={styles.TextName}>{this.props.data.username}</Text>
+          </TouchableOpacity>
         </View>
 
         <Text style={styles.TextCompatibility}>
@@ -56,10 +54,14 @@ class Person extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  viewBottom: {
+    flexDirection: 'row',
+  },
   nameView: {
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
+    flex: 60,
   },
 
   TextName: {
@@ -98,7 +100,8 @@ const styles = StyleSheet.create({
     height: 66,
     borderRadius: 132 / 2,
     backgroundColor: 'white',
-    marginLeft: -60,
+    marginRight: 10,
+    flex: 40,
   },
   emoji: {
     backgroundColor: 'transparent',

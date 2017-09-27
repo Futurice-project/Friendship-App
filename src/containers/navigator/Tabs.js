@@ -14,7 +14,6 @@ const TabNavigatorConfig = {
     style: {
       backgroundColor: 'white',
     },
-    tabBarPosition: 'bottom',
     scrollEnabled: true,
     tabBarComponent: TabBarBottom,
     showIcon: true,
@@ -32,6 +31,22 @@ export default TabNavigator(
     Inbox: { screen: InboxView },
     MyProfile: { screen: MyProfile },
     // ## End TabNavigator Views ##
+  },
+  {
+    tabBarPosition: 'bottom',
+    tabBarOptions: {
+      tintColor: 'black',
+      activeTintColor: '#219412',
+      inactiveTintColor: '#000000',
+      style: {
+        backgroundColor: 'white',
+      },
+      showIcon: true,
+      labelStyle: {
+        fontSize: 11,
+        paddingBottom: 2,
+      },
+    },
   },
   TabNavigatorConfig,
 );
