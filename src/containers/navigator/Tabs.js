@@ -29,10 +29,6 @@ const TabNavigatorConfig = {
 
 export default TabNavigator(
   {
-    Welcome: { screen: WelcomeView },
-    //People:{ screen: PeopleView}
-    Login: { screen: LoginView },
-
     Search: { screen: PeopleView },
     Following: { screen: FollowingView },
     Inbox: { screen: InboxView },
