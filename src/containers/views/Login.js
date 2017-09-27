@@ -22,6 +22,9 @@ const mapDispatchToProps = dispatch => ({
       rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
     );
   },
+  signOut: () => {
+    dispatch({ type: 'SIGN_OUT' })
+  }
 });
 
 class LoginView extends React.Component {
@@ -102,6 +105,13 @@ class LoginView extends React.Component {
               onPress={() => this.signUp()}
             >
               <Text style={styles.buttonTextStyle}>Sign Up</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={() => this.props.signOut()}
+            >
+              <Text style={styles.buttonTextStyle}>Sign Out</Text>
             </TouchableOpacity>
           </RoundTab>
         </ViewContainer>

@@ -4,7 +4,7 @@ import { reducers as restReducers } from '../utils/rest';
 // ## Reducer Imports ##
 import NavigatorStateReducer from '../state/navigator';
 
-export default combineReducers({
+const reducers = {
   // ## Reducers ##
 
   // Navigator state
@@ -12,4 +12,15 @@ export default combineReducers({
 
   //
   ...restReducers,
-});
+};
+
+const appReducer = combineReducers(reducers);
+const rootReducer = (state, action) => {
+  if (action.type === 'SIGN_OUT') {
+    return appReducer(undefined, action);
+  }
+
+  return appReducer(state, action);
+};
+
+export default rootReducer;
