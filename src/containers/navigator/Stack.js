@@ -8,7 +8,7 @@ import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleList';
-import TextInputView from '../views/TextInput';
+import LoginView from '../views/Login';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -36,7 +36,7 @@ export default StackNavigator(
       navigationOptions: { title: 'Settings page' },
     },
     SignUp: {
-      screen: TextInputView,
+      screen: LoginView,
       navigationOptions: { title: 'SignUp Page' },
     },
     // ## End StackNavigator Views ##
