@@ -1,5 +1,4 @@
 import { TabNavigator } from 'react-navigation';
-
 // ## View Imports ##
 import TextInputView from '../views/TextInput';
 import WelcomeView from '../views/Welcome';

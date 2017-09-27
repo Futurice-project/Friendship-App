@@ -6,11 +6,12 @@ import Header from './Header';
 // ## View Imports ##
 import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
+import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleList';
+import TextInputView from '../views/TextInput';
 
 const StackNavigatorConfig = {
   navigationOptions: {
-    header: props => <Header {...props} />,
     headerStyle: {
       backgroundColor: '#39babd',
       elevation: 0, // disable header elevation when TabNavigator visible
@@ -21,9 +22,10 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
+    Welcome: { screen: WelcomeView },
     Tabs: {
       screen: Tabs,
-      navigationOptions: { title: 'Welcome to Pepperoni!' },
+      navigationOptions: { title: 'Friendship App' },
     },
     People: {
       screen: PeopleView,
@@ -32,6 +34,10 @@ export default StackNavigator(
     Settings: {
       screen: SettingsView,
       navigationOptions: { title: 'Settings page' },
+    },
+    SignUp: {
+      screen: TextInputView,
+      navigationOptions: { title: 'SignUp Page' },
     },
     // ## End StackNavigator Views ##
   },
