@@ -23,8 +23,8 @@ const mapDispatchToProps = dispatch => ({
     );
   },
   signOut: () => {
-    dispatch({ type: 'SIGN_OUT' })
-  }
+    dispatch({ type: 'SIGN_OUT' });
+  },
 });
 
 class LoginView extends React.Component {
