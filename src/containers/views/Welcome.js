@@ -4,19 +4,37 @@ import { NavigationActions } from 'react-navigation';
 import styled from 'styled-components/native';
 import LaunchingPageLogoAsset from '../../../assets/drawable-mdpi/friendship_logo_light.png';
 import PreviewLogoAsset from '../../../assets/drawable-mdpi/icon_preview.png';
+import NavigationBackgroundAsset from '../../../assets/drawable-mdpi/combined_shape_copy_2.png';
 import Button from '../../components/Button';
-import { Text } from 'react-native';
+import { Image, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({
   openSettings: () =>
-    dispatch(NavigationActions.navigate({ routeName: 'Settings' })),
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'Settings',
+      }),
+    ),
   openSignUp: () =>
-    dispatch(NavigationActions.navigate({ routeName: 'Signup' })),
-  openLogIn: () => dispatch(NavigationActions.navigate({ routeName: 'Login' })),
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'Signup',
+      }),
+    ),
+  openLogIn: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'Login',
+      }),
+    ),
   openPreview: () =>
-    dispatch(NavigationActions.navigate({ routeName: 'Preview' })),
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'Preview',
+      }),
+    ),
 });
 
 /* Container for the page */
@@ -33,7 +51,10 @@ const LaunchingMessage = styled.View`
 `;
 
 /* Container for the different navigation options */
-const LaunchingNavigationOptions = styled.View`flex: 1;`;
+const LaunchingNavigationOptions = styled.View`
+  flex: 1;
+  margin-top: 23px;
+`;
 
 /* Container for the option to continue without authenticating */
 const Preview = styled.TouchableOpacity`
@@ -65,9 +86,9 @@ const LaunchingPageLogo = styled.Image.attrs({
 
 /* Wrapper for the launching message */
 const LaunchingPageMessage = styled.Text`
-  width: 149px;
+  width: 160px;
   height: 45px;
-  font-family: 'Friendship_version_2-Regular';
+  font-family: 'Friendship_version_2';
   font-size: 25;
   line-height: 45;
   text-align: center;
@@ -94,6 +115,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2.0,
     textAlign: 'center',
     color: '#faf6f0',
+    backgroundColor: 'transparent',
   },
 });
 
@@ -111,37 +133,47 @@ export class WelcomeView extends React.Component {
     <LaunchingPageWrapper>
       <LaunchingMessage>
         <LaunchingPageLogo />
-        <LaunchingPageMessage>YEAH! & NAAAH</LaunchingPageMessage>
+        <LaunchingPageMessage> YEAH! & NAAAH</LaunchingPageMessage>
       </LaunchingMessage>
-      <LaunchingNavigationOptions>
-        <Preview onPress={this.props.openSettings}>
-          <PreviewLogo />
-          <Text style={styles.preview}>Preview</Text>
-        </Preview>
-        <Connection>
-          <ConnectionOption>
-            <Button
-              title="Join"
-              primary
-              border
-              textColor="green"
-              size="half"
-              color="light"
-              onPress={this.props.openSettings}
-            />
-          </ConnectionOption>
-          <ConnectionOption>
-            <Button
-              title="Log In"
-              border
-              textColor="white"
-              color="light"
-              size="half"
-              onPress={this.props.openSettings}
-            />
-          </ConnectionOption>
-        </Connection>
-      </LaunchingNavigationOptions>
+      <Image
+        source={NavigationBackgroundAsset}
+        style={{
+          flex: 1,
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+        }}
+      >
+        <LaunchingNavigationOptions>
+          <Preview onPress={this.props.openSettings}>
+            <PreviewLogo />
+            <Text style={styles.preview}> Preview</Text>
+          </Preview>
+          <Connection>
+            <ConnectionOption>
+              <Button
+                title="Join"
+                primary
+                border
+                textColor="green"
+                size="half"
+                color="light"
+                onPress={this.props.openSettings}
+              />
+            </ConnectionOption>
+            <ConnectionOption>
+              <Button
+                title="Log In"
+                border
+                textColor="white"
+                color="light"
+                size="half"
+                onPress={this.props.openSettings}
+              />
+            </ConnectionOption>
+          </Connection>
+        </LaunchingNavigationOptions>
+      </Image>
     </LaunchingPageWrapper>
   );
 }

@@ -39,6 +39,7 @@ const TextWrapper = styled.View`
 
 /* Styling for button text */
 const ButtonText = styled.Text`
+  font-weight: bold;
   color: ${props => {
     switch (props.textColor) {
       case 'white':
@@ -49,12 +50,12 @@ const ButtonText = styled.Text`
         return '#87df91';
     }
   }};
-  font-weight: bold;
   ${props => {
     if (props.underlined) {
       return 'text-decoration-line: underline;';
     }
   }};
+  background-color: transparent;
 `;
 
 /**
