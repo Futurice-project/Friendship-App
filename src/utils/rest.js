@@ -96,6 +96,7 @@ const rest = reduxApi({
       console.log('Error', err);
     }
     if (data) {
+      return data;
       console.log('Success', data);
     }
     throw err;
