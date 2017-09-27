@@ -14,7 +14,7 @@ const mapDispatchToProps = dispatch => ({
   openSettings: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'Settings',
+        routeName: 'Tabs',
       }),
     ),
   openSignUp: () =>

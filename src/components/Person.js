@@ -1,11 +1,23 @@
 import React from 'react';
-import { Image, View, Text, StyleSheet } from 'react-native';
-import styled from 'styled-components/native';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
+import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { FlexRow } from './Layout';
-import { Font } from 'expo';
+import styled from 'styled-components/native';
 
-export default class Person extends React.Component {
+const mapStateToProps = state => ({});
+const mapDispatchToProps = dispatch => ({
+  openProfile: personId =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'ProfileUser',
+        params: { personId },
+      }),
+    ),
+});
+
+class Person extends React.Component {
   render = () => (
     <View style={styles.topPart}>
       <View style={{ flex: 70 }}>
@@ -13,31 +25,67 @@ export default class Person extends React.Component {
       </View>
 
       <FlexRow style={styles.bottomPart}>
-        <View style={styles.whiteCircle}>
-          <Text style={styles.emoji}>{this.props.data.emoji}</Text>
-        </View>
         {/* with flex:1 long username don't go exceed the bottom part  */}
-        <View style={{ flex: 1 }}>
-          <Text>{this.props.data.username}</Text>
+
+        <View style={styles.viewBottom}>
+          <View style={styles.whiteCircle}>
+            <Text style={styles.emoji}>{this.props.data.emoji}</Text>
+          </View>
+
+          <TouchableOpacity
+            style={styles.nameView}
+            onPress={() => this.props.openProfile(this.props.data.id)}
+          >
+            <Text style={styles.TextName}>{this.props.data.username}</Text>
+          </TouchableOpacity>
         </View>
+
+        <Text style={styles.TextCompatibility}>
+          {' '}
+          Compatible?
+          <Text style={{ fontWeight: 'bold' }}>
+            {' '}
+            {this.props.data.compatibility}
+          </Text>
+        </Text>
       </FlexRow>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  viewBottom: {
+    flexDirection: 'row',
+  },
+  nameView: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    flex: 60,
+  },
+
+  TextName: {
+    fontSize: 20,
+    /*    fontFamily: 'NunitoSans-Light', */
+  },
+  TextCompatibility: {
+    fontSize: 18,
+    /*    fontFamily: 'NunitoSans-Light', */
+  },
+
   topPart: {
     height: 300,
     width: 200,
     marginLeft: 20,
     backgroundColor: '#939795',
   },
+
   topText: {
     color: 'white',
     marginTop: 5,
     marginLeft: 10,
     fontSize: 18,
-    fontFamily: 'NunitoSans-Regular',
+    /*    fontFamily: 'Avenir', */
   },
   bottomPart: {
     width: 200,
@@ -45,18 +93,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8E9E8',
     flex: 30,
     alignSelf: 'flex-end',
+    flexDirection: 'column',
   },
   whiteCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 100 / 2,
+    width: 66,
+    height: 66,
+    borderRadius: 132 / 2,
     backgroundColor: 'white',
     marginRight: 10,
+    flex: 40,
   },
   emoji: {
     backgroundColor: 'transparent',
     alignSelf: 'center',
-    fontSize: 30,
-    paddingTop: 8,
+    fontSize: 47,
+    alignItems: 'center',
   },
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Person);

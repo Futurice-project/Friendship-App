@@ -7,11 +7,13 @@ import Header from './Header';
 import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import WelcomeView from '../views/Welcome';
-import PeopleView from './../views/PeopleList';
+import PeopleView from './../views/PeopleView';
 import LoginView from '../views/Login';
+import ProfileUser from './../views/ProfileUser';
 
 const StackNavigatorConfig = {
   navigationOptions: {
+    header: props => <Header {...props} />,
     headerStyle: {
       backgroundColor: '#39babd',
       elevation: 0, // disable header elevation when TabNavigator visible
@@ -38,6 +40,10 @@ export default StackNavigator(
     SignUp: {
       screen: LoginView,
       navigationOptions: { title: 'SignUp Page' },
+    },
+    ProfileUser: {
+      screen: ProfileUser,
+      navigationOptions: { title: 'Profile page' },
     },
     // ## End StackNavigator Views ##
   },
