@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+<<<<<<< HEAD
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
@@ -12,6 +13,7 @@ import { ViewContainerTop, Centered, IconImage } from '../../components/Layout';
 import Person from '../../components/Person';
 import Tag from '../../components/Tags';
 import RoundTab from '../../components/RoundTab';
+import Spinner from '../../components/Spinner';
 
 const mapStateToProps = state => ({
   usersSearch: state.usersSearch,
@@ -46,6 +48,7 @@ export class PeopleView extends React.Component {
     this.fetchData();
   }
 
+<<<<<<< HEAD
   // fetch 10 users and add them to the state.data
   fetchData = () => {
     fetch('http://localhost:3888/users/page/' + this.state.currentPage)
@@ -57,6 +60,25 @@ export class PeopleView extends React.Component {
         this.setState({ data: [...this.state.data, ...response] });
       })
       .catch(err => console.error(err + ' error fetchData in peopleView.js'));
+=======
+  fetchData = async () => {
+    this.setState({ loading: true });
+    const response = await fetch(
+      `http://0.0.0.0:3888/users/page/${this.state.page}`,
+      {
+        method: 'get',
+        headers: {
+          Authorization:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
+        },
+      },
+    );
+    const json = await response.json();
+    this.setState(state => ({
+      data: [...state.data, ...json],
+      loading: false,
+    }));
+>>>>>>> Add Spinner Component
   };
 
   handleEnd = () => {
@@ -103,6 +125,7 @@ export class PeopleView extends React.Component {
     );
   }
 
+<<<<<<< HEAD
   render() {
     return (
       <ViewContainerTop style={{ backgroundColor: '#e8e9e8' }}>
@@ -126,6 +149,42 @@ export class PeopleView extends React.Component {
       </ViewContainerTop>
     );
   }
+=======
+  renderFlatList() {
+    if (this.state.loading) {
+      return <Spinner />;
+    }
+
+    return (
+      <FlatList
+        data={
+          this.state.searchedUsername.length > 0
+            ? this.state.filteredUsers
+            : this.state.data
+        }
+        keyExtractor={this.keyExtractor}
+        renderItem={this.renderItem}
+        onEndReached={this.handleEnd}
+        onEndReachedThreshold={0.4}
+        //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
+        horizontal
+      />
+    );
+  }
+
+  render = () => (
+    <ViewContainer>
+      <Title> People </Title>
+      <SearchBar
+        round
+        lightTheme
+        onChangeText={username => this.getUserByUsername(username)}
+        placeholder="Search"
+      />
+      <Centered>{this.renderFlatList()}</Centered>
+    </ViewContainer>
+  );
+>>>>>>> Add Spinner Component
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PeopleView);
