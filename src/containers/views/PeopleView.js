@@ -109,7 +109,7 @@ export class PeopleView extends React.Component {
       </View>
     );
   }
-  
+
   render() {
     return (
       <ViewContainerTop style={{ backgroundColor: '#e8e9e8' }}>
