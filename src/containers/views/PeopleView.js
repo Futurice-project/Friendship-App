@@ -1,26 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
-import {
-  Image,
-  View,
-  Text,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
-import { List, ListItem, SearchBar } from 'react-native-elements';
-import { PepperoniLogo, IconButton } from '../../components/Pepperoni';
-import { Title, Description, Bold } from '../../components/Text';
-import {
-  ViewContainer,
-  Centered,
-  FlexRow,
-  IconImage,
-} from '../../components/Layout';
+import { FlatList } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+import { Title } from '../../components/Text';
+import { ViewContainer, Centered, IconImage } from '../../components/Layout';
 import Person from '../../components/Person';
-import TabProfile from '../../components/TabProfile';
+import Spinner from '../../components/Spinner';
 
 const mapStateToProps = state => ({});
 
@@ -51,7 +36,7 @@ export class PeopleView extends React.Component {
   }
 
   fetchData = async () => {
-    //this.setState({ loading: true });
+    this.setState({ loading: true });
     const response = await fetch(
       `http://0.0.0.0:3888/users/page/${this.state.page}`,
       {
@@ -90,6 +75,28 @@ export class PeopleView extends React.Component {
       .then(filteredUsers => this.setState({ filteredUsers }));
   }
 
+  renderFlatList() {
+    if (this.state.loading) {
+      return <Spinner />;
+    }
+
+    return (
+      <FlatList
+        data={
+          this.state.searchedUsername.length > 0
+            ? this.state.filteredUsers
+            : this.state.data
+        }
+        keyExtractor={this.keyExtractor}
+        renderItem={this.renderItem}
+        onEndReached={this.handleEnd}
+        onEndReachedThreshold={0.4}
+        //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
+        horizontal
+      />
+    );
+  }
+
   render = () => (
     <ViewContainer>
       <Title> People </Title>
@@ -99,23 +106,7 @@ export class PeopleView extends React.Component {
         onChangeText={username => this.getUserByUsername(username)}
         placeholder="Search"
       />
-      <Centered>
-        <FlatList
-          data={
-            this.state.searchedUsername.length > 0 ? (
-              this.state.filteredUsers
-            ) : (
-              this.state.data
-            )
-          }
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-          onEndReached={this.handleEnd}
-          onEndReachedThreshold={0.4}
-          //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
-          horizontal
-        />
-      </Centered>
+      <Centered>{this.renderFlatList()}</Centered>
     </ViewContainer>
   );
 }
