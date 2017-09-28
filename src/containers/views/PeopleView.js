@@ -54,6 +54,11 @@ export class PeopleView extends React.Component {
       },
     );
     const json = await response.json();
+
+    // Stop requesting for the new page
+    // when there is nothing more! Expected to be handle when request fail
+    if (json.length === 0) this.setState({ infiniteScrollStop: true });
+
     this.setState(state => ({
       data: [...state.data, ...json],
       loading: false,
