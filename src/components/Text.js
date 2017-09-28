@@ -15,3 +15,11 @@ export const Description = Title.extend`
 `;
 
 export const CenteredText = Bold.extend`text-align: center;`;
+
+export const SenderName = styled.Text`
+  font-size: 18;
+  font-weight: bold;
+  color: #666;
+`;
+
+export const LastMessage = styled.Text`color: #b1b1b1;`;
