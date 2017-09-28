@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-<<<<<<< HEAD
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
@@ -9,7 +8,7 @@ import throttle from 'lodash/throttle';
 
 import { Title, Header, SmallHeader, Description } from '../../components/Text';
 
-import { ViewContainerTop, Centered, IconImage } from '../../components/Layout';
+import { ViewContainerTop, ViewContainer, Centered, FullscreenCentered, IconImage } from '../../components/Layout';
 import Person from '../../components/Person';
 import Tag from '../../components/Tags';
 import RoundTab from '../../components/RoundTab';
@@ -40,45 +39,31 @@ export class PeopleView extends React.Component {
 
   state = {
     data: [],
+
     searchedUsername: '',
     currentPage: 0,
+    loading: false,
+    filteredUsers: [],
+    searchedUsername: '',
+    infiniteScrollStop: false,
   };
 
   componentDidMount() {
     this.fetchData();
   }
 
-<<<<<<< HEAD
   // fetch 10 users and add them to the state.data
   fetchData = () => {
+    this.setState({ loading: true });
     fetch('http://localhost:3888/users/page/' + this.state.currentPage)
       .then(response => {
         return response.json();
       })
       .then(response => {
         this.setState({ currentPage: this.state.currentPage + 1 });
-        this.setState({ data: [...this.state.data, ...response] });
+        this.setState({ data: [...this.state.data, ...response], loading: false});
       })
       .catch(err => console.error(err + ' error fetchData in peopleView.js'));
-=======
-  fetchData = async () => {
-    this.setState({ loading: true });
-    const response = await fetch(
-      `http://0.0.0.0:3888/users/page/${this.state.page}`,
-      {
-        method: 'get',
-        headers: {
-          Authorization:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
-        },
-      },
-    );
-    const json = await response.json();
-    this.setState(state => ({
-      data: [...state.data, ...json],
-      loading: false,
-    }));
->>>>>>> Add Spinner Component
   };
 
   handleEnd = () => {
@@ -91,7 +76,7 @@ export class PeopleView extends React.Component {
 
   // Creates a throttled function that only invokes func at most once per every 1 second.
   getUserByUsername = throttle(username => {
-    this.setState({ searchedUsername: username });
+    this.setState({ searchedUsername: username, infiniteScrollStop: username ? true : false, });
     this.props.refreshUsersSearch(username);
   }, 1000);
 
@@ -124,8 +109,7 @@ export class PeopleView extends React.Component {
       </View>
     );
   }
-
-<<<<<<< HEAD
+  
   render() {
     return (
       <ViewContainerTop style={{ backgroundColor: '#e8e9e8' }}>
@@ -149,28 +133,6 @@ export class PeopleView extends React.Component {
       </ViewContainerTop>
     );
   }
-=======
-  renderFlatList() {
-    if (this.state.loading) {
-      return <Spinner />;
-    }
-
-    return (
-      <FlatList
-        data={
-          this.state.searchedUsername.length > 0
-            ? this.state.filteredUsers
-            : this.state.data
-        }
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderItem}
-        onEndReached={this.handleEnd}
-        onEndReachedThreshold={0.4}
-        //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
-        horizontal
-      />
-    );
-  }
 
   render = () => (
     <ViewContainer>
@@ -181,10 +143,26 @@ export class PeopleView extends React.Component {
         onChangeText={username => this.getUserByUsername(username)}
         placeholder="Search"
       />
-      <Centered>{this.renderFlatList()}</Centered>
+
+      <FullscreenCentered>
+        <FlatList
+          data={
+            this.state.searchedUsername.length > 0
+              ? this.state.filteredUsers
+              : this.state.data
+          }
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+          onEndReached={this.handleEnd}
+          onEndReachedThreshold={0.4}
+          style={{ flex: 1 }}
+          //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
+          horizontal
+        />
+        {this.renderSpinner()}
+      </FullscreenCentered>
     </ViewContainer>
   );
->>>>>>> Add Spinner Component
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PeopleView);
