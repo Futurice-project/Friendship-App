@@ -3,13 +3,13 @@ import { ActivityIndicator } from 'react-native';
 import styled from 'styled-components/native';
 
 const SpinnerView = styled.View`
-  flex: 1;
+  ${props => (props.fullflex ? 'flex: 100' : 'flex: 1')};
   justify-content: center;
   align-items: center;
 `;
 
-const Spinner = ({ size }) => (
-  <SpinnerView>
+const Spinner = ({ size, fullflex }) => (
+  <SpinnerView fullflex={fullflex}>
     <ActivityIndicator size={size || 'large'} />
   </SpinnerView>
 );

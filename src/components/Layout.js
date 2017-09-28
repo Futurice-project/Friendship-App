@@ -25,7 +25,10 @@ export const Centered = styled.View`
 
 export const Stretch = styled.View`align-self: stretch;`;
 
-export const FullscreenCentered = Centered.extend`flex: 1;`;
+export const FullscreenCentered = Centered.extend`
+  flex: 1;
+  flex-direction: row;
+`;
 
 export const FlexRow = styled.View`
   align-items: center;
