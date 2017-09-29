@@ -1,30 +1,40 @@
 import styled from 'styled-components/native';
 import React from 'react';
-import { Image, Dimensions } from 'react-native';
+import { Image, Dimensions, TouchableOpacity } from 'react-native';
 
-//item is align at the bottom
-//TODO : few pixels are still under the image
-
+//style for the image
 const ImageContainer = styled.Image.attrs({
-  //TODO fix other color paramter
-  tintColor: props => props.imageTint,
+  tintColor: props => props.tint,
 })`
-  justify-content: flex-end;
-  position: relative;
   margin-bottom: 0;
-  position: absolute;
   right: 0;
   left: 0;
-  bottom: 0;
+  ${'' /* without the -5, a space is below the image-->need further investigation */} bottom: -5;
   justify-content: center;
   align-items: center;
 `;
+//style for the text of the button
+const ButtonText = styled.Text`
+  width: 230;
+  height: 27;
+  font-family: 'NunitoSans-Regular';
+  font-size: 20;
+  font-weight: bold;
+  text-align: center;
+  color: #2d4359;
+`;
 
+/**
+ * Styled RoundTab component
+ * @param {string} tint - Changes the color of the image
+ * @param {string} title - Sets the text of the button
+ * @param {function} onPress - Sets the function of the button
+  */
 export default class RoundTab extends React.Component {
   render = () => (
     //Image will render depending on the screen size -> Dimensions plugin
     <ImageContainer
-      imageTint={this.props.imageTint}
+      tint={this.props.tint}
       style={{
         height: Dimensions.get('window').height / 5,
         width: Dimensions.get('window').width,
@@ -33,7 +43,10 @@ export default class RoundTab extends React.Component {
       source={require('../images/greenTab.png')}
       resizeMode="contain"
     >
-      {this.props.children}
+      {/* {this.props.children} */}
+      <TouchableOpacity onPress={this.props.onPress}>
+        <ButtonText>{this.props.title}</ButtonText>
+      </TouchableOpacity>
     </ImageContainer>
   );
 }

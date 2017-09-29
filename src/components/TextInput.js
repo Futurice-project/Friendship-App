@@ -55,7 +55,17 @@ const InputTitle = styled.Text`
   text-align: left;
   padding-left: 20px;
 `;
-
+/**
+ * Styled TextInput component
+ * @param {string} titleColor - Sets the color of the text(optional)
+ * @param {string} title - Sets the text of the title
+ * @param {boolean} secure - Enable the input to be secure/hidden
+ * @param {string} backColor - Sets the background-color of the input(optional)
+ * @param {string} placeholder - indicates the value of the field when empty
+ * @param {string} value - Sets the value of the Input
+ * @param {function} onChangeText - Function when the field is changed
+ * @param {string} hint - Sets the value of t below the input
+ */
 //export our component
 export default class TextInput extends React.Component {
   render = () => (
