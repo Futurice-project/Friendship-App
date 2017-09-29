@@ -39,3 +39,9 @@ export const IconImage = styled.Image`
   height: 20;
   ${props => (props.tintColor ? `tintColor: ${props.tintColor}` : undefined)};
 `;
+
+export const SignUpWrapper = styled.View`
+  flex: 1;
+  background-color: #faf6f0;
+  align-items: center;
+`;
