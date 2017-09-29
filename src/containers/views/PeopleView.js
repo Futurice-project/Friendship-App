@@ -92,7 +92,7 @@ export class PeopleView extends React.Component {
 
   render = () => (
     <ViewContainer>
-      <Title> People </Title>
+      <Title> Peopless </Title>
       <SearchBar
         round
         lightTheme

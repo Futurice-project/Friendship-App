@@ -14,9 +14,10 @@ const mapDispatchToProps = dispatch => ({
   openSettings: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'People',
+        routeName: 'EmojiPicker',
       }),
     ),
+
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
@@ -147,7 +148,7 @@ export class WelcomeView extends React.Component {
         <LaunchingNavigationOptions>
           <Preview onPress={this.props.openSettings}>
             <PreviewLogo />
-            <Text style={styles.preview}> Preview</Text>
+            <Text style={styles.preview}> Previews</Text>
           </Preview>
           <Connection>
             <ConnectionOption>
