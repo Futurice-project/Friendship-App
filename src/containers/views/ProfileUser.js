@@ -6,6 +6,7 @@ import {
   FlatList,
   ScrollView,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
@@ -17,75 +18,52 @@ import TabProfile from '../../components/TabProfile';
 const mapStateToProps = state => ({
   personId: state.personId,
   tags: state.userTag,
+  userData: state.userDetails,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshTags: userId => dispatch(rest.actions.userTag.get({ userId })),
+  refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
 });
 
 class ProfileUser extends React.Component {
-  static navigationOptions = {
-    title: '',
-  };
-
-  state = {
-    dataUser: {},
-    dataTags: {},
-    personId: this.props.navigation.state.params.personId,
-  };
+  // state = {
+  //   userData: this.props.userData.data,
+  //   personId: this.props.navigation.state.params.personId
+  // }
 
   componentDidMount() {
-    fetch('http://0.0.0.0:3888/users/' + this.state.personId, {
-      method: 'get',
-      headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
-      },
-    })
-      .then(response => response.json())
-      .then(dataUser => {
-        this.setState({ dataUser });
-        console.log(this.state.data);
-      });
-
-    this.props.refreshTags(this.state.personId);
-
-    // Fetch the tags
-    /*
-    fetch('http://0.0.0.0:3888/user_tag/' + this.state.personId, {
-      method: 'get',
-      headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY'
-      }
-    })
-      .then(response => response.json())
-      .then(dataTags => {
-        this.setState({ dataTags })
-        console.log('====================================')
-        console.log(this.state.dataTags)
-        console.log('====================================')
-      })
-      */
+    const personId = this.props.navigation.state.params.personId;
+    this.props.refreshTags(personId);
+    this.props.refreshUser(personId);
   }
 
-  render = () => (
-    <ViewContainer style={styles.signUpFinalStepHate}>
-      <View style={styles.topPart}>
-        <View style={styles.oval}>
-          <Text style={styles.emoji}>{this.state.dataUser.emoji}</Text>
+  render = () => {
+    console.log(this.props.userData);
+
+    if (this.props.userData.loading) {
+      return <ActivityIndicator />;
+    }
+    return (
+      <ViewContainer style={styles.signUpFinalStepHate}>
+        <View style={styles.topPart}>
+          <View style={styles.oval}>
+            <Text style={styles.emoji}>{this.props.userData.data.emoji}</Text>
+          </View>
+          <Text style={styles.username}>
+            {this.props.userData.data.username}
+          </Text>
+          <Text style={styles.iLoveCampingRapA}>25, male, Helsinki</Text>
+          <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
+          <Text style={styles.lookingFor}>LOOKING FOR</Text>
+          <Text style={styles.lookingForText}>
+            The events you will actively look friends for will be visible here
+          </Text>
         </View>
-        <Text style={styles.username}>{this.state.dataUser.username}</Text>
-        <Text style={styles.iLoveCampingRapA}>25, male, Helsinki</Text>
-        <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
-        <Text style={styles.lookingFor}>LOOKING FOR</Text>
-        <Text style={styles.lookingForText}>
-          The events you will actively look friends for will be visible here
-        </Text>
-      </View>
-      <TabProfile tags={this.props.tags} />
-    </ViewContainer>
-  );
+        <TabProfile tags={this.props.tags} />
+      </ViewContainer>
+    );
+  };
 }
 
 const styles = StyleSheet.create({

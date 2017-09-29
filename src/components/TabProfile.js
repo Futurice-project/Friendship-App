@@ -7,11 +7,6 @@ import ScrollableTabView, {
 import styled from 'styled-components/native';
 
 export default class TabProfile extends PureComponent {
-  componentDidMount() {
-    console.log('====================================');
-    console.log(this.props.tags);
-    console.log('====================================');
-  }
   render = () =>
     console.log(this.props.tags) || (
       <View>
