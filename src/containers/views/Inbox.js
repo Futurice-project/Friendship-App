@@ -1,17 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, View } from 'react-native';
-import {
-  IconImage,
-  MessageCard,
-  ProfileIconCard,
-  MessageContent,
-} from '../../components/Layout';
-import { SenderName, LastMessage } from '../../components/Text';
+import { View } from 'react-native';
+import { IconImage } from '../../components/Layout';
+import InboxCard from '../../components/InboxCard';
 
 export class InboxView extends React.Component {
   static navigationOptions = {
     title: 'Inbox',
+    header: {
+      visible: false,
+    },
     tabBarIcon: ({ tintColor }) => (
       <IconImage
         source={require('../../../assets/inbox.png')}
@@ -19,66 +17,15 @@ export class InboxView extends React.Component {
       />
     ),
   };
-  render = () => (
-    <View>
-      <MessageCard>
-        <ProfileIconCard>
-          <View
-            style={{
-              height: 50,
-              width: 50,
-              backgroundColor: 'orange',
-              borderRadius: 50,
-              justifyContent: 'flex-start',
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                paddingTop: 11,
-                color: 'white',
-                fontSize: 20,
-              }}
-            >
-              P
-            </Text>
-          </View>
-        </ProfileIconCard>
-        <MessageContent>
-          <SenderName>Peter</SenderName>
-          <LastMessage>Hello there!</LastMessage>
-        </MessageContent>
-      </MessageCard>
-      <MessageCard>
-        <ProfileIconCard>
-          <View
-            style={{
-              height: 50,
-              width: 50,
-              backgroundColor: 'green',
-              borderRadius: 50,
-              justifyContent: 'flex-start',
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                paddingTop: 11,
-                color: 'white',
-                fontSize: 20,
-              }}
-            >
-              R
-            </Text>
-          </View>
-        </ProfileIconCard>
-        <MessageContent>
-          <SenderName>Jack</SenderName>
-          <LastMessage>What's up!</LastMessage>
-        </MessageContent>
-      </MessageCard>
-    </View>
-  );
+
+  render() {
+    return (
+      <View>
+        <InboxCard name={'Peter'} message={'Hello There!'} color={'orange'} />
+        <InboxCard name={'John'} message={'Whats up'} color={'green'} />
+      </View>
+    );
+  }
 }
 
 export default connect(undefined)(InboxView);

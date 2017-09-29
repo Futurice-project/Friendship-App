@@ -43,6 +43,7 @@ export const IconImage = styled.Image`
   ${props => (props.tintColor ? `tintColor: ${props.tintColor}` : undefined)};
 `;
 
+// Styling for inbox
 export const MessageCard = styled.View`
   flex-direction: row;
   margin-top: 10px;
@@ -60,3 +61,57 @@ export const ProfileIconCard = styled.View`
 `;
 
 export const MessageContent = styled.View`flex: 4;`;
+
+export const CircleView = styled.View`
+  height: 50px;
+  width: 50px;
+  ${props => (props.color ? `background-color: ${props.color}` : 'orange')};
+  border-radius: 50px;
+  justify-content: flex-start;
+`;
+
+export const ChatMessageCard = styled.View`
+  justify-content: flex-end;
+  flex: 1;
+`;
+
+export const TextMessageCard = styled.View`
+  border-radius: 10;
+  padding: 15px;
+  maxwidth: 300px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+export const ReceivingCard = TextMessageCard.extend`
+  background-color: #f9efcb;
+  align-self: flex-start;
+  margin-left: 10px;
+`;
+
+export const SendingCard = TextMessageCard.extend`
+  background-color: #6cc5c9;
+  align-self: flex-end;
+  margin-right: 10px;
+`;
+
+export const TextInputCard = styled.View`
+  height: 60px;
+  background-color: #f0fafb;
+  flex-direction: row;
+`;
+
+export const ChatInputButtonCard = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ChatHeaderImage = styled.Image`
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+`;
+
+// -- Styling for inbox end

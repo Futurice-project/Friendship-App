@@ -16,6 +16,7 @@ export const Description = Title.extend`
 
 export const CenteredText = Bold.extend`text-align: center;`;
 
+// Text for inbox page
 export const SenderName = styled.Text`
   font-size: 18;
   font-weight: bold;
@@ -23,3 +24,10 @@ export const SenderName = styled.Text`
 `;
 
 export const LastMessage = styled.Text`color: #b1b1b1;`;
+
+export const CenterIconText = styled.Text`
+  text-align: center;
+  padding-top: 11px;
+  color: white;
+  font-size: 20px;
+`;

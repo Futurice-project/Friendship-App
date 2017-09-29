@@ -10,6 +10,7 @@ import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleView';
 import LoginView from '../views/Login';
 import ProfileUser from './../views/ProfileUser';
+import ChatView from '../views/ChatView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -44,6 +45,9 @@ export default StackNavigator(
     ProfileUser: {
       screen: ProfileUser,
       navigationOptions: { title: 'Profile page' },
+    },
+    ChatView: {
+      screen: ChatView,
     },
     // ## End StackNavigator Views ##
   },
