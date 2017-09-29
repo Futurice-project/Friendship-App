@@ -21,8 +21,40 @@ class ProfileUser extends React.Component {
     title: '',
   };
 
-  state = { data: {}, personId: this.props.navigation.state.params.personId };
+  state = {
+    data: {},
+    personId: this.props.navigation.state.params.personId,
+    age: '',
+  };
 
+  getAge = () => {
+    const birthDay = new Date(this.state.data.birthday);
+    const now = new Date();
+    let age = now.getFullYear() - birthDay.getFullYear();
+    const m = now.getMonth() - birthDay.getMonth();
+    if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
+      age--;
+    }
+
+    const early = [0, 1, 2, 3];
+    const mid = [4, 5, 6];
+    const late = [7, 8, 9];
+    let ageName = '';
+    const lastDigit = age.toString().substr(age.toString().length - 1);
+    if (early.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'early ' + (age - parseInt(lastDigit)) + "'s";
+    } else if (mid.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'mid ' + (age - parseInt(lastDigit)) + "'s";
+    } else if (late.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'late ' + (age - parseInt(lastDigit)) + "'s";
+    } else {
+      ageName = "It's a mystery";
+    }
+
+    this.setState({ age: ageName });
+  };
+
+  setAge = () => {};
   componentDidMount() {
     fetch('http://0.0.0.0:3888/users/' + this.state.personId, {
       method: 'get',
@@ -32,26 +64,36 @@ class ProfileUser extends React.Component {
       },
     })
       .then(response => response.json())
-      .then(data => this.setState({ data }));
+      .then(data => {
+        this.setState({ data });
+        this.getAge();
+      });
   }
 
-  render = () => (
-    <ViewContainer style={styles.signUpFinalStepHate}>
-      <View style={styles.topPart}>
-        <View style={styles.oval}>
-          <Text style={styles.emoji}>{this.state.data.emoji}</Text>
+  //const birthYear = '99'//{ ...this.state.data.birthday.getFullYear()};
+  //console.log(birthYear);
+
+  render = () => {
+    return (
+      <ViewContainer style={styles.signUpFinalStepHate}>
+        <View style={styles.topPart}>
+          <View style={styles.oval}>
+            <Text style={styles.emoji}>{this.state.data.emoji}</Text>
+          </View>
+          <Text style={styles.username}>{this.state.data.username}</Text>
+          <Text style={styles.iLoveCampingRapA}>
+            {this.state.age}, male, {this.state.data.location}
+          </Text>
+          <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
+          <Text style={styles.lookingFor}>LOOKING FOR</Text>
+          <Text style={styles.lookingForText}>
+            The events you will actively look friends for will be visible here
+          </Text>
         </View>
-        <Text style={styles.username}>{this.state.data.username}</Text>
-        <Text style={styles.iLoveCampingRapA}>25, male, Helsinki</Text>
-        <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
-        <Text style={styles.lookingFor}>LOOKING FOR</Text>
-        <Text style={styles.lookingForText}>
-          The events you will actively look friends for will be visible here
-        </Text>
-      </View>
-      <TabProfile />
-    </ViewContainer>
-  );
+        <TabProfile />
+      </ViewContainer>
+    );
+  };
 }
 
 const styles = StyleSheet.create({
