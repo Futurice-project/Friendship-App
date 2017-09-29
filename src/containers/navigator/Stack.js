@@ -15,6 +15,7 @@ import SearchList from './../views/Search';
 import EmojiPickerView from './../views/EmojiPicker';
 import LookingFor from './../views/LookingFor';
 import Matching from './../views/Matching';
+import ChatView from '../views/ChatView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -62,6 +63,9 @@ export default StackNavigator(
     },
     ProfileUser: {
       screen: ProfileUser,
+    },
+    ChatView: {
+      screen: ChatView,
     },
     // ## End StackNavigator Views ##
   },

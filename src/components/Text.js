@@ -43,3 +43,12 @@ export const SmallHeader = styled.Text`
   color: #3b3b3d;
   margin-bottom: 14px;
 `;
+
+export const LastMessage = styled.Text`color: #b1b1b1;`;
+
+export const CenterIconText = styled.Text`
+  text-align: center;
+  padding-top: 11px;
+  color: white;
+  font-size: 20px;
+`;

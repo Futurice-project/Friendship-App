@@ -9,10 +9,14 @@ import {
   ViewContainerTop,
 } from '../../components/Layout';
 import { SenderName, LastMessage } from '../../components/Text';
+import InboxCard from '../../components/InboxCard';
 
 export class InboxView extends React.Component {
   static navigationOptions = {
     title: 'Inbox',
+    header: {
+      visible: false,
+    },
     tabBarIcon: ({ tintColor }) => (
       <IconImage
         source={require('../../../assets/inbox.png')}
