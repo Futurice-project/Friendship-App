@@ -33,3 +33,9 @@ export const FlexRow = styled.View`
 `;
 
 export const AppContainer = styled.View`flex: 1;`;
+
+export const SignUpWrapper = styled.View`
+  flex: 1;
+  background-color: #faf6f0;
+  align-items: center;
+`;
