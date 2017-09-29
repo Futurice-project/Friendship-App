@@ -113,7 +113,7 @@ export const ChatMessageCard = styled.View`
 export const TextMessageCard = styled.View`
   border-radius: 10;
   padding: 15px;
-  maxwidth: 300px;
+  max-width: 300px;
   margin-right: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
