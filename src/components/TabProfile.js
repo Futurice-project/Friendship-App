@@ -7,26 +7,32 @@ import ScrollableTabView, {
 import styled from 'styled-components/native';
 
 export default class TabProfile extends PureComponent {
-  render = () => (
-    <View>
-      <ScrollableTabView
-        style={{ marginTop: 0 }}
-        initialPage={0}
-        renderTabBar={() => <ScrollableTabBar />}
-      >
-        <View tabLabel="LOVE">
-          <TextRectangle Text="spicy food" style={styles.rec} />
-          <TextRectangle Text="react" style={styles.rec} />
-          <TextRectangle Text="dogs" style={styles.rec} />
-          <TextRectangle Text="Basketball" style={styles.rec} />
-        </View>
-        <View tabLabel="HATE">
-          <TextRectangle Text="dating apps" style={styles.rec} />
-          <TextRectangle Text="reading" style={styles.rec} />
-        </View>
-      </ScrollableTabView>
-    </View>
-  );
+  componentDidMount() {
+    console.log('====================================');
+    console.log(this.props.tags);
+    console.log('====================================');
+  }
+  render = () =>
+    console.log(this.props.tags) || (
+      <View>
+        <ScrollableTabView
+          style={{ marginTop: 0 }}
+          initialPage={0}
+          renderTabBar={() => <ScrollableTabBar />}
+        >
+          <View tabLabel="LOVE">
+            <TextRectangle Text="as" style={styles.rec} />
+            <TextRectangle Text="react" style={styles.rec} />
+            <TextRectangle Text="dogs" style={styles.rec} />
+            <TextRectangle Text="Basketball" style={styles.rec} />
+          </View>
+          <View tabLabel="HATE">
+            <TextRectangle Text="dating apps" style={styles.rec} />
+            <TextRectangle Text="reading" style={styles.rec} />
+          </View>
+        </ScrollableTabView>
+      </View>
+    );
 }
 
 const styles = StyleSheet.create({

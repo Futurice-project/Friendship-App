@@ -8,20 +8,31 @@ import {
   StyleSheet,
 } from 'react-native';
 import { connect } from 'react-redux';
+import rest from '../../utils/rest';
+
 import { ViewContainer, Centered, FlexRow } from '../../components/Layout';
 import TextRectangle from '../../components/TextRectangle';
 import TabProfile from '../../components/TabProfile';
 
-const mapStateToProps = state => {
-  return { personId: state.personId };
-};
+const mapStateToProps = state => ({
+  personId: state.personId,
+  tags: state.userTag,
+});
+
+const mapDispatchToProps = dispatch => ({
+  refreshTags: userId => dispatch(rest.actions.userTag.get({ userId })),
+});
 
 class ProfileUser extends React.Component {
   static navigationOptions = {
     title: '',
   };
 
-  state = { data: {}, personId: this.props.navigation.state.params.personId };
+  state = {
+    dataUser: {},
+    dataTags: {},
+    personId: this.props.navigation.state.params.personId,
+  };
 
   componentDidMount() {
     fetch('http://0.0.0.0:3888/users/' + this.state.personId, {
@@ -32,16 +43,39 @@ class ProfileUser extends React.Component {
       },
     })
       .then(response => response.json())
-      .then(data => this.setState({ data }));
+      .then(dataUser => {
+        this.setState({ dataUser });
+        console.log(this.state.data);
+      });
+
+    this.props.refreshTags(this.state.personId);
+
+    // Fetch the tags
+    /*
+    fetch('http://0.0.0.0:3888/user_tag/' + this.state.personId, {
+      method: 'get',
+      headers: {
+        Authorization:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY'
+      }
+    })
+      .then(response => response.json())
+      .then(dataTags => {
+        this.setState({ dataTags })
+        console.log('====================================')
+        console.log(this.state.dataTags)
+        console.log('====================================')
+      })
+      */
   }
 
   render = () => (
     <ViewContainer style={styles.signUpFinalStepHate}>
       <View style={styles.topPart}>
         <View style={styles.oval}>
-          <Text style={styles.emoji}>{this.state.data.emoji}</Text>
+          <Text style={styles.emoji}>{this.state.dataUser.emoji}</Text>
         </View>
-        <Text style={styles.username}>{this.state.data.username}</Text>
+        <Text style={styles.username}>{this.state.dataUser.username}</Text>
         <Text style={styles.iLoveCampingRapA}>25, male, Helsinki</Text>
         <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
         <Text style={styles.lookingFor}>LOOKING FOR</Text>
@@ -49,7 +83,7 @@ class ProfileUser extends React.Component {
           The events you will actively look friends for will be visible here
         </Text>
       </View>
-      <TabProfile />
+      <TabProfile tags={this.props.tags} />
     </ViewContainer>
   );
 }
@@ -117,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps)(ProfileUser);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileUser);

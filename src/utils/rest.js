@@ -37,6 +37,11 @@ const rest = reduxApi({
     url: `${apiRoot}/users/:userId`,
     crud: true,
   },
+  userTag: {
+    url: `${apiRoot}/user_tag/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
 
   // Add more API endpoints here! Examples below:
 
