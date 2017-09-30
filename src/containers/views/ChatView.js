@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 import {
-  View,
   TextInput,
   Image,
   FlatList,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  LayoutAnimation,
+  NativeModules,
 } from 'react-native';
 import {
   TextInputCard,
@@ -15,20 +18,30 @@ import {
   ChatHeaderImage,
 } from '../../components/Layout';
 import MessageCard from '../../components/MessageCard';
+import PopUpMenu from '../../components/PopUpMenu';
+
+const { UIManager } = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 class ChatView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: `${navigation.state.params.name}`,
     headerRight: (
-      <ChatHeaderImage source={require('../../../assets/following.png')} />
+      <TouchableOpacity onPress={navigation.state.params.onMenuPopup}>
+        <ChatHeaderImage source={require('../../../assets/following.png')} />
+      </TouchableOpacity>
     ),
   });
 
   componentDidMount() {
-    this.ScrollToBottom();
+    this.scrollToBottom();
+    this.props.navigation.setParams({ onMenuPopup: this.onMenuPopup });
   }
 
   state = {
+    popUpMenu: false,
     text: '',
     currentUser: 'Thu',
     messages: [
@@ -55,24 +68,10 @@ class ChatView extends Component {
     ],
   };
 
-  keyExtractor = item => item.text;
-  renderItem = ({ item }) => {
-    const { text, user } = item;
-    return (
-      <MessageCard message={text} isSent={user === this.state.currentUser} />
-    );
-  };
-
-  getItemLayout = (data, index) => ({ length: 50, offset: 50 * index, index });
-
-  ScrollToBottom = () => {
-    const wait = new Promise(resolve => setTimeout(resolve, 100));
-    wait.then(() => {
-      this.flatListRef.scrollToIndex({
-        animated: true,
-        index: this.state.messages.length - 1,
-      });
-    });
+  onMenuPopup = () => {
+    const { popUpMenu } = this.state;
+    this.setState({ popUpMenu: !popUpMenu });
+    LayoutAnimation.spring();
   };
 
   onSend = () => {
@@ -83,8 +82,40 @@ class ChatView extends Component {
         messages: [...this.state.messages, newMessage],
         text: '',
       });
-      this.ScrollToBottom();
+      this.scrollToBottom();
     }
+  };
+
+  onViewProfile = () => {
+    this.props.onViewProfile();
+  };
+
+  onDelete = () => {
+    this.props.navigation.navigate('Inbox');
+  };
+
+  onBlock = () => {
+    this.props.navigation.navigate('Inbox');
+  };
+
+  keyExtractor = item => item.text;
+  renderItem = ({ item }) => {
+    const { text, user } = item;
+    return (
+      <MessageCard message={text} isSent={user === this.state.currentUser} />
+    );
+  };
+
+  getItemLayout = (data, index) => ({ length: 50, offset: 50 * index, index });
+
+  scrollToBottom = () => {
+    const wait = new Promise(resolve => setTimeout(resolve, 100));
+    wait.then(() => {
+      this.flatListRef.scrollToIndex({
+        animated: true,
+        index: this.state.messages.length - 1,
+      });
+    });
   };
 
   render() {
@@ -98,6 +129,12 @@ class ChatView extends Component {
         })()}
       >
         <ChatMessageCard>
+          <PopUpMenu
+            popup={this.state.popUpMenu}
+            onViewProfile={this.onViewProfile}
+            onDelete={this.onDelete}
+            onBlock={this.onBlock}
+          />
           <FlatList
             data={this.state.messages}
             ref={ref => {
@@ -131,4 +168,14 @@ class ChatView extends Component {
   }
 }
 
-export default ChatView;
+const mapDispatchToProps = dispatch => ({
+  onViewProfile: profileId =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'ProfileUser',
+        params: { profileId },
+      }),
+    ),
+});
+
+export default connect(null, mapDispatchToProps)(ChatView);

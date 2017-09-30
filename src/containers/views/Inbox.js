@@ -86,4 +86,4 @@ export class InboxView extends React.Component {
   );
 }
 
-export default connect(undefined)(InboxView);
+export default InboxView;
