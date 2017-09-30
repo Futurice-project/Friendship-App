@@ -123,7 +123,7 @@ export const PopUpMenuCard = styled.View`
   margin-right: 5;
   top: 0;
   right: 0;
-  zindex: 10;
+  z-index: 10;
 `;
 
 export const TouchableHighlightPadding = styled.TouchableHighlight`
