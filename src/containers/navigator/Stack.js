@@ -24,7 +24,9 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
-    Welcome: { screen: WelcomeView },
+    Welcome: {
+      screen: WelcomeView,
+    },
     Tabs: {
       screen: Tabs,
       navigationOptions: { title: 'Friendship App' },

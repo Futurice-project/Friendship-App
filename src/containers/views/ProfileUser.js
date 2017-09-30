@@ -27,11 +27,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class ProfileUser extends React.Component {
-  // state = {
-  //   userData: this.props.userData.data,
-  //   personId: this.props.navigation.state.params.personId
-  // }
-
   componentDidMount() {
     const personId = this.props.navigation.state.params.personId;
     this.props.refreshTags(personId);
