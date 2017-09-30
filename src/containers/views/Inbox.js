@@ -24,66 +24,32 @@ export class InboxView extends React.Component {
       />
     ),
   };
-  render = () => (
-    <ViewContainerTop>
-      <MessageCard>
-        <ProfileIconCard>
-          <View
-            style={{
-              height: 50,
-              width: 50,
-              backgroundColor: 'orange',
-              borderRadius: 50,
-              justifyContent: 'flex-start',
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                paddingTop: 11,
-                color: 'white',
-                fontSize: 20,
-              }}
-            >
-              P
-            </Text>
-          </View>
-        </ProfileIconCard>
-        <MessageContent>
-          <SenderName>Peter</SenderName>
-          <LastMessage>Hello there!</LastMessage>
-        </MessageContent>
-      </MessageCard>
-      <MessageCard>
-        <ProfileIconCard>
-          <View
-            style={{
-              height: 50,
-              width: 50,
-              backgroundColor: 'green',
-              borderRadius: 50,
-              justifyContent: 'flex-start',
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                paddingTop: 11,
-                color: 'white',
-                fontSize: 20,
-              }}
-            >
-              R
-            </Text>
-          </View>
-        </ProfileIconCard>
-        <MessageContent>
-          <SenderName>Jack</SenderName>
-          <LastMessage>What's up!</LastMessage>
-        </MessageContent>
-      </MessageCard>
-    </ViewContainerTop>
-  );
+
+  state = {
+    messages: [
+      { user: 'Peter', lastMessage: 'Lorem ipsum' },
+      { user: 'John', lastMessage: 'Dolor sit amet' },
+    ],
+  };
+
+  keyExtractor = item => item.user;
+  renderItem = ({ item }) => {
+    const { user, lastMessage } = item;
+    return <InboxCard name={user} message={lastMessage} color={'orange'} />;
+  };
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={this.state.messages}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+          style={{ flex: 1 }}
+        />
+      </View>
+    );
+  }
 }
 
 export default InboxView;

@@ -10,6 +10,7 @@ import {
   Platform,
   LayoutAnimation,
   NativeModules,
+  Keyboard,
 } from 'react-native';
 import {
   TextInputCard,
@@ -77,6 +78,7 @@ class ChatView extends Component {
   onSend = () => {
     const { text, currentUser } = this.state;
     const newMessage = { user: currentUser, text };
+    Keyboard.dismiss();
     if (text !== '') {
       this.setState({
         messages: [...this.state.messages, newMessage],
@@ -109,7 +111,7 @@ class ChatView extends Component {
   getItemLayout = (data, index) => ({ length: 50, offset: 50 * index, index });
 
   scrollToBottom = () => {
-    const wait = new Promise(resolve => setTimeout(resolve, 100));
+    const wait = new Promise(resolve => setTimeout(resolve, 200));
     wait.then(() => {
       this.flatListRef.scrollToIndex({
         animated: true,
