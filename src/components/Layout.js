@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, TouchableHighlight, Text } from 'react-native';
 
 const styles = StyleSheet.create({
   contentContainerStyle: {
@@ -113,5 +113,32 @@ export const ChatHeaderImage = styled.Image`
   height: 30px;
   margin-right: 10px;
 `;
+
+export const PopUpMenuCard = styled.View`
+  width: 120;
+  ${props => (props.popup ? undefined : 'height: 0')};
+  background-color: #f0fafb;
+  border-radius: 5;
+  position: absolute;
+  margin-right: 5;
+  top: 0;
+  right: 0;
+  zindex: 10;
+`;
+
+export const TouchableHighlightPadding = styled.TouchableHighlight`
+  padding: 10px;
+`;
+
+export class TouchableHighlightButton extends React.Component {
+  render = () => (
+    <TouchableHighlightPadding
+      onPress={this.props.onPress}
+      underlayColor={'#ddd'}
+    >
+      <Text>{this.props.label}</Text>
+    </TouchableHighlightPadding>
+  );
+}
 
 // -- Styling for inbox end
