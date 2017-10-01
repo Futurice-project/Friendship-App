@@ -38,37 +38,29 @@ class ChatView extends Component {
   });
 
   componentDidMount() {
-    //this.scrollToBottom();
     this.props.navigation.setParams({ onMenuPopup: this.onMenuPopup });
-    this.props.getChatRoomMessage(this.props.navigation.state.params.roomID);
+    //this.props.getChatRoomMessage(this.props.navigation.state.params.roomID);
+    this.fetchData();
   }
 
   state = {
     popUpMenu: false,
     text: '',
     currentUser: 'thunghiem',
-    messages: [
-      { user: 'Peter', text: 'Lorem ipsum' },
-      { user: 'Thu', text: 'Dolor sit amet' },
-      { user: 'Thu', text: 'Consectetur' },
-      { user: 'Peter', text: 'adipiscing elit ir' },
-      { user: 'Thu', text: 'morbi tristique' },
-      { user: 'Peter', text: 'Pellentesque' },
-      { user: 'Peter', text: 'convallis cursus' },
-      { user: 'Thu', text: 'ullamcorper' },
-      { user: 'Peter', text: 'Donec mattis' },
-      { user: 'Thu', text: 'adipiscing elit' },
-      { user: 'Peter', text: 'mattis nunc' },
-      { user: 'Peter', text: 'convallis c3ursus' },
-      { user: 'Thu', text: 'ulla5mcorper' },
-      { user: 'Peter', text: 'Donec fmattis' },
-      { user: 'Thu', text: 'adipisciwng elit' },
-      { user: 'Peter', text: 'mattis fnunc' },
-      { user: 'Thu', text: 'ulla5mcodrper' },
-      { user: 'Peter', text: 'Donec fmaattis' },
-      { user: 'Thu', text: 'adipisciwang elit' },
-      { user: 'Peter', text: 'mattis fncunc' },
-    ],
+    data: {},
+  };
+
+  fetchData = async () => {
+    const response = await fetch(
+      `https://chat-app-thunghiem.herokuapp.com/chatrooms/searchById/${this
+        .props.navigation.state.params.roomID}`,
+      {
+        method: 'get',
+      },
+    );
+    const data = await response.json();
+    this.scrollToBottom();
+    this.setState({ data });
   };
 
   onMenuPopup = () => {
@@ -83,7 +75,7 @@ class ChatView extends Component {
     Keyboard.dismiss();
     if (text !== '') {
       this.setState({
-        messages: [...this.state.messages, newMessage],
+        // messages: [...this.state.messages, newMessage],
         text: '',
       });
       this.props.sendMessage(
@@ -91,7 +83,8 @@ class ChatView extends Component {
         text,
         currentUser,
       );
-      //this.scrollToBottom();
+      this.fetchData();
+      this.scrollToBottom();
     }
   };
 
@@ -122,13 +115,13 @@ class ChatView extends Component {
     wait.then(() => {
       this.flatListRef.scrollToIndex({
         animated: true,
-        index: this.state.messages.length - 1,
+        index: this.state.data.messages.length - 1,
       });
     });
   };
 
   render() {
-    console.log(this.props.chatRoomMessages);
+    //console.log(this.props.chatRoomMessages);
     return (
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -146,7 +139,7 @@ class ChatView extends Component {
             onBlock={this.onBlock}
           />
           <FlatList
-            data={this.props.chatRoomMessages}
+            data={this.state.data.messages}
             ref={ref => {
               this.flatListRef = ref;
             }}
@@ -194,7 +187,7 @@ const mapDispatchToProps = dispatch => ({
       rest.actions.sendMessage(
         { id },
         {
-          body: JSON.stringify({ text: 'Hello', user: 'thunghiem' }),
+          body: JSON.stringify({ text, user }),
         },
       ),
     );
