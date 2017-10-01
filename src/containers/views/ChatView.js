@@ -20,6 +20,7 @@ import {
 } from '../../components/Layout';
 import MessageCard from '../../components/MessageCard';
 import PopUpMenu from '../../components/PopUpMenu';
+import rest from '../../utils/rest';
 
 const { UIManager } = NativeModules;
 
@@ -37,14 +38,15 @@ class ChatView extends Component {
   });
 
   componentDidMount() {
-    this.scrollToBottom();
+    //this.scrollToBottom();
     this.props.navigation.setParams({ onMenuPopup: this.onMenuPopup });
+    this.props.getChatRoomMessage(this.props.navigation.state.params.roomID);
   }
 
   state = {
     popUpMenu: false,
     text: '',
-    currentUser: 'Thu',
+    currentUser: 'thunghiem',
     messages: [
       { user: 'Peter', text: 'Lorem ipsum' },
       { user: 'Thu', text: 'Dolor sit amet' },
@@ -84,7 +86,12 @@ class ChatView extends Component {
         messages: [...this.state.messages, newMessage],
         text: '',
       });
-      this.scrollToBottom();
+      this.props.sendMessage(
+        this.props.navigation.state.params.roomID,
+        text,
+        currentUser,
+      );
+      //this.scrollToBottom();
     }
   };
 
@@ -100,11 +107,11 @@ class ChatView extends Component {
     this.props.navigation.navigate('Inbox');
   };
 
-  keyExtractor = item => item.text;
+  keyExtractor = item => item._id;
   renderItem = ({ item }) => {
-    const { text, user } = item;
+    const { text, author } = item;
     return (
-      <MessageCard message={text} isSent={user === this.state.currentUser} />
+      <MessageCard message={text} isSent={author === this.state.currentUser} />
     );
   };
 
@@ -121,6 +128,7 @@ class ChatView extends Component {
   };
 
   render() {
+    console.log(this.props.chatRoomMessages);
     return (
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -138,7 +146,7 @@ class ChatView extends Component {
             onBlock={this.onBlock}
           />
           <FlatList
-            data={this.state.messages}
+            data={this.props.chatRoomMessages}
             ref={ref => {
               this.flatListRef = ref;
             }}
@@ -178,6 +186,23 @@ const mapDispatchToProps = dispatch => ({
         params: { profileId },
       }),
     ),
+  getChatRoomMessage: id => {
+    dispatch(rest.actions.chatRoomMessages({ id }));
+  },
+  sendMessage: (id, text, user) => {
+    dispatch(
+      rest.actions.sendMessage(
+        { id },
+        {
+          body: JSON.stringify({ text: 'Hello', user: 'thunghiem' }),
+        },
+      ),
+    );
+  },
 });
 
-export default connect(null, mapDispatchToProps)(ChatView);
+const mapStateToProps = state => ({
+  chatRoomMessages: state.chatRoomMessages.data.messages,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatView);

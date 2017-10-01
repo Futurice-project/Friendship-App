@@ -24,7 +24,8 @@ class InboxCard extends React.Component {
   render() {
     return (
       <TouchableHighlight
-        onPress={() => this.props.openChatView(2, this.props.name)}
+        onPress={() =>
+          this.props.openChatView(this.props.roomID, this.props.name)}
         underlayColor={'#ddd'}
       >
         <MessageCard>
