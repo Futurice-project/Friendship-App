@@ -47,6 +47,27 @@ const rest = reduxApi({
   },
   tagsForUser: {
     url: `${apiRoot}/tagsForUser/:userId`,
+  chatRooms: {
+    url: 'https://chat-app-thunghiem.herokuapp.com/chatrooms',
+    crud: true,
+  },
+  chatRoomMessages: {
+    url: 'https://chat-app-thunghiem.herokuapp.com/chatrooms/searchById/:id',
+    crud: true,
+  },
+  sendMessage: {
+    url: 'https://chat-app-thunghiem.herokuapp.com/chatrooms/:id',
+    crud: true,
+    options: {
+      method: 'POST',
+    },
+  },
+  // Add more API endpoints here! Examples below:
+
+  /*
+  // Endpoints which return an array (data defaults to [])
+  teams: {
+    url: `${apiRoot}/teams`,
     transformer: transformers.array,
     crud: true,
   },
