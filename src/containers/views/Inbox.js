@@ -10,6 +10,7 @@ import {
 } from '../../components/Layout';
 import { SenderName, LastMessage } from '../../components/Text';
 import InboxCard from '../../components/InboxCard';
+import rest from '../../utils/rest';
 
 export class InboxView extends React.Component {
   static navigationOptions = {
@@ -26,23 +27,34 @@ export class InboxView extends React.Component {
   };
 
   state = {
-    messages: [
-      { user: 'Peter', lastMessage: 'Lorem ipsum' },
-      { user: 'John', lastMessage: 'Dolor sit amet' },
-    ],
+    currentUser: 'thunghiem',
   };
 
-  keyExtractor = item => item.user;
+  componentDidMount() {
+    this.props.getChatRooms();
+  }
+
+  keyExtractor = item => item._id;
   renderItem = ({ item }) => {
-    const { user, lastMessage } = item;
-    return <InboxCard name={user} message={lastMessage} color={'orange'} />;
+    const { members, messages, _id } = item;
+    const receiver = members.filter(i => i.name !== this.state.currentUser);
+    const lastMessage = messages[messages.length - 1].text;
+    return (
+      <InboxCard
+        name={receiver[0].name}
+        message={lastMessage}
+        roomID={_id}
+        color={'orange'}
+      />
+    );
   };
 
   render() {
+    console.log(this.props.chatRooms);
     return (
       <View style={{ flex: 1 }}>
         <FlatList
-          data={this.state.messages}
+          data={this.props.chatRooms}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
           style={{ flex: 1 }}
@@ -52,4 +64,14 @@ export class InboxView extends React.Component {
   }
 }
 
-export default InboxView;
+const mapStateToProps = state => ({
+  chatRooms: state.chatRooms.data.data,
+});
+
+const mapDispatchToProps = dispatch => ({
+  getChatRooms: () => {
+    dispatch(rest.actions.chatRooms());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(InboxView);
