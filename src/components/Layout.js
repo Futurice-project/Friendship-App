@@ -91,6 +91,13 @@ export const ProfileIconCard = styled.View`
   height: 50px;
 `;
 
+export const ProfileImage = styled.Image`
+  ${props => (props.width ? `width: ${props.width}` : 'width: 50px;')};
+  ${props => (props.height ? `height: ${props.height}` : 'height: 50px;')};
+  ${props => (props.tintColor ? `tintColor: ${props.tintColor}` : undefined)};
+  border-radius: 50;
+`;
+
 export const MessageContent = styled.View`flex: 4;`;
 
 export const SignUpWrapper = styled.View`
@@ -99,11 +106,16 @@ export const SignUpWrapper = styled.View`
   align-items: center;
 `;
 export const CircleView = styled.View`
-  height: 50px;
-  width: 50px;
-  ${props => (props.color ? `background-color: ${props.color}` : 'orange')};
-  border-radius: 50px;
-  justify-content: flex-start;
+  ${props => (props.width ? `width: ${props.width}` : 'width: 50px;')};
+  ${props => (props.height ? `height: ${props.height}` : 'height: 50px;')};
+  ${props =>
+    props.color
+      ? `background-color: ${props.color}`
+      : 'background-color: #e1e1e1'};
+  border-radius: 50;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
 `;
 
 export const ChatMessageCard = styled.View`
@@ -144,19 +156,14 @@ export const ChatInputButtonCard = styled.View`
   align-items: center;
 `;
 
-export const ChatHeaderImage = styled.Image`
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-`;
-
 export const PopUpMenuCard = styled.View`
   width: 120;
   ${props => (props.popup ? undefined : 'height: 0')};
   background-color: #f0fafb;
   border-radius: 5;
   position: absolute;
-  margin-right: 5;
+  margin-top: 2;
+  margin-right: 10;
   top: 0;
   right: 0;
   z-index: 10;

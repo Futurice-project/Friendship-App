@@ -13,12 +13,15 @@ import {
   LayoutAnimation,
   NativeModules,
   Keyboard,
+  Text,
+  View,
 } from 'react-native';
 import {
   TextInputCard,
   ChatMessageCard,
   ChatInputButtonCard,
-  ChatHeaderImage,
+  ProfileImage,
+  CircleView,
 } from '../../components/Layout';
 import MessageCard from '../../components/MessageCard';
 import PopUpMenu from '../../components/PopUpMenu';
@@ -36,7 +39,22 @@ class ChatView extends Component {
     title: `${navigation.state.params.name}`,
     headerRight: (
       <TouchableOpacity onPress={navigation.state.params.onMenuPopup}>
-        <ChatHeaderImage source={require('../../../assets/following.png')} />
+        <CircleView width={40} height={40}>
+          {navigation.state.params.avatar ? (
+            <ProfileImage
+              source={{ uri: navigation.state.params.avatar }}
+              width={40}
+              height={40}
+            />
+          ) : (
+            <ProfileImage
+              source={require('../../../assets/profile.png')}
+              width={25}
+              height={25}
+              tintColor={'#999'}
+            />
+          )}
+        </CircleView>
       </TouchableOpacity>
     ),
   });
@@ -54,15 +72,14 @@ class ChatView extends Component {
   componentDidMount() {
     this.props.navigation.setParams({ onMenuPopup: this.onMenuPopup });
     //this.props.getChatRoomMessage(this.props.navigation.state.params.roomID);
-    this.fetchData();
     //setInterval(() => this.fetchData(), 100);
     this.socket.emit('room.join', this.props.navigation.state.params.roomID);
     this.socket.on('message', this.onMessage);
+    this.fetchData();
   }
 
   onMessage = message => {
     this.setState({ messages: [...this.state.messages, message] });
-    console.log(this.state.messages);
   };
 
   fetchData = async () => {
@@ -73,6 +90,7 @@ class ChatView extends Component {
       );
       const data = await response.json();
       this.setState({ data, messages: data.messages });
+      this.addBreakToMessage();
     } catch (error) {
       console.error(error);
     }
@@ -109,7 +127,7 @@ class ChatView extends Component {
 
   onSend = () => {
     const { text, currentUser } = this.state;
-    const newMessage = { user: currentUser, text };
+    //const newMessage = { user: currentUser, text };
     //Keyboard.dismiss();
     if (text !== '') {
       this.setState({
@@ -138,11 +156,41 @@ class ChatView extends Component {
     this.props.navigation.navigate('Inbox');
   };
 
+  addBreakToMessage = () => {
+    const temp = [];
+    let lastDate = null;
+
+    this.state.messages.forEach(m => {
+      let message = m;
+      const messageDate = new Date(m.date);
+      const timeDiff = lastDate
+        ? messageDate.getTime() - lastDate.getTime()
+        : null;
+      const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      if (diffDays > 1 || !lastDate) {
+        message.dateBreak = m.date;
+        lastDate = messageDate;
+      }
+      temp.push(message);
+    });
+
+    this.setState({ messages: temp });
+  };
+
   keyExtractor = item => item._id;
   renderItem = ({ item }) => {
-    const { text, author } = item;
+    const { text, author, date, dateBreak } = item;
     return (
-      <MessageCard message={text} isSent={author === this.state.currentUser} />
+      <View>
+        <Text style={{ textAlign: 'center', color: '#b8b9bb', paddingTop: 10 }}>
+          {dateBreak ? dateBreak.slice(0, 10) : null}
+        </Text>
+        <MessageCard
+          message={text}
+          isSent={author === this.state.currentUser}
+          date={date}
+        />
+      </View>
     );
   };
 
@@ -180,10 +228,16 @@ class ChatView extends Component {
           />
           <ChatInputButtonCard>
             <TouchableOpacity onPress={() => this.onSend()}>
-              <Image
-                source={require('../../../assets/following.png')}
-                style={{ width: 30, height: 30 }}
-              />
+              <Text
+                style={{
+                  fontWeight: 'normal',
+                  fontSize: 16,
+                  color: '#6cc5c9',
+                  paddingRight: 15,
+                }}
+              >
+                Send
+              </Text>
             </TouchableOpacity>
           </ChatInputButtonCard>
         </TextInputCard>
