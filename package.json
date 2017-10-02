@@ -53,6 +53,7 @@
     "react-native": "^0.46.1",
     "react-native-elements": "^0.17.0",
     "react-native-popup-menu": "^0.8.3",
+    "react-native-reversed-flat-list": "^1.0.2",
     "react-native-scrollable-tab-view": "^0.7.4",
     "react-native-slider": "^0.11.0",
     "react-navigation": "^1.0.0-beta.11",
@@ -61,6 +62,7 @@
     "redux-api": "^0.11.0",
     "redux-persist": "^4.8.3",
     "redux-thunk": "^2.2.0",
+    "socket.io-client": "^2.0.3",
     "styled-components": "^2.1.2"
   }
 }
