@@ -30,15 +30,16 @@ export class InboxView extends React.Component {
   }
 
   fetchData = async () => {
-    const response = await fetch(
-      'https://chat-app-thunghiem.herokuapp.com/chatrooms',
-      {
-        method: 'get',
-      },
-    );
-    const json = await response.json();
+    try {
+      let response = await fetch(
+        'https://chat-app-thunghiem.herokuapp.com/chatrooms',
+      );
+      let data = await response.json();
 
-    this.setState({ data: json });
+      this.setState({ data });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   keyExtractor = item => item._id;

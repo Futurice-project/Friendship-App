@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import SocketIOClient from 'socket.io-client';
+import ReversedFlatList from 'react-native-reversed-flat-list';
 import {
   TextInput,
   Image,
@@ -27,6 +29,8 @@ const { UIManager } = NativeModules;
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
 
+console.ignoredYellowBox = ['Setting a timer'];
+
 class ChatView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: `${navigation.state.params.name}`,
@@ -37,30 +41,64 @@ class ChatView extends Component {
     ),
   });
 
-  componentDidMount() {
-    this.props.navigation.setParams({ onMenuPopup: this.onMenuPopup });
-    //this.props.getChatRoomMessage(this.props.navigation.state.params.roomID);
-    this.fetchData();
-  }
-
   state = {
     popUpMenu: false,
     text: '',
     currentUser: 'thunghiem',
     data: {},
+    messages: [],
+  };
+
+  socket = SocketIOClient('https://chat-app-thunghiem.herokuapp.com');
+
+  componentDidMount() {
+    this.props.navigation.setParams({ onMenuPopup: this.onMenuPopup });
+    //this.props.getChatRoomMessage(this.props.navigation.state.params.roomID);
+    this.fetchData();
+    //setInterval(() => this.fetchData(), 100);
+    this.socket.emit('room.join', this.props.navigation.state.params.roomID);
+    this.socket.on('message', this.onMessage);
+  }
+
+  onMessage = message => {
+    this.setState({ messages: [...this.state.messages, message] });
+    console.log(this.state.messages);
   };
 
   fetchData = async () => {
-    const response = await fetch(
-      `https://chat-app-thunghiem.herokuapp.com/chatrooms/searchById/${this
-        .props.navigation.state.params.roomID}`,
-      {
-        method: 'get',
-      },
-    );
-    const data = await response.json();
-    this.scrollToBottom();
-    this.setState({ data });
+    try {
+      const response = await fetch(
+        `https://chat-app-thunghiem.herokuapp.com/chatrooms/searchById/${this
+          .props.navigation.state.params.roomID}`,
+      );
+      const data = await response.json();
+      this.setState({ data, messages: data.messages });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  sendData = async () => {
+    this.socket.emit('message', {
+      user: this.state.currentUser,
+      room: this.props.navigation.state.params.roomID,
+      text: this.state.text,
+    });
+    // try {
+    //   fetch(`https://chat-app-thunghiem.herokuapp.com/chatrooms/${this.props.navigation.state.params.roomID}`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Accept': 'application/json',
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       text: this.state.text,
+    //       user: this.state.currentUser,
+    //     })
+    //   }).then(() => this.fetchData());
+    // } catch(error) {
+    //   console.error(error);
+    // }
   };
 
   onMenuPopup = () => {
@@ -72,19 +110,19 @@ class ChatView extends Component {
   onSend = () => {
     const { text, currentUser } = this.state;
     const newMessage = { user: currentUser, text };
-    Keyboard.dismiss();
+    //Keyboard.dismiss();
     if (text !== '') {
       this.setState({
         // messages: [...this.state.messages, newMessage],
         text: '',
       });
-      this.props.sendMessage(
-        this.props.navigation.state.params.roomID,
-        text,
-        currentUser,
-      );
-      this.fetchData();
-      this.scrollToBottom();
+      // this.props.sendMessage(
+      //   this.props.navigation.state.params.roomID,
+      //   text,
+      //   currentUser,
+      // );
+      this.sendData();
+      //this.fetchData();
     }
   };
 
@@ -108,20 +146,7 @@ class ChatView extends Component {
     );
   };
 
-  getItemLayout = (data, index) => ({ length: 50, offset: 50 * index, index });
-
-  scrollToBottom = () => {
-    const wait = new Promise(resolve => setTimeout(resolve, 200));
-    wait.then(() => {
-      this.flatListRef.scrollToIndex({
-        animated: true,
-        index: this.state.data.messages.length - 1,
-      });
-    });
-  };
-
   render() {
-    //console.log(this.props.chatRoomMessages);
     return (
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -138,15 +163,11 @@ class ChatView extends Component {
             onDelete={this.onDelete}
             onBlock={this.onBlock}
           />
-          <FlatList
-            data={this.state.data.messages}
-            ref={ref => {
-              this.flatListRef = ref;
-            }}
+          <ReversedFlatList
+            data={this.state.messages}
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
             style={{ flex: 1 }}
-            getItemLayout={this.getItemLayout}
           />
         </ChatMessageCard>
         <TextInputCard>
@@ -196,6 +217,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   chatRoomMessages: state.chatRoomMessages.data.messages,
+  sentMessage: state.sendMessage,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatView);
