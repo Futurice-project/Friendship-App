@@ -1,13 +1,24 @@
 import styled from 'styled-components/native';
 import React from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, Animated } from 'react-native';
 
+state = { position: new Animated.Value(5) };
+
+startAnimation = () => {
+  const { position } = this.state;
+
+  // Reset the value if needed
+  position.setValue(5);
+
+  // Start a spring animation
+  Animated.spring(position, { toValue: 72, friction: 0.8 }).start();
+};
 export const ToggleSwitch = styled.View`
   width: 20;
   height: 20;
   background-color: #3b3b3d;
   border-radius: 40;
-  left: ${props => (props.value ? 5 : 72)};
+  left: ${props => (props.value ? 5 : startAnimation)};
 `;
 
 export const ToggleText = styled.Text`
