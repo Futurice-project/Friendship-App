@@ -23,7 +23,12 @@ export const SenderName = styled.Text`
   color: #666;
 `;
 
-export const LastMessage = styled.Text`color: #b1b1b1;`;
+export const GrayText = styled.Text`color: #b1b1b1;`;
+
+export const TimeText = styled.Text`
+  color: #555;
+  font-size: 10px;
+`;
 
 export const CenterIconText = styled.Text`
   text-align: center;

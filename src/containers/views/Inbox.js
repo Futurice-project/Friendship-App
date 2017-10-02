@@ -46,13 +46,14 @@ export class InboxView extends React.Component {
   renderItem = ({ item }) => {
     const { members, messages, _id } = item;
     const receiver = members.filter(i => i.name !== this.state.currentUser);
-    const lastMessage = messages[messages.length - 1].text;
+    const lastMessage = messages[messages.length - 1];
     return (
       <InboxCard
         name={receiver[0].name}
-        message={lastMessage}
+        avatar={receiver[0].avatar}
+        message={lastMessage.text}
         roomID={_id}
-        color={'orange'}
+        date={lastMessage.date}
       />
     );
   };
