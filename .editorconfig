@@ -1,0 +1,6 @@
+root = true
+
+# Indent JS with 2 spaces
+[**.js]
+indent_style = space
+indent_size = 2
