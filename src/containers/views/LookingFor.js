@@ -102,7 +102,7 @@ export default class LabelView extends React.Component {
           </Row>
         </Centered>
       </Padding>
-      <RoundTab title="Seuraava" />
+      <RoundTab style={{ justifyContent: 'flex-end' }} title="Seuraava" />
     </ViewContainer>
   );
 }
