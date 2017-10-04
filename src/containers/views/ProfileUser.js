@@ -18,14 +18,14 @@ import TabProfile from '../../components/TabProfile';
 const mapStateToProps = state => ({
   tags: state.userTag,
   userData: state.userDetails,
-  tagsDetails: state.userTagDetails,
+  tagsForUser: state.tagsForUser,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshTags: userId => dispatch(rest.actions.userTag.get({ userId })),
   refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
-  refreshTagsDetails: tagId =>
-    dispatch(rest.actions.userTagDetails.get({ tagId })),
+  refreshUserWithContent: userId =>
+    dispatch(rest.actions.tagsForUser.get({ userId })),
 });
 
 class ProfileUser extends React.Component {
@@ -42,6 +42,7 @@ class ProfileUser extends React.Component {
     const personId = this.props.navigation.state.params.personId;
     this.props.refreshTags(personId);
     this.props.refreshUser(personId);
+    this.props.refreshUserWithContent(personId);
 
     // console.log(this.props.tags);
   }
@@ -53,10 +54,10 @@ class ProfileUser extends React.Component {
       return <ActivityIndicator />;
     } else {
       console.log('show');
-      let love = this.props.tags.data.filter(e => {
+      let love = this.props.tagsForUser.data.filter(e => {
         return e.love === true;
       });
-      let hate = this.props.tags.data.filter(e => {
+      let hate = this.props.tagsForUser.data.filter(e => {
         return e.love === false;
       });
       console.log(love);

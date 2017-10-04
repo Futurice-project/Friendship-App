@@ -42,8 +42,9 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
-  userTagDetails: {
-    url: `${apiRoot}/tags/:tagId`,
+  tagsForUser: {
+    url: `${apiRoot}/tagsForUser/:userId`,
+    transformer: transformers.array,
     crud: true,
   },
 

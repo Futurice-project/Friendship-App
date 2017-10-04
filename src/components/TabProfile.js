@@ -18,17 +18,14 @@ export default class TabProfile extends PureComponent {
           renderTabBar={() => <ScrollableTabBar />}
         >
           <View tabLabel="NAAHS">
-            {this.props.love.map(e => {
-              console.log(e.tagId);
-            })}
-            <TextRectangle Text="as" style={styles.rec} />
-            <TextRectangle Text="react" style={styles.rec} />
-            <TextRectangle Text="dogs" style={styles.rec} />
-            <TextRectangle Text="Basketball" style={styles.rec} />
+            {this.props.hate.map(e => (
+              <TextRectangle key={e.id} Text={e.name} style={styles.rec} />
+            ))}
           </View>
           <View tabLabel="YEAH">
-            <TextRectangle Text="dating apps" style={styles.rec} />
-            <TextRectangle Text="reading" style={styles.rec} />
+            {this.props.love.map(e => (
+              <TextRectangle key={e.id} Text={e.name} style={styles.rec} />
+            ))}
           </View>
         </ScrollableTabView>
       </View>
