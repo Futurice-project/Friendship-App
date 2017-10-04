@@ -16,48 +16,79 @@ import TextRectangle from '../../components/TextRectangle';
 import TabProfile from '../../components/TabProfile';
 
 const mapStateToProps = state => ({
-  personId: state.personId,
   tags: state.userTag,
   userData: state.userDetails,
+  tagsDetails: state.userTagDetails,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshTags: userId => dispatch(rest.actions.userTag.get({ userId })),
   refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
+  refreshTagsDetails: tagId =>
+    dispatch(rest.actions.userTagDetails.get({ tagId })),
 });
 
 class ProfileUser extends React.Component {
+  state = {
+    loaded: false,
+  };
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.userData.loading && !nextProps.tags.loading)
+      this.setState({ loaded: true });
+  }
+
   componentDidMount() {
     const personId = this.props.navigation.state.params.personId;
     this.props.refreshTags(personId);
     this.props.refreshUser(personId);
+
+    // console.log(this.props.tags);
   }
 
   render = () => {
-    console.log(this.props.userData);
-
-    if (this.props.userData.loading) {
+    // console.log(this.props.tags);
+    if (!this.state.loaded) {
+      console.log('load');
       return <ActivityIndicator />;
-    }
-    return (
-      <ViewContainer style={styles.signUpFinalStepHate}>
-        <View style={styles.topPart}>
-          <View style={styles.oval}>
-            <Text style={styles.emoji}>{this.props.userData.data.emoji}</Text>
+    } else {
+      console.log('show');
+      let love = this.props.tags.data.filter(e => {
+        return e.love === true;
+      });
+      let hate = this.props.tags.data.filter(e => {
+        return e.love === false;
+      });
+      console.log(love);
+      console.log(hate);
+      // this.props.tags.data.map(tag => console.log(tag.tagId));
+      // let tabTagsContent = [];
+      // this.props.tags.data.map(tag => {
+      //   console.log(tag);
+      //   t = this.props.refreshTagsDetails(tag.tagId);
+      //   tabTagsContent.push(t);
+      // });
+      // console.log(tabTagsContent);
+      return (
+        <ViewContainer style={styles.signUpFinalStepHate}>
+          <View style={styles.topPart}>
+            <View style={styles.oval}>
+              <Text style={styles.emoji}>{this.props.userData.data.emoji}</Text>
+            </View>
+            <Text style={styles.username}>
+              {this.props.userData.data.username}
+            </Text>
+            <Text style={styles.iLoveCampingRapA}>25, male, Helsinki</Text>
+            <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
+            <Text style={styles.lookingFor}>LOOKING FOR</Text>
+            <Text style={styles.lookingForText}>
+              The events you will actively look friends for will be visible here
+            </Text>
           </View>
-          <Text style={styles.username}>
-            {this.props.userData.data.username}
-          </Text>
-          <Text style={styles.iLoveCampingRapA}>25, male, Helsinki</Text>
-          <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
-          <Text style={styles.lookingFor}>LOOKING FOR</Text>
-          <Text style={styles.lookingForText}>
-            The events you will actively look friends for will be visible here
-          </Text>
-        </View>
-        <TabProfile tags={this.props.tags} />
-      </ViewContainer>
-    );
+          <TabProfile hate={hate} love={love} />
+        </ViewContainer>
+      );
+    }
   };
 }
 

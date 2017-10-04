@@ -7,18 +7,10 @@ import ScrollableTabView, {
 import styled from 'styled-components/native';
 
 export default class TabProfile extends PureComponent {
-  componentDidMount() {
-    let love = this.props.tags.data.filter(e => {
-      return e.love === true;
-    });
-    let hate = this.props.tags.data.filter(e => {
-      return e.love === false;
-    });
-    console.log(love);
-    console.log(hate);
-  }
-  render = () =>
-    console.log(this.props.tags.data.map(e => e.love)) || (
+  componentDidMount() {}
+  render = () => {
+    //console.log(this.props.tags.data.map(e => e));
+    return (
       <View>
         <ScrollableTabView
           style={{ marginTop: 0 }}
@@ -26,6 +18,9 @@ export default class TabProfile extends PureComponent {
           renderTabBar={() => <ScrollableTabBar />}
         >
           <View tabLabel="NAAHS">
+            {this.props.love.map(e => {
+              console.log(e.tagId);
+            })}
             <TextRectangle Text="as" style={styles.rec} />
             <TextRectangle Text="react" style={styles.rec} />
             <TextRectangle Text="dogs" style={styles.rec} />
@@ -38,6 +33,7 @@ export default class TabProfile extends PureComponent {
         </ScrollableTabView>
       </View>
     );
+  };
 }
 
 const styles = StyleSheet.create({
