@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import { IconImage } from '../../components/Layout';
 import InboxCard from '../../components/InboxCard';
@@ -56,7 +57,7 @@ export class InboxView extends React.Component {
       .then(responseJson => {
         responseJson
           ? this.postNewroom(sentTo)
-          : console.log('Cannot Find User');
+          : Alert.alert('Cannot Find User');
       })
       .catch(error => {
         console.error(error);
@@ -165,7 +166,7 @@ export class InboxView extends React.Component {
           1,
         )}
         <FlatList
-          data={this.state.data.reverse()}
+          data={this.state.data}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
           style={{ flex: 1 }}
