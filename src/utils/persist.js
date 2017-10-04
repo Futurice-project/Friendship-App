@@ -15,6 +15,10 @@ const persistConfig = {
     'tagsForUser',
     'currentUser',
     'tagsForCurrentUser',
+    'userDetails',
+    'chatRooms',
+    'chatRoomMessages',
+    'sendMessage',
   ],
 };
 
