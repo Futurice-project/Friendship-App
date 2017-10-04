@@ -1,14 +1,13 @@
 import React from 'react';
-import { Platform, StatusBar } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import Header from './Header';
-
 // ## View Imports ##
 import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleList';
 import TextInputView from '../views/TextInput';
+import DropDownView from '../views/DropDown';
+import SignUpLocation from '../views/SignUpLocation';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -23,10 +22,8 @@ const StackNavigatorConfig = {
 export default StackNavigator(
   {
     Welcome: { screen: WelcomeView },
-    Tabs: {
-      screen: Tabs,
-      navigationOptions: { title: 'Friendship App' },
-    },
+    SignUpLocation: { screen: SignUpLocation },
+    DropDown: { screen: DropDownView }, //Test view for my DropDown Component
     People: {
       screen: PeopleView,
       navigationOptions: { title: 'People page' },
@@ -38,6 +35,10 @@ export default StackNavigator(
     SignUp: {
       screen: TextInputView,
       navigationOptions: { title: 'SignUp Page' },
+    },
+    Tabs: {
+      screen: Tabs,
+      navigationOptions: { title: 'Friendship App' },
     },
     // ## End StackNavigator Views ##
   },
