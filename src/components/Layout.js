@@ -65,6 +65,10 @@ export const ProfileImage = styled.Image`
   ${props => (props.height ? `height: ${props.height}` : 'height: 50px;')};
   ${props => (props.tintColor ? `tintColor: ${props.tintColor}` : undefined)};
   border-radius: 50;
+  border-bottom-left-radius: 50;
+  border-bottom-right-radius: 50;
+  border-top-left-radius: 50;
+  border-top-right-radius: 50;
 `;
 
 export const MessageContent = styled.View`flex: 4;`;
@@ -80,6 +84,10 @@ export const CircleView = styled.View`
   align-items: center;
   justify-content: center;
   margin-right: 10px;
+  border-bottom-left-radius: 50;
+  border-bottom-right-radius: 50;
+  border-top-left-radius: 50;
+  border-top-right-radius: 50;
 `;
 
 export const ChatMessageCard = styled.View`
@@ -123,6 +131,7 @@ export const ChatInputButtonCard = styled.View`
 export const PopUpMenuCard = styled.View`
   width: 120;
   ${props => (props.popup ? undefined : 'height: 0')};
+  ${props => (props.popup ? undefined : 'display: none')};
   background-color: #f0fafb;
   border-radius: 5;
   position: absolute;

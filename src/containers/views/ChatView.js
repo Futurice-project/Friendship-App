@@ -127,7 +127,7 @@ class ChatView extends Component {
   onMenuPopup = () => {
     const { popUpMenu } = this.state;
     this.setState({ popUpMenu: !popUpMenu });
-    LayoutAnimation.spring();
+    //LayoutAnimation.spring();
   };
 
   onSend = () => {

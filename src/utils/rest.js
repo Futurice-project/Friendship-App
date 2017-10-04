@@ -42,7 +42,7 @@ const rest = reduxApi({
     crud: true,
   },
   chatRoomMessages: {
-    url: 'https://chat-app-thunghiem.herokuapp.com/chatrooms/searchById/:id',
+    url: 'https://chat-app-thunghiem.herokuapp.com/chatrooms/searchById/:id/',
     crud: true,
   },
   sendMessage: {
