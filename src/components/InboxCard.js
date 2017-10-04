@@ -10,13 +10,14 @@ import {
   ProfileImage,
 } from './Layout';
 import { SenderName, GrayText, CenterIconText } from './Text';
+import { formatDate } from '../utils/date';
 
 const mapDispatchToProps = dispatch => ({
-  openChatView: (roomID, name, avatar) =>
+  openChatView: (roomID, name, avatar, currentUser) =>
     dispatch(
       NavigationActions.navigate({
         routeName: 'ChatView',
-        params: { roomID, name, avatar },
+        params: { roomID, name, avatar, currentUser },
       }),
     ),
 });
@@ -42,9 +43,9 @@ class InboxCard extends React.Component {
     const today = new Date();
     const timeDiff = today.getTime() - date.getTime();
     const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    if (diffDays === 1) return 'yesterday';
-    if (diffDays === 0) return this.props.date.slice(11, 16);
-    return this.props.date.slice(0, 10);
+    if (diffDays === 2) return 'yesterday';
+    if (diffDays <= 1) return this.props.date.toString().slice(11, 16);
+    return formatDate(new Date(this.props.date));
   }
 
   render() {
@@ -55,6 +56,7 @@ class InboxCard extends React.Component {
             this.props.roomID,
             this.props.name,
             this.props.avatar,
+            this.props.currentUser,
           )}
         underlayColor={'#ddd'}
       >
