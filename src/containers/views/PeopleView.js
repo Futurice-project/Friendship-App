@@ -15,14 +15,26 @@ import { PepperoniLogo, IconButton } from '../../components/Pepperoni';
 import { Title, Description, Bold } from '../../components/Text';
 import {
   ViewContainer,
+  ViewContainerTop,
+  ViewContainerLight,
   Centered,
   FlexRow,
   IconImage,
 } from '../../components/Layout';
+import rest from '../../utils/rest';
 import Person from '../../components/Person';
 import TabProfile from '../../components/TabProfile';
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  usersSearch: state.usersSearch,
+  usersByPage: state.usersByPage,
+});
+
+const mapDispatchToProps = dispatch => ({
+  refreshUsersSearch: username =>
+    dispatch(rest.actions.usersSearch.get({ username })),
+  refreshUsersByPage: page => dispatch(rest.actions.usersByPage.get({ page })),
+});
 
 export class PeopleView extends React.Component {
   static navigationOptions = {
@@ -52,21 +64,27 @@ export class PeopleView extends React.Component {
 
   fetchData = async () => {
     //this.setState({ loading: true });
-    const response = await fetch(
-      `http://0.0.0.0:3888/users/page/${this.state.page}`,
-      {
-        method: 'get',
-        headers: {
-          Authorization:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
-        },
-      },
-    );
-    const json = await response.json();
+    //if (this.state.page)
+    await this.props.refreshUsersByPage(this.state.page);
     this.setState(state => ({
-      data: [...state.data, ...json],
-      loading: false,
+      data: [...state.data, ...this.props.usersByPage.data.data],
+      //loading: false,
     }));
+    // const response = await fetch(
+    //   `http://0.0.0.0:3888/users/page/${this.state.page}`,
+    //   {
+    //     method: 'get',
+    //     headers: {
+    //       Authorization:
+    //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
+    //     },
+    //   },
+    // );
+    // const json = await response.json();
+    // this.setState(state => ({
+    //   data: [...state.data, ...json],
+    //   loading: false,
+    // }));
   };
 
   handleEnd = () => {
@@ -78,46 +96,58 @@ export class PeopleView extends React.Component {
 
   getUserByUsername(username) {
     this.setState({ searchedUsername: username });
-
-    fetch(`http://0.0.0.0:3888/users/search/${username}`, {
-      method: 'get',
-      headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
-      },
-    })
-      .then(response => response.json())
-      .then(filteredUsers => this.setState({ filteredUsers }));
+    this.props.refreshUsersSearch(username);
   }
 
-  render = () => (
-    <ViewContainer>
-      <Title> People </Title>
-      <SearchBar
-        round
-        lightTheme
-        onChangeText={username => this.getUserByUsername(username)}
-        placeholder="Search"
-      />
-      <Centered>
-        <FlatList
-          data={
-            this.state.searchedUsername.length > 0 ? (
-              this.state.filteredUsers
-            ) : (
-              this.state.data
-            )
-          }
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-          onEndReached={this.handleEnd}
-          onEndReachedThreshold={0.4}
-          //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
-          horizontal
+  renderPeople() {
+    //console.log();
+    if (this.props.usersSearch.loading) {
+      return <ActivityIndicator />;
+    }
+    return (
+      <ViewContainerLight>
+        <Title> People </Title>
+        <Centered>
+          <FlatList
+            data={
+              this.state.searchedUsername.length > 0 ? (
+                this.props.usersSearch.data
+              ) : (
+                this.state.data
+              )
+            }
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+            onEndReached={this.handleEnd}
+            onEndReachedThreshold={0.4}
+            //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
+            horizontal
+          />
+        </Centered>
+      </ViewContainerLight>
+    );
+  }
+
+  render = () => {
+    console.log('1searchedUsername ' + this.state.searchedUsername);
+    console.dir('2state.data ' + this.state.data);
+    console.dir('3props usersByPage ' + this.props.usersByPage.data);
+    console.dir('4props usersByPage loading ' + this.props.usersByPage.loading);
+    console.dir('5state.page ' + this.state.page);
+    return (
+      <ViewContainerTop>
+        <SearchBar
+          round
+          lightTheme
+          placeholder="Search"
+          onChangeText={username => {
+            this.getUserByUsername(username);
+          }}
         />
-      </Centered>
-    </ViewContainer>
-  );
+        {this.renderPeople()}
+      </ViewContainerTop>
+    );
+  };
 }
 
-export default connect(undefined)(PeopleView);
+export default connect(mapStateToProps, mapDispatchToProps)(PeopleView);

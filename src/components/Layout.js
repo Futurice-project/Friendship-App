@@ -8,12 +8,28 @@ const styles = StyleSheet.create({
     minHeight: '100%',
     justifyContent: 'center',
   },
+  contentContainerStyleTop: {
+    minHeight: '100%',
+    justifyContent: 'flex-start',
+  },
 });
 
 export const ViewContainer = styled.ScrollView.attrs({
   contentContainerStyle: styles.contentContainerStyle,
 })`
   background-color: #2a343c;
+`;
+
+export const ViewContainerLight = styled.ScrollView.attrs({
+  contentContainerStyle: styles.contentContainerStyle,
+})`
+  background-color: #ffffff;
+`;
+
+export const ViewContainerTop = styled.ScrollView.attrs({
+  contentContainerStyle: styles.contentContainerStyleTop,
+})`
+  background-color: #ffffff;
 `;
 
 export const Padding = styled.View`padding: 16px;`;
