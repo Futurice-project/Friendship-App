@@ -48,6 +48,7 @@ export class InboxView extends React.Component {
         `https://chat-app-thunghiem.herokuapp.com/chatrooms/${user}/`,
       );
       let data = await response.json();
+      data = data.reverse();
       this.setState({ data, currentUser: user });
     } catch (error) {
       console.error(error);
