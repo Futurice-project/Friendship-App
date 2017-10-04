@@ -46,6 +46,7 @@
     "react": "16.0.0-alpha.12",
     "react-native": "^0.46.1",
     "react-native-elements": "^0.17.0",
+    "react-native-modal": "^4.0.0",
     "react-native-reversed-flat-list": "^1.0.2",
     "react-native-scrollable-tab-view": "^0.7.4",
     "react-navigation": "^1.0.0-beta.11",

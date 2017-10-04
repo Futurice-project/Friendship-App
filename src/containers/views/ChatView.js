@@ -26,6 +26,7 @@ import {
 import MessageCard from '../../components/MessageCard';
 import PopUpMenu from '../../components/PopUpMenu';
 import rest from '../../utils/rest';
+import { formatDate } from '../../utils/date';
 
 const { UIManager } = NativeModules;
 
@@ -40,7 +41,8 @@ class ChatView extends Component {
     headerRight: (
       <TouchableOpacity onPress={navigation.state.params.onMenuPopup}>
         <CircleView width={40} height={40}>
-          {navigation.state.params.avatar ? (
+          {navigation.state.params.avatar !== 'default' &&
+          navigation.state.params.avatar ? (
             <ProfileImage
               source={{ uri: navigation.state.params.avatar }}
               width={40}
@@ -49,7 +51,7 @@ class ChatView extends Component {
           ) : (
             <ProfileImage
               source={require('../../../assets/profile.png')}
-              width={25}
+              width={20}
               height={25}
               tintColor={'#999'}
             />
@@ -70,6 +72,9 @@ class ChatView extends Component {
   socket = SocketIOClient('https://chat-app-thunghiem.herokuapp.com');
 
   componentDidMount() {
+    this.setState({
+      currentUser: this.props.navigation.state.params.currentUser,
+    });
     this.props.navigation.setParams({ onMenuPopup: this.onMenuPopup });
     //this.props.getChatRoomMessage(this.props.navigation.state.params.roomID);
     //setInterval(() => this.fetchData(), 100);
@@ -90,7 +95,7 @@ class ChatView extends Component {
       );
       const data = await response.json();
       this.setState({ data, messages: data.messages });
-      this.addBreakToMessage();
+      this.addBreakToMessage(data.messages);
     } catch (error) {
       console.error(error);
     }
@@ -156,11 +161,11 @@ class ChatView extends Component {
     this.props.navigation.navigate('Inbox');
   };
 
-  addBreakToMessage = () => {
+  addBreakToMessage = messages => {
     const temp = [];
     let lastDate = null;
 
-    this.state.messages.forEach(m => {
+    messages.forEach(m => {
       let message = m;
       const messageDate = new Date(m.date);
       const timeDiff = lastDate
@@ -183,7 +188,7 @@ class ChatView extends Component {
     return (
       <View>
         <Text style={{ textAlign: 'center', color: '#b8b9bb', paddingTop: 10 }}>
-          {dateBreak ? dateBreak.slice(0, 10) : null}
+          {dateBreak ? formatDate(new Date(dateBreak)) : null}
         </Text>
         <MessageCard
           message={text}
