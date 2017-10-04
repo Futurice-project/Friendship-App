@@ -45,7 +45,7 @@ export class InboxView extends React.Component {
   fetchData = async (user = this.state.currentUser) => {
     try {
       let response = await fetch(
-        `https://chat-app-thunghiem.herokuapp.com/chatrooms/${user}`,
+        `https://chat-app-thunghiem.herokuapp.com/chatrooms/${user}/`,
       );
       let data = await response.json();
       this.setState({ data, currentUser: user });
