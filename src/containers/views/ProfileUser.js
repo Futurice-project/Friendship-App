@@ -24,7 +24,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   refreshTags: userId => dispatch(rest.actions.userTag.get({ userId })),
   refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
-  refreshUserWithContent: userId =>
+  refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForUser.get({ userId })),
 });
 
@@ -42,34 +42,19 @@ class ProfileUser extends React.Component {
     const personId = this.props.navigation.state.params.personId;
     this.props.refreshTags(personId);
     this.props.refreshUser(personId);
-    this.props.refreshUserWithContent(personId);
-
-    // console.log(this.props.tags);
+    this.props.refreshTagsForUser(personId);
   }
 
   render = () => {
-    // console.log(this.props.tags);
     if (!this.state.loaded) {
-      console.log('load');
       return <ActivityIndicator />;
     } else {
-      console.log('show');
       let love = this.props.tagsForUser.data.filter(e => {
         return e.love === true;
       });
       let hate = this.props.tagsForUser.data.filter(e => {
         return e.love === false;
       });
-      console.log(love);
-      console.log(hate);
-      // this.props.tags.data.map(tag => console.log(tag.tagId));
-      // let tabTagsContent = [];
-      // this.props.tags.data.map(tag => {
-      //   console.log(tag);
-      //   t = this.props.refreshTagsDetails(tag.tagId);
-      //   tabTagsContent.push(t);
-      // });
-      // console.log(tabTagsContent);
       return (
         <ViewContainer style={styles.signUpFinalStepHate}>
           <View style={styles.topPart}>

@@ -5,11 +5,11 @@ import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
 import styled from 'styled-components/native';
+import Tag from './Tags';
 
 export default class TabProfile extends PureComponent {
   componentDidMount() {}
   render = () => {
-    //console.log(this.props.tags.data.map(e => e));
     return (
       <View>
         <ScrollableTabView
@@ -18,14 +18,10 @@ export default class TabProfile extends PureComponent {
           renderTabBar={() => <ScrollableTabBar />}
         >
           <View tabLabel="NAAHS">
-            {this.props.hate.map(e => (
-              <TextRectangle key={e.id} Text={e.name} style={styles.rec} />
-            ))}
+            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} />)}
           </View>
           <View tabLabel="YEAH">
-            {this.props.love.map(e => (
-              <TextRectangle key={e.id} Text={e.name} style={styles.rec} />
-            ))}
+            {this.props.love.map(tag => <Tag key={tag.id} data={tag} />)}
           </View>
         </ScrollableTabView>
       </View>
@@ -33,15 +29,4 @@ export default class TabProfile extends PureComponent {
   };
 }
 
-const styles = StyleSheet.create({
-  Confirm: {
-    height: 57,
-    backgroundColor: '#3b3b3d',
-    marginTop: 10,
-  },
-  rec: {
-    height: 81,
-    backgroundColor: '#596386',
-    marginTop: 6,
-  },
-});
+const styles = StyleSheet.create({});

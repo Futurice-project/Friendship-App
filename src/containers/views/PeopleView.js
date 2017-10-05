@@ -1,28 +1,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 import {
-  Image,
   View,
-  Text,
-  FlatList,
   ScrollView,
+  FlatList,
+  TouchableOpacity,
+  Text,
   StyleSheet,
-  ActivityIndicator,
 } from 'react-native';
-import { List, ListItem, SearchBar } from 'react-native-elements';
-import { PepperoniLogo, IconButton } from '../../components/Pepperoni';
-import { Title, Description, Bold } from '../../components/Text';
+import { NavigationActions } from 'react-navigation';
+import { SearchBar } from 'react-native-elements';
+import { Title } from '../../components/Text';
 import {
   ViewContainer,
   Centered,
-  FlexRow,
+  FullscreenCentered,
   IconImage,
 } from '../../components/Layout';
 import Person from '../../components/Person';
-import TabProfile from '../../components/TabProfile';
+import Tag from '../../components/Tags';
+import Spinner from '../../components/Spinner';
 
-const mapStateToProps = state => ({});
+const mapDispatchToProps = dispatch => ({
+  openSearchTag: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SearchList',
+      }),
+    ),
+});
 
 export class PeopleView extends React.Component {
   static navigationOptions = {
@@ -36,22 +42,28 @@ export class PeopleView extends React.Component {
   };
 
   state = {
-    data: {},
+    data: [],
+    tags: [],
     page: 0,
     loading: false,
     filteredUsers: [],
     searchedUsername: '',
+    infiniteScrollStop: false,
   };
 
   keyExtractor = item => item.id;
-  renderItem = ({ item }) => <Person color="#939795" data={item} />;
+  renderItem = ({ item }) => <Person box data={item} />;
+
+  tagKeyExtractor = item => item.id;
+  tagRenderItem = ({ item }) => <Tag data={item} />;
 
   componentDidMount() {
     this.fetchData();
+    this.fetchTags();
   }
 
   fetchData = async () => {
-    //this.setState({ loading: true });
+    this.setState({ loading: true });
     const response = await fetch(
       `http://0.0.0.0:3888/users/page/${this.state.page}`,
       {
@@ -63,6 +75,11 @@ export class PeopleView extends React.Component {
       },
     );
     const json = await response.json();
+
+    // Stop requesting for the new page
+    // when there is nothing more! Expected to be handle when request fail
+    if (json.length === 0) this.setState({ infiniteScrollStop: true });
+
     this.setState(state => ({
       data: [...state.data, ...json],
       loading: false,
@@ -70,14 +87,19 @@ export class PeopleView extends React.Component {
   };
 
   handleEnd = () => {
-    this.setState(
-      state => ({ page: this.state.page + 1 }),
-      () => this.fetchData(),
-    );
+    if (!this.state.infiniteScrollStop) {
+      this.setState(
+        state => ({ page: this.state.page + 1 }),
+        () => this.fetchData(),
+      );
+    }
   };
 
   getUserByUsername(username) {
-    this.setState({ searchedUsername: username });
+    this.setState({
+      searchedUsername: username,
+      infiniteScrollStop: username ? true : false,
+    });
 
     fetch(`http://0.0.0.0:3888/users/search/${username}`, {
       method: 'get',
@@ -90,6 +112,30 @@ export class PeopleView extends React.Component {
       .then(filteredUsers => this.setState({ filteredUsers }));
   }
 
+  renderSpinner() {
+    if (this.state.loading) {
+      return <Spinner fullflex={this.state.data.length === 0} />;
+    }
+  }
+
+  fetchTags = async () => {
+    // this.setState({ loading: true });
+
+    fetch(`http://0.0.0.0:3888/tags`, {
+      method: 'get',
+      headers: {
+        Authorization:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
+      },
+    })
+      .then(response => response.json())
+      .then(tags => this.setState({ tags }));
+    // renderSpinner() {
+    //   if (this.state.loading) {
+    //     return <Spinner fullflex={this.state.data.length === 0} />;
+    //   }
+  };
+
   render = () => (
     <ViewContainer>
       <Title> People </Title>
@@ -99,7 +145,8 @@ export class PeopleView extends React.Component {
         onChangeText={username => this.getUserByUsername(username)}
         placeholder="Search"
       />
-      <Centered>
+
+      <FullscreenCentered>
         <FlatList
           data={
             this.state.searchedUsername.length > 0 ? (
@@ -112,12 +159,40 @@ export class PeopleView extends React.Component {
           renderItem={this.renderItem}
           onEndReached={this.handleEnd}
           onEndReachedThreshold={0.4}
+          style={{ flex: 1 }}
           //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
           horizontal
         />
-      </Centered>
+        {this.renderSpinner()}
+      </FullscreenCentered>
+
+      <Title> Tags </Title>
+      <FullscreenCentered>
+        <View style={styles.tagList}>
+          {this.state.tags.map(tag => <Tag key={tag.id} data={tag} />)}
+          {/* <FlatList
+          style={styles.tagList}
+          contentContainerStyle={styles.tagList}
+          data={this.state.tags}
+          keyExtractor={this.tagKeyExtractor}
+          renderItem={this.tagRenderItem}
+          // onEndReached={this.handleEnd}
+          // onEndReachedThreshold={0.4}
+          // style={{ flex: 1 }}
+          //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
+        /> */}
+        </View>
+      </FullscreenCentered>
     </ViewContainer>
   );
 }
 
-export default connect(undefined)(PeopleView);
+const styles = StyleSheet.create({
+  tagList: {
+    margin: 22,
+    flexWrap: 'wrap',
+    //alignItems: 'flex-start',
+    flexDirection: 'row',
+  },
+});
+export default connect(undefined, mapDispatchToProps)(PeopleView);

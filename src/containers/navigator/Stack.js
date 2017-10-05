@@ -10,6 +10,7 @@ import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleView';
 import LoginView from '../views/Login';
 import ProfileUser from './../views/ProfileUser';
+import SearchList from './../views/Search';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -35,9 +36,13 @@ export default StackNavigator(
       screen: PeopleView,
       navigationOptions: { title: 'People page' },
     },
+    SearchList: {
+      screen: SearchList,
+      navigationOptions: { title: 'Search page' },
+    },
     Settings: {
       screen: SettingsView,
-      navigationOptions: { title: 'Settings page' },
+      navigationOptions: { title: 'Setting page' },
     },
     SignUp: {
       screen: LoginView,
