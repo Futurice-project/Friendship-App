@@ -7,6 +7,7 @@ import { FlexRow } from './Layout';
 import styled from 'styled-components/native';
 
 const mapStateToProps = state => ({});
+
 const mapDispatchToProps = dispatch => ({
   openSearchTag: tagId =>
     dispatch(
@@ -19,11 +20,19 @@ const mapDispatchToProps = dispatch => ({
 
 class Tag extends React.Component {
   render() {
-    console.log(this.props.data);
-
+    if (this.props.dark) {
+      return (
+        <TouchableOpacity
+          style={(styles.rectangle, styles.dark)}
+          onPress={() => this.props.openSearchTag(this.props.data.id)}
+        >
+          <Text style={styles.item}>{this.props.data.name}</Text>
+        </TouchableOpacity>
+      );
+    }
     return (
       <TouchableOpacity
-        style={(styles.tagButton, styles.rectangle)}
+        style={styles.rectangle}
         onPress={() => this.props.openSearchTag(this.props.data.id)}
       >
         <Text style={styles.item}>{this.props.data.name}</Text>
@@ -43,6 +52,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 76,
     backgroundColor: '#87df91',
+  },
+  dark: {
+    padding: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    marginRight: 7,
+    display: 'inline-block',
+    height: 39,
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 76,
+    backgroundColor: '#6eb1ea',
   },
   item: {
     height: 20,

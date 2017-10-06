@@ -170,17 +170,6 @@ export class PeopleView extends React.Component {
       <FullscreenCentered>
         <View style={styles.tagList}>
           {this.state.tags.map(tag => <Tag key={tag.id} data={tag} />)}
-          {/* <FlatList
-          style={styles.tagList}
-          contentContainerStyle={styles.tagList}
-          data={this.state.tags}
-          keyExtractor={this.tagKeyExtractor}
-          renderItem={this.tagRenderItem}
-          // onEndReached={this.handleEnd}
-          // onEndReachedThreshold={0.4}
-          // style={{ flex: 1 }}
-          //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
-        /> */}
         </View>
       </FullscreenCentered>
     </ViewContainer>

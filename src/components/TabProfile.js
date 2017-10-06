@@ -17,10 +17,10 @@ export default class TabProfile extends PureComponent {
           initialPage={0}
           renderTabBar={() => <ScrollableTabBar />}
         >
-          <View tabLabel="NAAHS">
-            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} />)}
+          <View tabLabel="NAAHS" style={styles.tagList}>
+            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} dark />)}
           </View>
-          <View tabLabel="YEAH">
+          <View tabLabel="YEAH" style={styles.tagList}>
             {this.props.love.map(tag => <Tag key={tag.id} data={tag} />)}
           </View>
         </ScrollableTabView>
@@ -28,5 +28,11 @@ export default class TabProfile extends PureComponent {
     );
   };
 }
-
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  tagList: {
+    margin: 22,
+    flexWrap: 'wrap',
+    //alignItems: 'flex-start',
+    flexDirection: 'row',
+  },
+});
