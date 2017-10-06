@@ -11,7 +11,12 @@ import {
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
 
-import { ViewContainer, Centered, FlexRow } from '../../components/Layout';
+import {
+  ViewContainer,
+  Centered,
+  FlexRow,
+  SmallHeader,
+} from '../../components/Layout';
 import TextRectangle from '../../components/TextRectangle';
 import TabProfile from '../../components/TabProfile';
 
@@ -63,7 +68,7 @@ class ProfileUser extends React.Component {
             </Text>
             <Text style={styles.iLoveCampingRapA}>25, male, Helsinki</Text>
             <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
-            <Text style={styles.lookingFor}>LOOKING FOR</Text>
+            <SmallHeader>LOOKING FOR</SmallHeader>
             <Text style={styles.lookingForText}>
               The events you will actively look friends for will be visible here
             </Text>

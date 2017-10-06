@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components/native';
-
 import { ScrollView, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -53,7 +52,13 @@ export const MessageCard = styled.View`
   border: 0px solid #ddd;
   border-bottom-width: 1px;
 `;
-
+export const SmallHeader = styled.Text`
+  font-size: 13px;
+  letter-spacing: 1.59px;
+  text-align: center;
+  color: #3b3b3d;
+  margin-bottom: 14px;
+`;
 export const ProfileIconCard = styled.View`
   flex: 1;
   height: 50px;

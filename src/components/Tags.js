@@ -7,7 +7,6 @@ import { FlexRow } from './Layout';
 import styled from 'styled-components/native';
 
 const mapStateToProps = state => ({});
-
 const mapDispatchToProps = dispatch => ({
   openSearchTag: tagId =>
     dispatch(
@@ -48,8 +47,6 @@ const styles = StyleSheet.create({
     marginRight: 7,
     display: 'inline-block',
     height: 39,
-    borderColor: 'black',
-    borderWidth: 1,
     borderRadius: 76,
     backgroundColor: '#87df91',
   },
@@ -60,8 +57,6 @@ const styles = StyleSheet.create({
     marginRight: 7,
     display: 'inline-block',
     height: 39,
-    borderColor: 'black',
-    borderWidth: 1,
     borderRadius: 76,
     backgroundColor: '#6eb1ea',
   },

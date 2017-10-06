@@ -28,11 +28,12 @@ export default class TabProfile extends PureComponent {
     );
   };
 }
+
 const styles = StyleSheet.create({
   tagList: {
     margin: 22,
     flexWrap: 'wrap',
-    //alignItems: 'flex-start',
+    alignItems: 'flex-start',
     flexDirection: 'row',
   },
 });
