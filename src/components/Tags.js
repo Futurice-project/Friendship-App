@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch => ({
 class Tag extends React.Component {
   render = () => (
     <TouchableOpacity
-      style={(styles.tagButton, styles.rectangle)}
+      style={styles.rectangle}
       onPress={() => this.props.openSearchTag(this.props.data.id)}
     >
       <Text style={styles.item}>{this.props.data.name}</Text>

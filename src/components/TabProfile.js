@@ -17,10 +17,10 @@ export default class TabProfile extends PureComponent {
           initialPage={0}
           renderTabBar={() => <ScrollableTabBar />}
         >
-          <View style={styles.tagList} tabLabel="NAAHS">
-            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} />)}
+          <View tabLabel="NAAHS" style={styles.tagList}>
+            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} dark />)}
           </View>
-          <View style={styles.tagList} tabLabel="YEAH">
+          <View tabLabel="YEAH" style={styles.tagList}>
             {this.props.love.map(tag => <Tag key={tag.id} data={tag} />)}
           </View>
         </ScrollableTabView>
