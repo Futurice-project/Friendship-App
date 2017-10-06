@@ -26,13 +26,10 @@ import Person from '../../components/Person';
 import Tag from '../../components/Tags';
 import Spinner from '../../components/Spinner';
 
-const mapStateToProps = state => {
-  console.log('map state to props ' + state.usersByPage.loading);
-  return {
-    usersSearch: state.usersSearch,
-    usersByPage: state.usersByPage,
-  };
-};
+const mapStateToProps = state => ({
+  usersSearch: state.usersSearch,
+  usersByPage: state.usersByPage,
+});
 
 const mapDispatchToProps = dispatch => ({
   refreshUsersSearch: username =>
@@ -59,15 +56,10 @@ export class PeopleView extends React.Component {
 
   state = {
     data: [],
-    tags: [],
-    page: 0,
-    loading: false,
-    filteredUsers: [],
     searchedUsername: '',
     infiniteScrollStop: false,
   };
 
-  loadingMore = false;
   currentPage = 0;
 
   keyExtractor = item => item.id;
@@ -78,23 +70,20 @@ export class PeopleView extends React.Component {
 
   componentDidMount() {
     this.fetchData();
-    console.log('fetchData()..componentDidMount');
   }
 
   fetchData = () => {
-    if (this.loadingMore) return;
-    this.loadingMore = true;
     this.props.refreshUsersByPage(this.currentPage).then(response => {
       this.currentPage += 1;
       this.setState({ data: [...this.state.data, ...response.data] });
-      this.loadingMore = false;
     });
   };
 
   handleEnd = () => {
-    console.log('handle end ' + this.props.usersByPage.loading);
-    if (this.loadingMore) return;
-    this.fetchData();
+    if (!this.onEndReachedCalledDuringMomentum) {
+      this.fetchData();
+      this.onEndReachedCalledDuringMomentum = true;
+    }
   };
 
   getUserByUsername(username) {
@@ -121,7 +110,11 @@ export class PeopleView extends React.Component {
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
             onEndReached={this.handleEnd}
-            onEndReachedThreshold={0.4}
+            onEndReachedThreshold={0.001}
+            onMomentumScrollBegin={() => {
+              this.onEndReachedCalledDuringMomentum = false;
+            }}
+            //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
             horizontal
           />
         </Centered>
