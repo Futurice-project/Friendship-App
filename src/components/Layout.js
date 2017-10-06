@@ -158,3 +158,9 @@ export class TouchableHighlightButton extends React.Component {
 }
 
 // -- Styling for inbox end
+
+export const SignUpWrapper = styled.View`
+  flex: 1;
+  background-color: #faf6f0;
+  align-items: center;
+`;
