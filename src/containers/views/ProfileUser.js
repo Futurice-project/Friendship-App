@@ -16,13 +16,11 @@ import TextRectangle from '../../components/TextRectangle';
 import TabProfile from '../../components/TabProfile';
 
 const mapStateToProps = state => ({
-  tags: state.userTag,
   userData: state.userDetails,
   tagsForUser: state.tagsForUser,
 });
 
 const mapDispatchToProps = dispatch => ({
-  refreshTags: userId => dispatch(rest.actions.userTag.get({ userId })),
   refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForUser.get({ userId })),
@@ -34,13 +32,12 @@ class ProfileUser extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.userData.loading && !nextProps.tags.loading)
+    if (!nextProps.userData.loading && !nextProps.tagsForUser.loading)
       this.setState({ loaded: true });
   }
 
   componentDidMount() {
     const personId = this.props.navigation.state.params.personId;
-    this.props.refreshTags(personId);
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
   }
