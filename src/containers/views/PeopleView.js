@@ -91,7 +91,10 @@ export class PeopleView extends React.Component {
     if (!this.state.infiniteScrollStop) {
       this.setState(
         state => ({ page: this.state.page + 1 }),
-        () => this.fetchData().catch(e => console.error(e + 'heyyyy')),
+        () =>
+          this.fetchData().catch(e =>
+            console.error(e + ' handleEnd in PeopleView.js'),
+          ),
       );
     }
   };
@@ -137,7 +140,7 @@ export class PeopleView extends React.Component {
       .then(tags => this.setState({ tags }))
       .catch(err => {
         console.log('errorTags');
-        console.error(err);
+        console.error(err + ' error fetchTags in PeopleView.js');
       });
     // renderSpinner() {
     //   if (this.state.loading) {
