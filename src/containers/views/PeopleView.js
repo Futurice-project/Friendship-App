@@ -16,6 +16,7 @@ import {
   Centered,
   FullscreenCentered,
   IconImage,
+  SmallHeader,
 } from '../../components/Layout';
 import Person from '../../components/Person';
 import Tag from '../../components/Tags';
@@ -137,14 +138,21 @@ export class PeopleView extends React.Component {
   };
 
   render = () => (
-    <ViewContainer>
-      <Title> People </Title>
+    <ViewContainer style={{ backgroundColor: '#fff' }}>
       <SearchBar
-        round
         lightTheme
+        containerStyle={{
+          backgroundColor: '#fff',
+          borderTopColor: '#fff',
+          borderBottomColor: '#fff',
+          marginVertical: 10,
+        }}
+        inputStyle={{ backgroundColor: '#f1f1f3' }}
         onChangeText={username => this.getUserByUsername(username)}
         placeholder="Search"
+        clearIcon
       />
+      <SmallHeader> People </SmallHeader>
 
       <FullscreenCentered>
         <FlatList
@@ -167,20 +175,10 @@ export class PeopleView extends React.Component {
       </FullscreenCentered>
 
       <Title> Tags </Title>
+      <SmallHeader> Activities</SmallHeader>
       <FullscreenCentered>
         <View style={styles.tagList}>
           {this.state.tags.map(tag => <Tag key={tag.id} data={tag} />)}
-          {/* <FlatList
-          style={styles.tagList}
-          contentContainerStyle={styles.tagList}
-          data={this.state.tags}
-          keyExtractor={this.tagKeyExtractor}
-          renderItem={this.tagRenderItem}
-          // onEndReached={this.handleEnd}
-          // onEndReachedThreshold={0.4}
-          // style={{ flex: 1 }}
-          //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
-        /> */}
         </View>
       </FullscreenCentered>
     </ViewContainer>
@@ -191,7 +189,7 @@ const styles = StyleSheet.create({
   tagList: {
     margin: 22,
     flexWrap: 'wrap',
-    //alignItems: 'flex-start',
+    alignItems: 'flex-start',
     flexDirection: 'row',
   },
 });

@@ -18,18 +18,14 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Tag extends React.Component {
-  render() {
-    console.log(this.props.data);
-
-    return (
-      <TouchableOpacity
-        style={(styles.tagButton, styles.rectangle)}
-        onPress={() => this.props.openSearchTag(this.props.data.id)}
-      >
-        <Text style={styles.item}>{this.props.data.name}</Text>
-      </TouchableOpacity>
-    );
-  }
+  render = () => (
+    <TouchableOpacity
+      style={(styles.tagButton, styles.rectangle)}
+      onPress={() => this.props.openSearchTag(this.props.data.id)}
+    >
+      <Text style={styles.item}>{this.props.data.name}</Text>
+    </TouchableOpacity>
+  );
 }
 const styles = StyleSheet.create({
   rectangle: {
@@ -39,8 +35,6 @@ const styles = StyleSheet.create({
     marginRight: 7,
     display: 'inline-block',
     height: 39,
-    borderColor: 'black',
-    borderWidth: 1,
     borderRadius: 76,
     backgroundColor: '#87df91',
   },
