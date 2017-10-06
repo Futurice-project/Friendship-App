@@ -9,6 +9,7 @@ const persistConfig = {
   blacklist: [
     'navigatorState',
     'users',
+    'usersByPage',
     'usersSearch',
     'userDetails',
     'userTag',

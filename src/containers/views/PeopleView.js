@@ -25,11 +25,13 @@ import rest from '../../utils/rest';
 import Person from '../../components/Person';
 import TabProfile from '../../components/TabProfile';
 
-const mapStateToProps = state => ({
-  usersSearch: state.usersSearch,
-  usersByPage: state.usersByPage,
-});
-
+const mapStateToProps = state => {
+  console.log('map state to props ' + state.usersByPage.loading);
+  return {
+    usersSearch: state.usersSearch,
+    usersByPage: state.usersByPage,
+  };
+};
 const mapDispatchToProps = dispatch => ({
   refreshUsersSearch: username =>
     dispatch(rest.actions.usersSearch.get({ username })),
@@ -48,50 +50,43 @@ export class PeopleView extends React.Component {
   };
 
   state = {
-    data: {},
+    data: [],
     page: 0,
     loading: false,
     filteredUsers: [],
     searchedUsername: '',
   };
 
+  loadingMore = false;
+  currentPage = 0;
+
   keyExtractor = item => item.id;
   renderItem = ({ item }) => <Person color="#939795" data={item} />;
 
   componentDidMount() {
     this.fetchData();
+    console.log('fetchData()..componentDidMount');
   }
 
-  fetchData = async () => {
-    //this.setState({ loading: true });
-    //if (this.state.page)
-    await this.props.refreshUsersByPage(this.state.page);
-    this.setState(state => ({
-      data: [...state.data, ...this.props.usersByPage.data.data],
-      //loading: false,
-    }));
-    // const response = await fetch(
-    //   `http://0.0.0.0:3888/users/page/${this.state.page}`,
-    //   {
-    //     method: 'get',
-    //     headers: {
-    //       Authorization:
-    //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
-    //     },
-    //   },
-    // );
-    // const json = await response.json();
-    // this.setState(state => ({
-    //   data: [...state.data, ...json],
-    //   loading: false,
-    // }));
+  fetchData = () => {
+    if (this.loadingMore) return;
+    this.loadingMore = true;
+    this.props.refreshUsersByPage(this.currentPage).then(response => {
+      this.currentPage += 1;
+      this.setState({ data: [...this.state.data, ...response.data] });
+      this.loadingMore = false;
+    });
   };
 
   handleEnd = () => {
-    this.setState(
-      state => ({ page: this.state.page + 1 }),
-      () => this.fetchData(),
-    );
+    console.log('handle end ' + this.props.usersByPage.loading);
+    if (this.loadingMore) return;
+    this.fetchData();
+    //
+    // this.setState(
+    //   state => ({ page: this.state.page + 1 }),
+    //   () => this.fetchData(),
+    // );
   };
 
   getUserByUsername(username) {
@@ -100,7 +95,6 @@ export class PeopleView extends React.Component {
   }
 
   renderPeople() {
-    //console.log();
     if (this.props.usersSearch.loading) {
       return <ActivityIndicator />;
     }
@@ -129,11 +123,6 @@ export class PeopleView extends React.Component {
   }
 
   render = () => {
-    console.log('1searchedUsername ' + this.state.searchedUsername);
-    console.dir('2state.data ' + this.state.data);
-    console.dir('3props usersByPage ' + this.props.usersByPage.data);
-    console.dir('4props usersByPage loading ' + this.props.usersByPage.loading);
-    console.dir('5state.page ' + this.state.page);
     return (
       <ViewContainerTop>
         <SearchBar
