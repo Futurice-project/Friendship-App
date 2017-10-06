@@ -91,7 +91,7 @@ export class PeopleView extends React.Component {
     if (!this.state.infiniteScrollStop) {
       this.setState(
         state => ({ page: this.state.page + 1 }),
-        () => this.fetchData(),
+        () => this.fetchData().catch(e => console.error(e + 'heyyyy')),
       );
     }
   };
@@ -110,7 +110,11 @@ export class PeopleView extends React.Component {
       },
     })
       .then(response => response.json())
-      .then(filteredUsers => this.setState({ filteredUsers }));
+      .then(filteredUsers => this.setState({ filteredUsers }))
+      .catch(err => {
+        console.log('error search user');
+        console.error(err);
+      });
   }
 
   renderSpinner() {
@@ -130,7 +134,11 @@ export class PeopleView extends React.Component {
       },
     })
       .then(response => response.json())
-      .then(tags => this.setState({ tags }));
+      .then(tags => this.setState({ tags }))
+      .catch(err => {
+        console.log('errorTags');
+        console.error(err);
+      });
     // renderSpinner() {
     //   if (this.state.loading) {
     //     return <Spinner fullflex={this.state.data.length === 0} />;
