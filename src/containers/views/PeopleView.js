@@ -97,7 +97,7 @@ export class PeopleView extends React.Component {
     }
     return (
       <ViewContainerLight>
-        <Title> People </Title>
+        <SmallHeader> People </SmallHeader>
         <Centered>
           <FlatList
             data={
