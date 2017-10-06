@@ -1,21 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  View,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { SearchBar } from 'react-native-elements';
 
 import { Title } from '../../components/Text';
 import {
-  ViewContainer,
   ViewContainerTop,
-  ViewContainerLight,
   Centered,
   FullscreenCentered,
   IconImage,
@@ -24,7 +15,6 @@ import {
 import rest from '../../utils/rest';
 import Person from '../../components/Person';
 import Tag from '../../components/Tags';
-import Spinner from '../../components/Spinner';
 
 const mapStateToProps = state => ({
   usersSearch: state.usersSearch,
@@ -34,18 +24,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   refreshUsersSearch: username =>
     dispatch(rest.actions.usersSearch.get({ username })),
+
   refreshUsersByPage: page => dispatch(rest.actions.usersByPage.get({ page })),
-  openSearchTag: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SearchList',
-      }),
-    ),
 });
 
 export class PeopleView extends React.Component {
   static navigationOptions = {
-    title: 'Search',
     tabBarIcon: ({ tintColor }) => (
       <IconImage
         source={require('../../../assets/search0.png')}
@@ -57,30 +41,28 @@ export class PeopleView extends React.Component {
   state = {
     data: [],
     searchedUsername: '',
-    infiniteScrollStop: false,
+    currentPage: 0,
   };
-
-  currentPage = 0;
-
-  keyExtractor = item => item.id;
-  renderItem = ({ item }) => <Person box data={item} />;
-
-  tagKeyExtractor = item => item.id;
-  tagRenderItem = ({ item }) => <Tag data={item} />;
 
   componentDidMount() {
     this.fetchData();
   }
 
   fetchData = () => {
-    this.props.refreshUsersByPage(this.currentPage).then(response => {
-      this.currentPage += 1;
-      this.setState({ data: [...this.state.data, ...response.data] });
-    });
+    this.props
+      .refreshUsersByPage(this.state.currentPage)
+      .then(response => {
+        this.setState({ currentPage: this.state.currentPage + 1 });
+        // maybe we can use userByPage to store every people instead of storing only the last 10 people we fetched
+        // or only use the component state
+        this.setState({ data: [...this.state.data, ...response] });
+      })
+      .catch(err => console.error(err + 'error fetchData in peopleView.js'));
   };
 
   handleEnd = () => {
     if (!this.onEndReachedCalledDuringMomentum) {
+      // there is an error when we change and delete the string in the search bar
       this.fetchData();
       this.onEndReachedCalledDuringMomentum = true;
     }
@@ -96,7 +78,7 @@ export class PeopleView extends React.Component {
       return <ActivityIndicator />;
     }
     return (
-      <ViewContainerLight>
+      <View>
         <SmallHeader> People </SmallHeader>
         <Centered>
           <FlatList
@@ -107,36 +89,40 @@ export class PeopleView extends React.Component {
                 this.state.data
               )
             }
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderItem}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => <Person box data={item} />}
             onEndReached={this.handleEnd}
-            onEndReachedThreshold={0.001}
+            onEndReachedThreshold={0.4}
             onMomentumScrollBegin={() => {
               this.onEndReachedCalledDuringMomentum = false;
             }}
-            //ListFooterComponent= {() => <ActivityIndicator animating size= 'small'/>}
             horizontal
           />
         </Centered>
-      </ViewContainerLight>
+      </View>
     );
   }
 
-  render = () => {
+  render() {
     return (
       <ViewContainerTop>
         <SearchBar
-          round
           lightTheme
-          placeholder="Search"
-          onChangeText={username => {
-            this.getUserByUsername(username);
+          containerStyle={{
+            backgroundColor: '#fff',
+            borderTopColor: '#fff',
+            borderBottomColor: '#fff',
+            marginVertical: 10,
           }}
+          inputStyle={{ backgroundColor: '#f1f1f3' }}
+          onChangeText={username => this.getUserByUsername(username)}
+          placeholder="Search"
+          clearIcon
         />
         {this.renderPeople()}
       </ViewContainerTop>
     );
-  };
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PeopleView);

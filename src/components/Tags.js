@@ -22,7 +22,7 @@ class Tag extends React.Component {
     if (this.props.dark) {
       return (
         <TouchableOpacity
-          style={(styles.rectangle, styles.dark)}
+          style={styles.dark}
           onPress={() => this.props.openSearchTag(this.props.data.id)}
         >
           <Text style={styles.item}>{this.props.data.name}</Text>

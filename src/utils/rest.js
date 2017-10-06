@@ -35,7 +35,7 @@ const rest = reduxApi({
   },
   usersByPage: {
     url: `${apiRoot}/users/page/:page`,
-    // transformer: transformers.array,
+    transformer: transformers.array,
     crud: true,
   },
   usersSearch: {
