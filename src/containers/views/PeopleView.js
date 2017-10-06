@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { SearchBar } from 'react-native-elements';
+
 import { Title } from '../../components/Text';
 import {
   ViewContainer,
