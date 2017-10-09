@@ -10,6 +10,7 @@ import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleView';
 import LoginView from '../views/Login';
 import ProfileUser from './../views/ProfileUser';
+import LookingFor from './../views/LookingFor';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -25,6 +26,7 @@ const StackNavigatorConfig = {
 export default StackNavigator(
   {
     Welcome: { screen: WelcomeView },
+    LookingFor: { screen: LookingFor },
     Tabs: {
       screen: Tabs,
       navigationOptions: { title: 'Friendship App' },
