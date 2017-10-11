@@ -1,12 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
-
+import Button from '../../components/Button';
 import { Description, Bold } from '../../components/Text';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
-import { TouchableOpacity, Text, KeyboardAvoidingView } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  KeyboardAvoidingView,
+  View,
+} from 'react-native';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -55,6 +60,8 @@ class LoginView extends React.Component {
       return (
         <Text style={styles.textStyle}>{this.props.auth.error.message}</Text>
       );
+    } else {
+      return <Text style={styles.textStyle}>Need help with your password</Text>;
     }
   }
 
@@ -70,9 +77,9 @@ class LoginView extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior="padding">
         <ViewContainer>
-          <Centered>
+          <Centered style={{ flex: 3 }}>
             <TextInput
               titleColor="#87df91"
               title="EMAIL"
@@ -92,8 +99,8 @@ class LoginView extends React.Component {
             />
             {this.renderStatus()}
           </Centered>
-          <RoundTab>
-            <TouchableOpacity
+          <RoundTab title="Done" style={{ flex: 1 }}>
+            {/* <TouchableOpacity
               style={styles.buttonStyle}
               onPress={() => this.signIn()}
             >
@@ -112,7 +119,7 @@ class LoginView extends React.Component {
               onPress={() => this.props.signOut()}
             >
               <Text style={styles.buttonTextStyle}>Sign Out</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </RoundTab>
         </ViewContainer>
       </KeyboardAvoidingView>
