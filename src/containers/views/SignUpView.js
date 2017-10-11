@@ -53,11 +53,14 @@ class LoginView extends React.Component {
     if (this.props.users.loading) {
       return <Text style={styles.textStyle}>Pending request</Text>;
     }
+
     if (this.props.users.error) {
       return (
         <Text style={styles.textStyle}>{this.props.users.error.message}</Text>
       );
     }
+
+    return <Text style={styles.textStyle}> Success </Text>;
   }
 
   signUp() {

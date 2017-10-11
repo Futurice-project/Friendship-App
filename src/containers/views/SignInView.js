@@ -61,7 +61,7 @@ class LoginView extends React.Component {
       );
     }
 
-    //success navigate somewhere else
+    return <Text style={styles.textStyle}> Success </Text>;
   }
 
   signIn() {
