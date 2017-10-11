@@ -34,11 +34,14 @@ const mapDispatchToProps = dispatch => ({
 class ProfileUser extends React.Component {
   state = {
     loaded: false,
+    age: '',
   };
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.userData.loading && !nextProps.tagsForUser.loading)
+    if (!nextProps.userData.loading && !nextProps.tagsForUser.loading) {
       this.setState({ loaded: true });
+      this.getAge();
+    }
   }
 
   componentDidMount() {
@@ -46,6 +49,35 @@ class ProfileUser extends React.Component {
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
   }
+
+  getAge = () => {
+    const birthDay = new Date(this.props.userData.data.birthday);
+    const now = new Date();
+    let age = now.getFullYear() - birthDay.getFullYear();
+    const m = now.getMonth() - birthDay.getMonth();
+    if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
+      age--;
+    }
+
+    const early = [0, 1, 2, 3];
+    const mid = [4, 5, 6];
+    const late = [7, 8, 9];
+    let ageName = '';
+    const lastDigit = age.toString().substr(age.toString().length - 1);
+    if (age < 20) {
+      ageName = age + ' years';
+    } else if (early.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'early ' + (age - parseInt(lastDigit)) + "'s";
+    } else if (mid.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'mid ' + (age - parseInt(lastDigit)) + "'s";
+    } else if (late.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'late ' + (age - parseInt(lastDigit)) + "'s";
+    } else {
+      ageName = "It's a mystery";
+    }
+    console.log(age);
+    this.setState({ age: ageName });
+  };
 
   render = () => {
     if (!this.state.loaded) {
@@ -66,7 +98,15 @@ class ProfileUser extends React.Component {
             <Text style={styles.username}>
               {this.props.userData.data.username}
             </Text>
-            <Text style={styles.iLoveCampingRapA}>25, male, Helsinki</Text>
+            <Text style={styles.iLoveCampingRapA}>
+              {this.state.age}
+              , male
+              {this.props.userData.data.location ? (
+                ', ' + this.props.userData.data.location
+              ) : (
+                ''
+              )}
+            </Text>
             <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
             <SmallHeader>LOOKING FOR</SmallHeader>
             <Text style={styles.lookingForText}>
