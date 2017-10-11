@@ -8,7 +8,7 @@ import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleView';
-import LoginView from '../views/Login';
+import SignUpView from '../views/SignUpView';
 import ProfileUser from './../views/ProfileUser';
 import SearchList from './../views/Search';
 import EmojiPickerView from './../views/EmojiPicker';
@@ -50,7 +50,7 @@ export default StackNavigator(
       navigationOptions: { title: 'Setting page' },
     },
     SignUp: {
-      screen: LoginView,
+      screen: SignUpView,
       navigationOptions: { title: 'SignUp Page' },
     },
     ProfileUser: {

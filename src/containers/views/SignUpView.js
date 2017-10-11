@@ -6,6 +6,8 @@ import { Description, Bold } from '../../components/Text';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
+import styled from 'styled-components/native';
+
 import {
   TouchableOpacity,
   Text,
@@ -34,7 +36,8 @@ const mapDispatchToProps = dispatch => ({
 
 class LoginView extends React.Component {
   static navigationOptions = {
-    title: 'Login',
+    title: 'Sign up',
+    header: () => null,
   };
   state = {
     email: '',
@@ -79,9 +82,13 @@ class LoginView extends React.Component {
     return (
       <KeyboardAvoidingView behavior="padding">
         <ViewContainer>
-          <Centered style={{ flex: 3 }}>
+          <HeaderWrapper>
+            <Text style={styles.headerText}>Cancel</Text>
+            <Text style={styles.headerText}>Sign In</Text>
+          </HeaderWrapper>
+          <Centered style={{ flex: 2 }}>
             <TextInput
-              titleColor="#87df91"
+              titleColor="#f9f7f6"
               title="EMAIL"
               placeholder="HELLO@FRIENDSHIP.COM"
               backColor="#faf6f0"
@@ -91,7 +98,7 @@ class LoginView extends React.Component {
             <TextInput
               secure
               title="PASSWORD"
-              titleColor="#87df91"
+              titleColor="#f9f7f6"
               placeholder="*******"
               backColor="#faf6f0"
               onChangeText={password => this.setState({ password })}
@@ -99,39 +106,29 @@ class LoginView extends React.Component {
             />
             {this.renderStatus()}
           </Centered>
-          <RoundTab title="Done" style={{ flex: 1 }}>
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              onPress={() => this.signIn()}
-            >
-              <Text style={styles.buttonTextStyle}>Sign In</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              onPress={() => this.signUp()}
-            >
-              <Text style={styles.buttonTextStyle}>Sign Up</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              onPress={() => this.props.signOut()}
-            >
-              <Text style={styles.buttonTextStyle}>Sign Out</Text>
-            </TouchableOpacity>
-          </RoundTab>
+          <TouchableOpacity onPress={() => this.signUp()}>
+            <RoundTab title="Sign Up" style={{ flex: 1 }} />
+          </TouchableOpacity>
         </ViewContainer>
       </KeyboardAvoidingView>
     );
   }
 }
 
+const HeaderWrapper = styled.View`
+  margin-top: 50;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 20;
+  margin-right: 20;
+`;
+
 const styles = {
-  buttonStyle: {
-    bottom: 0,
-    alignItems: 'center',
-    marginBottom: 5,
+  headerText: {
+    fontFamily: 'NunitoSans-SemiBold',
+    fontSize: 20,
+    color: '#ff8a65',
   },
   buttonTextStyle: {
     width: 230,
@@ -147,7 +144,7 @@ const styles = {
     height: 20,
     fontSize: 14,
     textAlign: 'center',
-    color: '#87df91',
+    color: '#f9f7f6',
     marginBottom: 10,
   },
 };
