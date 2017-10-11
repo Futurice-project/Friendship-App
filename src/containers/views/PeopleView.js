@@ -18,14 +18,11 @@ import Tag from '../../components/Tags';
 
 const mapStateToProps = state => ({
   usersSearch: state.usersSearch,
-  usersByPage: state.usersByPage,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshUsersSearch: username =>
     dispatch(rest.actions.usersSearch.get({ username })),
-
-  refreshUsersByPage: page => dispatch(rest.actions.usersByPage.get({ page })),
 });
 
 export class PeopleView extends React.Component {
@@ -48,13 +45,14 @@ export class PeopleView extends React.Component {
     this.fetchData();
   }
 
+  // fetch 10 users and add them to the state.data
   fetchData = () => {
-    this.props
-      .refreshUsersByPage(this.state.currentPage)
+    fetch('http://localhost:3888/users/page/' + this.state.currentPage)
+      .then(response => {
+        return response.json();
+      })
       .then(response => {
         this.setState({ currentPage: this.state.currentPage + 1 });
-        // maybe we can use userByPage to store every people instead of storing only the last 10 people we fetched
-        // or only use the component state
         this.setState({ data: [...this.state.data, ...response] });
       })
       .catch(err => console.error(err + 'error fetchData in peopleView.js'));
@@ -62,7 +60,9 @@ export class PeopleView extends React.Component {
 
   handleEnd = () => {
     if (!this.onEndReachedCalledDuringMomentum) {
-      // there is an error when we change and delete the string in the search bar
+      // there is an error when we change and delete the text in the search bar
+
+      // fetch 10 more users from the db
       this.fetchData();
       this.onEndReachedCalledDuringMomentum = true;
     }

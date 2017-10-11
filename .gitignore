@@ -1,7 +1,7 @@
 node_modules/
 .expo/
 npm-debug.*
-.eslintrc
+.eslintrc.*
 
 # Ignore JetBrain files
 .idea
