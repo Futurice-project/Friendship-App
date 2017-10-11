@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import rest from '../../utils/rest';
 import styled from 'styled-components/native';
 
-import { Description, Bold } from '../../components/Text';
 import { SignUpWrapper, Padding, Centered } from '../../components/Layout';
-import Label from '../../components/Label';
 import { TouchableOpacity, Text } from 'react-native';
 import StyledSlider from '../../components/StyledSlider';
 
@@ -14,6 +12,10 @@ class PersonalityView extends React.Component {
     title: 'Personality',
     header: () => null,
   };
+
+  componentDidMount() {
+    this.props.getPersonalities();
+  }
 
   // React-native Android does not support letter spacing
   // This function hacks space between letters together
@@ -91,4 +93,14 @@ const styles = {
   },
 };
 
-export default connect(undefined)(PersonalityView);
+const mapStateToProps = state => ({
+  personalities: state.personalities,
+});
+
+const mapDispatchToProps = dispatch => ({
+  getPersonalities: credentials => {
+    dispatch(rest.actions.personalities());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalityView);
