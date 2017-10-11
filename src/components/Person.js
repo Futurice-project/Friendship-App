@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import NavigationBackgroundAsset from '../../assets/drawable-mdpi/combined_shape_copy_2.png';
 
 import { FlexRow } from './Layout';
 import styled from 'styled-components/native';
@@ -23,7 +24,6 @@ class Person extends React.Component {
       <View style={{ flex: 70 }}>
         <Text style={styles.topText}>{this.props.data.description}</Text>
       </View>
-
       <FlexRow style={styles.bottomPart}>
         {/* with flex:1 long username don't go exceed the bottom part  */}
 

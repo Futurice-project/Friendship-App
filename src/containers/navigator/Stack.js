@@ -11,6 +11,7 @@ import PeopleView from './../views/PeopleView';
 import LoginView from '../views/Login';
 import ProfileUser from './../views/ProfileUser';
 import SearchList from './../views/Search';
+import EmojiPickerView from './../views/EmojiPicker';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -31,6 +32,10 @@ export default StackNavigator(
     Tabs: {
       screen: Tabs,
       navigationOptions: { title: 'Friendship App' },
+    },
+    EmojiPicker: {
+      screen: EmojiPickerView,
+      navigationOptins: { title: 'Emoji Picker' },
     },
     People: {
       screen: PeopleView,
