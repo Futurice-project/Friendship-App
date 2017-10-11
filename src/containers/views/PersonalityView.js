@@ -6,7 +6,8 @@ import styled from 'styled-components/native';
 import { Description, Bold } from '../../components/Text';
 import { SignUpWrapper, Padding, Centered } from '../../components/Layout';
 import Label from '../../components/Label';
-import { TouchableOpacity, Text, KeyboardAvoidingView } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
+import StyledSlider from '../../components/StyledSlider';
 
 class PersonalityView extends React.Component {
   static navigationOptions = {
@@ -20,12 +21,22 @@ class PersonalityView extends React.Component {
         <Padding>
           <Header>
             <HeaderRectangle>
-              <Text style={styles.title}>Things that describe me</Text>
+              <Text style={styles.title}>Asiat, jotka kuvaavaat minua</Text>
               <Text style={styles.subTitle}>
-                These will be shown in your profile
+                (Nämä tulevat näkymään profiilisasi)
               </Text>
             </HeaderRectangle>
           </Header>
+          <TagWrapper>
+            <Text style={styles.tagTitle}>TESTTESTESTEST</Text>
+            <StyledSlider />
+          </TagWrapper>
+          <TagWrapper>
+            <Text style={styles.tagTitle}>
+              STILL HAVE TO CONVERT THIS TO CAPS AND ADD SPACING
+            </Text>
+            <StyledSlider />
+          </TagWrapper>
         </Padding>
       </SignUpWrapper>
     );
@@ -38,10 +49,15 @@ const Header = styled.View`
   width: 100%;
 `;
 const HeaderRectangle = styled.View`
-  background-color: red;
   flex: 1;
   justify-content: center;
   align-items: center;
+  width: 400;
+`;
+const TagWrapper = styled.View`
+  justify-content: center;
+  width: 400;
+  margin-top: 20;
 `;
 
 const styles = {
@@ -55,6 +71,13 @@ const styles = {
     fontFamily: 'NunitoSans-Regular',
     fontSize: 15,
     color: '#2d4359',
+  },
+  tagTitle: {
+    marginLeft: 20,
+    marginRight: 20,
+    fontSize: 18,
+    color: '#4a4a4a',
+    fontFamily: 'NunitoSans-Regular',
   },
 };
 
