@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
+import Button from '../../components/Button';
+import { Description, Bold } from '../../components/Text';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
@@ -15,16 +17,15 @@ import {
 } from 'react-native';
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   users: state.users,
 });
 
 const mapDispatchToProps = dispatch => ({
-  signUp: credentials => {
-    dispatch(
-      rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
-    );
+  signIn: credentials => {
+    dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) }));
   },
-  openSignIn: () =>
+  openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
         routeName: 'SignIn',
@@ -50,19 +51,22 @@ class LoginView extends React.Component {
   };
 
   renderStatus() {
-    if (this.props.users.loading) {
+    if (this.props.auth.loading) {
       return <Text style={styles.textStyle}>Pending request</Text>;
     }
-    if (this.props.users.error) {
+
+    if (this.props.auth.error) {
       return (
-        <Text style={styles.textStyle}>{this.props.users.error.message}</Text>
+        <Text style={styles.textStyle}>{this.props.auth.error.message}</Text>
       );
     }
+
+    //success navigate somewhere else
   }
 
-  signUp() {
+  signIn() {
     const { email, password } = this.state;
-    this.props.signUp({ email, password });
+    this.props.signIn({ email, password });
   }
 
   render() {
@@ -73,12 +77,12 @@ class LoginView extends React.Component {
             <HeaderWrapper>
               <Text
                 style={styles.headerText}
-                onPress={this.props.openWelcomeScreen}
+                onpress={this.props.openWelcomeScreen}
               >
                 Cancel
               </Text>
-              <Text style={styles.headerText} onPress={this.props.openSignIn}>
-                Sign In
+              <Text style={styles.headerText} onPress={this.props.openSignUp}>
+                Sign Up
               </Text>
             </HeaderWrapper>
             <Centered style={{ flex: 2 }}>
@@ -102,8 +106,8 @@ class LoginView extends React.Component {
               {this.renderStatus()}
             </Centered>
           </Padding>
-          <TouchableOpacity onPress={() => this.signUp()}>
-            <RoundTab title="Sign Up" style={{ flex: 1 }} />
+          <TouchableOpacity onPress={() => this.signIn()}>
+            <RoundTab title="Sign In" style={{ flex: 1 }} />
           </TouchableOpacity>
         </ViewContainer>
       </KeyboardAvoidingView>
