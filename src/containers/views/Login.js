@@ -100,7 +100,7 @@ class LoginView extends React.Component {
             {this.renderStatus()}
           </Centered>
           <RoundTab title="Done" style={{ flex: 1 }}>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={styles.buttonStyle}
               onPress={() => this.signIn()}
             >
@@ -119,7 +119,7 @@ class LoginView extends React.Component {
               onPress={() => this.props.signOut()}
             >
               <Text style={styles.buttonTextStyle}>Sign Out</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </RoundTab>
         </ViewContainer>
       </KeyboardAvoidingView>

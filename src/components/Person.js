@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import NavigationBackgroundAsset from '../../assets/drawable-mdpi/combined_shape_copy_2.png';
 
 import { FlexRow } from './Layout';
 import styled from 'styled-components/native';
@@ -18,12 +19,11 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Person extends React.Component {
-  render = () => (
+  renderBox = () => (
     <View style={styles.topPart}>
       <View style={{ flex: 70 }}>
         <Text style={styles.topText}>{this.props.data.description}</Text>
       </View>
-
       <FlexRow style={styles.bottomPart}>
         {/* with flex:1 long username don't go exceed the bottom part  */}
 
@@ -51,6 +51,28 @@ class Person extends React.Component {
       </FlexRow>
     </View>
   );
+
+  renderLine = () => (
+    <FlexRow style={styles.listItem}>
+      {/* with flex:1 long username don't go exceed the bottom part  */}
+      <View style={styles.viewBottom}>
+        <View>
+          <Text style={styles.emoji}>{this.props.data.emoji}</Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.nameView}
+          onPress={() => this.props.openProfile(this.props.data.userId)}
+        >
+          <Text style={styles.TextName}>
+            {this.props.data.username} {this.props.data.love ? '<3' : '</3'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </FlexRow>
+  );
+
+  render = () => (this.props.box ? this.renderBox() : this.renderLine());
 }
 
 const styles = StyleSheet.create({
@@ -82,7 +104,7 @@ const styles = StyleSheet.create({
 
   topText: {
     color: 'white',
-    marginTop: 5,
+    marginTop: 0,
     marginLeft: 10,
     fontSize: 18,
     /*    fontFamily: 'Avenir', */
@@ -108,6 +130,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 47,
     alignItems: 'center',
+  },
+  listItem: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    margin: 0,
+    height: 70,
+    borderWidth: 0.5,
+    borderColor: '#666666',
+    backgroundColor: '#fff',
   },
 });
 

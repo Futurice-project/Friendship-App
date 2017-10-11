@@ -36,10 +36,21 @@ const rest = reduxApi({
     url: `${apiRoot}/users`,
     crud: true,
   },
+  usersSearch: {
+    url: `${apiRoot}/users/search/:username`,
+    transformer: transformers.array,
+    crud: true,
+  },
   userDetails: {
     url: `${apiRoot}/users/:userId`,
     crud: true,
   },
+  tagsForUser: {
+    url: `${apiRoot}/tagsForUser/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
+
   auth: {
     url: `${apiRoot}/users/authenticate`,
     transformer: (data = {}) => {

@@ -5,39 +5,35 @@ import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
 import styled from 'styled-components/native';
+import Tag from './Tags';
 
 export default class TabProfile extends PureComponent {
-  render = () => (
-    <View>
-      <ScrollableTabView
-        style={{ marginTop: 0 }}
-        initialPage={0}
-        renderTabBar={() => <ScrollableTabBar />}
-      >
-        <View tabLabel="LOVE">
-          <TextRectangle Text="spicy food" style={styles.rec} />
-          <TextRectangle Text="react" style={styles.rec} />
-          <TextRectangle Text="dogs" style={styles.rec} />
-          <TextRectangle Text="Basketball" style={styles.rec} />
-        </View>
-        <View tabLabel="HATE">
-          <TextRectangle Text="dating apps" style={styles.rec} />
-          <TextRectangle Text="reading" style={styles.rec} />
-        </View>
-      </ScrollableTabView>
-    </View>
-  );
+  componentDidMount() {}
+  render = () => {
+    return (
+      <View>
+        <ScrollableTabView
+          style={{ marginTop: 0 }}
+          initialPage={0}
+          renderTabBar={() => <ScrollableTabBar />}
+        >
+          <View tabLabel="NAAHS" style={styles.tagList}>
+            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} dark />)}
+          </View>
+          <View tabLabel="YEAH" style={styles.tagList}>
+            {this.props.love.map(tag => <Tag key={tag.id} data={tag} />)}
+          </View>
+        </ScrollableTabView>
+      </View>
+    );
+  };
 }
 
 const styles = StyleSheet.create({
-  Confirm: {
-    height: 57,
-    backgroundColor: '#3b3b3d',
-    marginTop: 10,
-  },
-  rec: {
-    height: 81,
-    backgroundColor: '#596386',
-    marginTop: 6,
+  tagList: {
+    margin: 22,
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
   },
 });

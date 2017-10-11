@@ -9,11 +9,16 @@ const { width, height } = resolveAssetSource(image);
 const ImageContainer = styled.Image.attrs({
   tintColor: props => props.tint,
 })`
+  margin-bottom: 0;
+  right: 0;
+  left: 0;
+  ${'' /* without the -5, a space is below the image-->need further investigation */} bottom: -5;
   justify-content: center;
   align-items: center;
 `;
 //style for the text of the button
 const ButtonText = styled.Text`
+  width: 230;
   height: 27;
   font-family: 'NunitoSans-Regular';
   font-size: 20;
