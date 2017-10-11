@@ -7,9 +7,6 @@ import PeopleView from '../views/PeopleView';
 import FollowingView from '../views/Following';
 import InboxView from '../views/Inbox';
 import MyProfile from '../views/MyProfile';
-import LoginView from '../views/Login';
-import WelcomeView from '../views/Welcome';
-//import PeopleView from '../views/PeopleList';
 
 const TabNavigatorConfig = {
   tabBarOptions: {
