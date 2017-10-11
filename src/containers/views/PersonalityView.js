@@ -15,6 +15,12 @@ class PersonalityView extends React.Component {
     header: () => null,
   };
 
+  // React-native Android does not support letter spacing
+  // This function hacks space between letters together
+  applyLetterSpacing(string, count = 1) {
+    return string.split('').join('\u200A'.repeat(count));
+  }
+
   render() {
     return (
       <SignUpWrapper>
@@ -22,18 +28,22 @@ class PersonalityView extends React.Component {
           <Header>
             <HeaderRectangle>
               <Text style={styles.title}>Asiat, jotka kuvaavaat minua</Text>
-              <Text style={styles.subTitle}>
-                (Nämä tulevat näkymään profiilisasi)
-              </Text>
             </HeaderRectangle>
+            <Text style={styles.subTitle}>
+              {this.applyLetterSpacing('(Nämä tulevat näkymään profiilisasi)')}
+            </Text>
           </Header>
           <TagWrapper>
-            <Text style={styles.tagTitle}>TESTTESTESTEST</Text>
+            <Text style={styles.tagTitle}>
+              {this.applyLetterSpacing('testtststt').toUpperCase()}
+            </Text>
             <StyledSlider />
           </TagWrapper>
           <TagWrapper>
             <Text style={styles.tagTitle}>
-              STILL HAVE TO CONVERT THIS TO CAPS AND ADD SPACING
+              {this.applyLetterSpacing(
+                'still have to check spacing and add redux',
+              ).toUpperCase()}
             </Text>
             <StyledSlider />
           </TagWrapper>
@@ -49,7 +59,7 @@ const Header = styled.View`
   width: 100%;
 `;
 const HeaderRectangle = styled.View`
-  flex: 1;
+  height: 80%
   justify-content: center;
   align-items: center;
   width: 400;
@@ -67,12 +77,12 @@ const styles = {
     color: '#2d4359',
   },
   subTitle: {
-    marginTop: 5,
     fontFamily: 'NunitoSans-Regular',
-    fontSize: 15,
+    fontSize: 13,
     color: '#2d4359',
   },
   tagTitle: {
+    textAlign: 'center',
     marginLeft: 20,
     marginRight: 20,
     fontSize: 18,
