@@ -18,7 +18,6 @@ export const ToggleSwitch = styled.View`
   width: 20;
   height: 20;
   background-color: #3b3b3d;
-  border-radius: 40;
   left: ${props => (props.value ? 5 : startAnimation)};
 `;
 

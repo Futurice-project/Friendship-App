@@ -1,13 +1,7 @@
 node_modules/
 .expo/
 npm-debug.*
-<<<<<<< HEAD
-.eslintrc
+.eslintrc.*
 
 # Ignore JetBrain files
 .idea
-=======
-
-# Ignore JetBrain files
-.idea
->>>>>>> master

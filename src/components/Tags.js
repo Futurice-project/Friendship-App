@@ -22,7 +22,7 @@ class Tag extends React.Component {
     if (this.props.dark) {
       return (
         <TouchableOpacity
-          style={(styles.rectangle, styles.dark)}
+          style={styles.dark}
           onPress={() => this.props.openSearchTag(this.props.data.id)}
         >
           <Text style={styles.item}>{this.props.data.name}</Text>
@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     marginRight: 7,
-    display: 'inline-block',
     height: 39,
     borderRadius: 76,
     backgroundColor: '#87df91',
@@ -55,7 +54,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     marginRight: 7,
-    display: 'inline-block',
     height: 39,
     borderRadius: 76,
     backgroundColor: '#6eb1ea',

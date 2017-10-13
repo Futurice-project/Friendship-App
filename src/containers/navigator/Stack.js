@@ -8,9 +8,11 @@ import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleView';
-import LoginView from '../views/Login';
+import SignUpView from '../views/SignUpView';
+import SignInView from '../views/SignInView';
 import ProfileUser from './../views/ProfileUser';
 import SearchList from './../views/Search';
+import EmojiPickerView from './../views/EmojiPicker';
 import LookingFor from './../views/LookingFor';
 
 const StackNavigatorConfig = {
@@ -32,6 +34,10 @@ export default StackNavigator(
       screen: Tabs,
       navigationOptions: { title: 'Friendship App' },
     },
+    EmojiPicker: {
+      screen: EmojiPickerView,
+      navigationOptins: { title: 'Emoji Picker' },
+    },
     People: {
       screen: PeopleView,
       navigationOptions: { title: 'People page' },
@@ -44,8 +50,12 @@ export default StackNavigator(
       screen: SettingsView,
       navigationOptions: { title: 'Setting page' },
     },
+    SignIn: {
+      screen: SignInView,
+      navigationOptions: { title: 'SignIn Page' },
+    },
     SignUp: {
-      screen: LoginView,
+      screen: SignUpView,
       navigationOptions: { title: 'SignUp Page' },
     },
     ProfileUser: {
