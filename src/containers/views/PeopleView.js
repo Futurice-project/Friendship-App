@@ -7,10 +7,8 @@ import { SearchBar } from 'react-native-elements';
 import throttle from 'lodash/throttle';
 
 import { Title, Header, SmallHeader, Description } from '../../components/Text';
-  ViewContainerTop,
-  Centered,
-  IconImage,
-} from '../../components/Layout';
+
+import { ViewContainerTop, Centered, IconImage } from '../../components/Layout';
 import Person from '../../components/Person';
 import Tag from '../../components/Tags';
 import RoundTab from '../../components/RoundTab';

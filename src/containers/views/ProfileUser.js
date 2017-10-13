@@ -31,17 +31,12 @@ class ProfileUser extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-<<<<<<< HEAD
     // render the profile user when we have the data.
     if (!nextProps.userDetails.loading && !nextProps.tagsForUser.loading) {
-      this.setState({ loaded: true });
-=======
-    if (!nextProps.userData.loading && !nextProps.tagsForUser.loading) {
       this.setState({
         loaded: true,
         profileTitle: nextProps.userData.data.username,
       });
->>>>>>> Added shape to PeopleView. Attempted to change the header of ProfileUser
       this.getAge();
     }
   }
