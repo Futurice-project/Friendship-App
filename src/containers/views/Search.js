@@ -16,7 +16,6 @@ import {
   FlexRow,
   FullscreenCentered,
 } from '../../components/Layout';
-import TextRectangle from '../../components/TextRectangle';
 import Person from '../../components/Person';
 import TabProfile from '../../components/TabProfile';
 

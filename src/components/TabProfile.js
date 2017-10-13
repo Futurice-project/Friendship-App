@@ -24,6 +24,7 @@ export default class TabProfile extends PureComponent {
     pageIndex: null,
   };
 
+  //allow when we change the tab to have the good colors
   handleChangeScreen = ({ i }) => {
     // **Update ** save current page index
     if (this.state.pageIndex != i) {

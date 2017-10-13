@@ -5,6 +5,7 @@ import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import NavigationBackgroundAsset from '../../assets/drawable-mdpi/combined_shape_copy_2.png';
 
 import { FlexRow } from './Layout';
+import { Description } from './Text';
 import styled from 'styled-components/native';
 
 const mapStateToProps = state => ({});
@@ -22,7 +23,9 @@ class Person extends React.Component {
   renderBox = () => (
     <View style={styles.topPart}>
       <View style={{ flex: 70 }}>
-        <Text style={styles.topText}>{this.props.data.description}</Text>
+        <Description style={styles.topText}>
+          {this.props.data.description}
+        </Description>
       </View>
       <FlexRow style={styles.bottomPart}>
         {/* with flex:1 long username don't go exceed the bottom part  */}
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     /*    fontFamily: 'NunitoSans-Light', */
   },
   TextCompatibility: {
-    fontSize: 18,
+    fontSize: 12,
     /*    fontFamily: 'NunitoSans-Light', */
   },
 
@@ -104,8 +107,10 @@ const styles = StyleSheet.create({
 
   topText: {
     color: 'white',
-    marginTop: 0,
-    marginLeft: 10,
+    maxHeight: 130,
+    marginVertical: 30,
+    marginHorizontal: 20,
+    lineHeight: 21,
     fontSize: 18,
     /*    fontFamily: 'Avenir', */
   },

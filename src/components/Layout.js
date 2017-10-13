@@ -6,10 +6,12 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     minHeight: '100%',
     justifyContent: 'center',
+    paddingVertical: 10,
   },
   contentContainerStyleTop: {
     minHeight: '100%',
     justifyContent: 'flex-start',
+    paddingVertical: 10,
   },
 });
 
@@ -68,13 +70,7 @@ export const MessageCard = styled.View`
   border: 0px solid #ddd;
   border-bottom-width: 1px;
 `;
-export const SmallHeader = styled.Text`
-  font-size: 13px;
-  letter-spacing: 1.59px;
-  text-align: center;
-  color: #3b3b3d;
-  margin-bottom: 14px;
-`;
+
 export const ProfileIconCard = styled.View`
   flex: 1;
   height: 50px;
