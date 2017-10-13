@@ -1,7 +1,13 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { ViewContainer, FullscreenCentered } from '../../components/Layout';
+import { ListItem } from 'react-native-elements';
+import {
+  ViewContainer,
+  Centered,
+  FlexRow,
+  FullscreenCentered,
+} from '../../components/Layout';
 import Person from '../../components/Person';
 
 const mapStateToProps = state => {

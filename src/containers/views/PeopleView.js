@@ -1,15 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, FlatList, ActivityIndicator } from 'react-native';
+<<<<<<< HEAD
 import { SearchBar } from 'react-native-elements';
 import throttle from 'lodash/throttle';
+=======
+import { NavigationActions } from 'react-navigation';
+import rest from '../../utils/rest';
+import { SearchBar } from 'react-native-elements';
+
+import { Title, Header, SmallHeader, Description } from '../../components/Text';
+>>>>>>> Css cleaning up and minor changes.
 import {
   ViewContainerTop,
   Centered,
   IconImage,
-  SmallHeader,
 } from '../../components/Layout';
-import rest from '../../utils/rest';
 import Person from '../../components/Person';
 
 const mapStateToProps = state => ({
@@ -78,7 +84,7 @@ export class PeopleView extends React.Component {
     }
     return (
       <View>
-        <SmallHeader> People </SmallHeader>
+        <Header> PEOPLE </Header>
         <Centered>
           <FlatList
             data={

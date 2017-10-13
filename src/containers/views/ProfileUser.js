@@ -3,13 +3,8 @@ import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
 
-import {
-  ViewContainer,
-  Centered,
-  FlexRow,
-  SmallHeader,
-  Description,
-} from '../../components/Layout';
+import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
+import { SmallHeader, Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
 
 const mapStateToProps = state => ({
@@ -27,6 +22,7 @@ class ProfileUser extends React.Component {
   state = {
     loaded: false,
     age: '',
+    description: '',
   };
 
   componentWillReceiveProps(nextProps) {
@@ -83,7 +79,7 @@ class ProfileUser extends React.Component {
         return e.love === false;
       });
       return (
-        <ViewContainer style={styles.viewContent}>
+        <ViewContainerTop style={styles.viewContent}>
           <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>{this.props.userData.data.emoji}</Text>
@@ -107,7 +103,7 @@ class ProfileUser extends React.Component {
             </Description>
           </View>
           <TabProfile hate={hate} love={love} />
-        </ViewContainer>
+        </ViewContainerTop>
       );
     }
   };
@@ -116,6 +112,7 @@ class ProfileUser extends React.Component {
 const styles = StyleSheet.create({
   viewContent: {
     backgroundColor: '#e8e9e8',
+    paddingVertical: 0,
   },
   profileContainer: {
     alignItems: 'center',
