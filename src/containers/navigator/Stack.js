@@ -32,7 +32,7 @@ export default StackNavigator(
     LookingFor: { screen: LookingFor },
     Tabs: {
       screen: Tabs,
-      navigationOptions: { title: 'Friendship App' },
+      navigationOptions: { header: () => null },
     },
     EmojiPicker: {
       screen: EmojiPickerView,
