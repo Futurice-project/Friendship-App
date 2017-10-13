@@ -9,6 +9,7 @@ import InboxView from '../views/Inbox';
 import MyProfile from '../views/MyProfile';
 import LoginView from '../views/Login';
 import WelcomeView from '../views/Welcome';
+import Matching from '../views/Matching';
 //import PeopleView from '../views/PeopleList';
 
 const TabNavigatorConfig = {
@@ -36,6 +37,7 @@ export default TabNavigator(
     Inbox: { screen: InboxView },
     MyProfile: { screen: MyProfile },
     LookingFor: { screen: LookingFor },
+    Matching: { screen: Matching },
 
     // ## End TabNavigator Views ##
   },

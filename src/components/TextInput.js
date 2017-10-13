@@ -2,7 +2,10 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 //Contains that hold the input and the label
-const Container = styled.View`padding-left: 20;`;
+const Container = styled.View`
+  padding-left: 20;
+  padding-right: 20;
+`;
 
 //background color can be specified with backColor attribute
 const Input = styled.TextInput.attrs({
@@ -20,7 +23,7 @@ const Input = styled.TextInput.attrs({
   padding-left: 20px;
   text-align: left;
   height: 40;
-  width: 300;
+  min-width: 300;
 `;
 //this set the line inside the input
 const HorizontalLine = styled.View`
