@@ -25,6 +25,7 @@ const ButtonText = styled.Text`
   font-size: 20;
   font-weight: bold;
   text-align: center;
+  background-color: transparent;
   color: #2d4359;
 `;
 

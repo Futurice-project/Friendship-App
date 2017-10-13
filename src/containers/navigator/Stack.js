@@ -19,10 +19,10 @@ const StackNavigatorConfig = {
   navigationOptions: {
     header: props => <Header {...props} />,
     headerStyle: {
-      backgroundColor: '#39babd',
+      backgroundColor: '#e8e9e8',
       elevation: 0, // disable header elevation when TabNavigator visible
     },
-    headerTintColor: 'white',
+    headerTintColor: '#ff8a65',
   },
 };
 
