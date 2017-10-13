@@ -53,6 +53,12 @@ class PersonalityView extends React.Component {
             </Header>
             {this.renderTags()}
           </Padding>
+          <RoundTab
+            tint="#2d4359"
+            titleColor="#ffffff"
+            title="Seuraava"
+            style={{ flex: 1 }}
+          />
         </SignUpWrapper>
       </ScrollView>
     );
