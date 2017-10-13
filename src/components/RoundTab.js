@@ -24,7 +24,9 @@ const ButtonText = styled.Text`
   font-size: 20;
   font-weight: bold;
   text-align: center;
-  color: #2d4359;
+  color: ${props => {
+    return props.titleColor ? props.titleColor : '#2d4359';
+  }};
   background-color: transparent;
 `;
 
@@ -32,6 +34,7 @@ const ButtonText = styled.Text`
  * Styled RoundTab component
  * @param {string} tint - Changes the color of the image
  * @param {string} title - Sets the text of the button
+ * @param {string} titleColor - Set the color of the title
  * @param {function} onPress - Sets the function of the button
   */
 
@@ -56,7 +59,9 @@ export default class RoundTab extends React.Component {
       {/* {this.props.children} */}
       <TouchableOpacity onPress={this.props.onPress}>
         {this.props.children}
-        <ButtonText>{this.props.title}</ButtonText>
+        <ButtonText titleColor={this.props.titleColor}>
+          {this.props.title}
+        </ButtonText>
       </TouchableOpacity>
     </ImageContainer>
   );
