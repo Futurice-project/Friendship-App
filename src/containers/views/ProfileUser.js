@@ -17,7 +17,6 @@ import {
   FlexRow,
   SmallHeader,
 } from '../../components/Layout';
-import TextRectangle from '../../components/TextRectangle';
 import TabProfile from '../../components/TabProfile';
 
 const mapStateToProps = state => ({
@@ -108,7 +107,8 @@ class ProfileUser extends React.Component {
               )}
             </Text>
             <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
-            <SmallHeader>LOOKING FOR</SmallHeader>
+            <Text>LOOKING FOR</Text>
+
             <Text style={styles.lookingForText}>
               The events you will actively look friends for will be visible here
             </Text>

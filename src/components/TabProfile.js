@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import TextRectangle from './TextRectangle';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
@@ -10,7 +9,7 @@ import Tag from './Tags';
 const ButtonOption = styled.View`
   flex: 1;
   align-items: center;
-  marginBottom: 40;
+  marginBottom: 50;
   marginTop: 20;
 `;
 
