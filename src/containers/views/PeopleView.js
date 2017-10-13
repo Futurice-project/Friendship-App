@@ -1,22 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, FlatList, ActivityIndicator } from 'react-native';
-<<<<<<< HEAD
-import { SearchBar } from 'react-native-elements';
-import throttle from 'lodash/throttle';
-=======
 import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
 import { SearchBar } from 'react-native-elements';
+import throttle from 'lodash/throttle';
 
 import { Title, Header, SmallHeader, Description } from '../../components/Text';
->>>>>>> Css cleaning up and minor changes.
-import {
   ViewContainerTop,
   Centered,
   IconImage,
 } from '../../components/Layout';
 import Person from '../../components/Person';
+import Tag from '../../components/Tags';
+import RoundTab from '../../components/RoundTab';
 
 const mapStateToProps = state => ({
   usersSearch: state.usersSearch,
@@ -84,6 +81,7 @@ export class PeopleView extends React.Component {
     }
     return (
       <View>
+        <RoundTab tintColor="#fff" title="PEOPLE" />
         <Header> PEOPLE </Header>
         <Centered>
           <FlatList
@@ -110,21 +108,21 @@ export class PeopleView extends React.Component {
 
   render() {
     return (
-      <ViewContainerTop>
+      <ViewContainerTop style={{ backgroundColor: '#e8e9e8' }}>
         <SearchBar
           lightTheme
           containerStyle={{
-            backgroundColor: '#fff',
-            borderTopColor: '#fff',
-            borderBottomColor: '#fff',
+            backgroundColor: '#e8e9e8',
+            borderTopColor: '#e8e9e8',
+            borderBottomColor: '#e8e9e8',
             marginVertical: 10,
             marginHorizontal: 5,
           }}
-          inputStyle={{ backgroundColor: '#f1f1f3' }}
+          inputStyle={{ backgroundColor: '#fff' }}
           onChangeText={username => this.getUserByUsername(username)}
-          placeholder="Search"
           autoCapitalize="none"
           autoCorrect={false}
+          placeholder="Search People"
           clearIcon
         />
         {this.renderPeople()}
