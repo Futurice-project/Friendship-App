@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-
+import throttle from 'lodash/throttle';
 import {
   ViewContainerTop,
   Centered,
@@ -17,8 +17,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  refreshUsersSearch: username =>
-    dispatch(rest.actions.usersSearch.get({ username })),
+  refreshUsersSearch: username => {
+    /* .force() abort previous request if it performs and after that perform new request. This
+    method combines abort and direct call action methods. it prevent a warning about unhandled
+    promises rejection */
+    dispatch(rest.actions.usersSearch.force({ username }));
+  },
 });
 
 export class PeopleView extends React.Component {
@@ -56,18 +60,17 @@ export class PeopleView extends React.Component {
 
   handleEnd = () => {
     if (!this.onEndReachedCalledDuringMomentum) {
-      // there is an error when we change and delete the text in the search bar
-
       // fetch 10 more users from the db
       this.fetchData();
       this.onEndReachedCalledDuringMomentum = true;
     }
   };
 
-  getUserByUsername(username) {
+  // Creates a throttled function that only invokes func at most once per every 1 second.
+  getUserByUsername = throttle(username => {
     this.setState({ searchedUsername: username });
     this.props.refreshUsersSearch(username);
-  }
+  }, 1000);
 
   renderPeople() {
     if (this.props.usersSearch.loading) {
