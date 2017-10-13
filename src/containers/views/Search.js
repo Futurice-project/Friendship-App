@@ -1,24 +1,8 @@
 import React from 'react';
-import {
-  Image,
-  View,
-  Text,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  ListView,
-} from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { ListItem } from 'react-native-elements';
-import {
-  ViewContainer,
-  Centered,
-  FlexRow,
-  FullscreenCentered,
-} from '../../components/Layout';
-import TextRectangle from '../../components/TextRectangle';
+import { ViewContainer, FullscreenCentered } from '../../components/Layout';
 import Person from '../../components/Person';
-import TabProfile from '../../components/TabProfile';
 
 const mapStateToProps = state => {
   return { tagId: state.tagId };
@@ -26,7 +10,7 @@ const mapStateToProps = state => {
 
 class SearchList extends React.Component {
   static navigationOptions = {
-    title: 'Search for users with tag 4',
+    title: 'Search for users with tag ',
   };
 
   state = { data: {}, tagId: this.props.navigation.state.params.tagId };

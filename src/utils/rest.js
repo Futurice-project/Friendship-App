@@ -88,8 +88,8 @@ const rest = reduxApi({
       console.log('Error', err);
     }
     if (data) {
+      // console.log('Success', data);
       return data;
-      console.log('Success', data);
     }
     throw err;
   });

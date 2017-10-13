@@ -1,27 +1,13 @@
 import React from 'react';
-import {
-  Image,
-  View,
-  Text,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
 
-import {
-  ViewContainer,
-  Centered,
-  FlexRow,
-  SmallHeader,
-} from '../../components/Layout';
-import TextRectangle from '../../components/TextRectangle';
+import { ViewContainer, SmallHeader } from '../../components/Layout';
 import TabProfile from '../../components/TabProfile';
 
 const mapStateToProps = state => ({
-  userData: state.userDetails,
+  userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
 });
 
@@ -38,7 +24,8 @@ class ProfileUser extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.userData.loading && !nextProps.tagsForUser.loading) {
+    // render the profile user when we have the data.
+    if (!nextProps.userDetails.loading && !nextProps.tagsForUser.loading) {
       this.setState({ loaded: true });
       this.getAge();
     }
@@ -51,7 +38,7 @@ class ProfileUser extends React.Component {
   }
 
   getAge = () => {
-    const birthDay = new Date(this.props.userData.data.birthday);
+    const birthDay = new Date(this.props.userDetails.data.birthday);
     const now = new Date();
     let age = now.getFullYear() - birthDay.getFullYear();
     const m = now.getMonth() - birthDay.getMonth();
@@ -65,7 +52,7 @@ class ProfileUser extends React.Component {
     let ageName = '';
     const lastDigit = age.toString().substr(age.toString().length - 1);
     if (age < 20) {
-      ageName = age + ' years';
+      ageName = age + ' years old';
     } else if (early.indexOf(parseInt(lastDigit)) > -1) {
       ageName = 'early ' + (age - parseInt(lastDigit)) + "'s";
     } else if (mid.indexOf(parseInt(lastDigit)) > -1) {
@@ -93,16 +80,18 @@ class ProfileUser extends React.Component {
         <ViewContainer style={styles.signUpFinalStepHate}>
           <View style={styles.topPart}>
             <View style={styles.oval}>
-              <Text style={styles.emoji}>{this.props.userData.data.emoji}</Text>
+              <Text style={styles.emoji}>
+                {this.props.userDetails.data.emoji}
+              </Text>
             </View>
             <Text style={styles.username}>
-              {this.props.userData.data.username}
+              {this.props.userDetails.data.username}
             </Text>
             <Text style={styles.iLoveCampingRapA}>
               {this.state.age}
               , male
-              {this.props.userData.data.location ? (
-                ', ' + this.props.userData.data.location
+              {this.props.userDetails.data.location ? (
+                ', ' + this.props.userDetails.data.location
               ) : (
                 ''
               )}

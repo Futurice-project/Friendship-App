@@ -1,20 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, FlatList, ActivityIndicator } from 'react-native';
-import { NavigationActions } from 'react-navigation';
 import { SearchBar } from 'react-native-elements';
 
-import { Title } from '../../components/Text';
 import {
   ViewContainerTop,
   Centered,
-  FullscreenCentered,
   IconImage,
   SmallHeader,
 } from '../../components/Layout';
 import rest from '../../utils/rest';
 import Person from '../../components/Person';
-import Tag from '../../components/Tags';
 
 const mapStateToProps = state => ({
   usersSearch: state.usersSearch,
@@ -117,6 +113,8 @@ export class PeopleView extends React.Component {
           inputStyle={{ backgroundColor: '#f1f1f3' }}
           onChangeText={username => this.getUserByUsername(username)}
           placeholder="Search"
+          autoCapitalize="none"
+          autoCorrect={false}
           clearIcon
         />
         {this.renderPeople()}
