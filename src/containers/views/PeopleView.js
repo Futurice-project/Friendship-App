@@ -113,6 +113,7 @@ export class PeopleView extends React.Component {
             borderTopColor: '#fff',
             borderBottomColor: '#fff',
             marginVertical: 10,
+            marginHorizontal: 5,
           }}
           inputStyle={{ backgroundColor: '#f1f1f3' }}
           onChangeText={username => this.getUserByUsername(username)}

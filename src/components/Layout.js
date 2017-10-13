@@ -75,6 +75,15 @@ export const SmallHeader = styled.Text`
   color: #3b3b3d;
   margin-bottom: 14px;
 `;
+export const Description = styled.Text`
+  font-size: 16px;
+  line-height: 24;
+  font-weight: 300;
+  text-align: center;
+  color: #4a4a4a;
+  margin-bottom: 14px;
+`;
+
 export const ProfileIconCard = styled.View`
   flex: 1;
   height: 50px;

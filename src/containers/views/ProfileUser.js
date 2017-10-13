@@ -16,6 +16,7 @@ import {
   Centered,
   FlexRow,
   SmallHeader,
+  Description,
 } from '../../components/Layout';
 import TextRectangle from '../../components/TextRectangle';
 import TabProfile from '../../components/TabProfile';
@@ -90,15 +91,15 @@ class ProfileUser extends React.Component {
         return e.love === false;
       });
       return (
-        <ViewContainer style={styles.signUpFinalStepHate}>
-          <View style={styles.topPart}>
-            <View style={styles.oval}>
+        <ViewContainer style={styles.viewContent}>
+          <View style={styles.profileContainer}>
+            <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>{this.props.userData.data.emoji}</Text>
             </View>
             <Text style={styles.username}>
               {this.props.userData.data.username}
             </Text>
-            <Text style={styles.iLoveCampingRapA}>
+            <Description>
               {this.state.age}
               , male
               {this.props.userData.data.location ? (
@@ -106,12 +107,12 @@ class ProfileUser extends React.Component {
               ) : (
                 ''
               )}
-            </Text>
-            <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
+            </Description>
+            <Description>I love ... and hate...</Description>
             <SmallHeader>LOOKING FOR</SmallHeader>
-            <Text style={styles.lookingForText}>
+            <Description>
               The events you will actively look friends for will be visible here
-            </Text>
+            </Description>
           </View>
           <TabProfile hate={hate} love={love} />
         </ViewContainer>
@@ -121,18 +122,15 @@ class ProfileUser extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  signUpFinalStepHate: {
+  viewContent: {
     backgroundColor: '#e8e9e8',
-    marginTop: 23,
   },
-  topPart: {
+  profileContainer: {
     alignItems: 'center',
     height: 300,
+    marginTop: 23,
   },
-  botPart: {
-    height: 500,
-  },
-  oval: {
+  whiteCircle: {
     width: 64,
     height: 64,
     borderRadius: 64,
@@ -145,7 +143,6 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   username: {
-    width: 223,
     height: 27,
     fontSize: 20,
     fontWeight: 'bold',
@@ -153,33 +150,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#60686d',
     marginTop: 7,
-  },
-  iLoveCampingRapA: {
-    width: 300,
-    height: 24,
-    fontSize: 16,
-    fontWeight: '300',
-    lineHeight: 24,
-    textAlign: 'center',
-    color: '#4a4a4a',
-    marginBottom: 14,
-  },
-  lookingFor: {
-    height: 18,
-    fontSize: 13,
-    letterSpacing: 1.59,
-    textAlign: 'center',
-    color: '#3b3b3d',
-    marginBottom: 14,
-  },
-  lookingForText: {
-    width: 300,
-    height: 72,
-    fontSize: 16,
-    fontWeight: '300',
-    lineHeight: 24,
-    textAlign: 'left',
-    color: '#4a4a4a',
   },
 });
 
