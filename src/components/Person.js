@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     /*    fontFamily: 'NunitoSans-Light', */
   },
   TextCompatibility: {
-    fontSize: 18,
+    fontSize: 12,
     /*    fontFamily: 'NunitoSans-Light', */
   },
 
@@ -107,8 +107,10 @@ const styles = StyleSheet.create({
 
   topText: {
     color: 'white',
+    maxHeight: 130,
     marginVertical: 30,
     marginHorizontal: 20,
+    lineHeight: 21,
     fontSize: 18,
     /*    fontFamily: 'Avenir', */
   },
