@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
  */
 export class WelcomeView extends React.Component {
   static navigationOptions = {
-    title: 'Welcome',
     header: () => null,
   };
 
@@ -147,7 +146,11 @@ export class WelcomeView extends React.Component {
       </LaunchingMessage>
 
       <LaunchingNavigationOptions>
-        <RoundTab title="Preview" onPress={this.props.openSettings}>
+        <RoundTab
+          title="Preview"
+          onPress={this.props.openSettings}
+          tint="#ff8a65"
+        >
           <PreviewLogo />
         </RoundTab>
         {/* <Preview onPress={this.props.openSettings}>
