@@ -21,6 +21,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     lineHeight: 34,
     textAlign: 'center',
-    color: '#000000',
+    color: '#ffffff',
   },
 });
