@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import rest from '../../utils/rest';
 import styled from 'styled-components/native';
 
+import _ from 'lodash';
+import RoundTab from '../../components/RoundTab';
 import { SignUpWrapper, Padding, Centered } from '../../components/Layout';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text, ScrollView } from 'react-native';
 import StyledSlider from '../../components/StyledSlider';
 
 class PersonalityView extends React.Component {
@@ -23,34 +25,36 @@ class PersonalityView extends React.Component {
     return string.split('').join('\u200A'.repeat(count));
   }
 
+  renderTags() {
+    if (this.props.personalities) {
+      return _.map(this.props.personalities.data.data, (personality, index) => (
+        <TagWrapper key={index}>
+          <Text style={styles.tagTitle}>{personality.name.toUpperCase()}</Text>
+          <StyledSlider />
+        </TagWrapper>
+      ));
+    }
+  }
+
   render() {
     return (
-      <SignUpWrapper>
-        <Padding>
-          <Header>
-            <HeaderRectangle>
-              <Text style={styles.title}>Asiat, jotka kuvaavaat minua</Text>
-            </HeaderRectangle>
-            <Text style={styles.subTitle}>
-              {this.applyLetterSpacing('(Nämä tulevat näkymään profiilisasi)')}
-            </Text>
-          </Header>
-          <TagWrapper>
-            <Text style={styles.tagTitle}>
-              {this.applyLetterSpacing('testtststt').toUpperCase()}
-            </Text>
-            <StyledSlider />
-          </TagWrapper>
-          <TagWrapper>
-            <Text style={styles.tagTitle}>
-              {this.applyLetterSpacing(
-                'still have to check spacing and add redux',
-              ).toUpperCase()}
-            </Text>
-            <StyledSlider />
-          </TagWrapper>
-        </Padding>
-      </SignUpWrapper>
+      <ScrollView>
+        <SignUpWrapper>
+          <Padding>
+            <Header>
+              <HeaderRectangle>
+                <Text style={styles.title}>Asiat, jotka kuvaavaat minua</Text>
+              </HeaderRectangle>
+              <Text style={styles.subTitle}>
+                {this.applyLetterSpacing(
+                  '(Nämä tulevat näkymään profiilisasi)',
+                )}
+              </Text>
+            </Header>
+            {this.renderTags()}
+          </Padding>
+        </SignUpWrapper>
+      </ScrollView>
     );
   }
 }
