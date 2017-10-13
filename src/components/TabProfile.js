@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Image, View, Text, StyleSheet } from 'react-native';
-import TextRectangle from './TextRectangle';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';

@@ -2,17 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import rest from '../../utils/rest';
 import { SearchBar } from 'react-native-elements';
 
-import { Title } from '../../components/Text';
+import { Title, Header, SmallHeader, Description } from '../../components/Text';
 import {
   ViewContainerTop,
   Centered,
   FullscreenCentered,
   IconImage,
-  SmallHeader,
 } from '../../components/Layout';
-import rest from '../../utils/rest';
 import Person from '../../components/Person';
 import Tag from '../../components/Tags';
 
@@ -79,7 +78,7 @@ export class PeopleView extends React.Component {
     }
     return (
       <View>
-        <SmallHeader> People </SmallHeader>
+        <Header> PEOPLE </Header>
         <Centered>
           <FlatList
             data={
