@@ -35,7 +35,7 @@ class ProfileUser extends React.Component {
     if (!nextProps.userDetails.loading && !nextProps.tagsForUser.loading) {
       this.setState({
         loaded: true,
-        profileTitle: nextProps.userData.data.username,
+        profileTitle: nextProps.userDetails.data.username,
       });
       this.getAge();
     }
@@ -90,7 +90,9 @@ class ProfileUser extends React.Component {
         <ViewContainerTop style={styles.viewContent}>
           <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
-              <Text style={styles.emoji}>{this.props.userData.data.emoji}</Text>
+              <Text style={styles.emoji}>
+                {this.props.userDetails.data.emoji}
+              </Text>
             </View>
             <Text style={styles.username}>
               {this.props.userDetails.data.username}
