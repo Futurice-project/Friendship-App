@@ -31,11 +31,19 @@ class ProfileUser extends React.Component {
     loaded: false,
     age: '',
     description: '',
+    profileTitle: 'Profile Page',
+  };
+
+  static navigationOptions = {
+    title: this.state.profileTitle,
   };
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.userData.loading && !nextProps.tagsForUser.loading) {
-      this.setState({ loaded: true });
+      this.setState({
+        loaded: true,
+        profileTitle: nextProps.userData.data.username,
+      });
       this.getAge();
     }
   }

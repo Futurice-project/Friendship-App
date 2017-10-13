@@ -55,7 +55,7 @@ export class PeopleView extends React.Component {
         this.setState({ currentPage: this.state.currentPage + 1 });
         this.setState({ data: [...this.state.data, ...response] });
       })
-      .catch(err => console.error(err + 'error fetchData in peopleView.js'));
+      .catch(err => console.error(err + ' error fetchData in peopleView.js'));
   };
 
   handleEnd = () => {
@@ -79,9 +79,8 @@ export class PeopleView extends React.Component {
     }
     return (
       <View>
-        <RoundTab tintColor="#fff" title="PEOPLE" />
-        <Header> PEOPLE </Header>
-        <Centered>
+        <RoundTab tint="#ffffff" title="PEOPLE" />
+        <Centered style={{ paddingBottom: 45, backgroundColor: '#fff' }}>
           <FlatList
             data={
               this.state.searchedUsername.length > 0 ? (
