@@ -110,6 +110,7 @@ class ProfileUser extends React.Component {
             </Description>
           </View>
           <TabProfile hate={hate} love={love} />
+          <Text>fda</Text>
         </ViewContainerTop>
       );
     }
