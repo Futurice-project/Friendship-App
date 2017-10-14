@@ -146,11 +146,7 @@ export class WelcomeView extends React.Component {
       </LaunchingMessage>
 
       <LaunchingNavigationOptions>
-        <RoundTab
-          title="Preview"
-          onPress={this.props.openSettings}
-          tint="#ff8a65"
-        >
+        <RoundTab title="Preview" onPress={this.props.openSettings}>
           <PreviewLogo />
         </RoundTab>
         {/* <Preview onPress={this.props.openSettings}>

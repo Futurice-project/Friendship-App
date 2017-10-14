@@ -1,9 +1,9 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItem } from 'react-native-elements';
 import {
-  ViewContainer,
+  ViewContainerTop,
   Centered,
   FlexRow,
   FullscreenCentered,
@@ -35,22 +35,30 @@ class SearchList extends React.Component {
       .then(response => response.json())
       .then(data => this.setState({ data }));
   }
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: '100%',
+          backgroundColor: '#CED0CE',
+        }}
+      />
+    );
+  };
 
   render = () => (
-    <ViewContainer>
+    <ViewContainerTop>
       <FullscreenCentered>
         <FlatList
           data={this.state.data}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
-          // onEndReached={this.handleEnd}
-          // onEndReachedThreshold={0.4}
-          // style={{ flex: 1 }}
-          // horizontal
+          ItemSeparatorComponent={this.renderSeparator}
         />
         {/* {this.renderSpinner()} */}
       </FullscreenCentered>
-    </ViewContainer>
+    </ViewContainerTop>
   );
 }
 

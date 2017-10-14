@@ -9,7 +9,7 @@ const { width, height } = resolveAssetSource(image);
 //style for the image
 const ImageContainer = styled.Image`
   tintColor: ${props => {
-    return props.tint ? props.tint : '#000';
+    return props.tint ? props.tint : '#ff8a65';
   }};
   margin-bottom: 0;
   right: 0;
