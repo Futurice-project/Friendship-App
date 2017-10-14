@@ -6,6 +6,7 @@ import LaunchingPageLogoAsset from '../../../assets/drawable-mdpi/friendship_log
 import PreviewLogoAsset from '../../../assets/drawable-mdpi/icon_preview.png';
 import NavigationBackgroundAsset from '../../../assets/drawable-mdpi/combined_shape_copy_2.png';
 import Button from '../../components/Button';
+import RoundTab from '../../components/RoundTab';
 import { Image, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 
@@ -17,10 +18,17 @@ const mapDispatchToProps = dispatch => ({
         routeName: 'Tabs',
       }),
     ),
+
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
         routeName: 'SignUp',
+      }),
+    ),
+  openLabel: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'LookingFor',
       }),
     ),
   openLogIn: () =>
@@ -66,6 +74,7 @@ const Preview = styled.TouchableOpacity`
 const Connection = styled.View`
   flex: 1;
   flex-direction: row;
+  background-color: #ff8a65;
 `;
 
 /* Container for each options */
@@ -99,6 +108,7 @@ const LaunchingPageMessage = styled.Text`
 const PreviewLogo = styled.Image.attrs({
   source: PreviewLogoAsset,
   resizeMode: 'contain',
+  alignSelf: 'center',
 })`
   width: 50px;
   height: 24.6px;
@@ -125,7 +135,6 @@ const styles = StyleSheet.create({
  */
 export class WelcomeView extends React.Component {
   static navigationOptions = {
-    title: 'Welcome',
     header: () => null,
   };
 
@@ -135,45 +144,40 @@ export class WelcomeView extends React.Component {
         <LaunchingPageLogo />
         <LaunchingPageMessage> YEAH! & NAAAH</LaunchingPageMessage>
       </LaunchingMessage>
-      <Image
-        source={NavigationBackgroundAsset}
-        style={{
-          flex: 1,
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-        }}
-      >
-        <LaunchingNavigationOptions>
-          <Preview onPress={this.props.openSettings}>
-            <PreviewLogo />
-            <Text style={styles.preview}> Preview</Text>
-          </Preview>
-          <Connection>
-            <ConnectionOption>
-              <Button
-                title="Join"
-                primary
-                border
-                textColor="green"
-                size="half"
-                color="light"
-                onPress={this.props.openSignUp}
-              />
-            </ConnectionOption>
-            <ConnectionOption>
-              <Button
-                title="Log In"
-                border
-                textColor="white"
-                color="light"
-                size="half"
-                onPress={this.props.openSettings}
-              />
-            </ConnectionOption>
-          </Connection>
-        </LaunchingNavigationOptions>
-      </Image>
+
+      <LaunchingNavigationOptions>
+        <RoundTab title="Preview" onPress={this.props.openSettings}>
+          <PreviewLogo />
+        </RoundTab>
+        {/* <Preview onPress={this.props.openSettings}>
+						<PreviewLogo />
+						<Text style={styles.preview}> Preview</Text>
+					</Preview>
+					 */}
+        <Connection>
+          <ConnectionOption>
+            <Button
+              title="Join"
+              primary
+              border
+              textColor="green"
+              size="half"
+              color="light"
+              onPress={this.props.openSignUp}
+            />
+          </ConnectionOption>
+          <ConnectionOption>
+            <Button
+              title="Log In"
+              border
+              textColor="white"
+              color="light"
+              size="half"
+              onPress={this.props.openLabel}
+            />
+          </ConnectionOption>
+        </Connection>
+      </LaunchingNavigationOptions>
     </LaunchingPageWrapper>
   );
 }

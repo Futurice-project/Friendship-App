@@ -1,12 +1,17 @@
 import React from 'react';
 import styled from 'styled-components/native';
-
 import { ScrollView, StyleSheet, TouchableHighlight, Text } from 'react-native';
 
 const styles = StyleSheet.create({
   contentContainerStyle: {
     minHeight: '100%',
     justifyContent: 'center',
+    paddingVertical: 10,
+  },
+  contentContainerStyleTop: {
+    minHeight: '100%',
+    justifyContent: 'flex-start',
+    paddingVertical: 10,
   },
 });
 
@@ -14,6 +19,18 @@ export const ViewContainer = styled.ScrollView.attrs({
   contentContainerStyle: styles.contentContainerStyle,
 })`
   background-color: #2a343c;
+`;
+
+export const ViewContainerLight = styled.ScrollView.attrs({
+  contentContainerStyle: styles.contentContainerStyle,
+})`
+  background-color: #ffffff;
+`;
+
+export const ViewContainerTop = styled.ScrollView.attrs({
+  contentContainerStyle: styles.contentContainerStyleTop,
+})`
+  background-color: #ffffff;
 `;
 
 export const Padding = styled.View`padding: 16px;`;
@@ -44,35 +61,6 @@ export const IconImage = styled.Image`
 `;
 
 // Styling for inbox
-export const MessageCard = styled.View`
-  flex-direction: row;
-  margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 20px;
-  padding-top: 10px;
-  padding-bottom: 12px;
-  border: 0px solid #ddd;
-  border-bottom-width: 1px;
-`;
-
-export const ProfileIconCard = styled.View`
-  flex: 1;
-  height: 50px;
-`;
-
-export const ProfileImage = styled.Image`
-  ${props => (props.width ? `width: ${props.width}` : 'width: 50px;')};
-  ${props => (props.height ? `height: ${props.height}` : 'height: 50px;')};
-  ${props => (props.tintColor ? `tintColor: ${props.tintColor}` : undefined)};
-  border-radius: 50;
-  border-bottom-left-radius: 50;
-  border-bottom-right-radius: 50;
-  border-top-left-radius: 50;
-  border-top-right-radius: 50;
-`;
-
-export const MessageContent = styled.View`flex: 4;`;
-
 export const CircleView = styled.View`
   ${props => (props.width ? `width: ${props.width}` : 'width: 50px;')};
   ${props => (props.height ? `height: ${props.height}` : 'height: 50px;')};
@@ -95,38 +83,24 @@ export const ChatMessageCard = styled.View`
   flex: 1;
 `;
 
-export const TextMessageCard = styled.View`
-  border-radius: 10;
-  padding: 12px;
-  max-width: 300px;
-  margin-right: 10px;
-  margin-top: 5px;
-  margin-bottom: 10px;
-`;
-
-export const ReceivingCard = TextMessageCard.extend`
-  background-color: #f9efcb;
-  align-self: flex-start;
-  margin-left: 10px;
-`;
-
-export const SendingCard = TextMessageCard.extend`
-  background-color: #6cc5c9;
-  align-self: flex-end;
-  margin-right: 10px;
-`;
-
-export const TextInputCard = styled.View`
-  height: 60px;
-  background-color: #f0fafb;
-  flex-direction: row;
-`;
-
 export const ChatInputButtonCard = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
 `;
+
+export const MessageCard = styled.View`
+  flex-direction: row;
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 12px;
+  border: 0px solid #ddd;
+  border-bottom-width: 1px;
+`;
+
+export const MessageContent = styled.View`flex: 4;`;
 
 export const PopUpMenuCard = styled.View`
   width: 120;
@@ -142,8 +116,51 @@ export const PopUpMenuCard = styled.View`
   z-index: 10;
 `;
 
+export const ProfileIconCard = styled.View`
+  flex: 1;
+  height: 50px;
+`;
+
+export const ProfileImage = styled.Image`
+  ${props => (props.width ? `width: ${props.width}` : 'width: 50px;')};
+  ${props => (props.height ? `height: ${props.height}` : 'height: 50px;')};
+  ${props => (props.tintColor ? `tintColor: ${props.tintColor}` : undefined)};
+  border-radius: 50;
+  border-bottom-left-radius: 50;
+  border-bottom-right-radius: 50;
+  border-top-left-radius: 50;
+  border-top-right-radius: 50;
+`;
+
+export const TextMessageCard = styled.View`
+  border-radius: 10;
+  padding: 12px;
+  max-width: 300px;
+  margin-right: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+`;
+
+export const ReceivingCard = TextMessageCard.extend`
+  background-color: #f9efcb;
+  align-self: flex-start;
+  margin-left: 10px;
+`;
+
+export const TextInputCard = styled.View`
+  height: 60px;
+  background-color: #f0fafb;
+  flex-direction: row;
+`;
+
 export const TouchableHighlightPadding = styled.TouchableHighlight`
   padding: 10px;
+`;
+
+export const SendingCard = TextMessageCard.extend`
+  background-color: #6cc5c9;
+  align-self: flex-end;
+  margin-right: 10px;
 `;
 
 export class TouchableHighlightButton extends React.Component {
@@ -156,7 +173,6 @@ export class TouchableHighlightButton extends React.Component {
     </TouchableHighlightPadding>
   );
 }
-
 // -- Styling for inbox end
 
 export const SignUpWrapper = styled.View`

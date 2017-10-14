@@ -3,10 +3,12 @@ import React from 'react';
 
 //style for the button
 export const LabelButton = styled.TouchableOpacity`
-  width: 150;
+  min-width: 150;
   height: 50;
   border-radius: 100;
   justify-content: center;
+  margin-right: 2px;
+  margin-left: 2px;
   background-color: ${props => {
     if (props.disabled === true) {
       return 'rgba(179, 171, 171, 0.5)';
@@ -29,7 +31,8 @@ export const LabelText = styled.Text`
   font-size: 14;
   letter-spacing: 1.71;
   text-align: left;
-  padding-left: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
   color: ${props => {
     if (props.disabled === true) {
       return '#3b3b3d';

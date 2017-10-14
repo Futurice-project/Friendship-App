@@ -17,7 +17,7 @@ If you have moved the 'Tabs' route, you need to:
 
 export const handleBackButton = ({ navigatorState }, dispatch) => {
   const tabNavigatorIndex = navigatorState.routes.findIndex(
-    route => route.routeName === 'Tabs',
+    route => route.routeName === 'Welcome',
   );
 
   if (tabNavigatorIndex === -1) {
@@ -39,13 +39,14 @@ export const handleBackButton = ({ navigatorState }, dispatch) => {
 const mapStateToProps = ({ navigatorState }) => ({ navigatorState });
 
 export class NavigatorView extends React.Component {
-  render = () =>
+  render = () => (
     <RootNavigator
       navigation={addNavigationHelpers({
         dispatch: this.props.dispatch,
         state: this.props.navigatorState,
       })}
-    />;
+    />
+  );
 }
 
 export { RootNavigator };

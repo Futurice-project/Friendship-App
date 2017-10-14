@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import { persistStore } from 'redux-persist';
+import rest from './rest';
 
 const persistConfig = {
   storage: AsyncStorage,
@@ -7,10 +8,14 @@ const persistConfig = {
   // blacklisted reducers, useful when debugging to recover from broken state
   blacklist: [
     'navigatorState',
-    'userDetails',
     'chatRooms',
     'chatRoomMessages',
     'sendMessage',
+    'users',
+    'usersByPage',
+    'usersSearch',
+    'userDetails',
+    'userTag',
   ],
 };
 
