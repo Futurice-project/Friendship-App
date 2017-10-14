@@ -6,6 +6,7 @@ import {
   MessageCard,
   ProfileIconCard,
   MessageContent,
+  ViewContainerTop,
 } from '../../components/Layout';
 import { SenderName, LastMessage } from '../../components/Text';
 
@@ -20,7 +21,7 @@ export class InboxView extends React.Component {
     ),
   };
   render = () => (
-    <View>
+    <ViewContainerTop>
       <MessageCard>
         <ProfileIconCard>
           <View
@@ -77,7 +78,7 @@ export class InboxView extends React.Component {
           <LastMessage>What's up!</LastMessage>
         </MessageContent>
       </MessageCard>
-    </View>
+    </ViewContainerTop>
   );
 }
 

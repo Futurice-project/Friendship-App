@@ -3,12 +3,14 @@ import React from 'react';
 import { Image, Dimensions, TouchableOpacity } from 'react-native';
 import resolveAssetSource from 'resolveAssetSource';
 import image from '../../assets/img/roundTab/roundTab.png';
+
 const { width, height } = resolveAssetSource(image);
 
 //style for the image
-const ImageContainer = styled.Image.attrs({
-  tintColor: props => props.tint,
-})`
+const ImageContainer = styled.Image`
+  tintColor: ${props => {
+    return props.tint ? props.tint : '#ff8a65';
+  }};
   margin-bottom: 0;
   right: 0;
   left: 0;

@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
  */
 export class WelcomeView extends React.Component {
   static navigationOptions = {
-    title: 'Welcome',
     header: () => null,
   };
 

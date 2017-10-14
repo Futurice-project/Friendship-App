@@ -1,16 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, FlatList, ActivityIndicator } from 'react-native';
+import { NavigationActions } from 'react-navigation';
+import rest from '../../utils/rest';
 import { SearchBar } from 'react-native-elements';
 import throttle from 'lodash/throttle';
-import {
-  ViewContainerTop,
-  Centered,
-  IconImage,
-  SmallHeader,
-} from '../../components/Layout';
-import rest from '../../utils/rest';
+
+import { Title, Header, SmallHeader, Description } from '../../components/Text';
+
+import { ViewContainerTop, Centered, IconImage } from '../../components/Layout';
 import Person from '../../components/Person';
+import Tag from '../../components/Tags';
+import RoundTab from '../../components/RoundTab';
 
 const mapStateToProps = state => ({
   usersSearch: state.usersSearch,
@@ -55,7 +56,7 @@ export class PeopleView extends React.Component {
         this.setState({ currentPage: this.state.currentPage + 1 });
         this.setState({ data: [...this.state.data, ...response] });
       })
-      .catch(err => console.error(err + 'error fetchData in peopleView.js'));
+      .catch(err => console.error(err + ' error fetchData in peopleView.js'));
   };
 
   handleEnd = () => {
@@ -78,8 +79,8 @@ export class PeopleView extends React.Component {
     }
     return (
       <View>
-        <SmallHeader> People </SmallHeader>
-        <Centered>
+        <RoundTab tint="#ffffff" title="PEOPLE" />
+        <Centered style={{ paddingBottom: 45, backgroundColor: '#fff' }}>
           <FlatList
             data={
               this.state.searchedUsername.length > 0 ? (
@@ -104,20 +105,21 @@ export class PeopleView extends React.Component {
 
   render() {
     return (
-      <ViewContainerTop>
+      <ViewContainerTop style={{ backgroundColor: '#e8e9e8' }}>
         <SearchBar
           lightTheme
           containerStyle={{
-            backgroundColor: '#fff',
-            borderTopColor: '#fff',
-            borderBottomColor: '#fff',
+            backgroundColor: '#e8e9e8',
+            borderTopColor: '#e8e9e8',
+            borderBottomColor: '#e8e9e8',
             marginVertical: 10,
+            marginHorizontal: 5,
           }}
-          inputStyle={{ backgroundColor: '#f1f1f3' }}
+          inputStyle={{ backgroundColor: '#fff' }}
           onChangeText={username => this.getUserByUsername(username)}
-          placeholder="Search"
           autoCapitalize="none"
           autoCorrect={false}
+          placeholder="Search People"
           clearIcon
         />
         {this.renderPeople()}

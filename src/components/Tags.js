@@ -19,19 +19,10 @@ const mapDispatchToProps = dispatch => ({
 
 class Tag extends React.Component {
   render() {
-    if (this.props.dark) {
-      return (
-        <TouchableOpacity
-          style={styles.dark}
-          onPress={() => this.props.openSearchTag(this.props.data.id)}
-        >
-          <Text style={styles.item}>{this.props.data.name}</Text>
-        </TouchableOpacity>
-      );
-    }
+    let color = this.props.dark ? '#6eb1ea' : '#87df91';
     return (
       <TouchableOpacity
-        style={styles.rectangle}
+        style={[styles.rectangle, { backgroundColor: color }]}
         onPress={() => this.props.openSearchTag(this.props.data.id)}
       >
         <Text style={styles.item}>{this.props.data.name}</Text>
@@ -47,17 +38,8 @@ const styles = StyleSheet.create({
     marginRight: 7,
     height: 39,
     borderRadius: 76,
-    backgroundColor: '#87df91',
   },
-  dark: {
-    padding: 10,
-    marginTop: 5,
-    marginBottom: 5,
-    marginRight: 7,
-    height: 39,
-    borderRadius: 76,
-    backgroundColor: '#6eb1ea',
-  },
+
   item: {
     height: 20,
     // fontFamily: "NunitoSans",
