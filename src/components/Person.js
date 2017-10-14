@@ -10,11 +10,11 @@ import styled from 'styled-components/native';
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({
-  openProfile: personId =>
+  openProfile: (personId, personName) =>
     dispatch(
       NavigationActions.navigate({
         routeName: 'ProfileUser',
-        params: { personId },
+        params: { personId, personName },
       }),
     ),
 });
@@ -37,7 +37,11 @@ class Person extends React.Component {
 
           <TouchableOpacity
             style={styles.nameView}
-            onPress={() => this.props.openProfile(this.props.data.id)}
+            onPress={() =>
+              this.props.openProfile(
+                this.props.data.id,
+                this.props.data.username,
+              )}
           >
             <Text style={styles.textName}>{this.props.data.username}</Text>
           </TouchableOpacity>

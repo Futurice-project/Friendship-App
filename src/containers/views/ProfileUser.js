@@ -26,9 +26,9 @@ class ProfileUser extends React.Component {
     profileTitle: 'Profile Page',
   };
 
-  static navigationOptions = {
-    title: this.state.profileTitle,
-  };
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.state.params.personName,
+  });
 
   componentWillReceiveProps(nextProps) {
     // render the profile user when we have the data.
