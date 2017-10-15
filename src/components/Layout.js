@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   contentContainerStyleTop: {
     minHeight: '100%',
     justifyContent: 'flex-start',
-    paddingVertical: 10,
+    paddingTop: 10,
   },
 });
 
