@@ -6,12 +6,12 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     minHeight: '100%',
     justifyContent: 'center',
-    paddingVertical: 10,
+    paddingTop: 10,
   },
   contentContainerStyleTop: {
     minHeight: '100%',
     justifyContent: 'flex-start',
-    paddingVertical: 10,
+    paddingTop: 10,
   },
 });
 
