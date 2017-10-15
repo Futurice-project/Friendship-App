@@ -47,7 +47,7 @@ class Person extends React.Component {
           </TouchableOpacity>
         </View>
 
-        <Text style={{ fontSize: 12 }}>
+        <Text style={{ fontSize: 12, marginTop: 5 }}>
           {' '}
           Compatible?
           <Text style={{ fontWeight: 'bold' }}>
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     width: 200,
     marginLeft: 20,
     backgroundColor: '#939795',
+    borderRadius: 3,
   },
   topText: {
     color: 'white',
@@ -117,20 +118,22 @@ const styles = StyleSheet.create({
     flex: 30,
     alignSelf: 'flex-end',
     flexDirection: 'column',
+    borderBottomLeftRadius: 3,
+    borderBottomRightRadius: 3,
   },
   whiteCircle: {
     width: 66,
     height: 66,
     borderRadius: 132 / 2,
     backgroundColor: 'white',
+    alignItems: 'center',
     marginRight: 10,
     flex: 40,
   },
   emoji: {
     backgroundColor: 'transparent',
-    alignSelf: 'center',
+    marginTop: 5,
     fontSize: 47,
-    alignItems: 'center',
   },
   listItem: {
     // alignItems: 'center',
