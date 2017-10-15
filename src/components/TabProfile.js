@@ -46,25 +46,9 @@ export default class TabProfile extends PureComponent {
     }
   };
 
-  render = () => {
-    return (
-      <View>
-        <ScrollableTabView
-          onChangeTab={this.handleChangeScreen}
-          style={{ marginTop: 0, backgroundColor: this.state.backcolor }}
-          initialPage={0}
-          renderTabBar={() => <ScrollableTabBar />}
-          tabBarActiveTextColor={this.state.colorActif}
-          tabBarInactiveTextColor={this.state.colorInactif}
-        >
-          <View tabLabel="NAAHS" style={styles.tagList}>
-            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} dark />)}
-          </View>
-          <View tabLabel="YEAH" style={styles.tagList}>
-            {this.props.love.map(tag => <Tag key={tag.id} data={tag} />)}
-          </View>
-        </ScrollableTabView>
-
+  renderSendMsg() {
+    if (!this.props.myprofile) {
+      return (
         <View style={{ backgroundColor: this.state.backcolor }}>
           <ButtonOption>
             <TouchableOpacity
@@ -85,6 +69,29 @@ export default class TabProfile extends PureComponent {
             </TouchableOpacity>
           </ButtonOption>
         </View>
+      );
+    }
+  }
+
+  render = () => {
+    return (
+      <View>
+        <ScrollableTabView
+          onChangeTab={this.handleChangeScreen}
+          style={{ marginTop: 0, backgroundColor: this.state.backcolor }}
+          initialPage={0}
+          renderTabBar={() => <ScrollableTabBar />}
+          tabBarActiveTextColor={this.state.colorActif}
+          tabBarInactiveTextColor={this.state.colorInactif}
+        >
+          <View tabLabel="NAAHS" style={styles.tagList}>
+            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} dark />)}
+          </View>
+          <View tabLabel="YEAH" style={styles.tagList}>
+            {this.props.love.map(tag => <Tag key={tag.id} data={tag} />)}
+          </View>
+        </ScrollableTabView>
+        {this.renderSendMsg()}
       </View>
     );
   };

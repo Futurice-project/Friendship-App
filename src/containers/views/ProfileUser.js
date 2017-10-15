@@ -6,8 +6,10 @@ import rest from '../../utils/rest';
 import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
 import { SmallHeader, Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
+import PopUpMenu from '../../components/PopUpMenu';
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
 });
@@ -35,7 +37,6 @@ class ProfileUser extends React.Component {
     if (!nextProps.userDetails.loading && !nextProps.tagsForUser.loading) {
       this.setState({
         loaded: true,
-        profileTitle: nextProps.userDetails.data.username,
       });
       this.getAge();
     }
@@ -77,6 +78,13 @@ class ProfileUser extends React.Component {
   };
 
   render = () => {
+    if (!this.props.auth.data.decoded) {
+      return (
+        <View style={{ marginTop: 30 }}>
+          <Text style={{ alignSelf: 'center' }}>You need to sign in!</Text>
+        </View>
+      );
+    }
     if (!this.state.loaded) {
       return <ActivityIndicator />;
     } else {
