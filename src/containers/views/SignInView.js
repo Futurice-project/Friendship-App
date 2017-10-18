@@ -33,8 +33,9 @@ const mapDispatchToProps = dispatch => ({
     ),
   openWelcomeScreen: () =>
     dispatch(
-      NavigationActions.navigate({
-        routeName: 'Welcome',
+      NavigationActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
       }),
     ),
 });
@@ -77,7 +78,7 @@ class LoginView extends React.Component {
             <HeaderWrapper>
               <Text
                 style={styles.headerText}
-                onpress={this.props.openWelcomeScreen}
+                onPress={this.props.openWelcomeScreen}
               >
                 Cancel
               </Text>
@@ -87,6 +88,10 @@ class LoginView extends React.Component {
             </HeaderWrapper>
             <Centered style={{ flex: 2 }}>
               <TextInput
+                autoCorrect={false}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                returnKeyType="next"
                 titleColor="#f9f7f6"
                 title="EMAIL"
                 placeholder="HELLO@FRIENDSHIP.COM"
@@ -95,6 +100,7 @@ class LoginView extends React.Component {
                 value={this.state.email}
               />
               <TextInput
+                returnKeyType="go"
                 secure
                 title="PASSWORD"
                 titleColor="#f9f7f6"
