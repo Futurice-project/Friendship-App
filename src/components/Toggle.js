@@ -1,5 +1,9 @@
 import styled from 'styled-components/native';
 import React from 'react';
+import { TouchableWithoutFeedback, Animated } from 'react-native';
+
+state = { position: new Animated.Value(5) };
+
 startAnimation = () => {
   const { position } = this.state;
 
@@ -9,6 +13,7 @@ startAnimation = () => {
   // Start a spring animation
   Animated.spring(position, { toValue: 72, friction: 0.8 }).start();
 };
+
 export const ToggleSwitch = styled.View`
   width: 20;
   height: 20;

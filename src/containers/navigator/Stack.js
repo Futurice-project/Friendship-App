@@ -19,10 +19,10 @@ const StackNavigatorConfig = {
   navigationOptions: {
     header: props => <Header {...props} />,
     headerStyle: {
-      backgroundColor: '#39babd',
+      backgroundColor: '#e8e9e8',
       elevation: 0, // disable header elevation when TabNavigator visible
     },
-    headerTintColor: 'white',
+    headerTintColor: '#ff8a65',
   },
 };
 
@@ -32,7 +32,7 @@ export default StackNavigator(
     LookingFor: { screen: LookingFor },
     Tabs: {
       screen: Tabs,
-      navigationOptions: { title: 'Friendship App' },
+      navigationOptions: { header: () => null },
     },
     EmojiPicker: {
       screen: EmojiPickerView,
@@ -60,7 +60,6 @@ export default StackNavigator(
     },
     ProfileUser: {
       screen: ProfileUser,
-      navigationOptions: { title: 'Profile page' },
     },
     // ## End StackNavigator Views ##
   },

@@ -5,6 +5,7 @@ import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import NavigationBackgroundAsset from '../../assets/drawable-mdpi/combined_shape_copy_2.png';
 
 import { FlexRow } from './Layout';
+import { Description } from './Text';
 import styled from 'styled-components/native';
 
 const mapStateToProps = state => ({});
@@ -22,7 +23,9 @@ class Person extends React.Component {
   renderBox = () => (
     <View style={styles.topPart}>
       <View style={{ flex: 70 }}>
-        <Text style={styles.topText}>{this.props.data.description}</Text>
+        <Description style={styles.topText}>
+          {this.props.data.description}
+        </Description>
       </View>
       <FlexRow style={styles.bottomPart}>
         {/* with flex:1 long username don't go exceed the bottom part  */}
@@ -36,11 +39,11 @@ class Person extends React.Component {
             style={styles.nameView}
             onPress={() => this.props.openProfile(this.props.data.id)}
           >
-            <Text style={styles.TextName}>{this.props.data.username}</Text>
+            <Text style={styles.textName}>{this.props.data.username}</Text>
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.TextCompatibility}>
+        <Text style={{ fontSize: 12 }}>
           {' '}
           Compatible?
           <Text style={{ fontWeight: 'bold' }}>
@@ -54,17 +57,16 @@ class Person extends React.Component {
 
   renderLine = () => (
     <FlexRow style={styles.listItem}>
-      {/* with flex:1 long username don't go exceed the bottom part  */}
       <View style={styles.viewBottom}>
         <View>
-          <Text style={styles.emoji}>{this.props.data.emoji}</Text>
+          <Text style={styles.listEmoji}>{this.props.data.emoji}</Text>
         </View>
 
         <TouchableOpacity
           style={styles.nameView}
           onPress={() => this.props.openProfile(this.props.data.userId)}
         >
-          <Text style={styles.TextName}>
+          <Text style={styles.listName}>
             {this.props.data.username} {this.props.data.love ? '<3' : '</3'}
           </Text>
         </TouchableOpacity>
@@ -85,27 +87,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 60,
   },
-
-  TextName: {
+  textName: {
     fontSize: 20,
     /*    fontFamily: 'NunitoSans-Light', */
   },
-  TextCompatibility: {
-    fontSize: 18,
-    /*    fontFamily: 'NunitoSans-Light', */
-  },
-
   topPart: {
     height: 300,
     width: 200,
     marginLeft: 20,
     backgroundColor: '#939795',
   },
-
   topText: {
     color: 'white',
-    marginTop: 0,
-    marginLeft: 10,
+    maxHeight: 130,
+    marginVertical: 30,
+    marginHorizontal: 20,
+    lineHeight: 21,
     fontSize: 18,
     /*    fontFamily: 'Avenir', */
   },
@@ -132,14 +129,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   listItem: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // alignSelf: 'center',
+    // justifyContent: 'center',
     margin: 0,
     height: 70,
-    borderWidth: 0.5,
-    borderColor: '#666666',
-    backgroundColor: '#fff',
+  },
+  listName: {
+    justifyContent: 'flex-start',
+    fontSize: 20,
+    fontWeight: '400',
+  },
+  listEmoji: {
+    backgroundColor: 'transparent',
+    margin: 5,
+    marginHorizontal: 10,
+    alignSelf: 'center',
+    fontSize: 47,
+    alignItems: 'center',
   },
 });
 
