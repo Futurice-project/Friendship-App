@@ -72,7 +72,6 @@ class ProfileUser extends React.Component {
     } else {
       ageName = "It's a mystery";
     }
-    console.log(age);
     this.setState({ age: ageName });
   };
 
@@ -80,12 +79,8 @@ class ProfileUser extends React.Component {
     if (!this.state.loaded) {
       return <ActivityIndicator />;
     } else {
-      let love = this.props.tagsForUser.data.filter(e => {
-        return e.love === true;
-      });
-      let hate = this.props.tagsForUser.data.filter(e => {
-        return e.love === false;
-      });
+      let love = this.props.tagsForUser.data.filter(e => e.love === true);
+      let hate = this.props.tagsForUser.data.filter(e => e.love === false);
       return (
         <ViewContainerTop style={styles.viewContent}>
           <View style={styles.profileContainer}>
