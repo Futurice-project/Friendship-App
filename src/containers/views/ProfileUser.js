@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
+import { MenuContext } from 'react-native-popup-menu';
 import rest from '../../utils/rest';
 
 import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
 import { SmallHeader, Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
-import PopUpMenu from '../../components/PopUpMenu';
+import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -30,6 +31,11 @@ class ProfileUser extends React.Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.personName,
+    headerRight: (
+      <MenuContext>
+        <PopUpMenuUserProfile />
+      </MenuContext>
+    ),
   });
 
   componentWillReceiveProps(nextProps) {
