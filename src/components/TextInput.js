@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 //Contains that hold the input and the label
+
 const Container = styled.View`
   padding-left: 20;
   padding-right: 20;
 `;
+
 
 //background color can be specified with backColor attribute
 const Input = styled.TextInput.attrs({
@@ -15,15 +17,17 @@ const Input = styled.TextInput.attrs({
 })`
   background-color: ${props => props.backColor || '#fff'};
   color: #4a4a4a;
-  font-size: 13;
+  font-size: 15;
   border-radius: 27;
-  font-family: 'NunitoSans-Regular';
+  font-family: 'NunitoSans-LightItalic';
   letter-spacing: 1.59;
   border-bottom-width: 2;
   padding-left: 20px;
   text-align: left;
   height: 40;
+
   min-width: 300;
+
 `;
 //this set the line inside the input
 const HorizontalLine = styled.View`
@@ -53,10 +57,11 @@ const InputTitle = styled.Text`
   width: 100;
   height: 25;
   font-family: 'NunitoSans-Regular';
-  font-size: 13;
+  font-size: 16;
   letter-spacing: 1.5;
   text-align: left;
   padding-left: 20px;
+  width: 100%;
 `;
 /**
  * Styled TextInput component

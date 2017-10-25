@@ -28,36 +28,28 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const rest = reduxApi({
+  personalities: {
+    url: `${apiRoot}/personalities`,
+    crud: true,
+  },
   users: {
     url: `${apiRoot}/users`,
-    // transformer: transformers.array,
+    crud: true,
+  },
+  usersSearch: {
+    url: `${apiRoot}/users/search/:username`,
+    transformer: transformers.array,
     crud: true,
   },
   userDetails: {
     url: `${apiRoot}/users/:userId`,
     crud: true,
   },
-
-  // Add more API endpoints here! Examples below:
-
-  /*
-  // Endpoints which return an array (data defaults to [])
-  teams: {
-    url: `${apiRoot}/teams`,
+  tagsForUser: {
+    url: `${apiRoot}/tagsForUser/:userId`,
     transformer: transformers.array,
     crud: true,
   },
-  companies: {
-    url: `${apiRoot}/companies`,
-    transformer: transformers.array,
-    crud: true,
-  }
-  // Endpoint which returns an object (data defaults to {})
-  profile: {
-    url: `${apiRoot}/profile`,
-    crud: true,
-  }
-  */
 
   auth: {
     url: `${apiRoot}/users/authenticate`,
@@ -96,29 +88,10 @@ const rest = reduxApi({
       console.log('Error', err);
     }
     if (data) {
-      console.log('Success', data);
+      // console.log('Success', data);
+      return data;
     }
     throw err;
-    // if (err) {
-    //   let msg = 'Error';
-
-    //   // error code
-    //   msg += err.statusCode ? ` ${err.statusCode}` : '';
-
-    //   // error reason
-    //   msg += err.error ? ` ${err.error}` : '';
-
-    //   // error description
-    //   msg += err.message ? `: ${err.message}` : '';
-    //   store.dispatch(
-    //     showError({
-    //       msg,
-    //       details: JSON.stringify(err, Object.getOwnPropertyNames(err), 4),
-    //     }),
-    //   );
-
-    //   throw err;
-    // }
   });
 
 export default rest;

@@ -2,12 +2,15 @@ import styled from 'styled-components/native';
 import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 
+
 export const ToggleSwitch = styled.View`
   width: 20;
   height: 20;
   background-color: #3b3b3d;
+
   border-radius: 40;
   left: ${props => (props.value ? 5 : 72)};
+
 `;
 
 export const ToggleText = styled.Text`

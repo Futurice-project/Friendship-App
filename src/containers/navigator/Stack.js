@@ -8,8 +8,11 @@ import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleView';
-import LoginView from '../views/Login';
+import SignUpView from '../views/SignUpView';
+import SignInView from '../views/SignInView';
 import ProfileUser from './../views/ProfileUser';
+import SearchList from './../views/Search';
+import EmojiPickerView from './../views/EmojiPicker';
 import LookingFor from './../views/LookingFor';
 import Matching from './../views/Matching';
 
@@ -17,10 +20,10 @@ const StackNavigatorConfig = {
   navigationOptions: {
     header: props => <Header {...props} />,
     headerStyle: {
-      backgroundColor: '#39babd',
+      backgroundColor: '#e8e9e8',
       elevation: 0, // disable header elevation when TabNavigator visible
     },
-    headerTintColor: 'white',
+    headerTintColor: '#ff8a65',
   },
 };
 
@@ -31,23 +34,34 @@ export default StackNavigator(
     Matching: { screen: Matching },
     Tabs: {
       screen: Tabs,
-      navigationOptions: { title: 'Friendship App' },
+      navigationOptions: { header: () => null },
+    },
+    EmojiPicker: {
+      screen: EmojiPickerView,
+      navigationOptins: { title: 'Emoji Picker' },
     },
     People: {
       screen: PeopleView,
       navigationOptions: { title: 'People page' },
     },
+    SearchList: {
+      screen: SearchList,
+      navigationOptions: { title: 'Search page' },
+    },
     Settings: {
       screen: SettingsView,
-      navigationOptions: { title: 'Settings page' },
+      navigationOptions: { title: 'Setting page' },
+    },
+    SignIn: {
+      screen: SignInView,
+      navigationOptions: { title: 'SignIn Page' },
     },
     SignUp: {
-      screen: LoginView,
+      screen: SignUpView,
       navigationOptions: { title: 'SignUp Page' },
     },
     ProfileUser: {
       screen: ProfileUser,
-      navigationOptions: { title: 'Profile page' },
     },
     // ## End StackNavigator Views ##
   },

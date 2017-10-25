@@ -31,8 +31,8 @@ export const LabelText = styled.Text`
   font-size: 14;
   letter-spacing: 1.71;
   text-align: left;
-  padding-left: 20px;
-  padding-right: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
   color: ${props => {
     if (props.disabled === true) {
       return '#3b3b3d';

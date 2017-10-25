@@ -18,6 +18,7 @@ const mapDispatchToProps = dispatch => ({
         routeName: 'Tabs',
       }),
     ),
+
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
@@ -134,7 +135,6 @@ const styles = StyleSheet.create({
  */
 export class WelcomeView extends React.Component {
   static navigationOptions = {
-    title: 'Welcome',
     header: () => null,
   };
 

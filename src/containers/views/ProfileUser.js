@@ -1,72 +1,135 @@
 import React from 'react';
-import {
-  Image,
-  View,
-  Text,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import { ViewContainer, Centered, FlexRow } from '../../components/Layout';
-import TextRectangle from '../../components/TextRectangle';
+import rest from '../../utils/rest';
+
+import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
+import { SmallHeader, Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
 
-const mapStateToProps = state => {
-  return { personId: state.personId };
-};
+const mapStateToProps = state => ({
+  userDetails: state.userDetails,
+  tagsForUser: state.tagsForUser,
+});
+
+const mapDispatchToProps = dispatch => ({
+  refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
+  refreshTagsForUser: userId =>
+    dispatch(rest.actions.tagsForUser.get({ userId })),
+});
 
 class ProfileUser extends React.Component {
-  static navigationOptions = {
-    title: '',
+  state = {
+    loaded: false,
+    age: '',
+    description: '',
+    profileTitle: 'Profile Page',
   };
 
-  state = { data: {}, personId: this.props.navigation.state.params.personId };
+  static navigationOptions = {
+    title: this.state.profileTitle,
+  };
 
-  componentDidMount() {
-    fetch('http://0.0.0.0:3888/users/' + this.state.personId, {
-      method: 'get',
-      headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
-      },
-    })
-      .then(response => response.json())
-      .then(data => this.setState({ data }));
+  componentWillReceiveProps(nextProps) {
+    // render the profile user when we have the data.
+    if (!nextProps.userDetails.loading && !nextProps.tagsForUser.loading) {
+      this.setState({
+        loaded: true,
+        profileTitle: nextProps.userDetails.data.username,
+      });
+      this.getAge();
+    }
   }
 
-  render = () => (
-    <ViewContainer style={styles.signUpFinalStepHate}>
-      <View style={styles.topPart}>
-        <View style={styles.oval}>
-          <Text style={styles.emoji}>{this.state.data.emoji}</Text>
-        </View>
-        <Text style={styles.username}>{this.state.data.username}</Text>
-        <Text style={styles.iLoveCampingRapA}>25, male, Helsinki</Text>
-        <Text style={styles.iLoveCampingRapA}>I love ... and hate...</Text>
-        <Text style={styles.lookingFor}>LOOKING FOR</Text>
-        <Text style={styles.lookingForText}>
-          The events you will actively look friends for will be visible here
-        </Text>
-      </View>
-      <TabProfile />
-    </ViewContainer>
-  );
+  componentDidMount() {
+    const personId = this.props.navigation.state.params.personId;
+    this.props.refreshUser(personId);
+    this.props.refreshTagsForUser(personId);
+  }
+
+  getAge = () => {
+    const birthDay = new Date(this.props.userDetails.data.birthday);
+    const now = new Date();
+    let age = now.getFullYear() - birthDay.getFullYear();
+    const m = now.getMonth() - birthDay.getMonth();
+    if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
+      age--;
+    }
+
+    const early = [0, 1, 2, 3];
+    const mid = [4, 5, 6];
+    const late = [7, 8, 9];
+    let ageName = '';
+    const lastDigit = age.toString().substr(age.toString().length - 1);
+    if (age < 20) {
+      ageName = age + ' years old';
+    } else if (early.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'early ' + (age - parseInt(lastDigit)) + "'s";
+    } else if (mid.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'mid ' + (age - parseInt(lastDigit)) + "'s";
+    } else if (late.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'late ' + (age - parseInt(lastDigit)) + "'s";
+    } else {
+      ageName = "It's a mystery";
+    }
+    console.log(age);
+    this.setState({ age: ageName });
+  };
+
+  render = () => {
+    if (!this.state.loaded) {
+      return <ActivityIndicator />;
+    } else {
+      let love = this.props.tagsForUser.data.filter(e => {
+        return e.love === true;
+      });
+      let hate = this.props.tagsForUser.data.filter(e => {
+        return e.love === false;
+      });
+      return (
+        <ViewContainerTop style={styles.viewContent}>
+          <View style={styles.profileContainer}>
+            <View style={styles.whiteCircle}>
+              <Text style={styles.emoji}>
+                {this.props.userDetails.data.emoji}
+              </Text>
+            </View>
+            <Text style={styles.username}>
+              {this.props.userDetails.data.username}
+            </Text>
+            <Description>
+              {this.state.age}
+              , male
+              {this.props.userDetails.data.location ? (
+                ', ' + this.props.userDetails.data.location
+              ) : (
+                ''
+              )}
+            </Description>
+            <Description>I love ... and hate...</Description>
+            <SmallHeader>LOOKING FOR</SmallHeader>
+            <Description>
+              The events you will actively look friends for will be visible here
+            </Description>
+          </View>
+          <TabProfile hate={hate} love={love} />
+        </ViewContainerTop>
+      );
+    }
+  };
 }
 
 const styles = StyleSheet.create({
-  signUpFinalStepHate: {
+  viewContent: {
     backgroundColor: '#e8e9e8',
-    marginTop: 23,
+    paddingVertical: 0,
   },
-  topPart: {
+  profileContainer: {
     alignItems: 'center',
     height: 300,
+    marginTop: 23,
   },
-  botPart: {
-    height: 500,
-  },
-  oval: {
+  whiteCircle: {
     width: 64,
     height: 64,
     borderRadius: 64,
@@ -79,7 +142,6 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   username: {
-    width: 223,
     height: 27,
     fontSize: 20,
     fontWeight: 'bold',
@@ -88,33 +150,6 @@ const styles = StyleSheet.create({
     color: '#60686d',
     marginTop: 7,
   },
-  iLoveCampingRapA: {
-    width: 300,
-    height: 24,
-    fontSize: 16,
-    fontWeight: '300',
-    lineHeight: 24,
-    textAlign: 'center',
-    color: '#4a4a4a',
-    marginBottom: 14,
-  },
-  lookingFor: {
-    height: 18,
-    fontSize: 13,
-    letterSpacing: 1.59,
-    textAlign: 'center',
-    color: '#3b3b3d',
-    marginBottom: 14,
-  },
-  lookingForText: {
-    width: 300,
-    height: 72,
-    fontSize: 16,
-    fontWeight: '300',
-    lineHeight: 24,
-    textAlign: 'left',
-    color: '#4a4a4a',
-  },
 });
 
-export default connect(mapStateToProps)(ProfileUser);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileUser);
