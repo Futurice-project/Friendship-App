@@ -1,13 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
+import { MenuContext } from 'react-native-popup-menu';
 import rest from '../../utils/rest';
 
 import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
 import { SmallHeader, Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
+import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
 });
@@ -28,6 +31,11 @@ class ProfileUser extends React.Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.personName,
+    headerRight: (
+      <MenuContext>
+        <PopUpMenuUserProfile />
+      </MenuContext>
+    ),
   });
 
   componentWillReceiveProps(nextProps) {
@@ -35,7 +43,6 @@ class ProfileUser extends React.Component {
     if (!nextProps.userDetails.loading && !nextProps.tagsForUser.loading) {
       this.setState({
         loaded: true,
-        profileTitle: nextProps.userDetails.data.username,
       });
       this.getAge();
     }
@@ -77,6 +84,13 @@ class ProfileUser extends React.Component {
   };
 
   render = () => {
+    if (!this.props.auth.data.decoded) {
+      return (
+        <View style={{ marginTop: 30 }}>
+          <Text style={{ alignSelf: 'center' }}>You need to sign in!</Text>
+        </View>
+      );
+    }
     if (!this.state.loaded) {
       return <ActivityIndicator />;
     } else {

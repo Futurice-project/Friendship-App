@@ -1,29 +1,205 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { Text, Image, View, StyleSheet } from 'react-native';
+import {
+  Text,
+  Image,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 //import { IconImage } from '../../components/Layout';
+import rest from '../../utils/rest';
+import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
+import { SmallHeader, Description } from '../../components/Text';
+import TabProfile from '../../components/TabProfile';
 
-export class MyProfile extends React.Component {
-  static navigationOptions = {
-    title: 'Profile',
+const mapStateToProps = state => ({
+  auth: state.auth,
+  userDetails: state.userDetails,
+  tagsForUser: state.tagsForUser,
+});
+
+const mapDispatchToProps = dispatch => ({
+  refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
+  refreshTagsForUser: userId =>
+    dispatch(rest.actions.tagsForUser.get({ userId })),
+  signOut: () => {
+    dispatch({ type: 'SIGN_OUT' });
+  },
+});
+
+class MyProfile extends React.Component {
+  state = {
+    loaded: false,
+    age: '',
+    description: '',
+    profileTitle: 'Profile Page',
+  };
+
+  static navigationOptions = ({ navigation }) => ({
     tabBarIcon: ({ tintColor }) => (
       <Image
         source={require('../../../assets/profile.png')}
         style={[styles.icon, { tintColor: tintColor }]}
       />
     ),
+  });
+
+  componentWillReceiveProps(nextProps) {
+    // render the profile user when we have the data.
+    if (!nextProps.userDetails.loading && !nextProps.tagsForUser.loading) {
+      this.setState({
+        loaded: true,
+      });
+      this.getAge();
+    }
+  }
+
+  componentDidMount() {
+    const personId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
+    this.props.refreshUser(personId);
+    this.props.refreshTagsForUser(personId);
+  }
+
+  getAge = () => {
+    const birthDay = new Date(this.props.userDetails.data.birthday);
+    const now = new Date();
+    let age = now.getFullYear() - birthDay.getFullYear();
+    const m = now.getMonth() - birthDay.getMonth();
+    if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
+      age--;
+    }
+
+    const early = [0, 1, 2, 3];
+    const mid = [4, 5, 6];
+    const late = [7, 8, 9];
+    let ageName = '';
+    const lastDigit = age.toString().substr(age.toString().length - 1);
+    if (age < 20) {
+      ageName = age + ' years old';
+    } else if (early.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'early ' + (age - parseInt(lastDigit)) + "'s";
+    } else if (mid.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'mid ' + (age - parseInt(lastDigit)) + "'s";
+    } else if (late.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'late ' + (age - parseInt(lastDigit)) + "'s";
+    } else {
+      ageName = "It's a mystery";
+    }
+    console.log(age);
+    this.setState({ age: ageName });
   };
-  render = () => (
-    <View>
-      <Text>Welcome to Profile Page</Text>
-    </View>
-  );
+
+  render = () => {
+    if (!this.props.auth.data.decoded) {
+      return (
+        <View style={{ marginTop: 30 }}>
+          <Text style={{ alignSelf: 'center' }}>You need to sign in!</Text>
+        </View>
+      );
+    }
+    if (!this.state.loaded) {
+      return <ActivityIndicator />;
+    } else {
+      let love = this.props.tagsForUser.data.filter(e => {
+        return e.love === true;
+      });
+      let hate = this.props.tagsForUser.data.filter(e => {
+        return e.love === false;
+      });
+      return (
+        <ViewContainerTop style={styles.viewContent}>
+          <View style={styles.profileContainer}>
+            <View style={styles.whiteCircle}>
+              <Text style={styles.emoji}>
+                {this.props.userDetails.data.emoji}
+              </Text>
+            </View>
+            <Text style={styles.username}>
+              {this.props.userDetails.data.username}
+            </Text>
+            <Description>
+              {this.state.age}
+              , male
+              {this.props.userDetails.data.location ? (
+                ', ' + this.props.userDetails.data.location
+              ) : (
+                ''
+              )}
+            </Description>
+            <Description>I love ... and hate...</Description>
+            <SmallHeader>LOOKING FOR</SmallHeader>
+            <Description>
+              The events you will actively look friends for will be visible here
+            </Description>
+          </View>
+          <TabProfile hate={hate} love={love} myprofile={true} />
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={() => this.props.signOut()}
+          >
+            <Text style={styles.buttonTextStyle}>Sign Out</Text>
+          </TouchableOpacity>
+        </ViewContainerTop>
+      );
+    }
+  };
 }
 const styles = StyleSheet.create({
   icon: {
     width: 22,
     height: 20,
   },
+  viewContent: {
+    backgroundColor: '#e8e9e8',
+    paddingVertical: 0,
+  },
+  profileContainer: {
+    alignItems: 'center',
+    height: 300,
+    marginTop: 23,
+  },
+  whiteCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 64,
+    backgroundColor: '#ffffff',
+  },
+  emoji: {
+    backgroundColor: 'transparent',
+    alignSelf: 'center',
+    fontSize: 30,
+    paddingTop: 8,
+  },
+  username: {
+    height: 27,
+    fontSize: 20,
+    fontWeight: 'bold',
+    letterSpacing: 2.44,
+    textAlign: 'center',
+    color: '#60686d',
+    marginTop: 7,
+  },
+  buttonStyle: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: 241,
+    height: 47,
+    borderRadius: 34,
+    backgroundColor: 'red',
+    marginTop: 20,
+  },
+  buttonTextStyle: {
+    alignSelf: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#faf6f0',
+  },
 });
-export default connect(undefined)(MyProfile);
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyProfile);
