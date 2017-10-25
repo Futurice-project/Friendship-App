@@ -113,7 +113,11 @@ class LoginView extends React.Component {
             </Centered>
           </Padding>
           <TouchableOpacity onPress={() => this.signIn()}>
-            <RoundTab title="Sign In" style={{ flex: 1 }} />
+            <RoundTab
+              onPress={() => this.signIn()}
+              title="Sign In"
+              style={{ flex: 1 }}
+            />
           </TouchableOpacity>
         </ViewContainer>
       </KeyboardAvoidingView>
