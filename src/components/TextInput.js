@@ -74,6 +74,10 @@ export default class TextInput extends React.Component {
         {this.props.title}
       </InputTitle>
       <Input
+        autoCorrect={this.props.autoCorrect}
+        keyboardType={this.props.keyboardType}
+        autoCapitalize={this.props.autoCapitalize}
+        returnKeyType={this.props.returnKeyType}
         //add the secure attribute to hide the text f.e password
         secure={this.props.secure}
         //specify the background color swith the backColor attribute

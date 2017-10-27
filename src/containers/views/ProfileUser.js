@@ -1,13 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
+import { MenuContext } from 'react-native-popup-menu';
 import rest from '../../utils/rest';
 
 import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
 import { SmallHeader, Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
+import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
 });
@@ -26,16 +29,20 @@ class ProfileUser extends React.Component {
     profileTitle: 'Profile Page',
   };
 
-  static navigationOptions = {
-    title: this.state.profileTitle,
-  };
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.state.params.personName,
+    headerRight: (
+      <MenuContext>
+        <PopUpMenuUserProfile />
+      </MenuContext>
+    ),
+  });
 
   componentWillReceiveProps(nextProps) {
     // render the profile user when we have the data.
     if (!nextProps.userDetails.loading && !nextProps.tagsForUser.loading) {
       this.setState({
         loaded: true,
-        profileTitle: nextProps.userDetails.data.username,
       });
       this.getAge();
     }
@@ -72,20 +79,22 @@ class ProfileUser extends React.Component {
     } else {
       ageName = "It's a mystery";
     }
-    console.log(age);
     this.setState({ age: ageName });
   };
 
   render = () => {
+    if (!this.props.auth.data.decoded) {
+      return (
+        <View style={{ marginTop: 30 }}>
+          <Text style={{ alignSelf: 'center' }}>You need to sign in!</Text>
+        </View>
+      );
+    }
     if (!this.state.loaded) {
       return <ActivityIndicator />;
     } else {
-      let love = this.props.tagsForUser.data.filter(e => {
-        return e.love === true;
-      });
-      let hate = this.props.tagsForUser.data.filter(e => {
-        return e.love === false;
-      });
+      let love = this.props.tagsForUser.data.filter(e => e.love === true);
+      let hate = this.props.tagsForUser.data.filter(e => e.love === false);
       return (
         <ViewContainerTop style={styles.viewContent}>
           <View style={styles.profileContainer}>

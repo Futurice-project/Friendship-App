@@ -50,6 +50,15 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
+  currentUser: {
+    url: `${apiRoot}/users/:userId`,
+    crud: true,
+  },
+  tagsForCurrentUser: {
+    url: `${apiRoot}/tagsForUser/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
 
   auth: {
     url: `${apiRoot}/users/authenticate`,
