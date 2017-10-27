@@ -17,14 +17,14 @@ import TabProfile from '../../components/TabProfile';
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  userDetails: state.userDetails,
-  tagsForUser: state.tagsForUser,
+  currentUser: state.currentUser,
+  tagsForCurrentUser: state.tagsForCurrentUser,
 });
 
 const mapDispatchToProps = dispatch => ({
-  refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
+  refreshUser: userId => dispatch(rest.actions.currentUser.get({ userId })),
   refreshTagsForUser: userId =>
-    dispatch(rest.actions.tagsForUser.get({ userId })),
+    dispatch(rest.actions.tagsForCurrentUser.get({ userId })),
   signOut: () => {
     dispatch({ type: 'SIGN_OUT' });
   },
@@ -49,7 +49,10 @@ class MyProfile extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     // render the profile user when we have the data.
-    if (!nextProps.userDetails.loading && !nextProps.tagsForUser.loading) {
+    if (
+      !nextProps.currentUser.loading &&
+      !nextProps.tagsForCurrentUser.loading
+    ) {
       this.setState({
         loaded: true,
       });
@@ -66,7 +69,7 @@ class MyProfile extends React.Component {
   }
 
   getAge = () => {
-    const birthDay = new Date(this.props.userDetails.data.birthday);
+    const birthDay = new Date(this.props.currentUser.data.birthday);
     const now = new Date();
     let age = now.getFullYear() - birthDay.getFullYear();
     const m = now.getMonth() - birthDay.getMonth();
@@ -105,10 +108,10 @@ class MyProfile extends React.Component {
     if (!this.state.loaded) {
       return <ActivityIndicator />;
     } else {
-      let love = this.props.tagsForUser.data.filter(e => {
+      let love = this.props.tagsForCurrentUser.data.filter(e => {
         return e.love === true;
       });
-      let hate = this.props.tagsForUser.data.filter(e => {
+      let hate = this.props.tagsForCurrentUser.data.filter(e => {
         return e.love === false;
       });
       return (
@@ -116,17 +119,17 @@ class MyProfile extends React.Component {
           <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>
-                {this.props.userDetails.data.emoji}
+                {this.props.currentUser.data.emoji}
               </Text>
             </View>
             <Text style={styles.username}>
-              {this.props.userDetails.data.username}
+              {this.props.currentUser.data.username}
             </Text>
             <Description>
               {this.state.age}
               , male
-              {this.props.userDetails.data.location ? (
-                ', ' + this.props.userDetails.data.location
+              {this.props.currentUser.data.location ? (
+                ', ' + this.props.currentUser.data.location
               ) : (
                 ''
               )}

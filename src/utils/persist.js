@@ -13,6 +13,8 @@ const persistConfig = {
     'usersSearch',
     'userDetails',
     'tagsForUser',
+    'currentUser',
+    'tagsForCurrentUser',
   ],
 };
 
