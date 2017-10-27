@@ -53,8 +53,8 @@ class SignInView extends React.Component {
   };
 
   state = {
-    email: 'foo@bar.com',
-    password: 'foobar',
+    email: '',
+    password: '',
     error: false,
   };
 
