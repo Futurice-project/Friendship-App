@@ -29,6 +29,7 @@ const ButtonText = styled.Text`
   color: ${props => {
     return props.titleColor ? props.titleColor : '#2d4359';
   }};
+
   background-color: transparent;
 `;
 

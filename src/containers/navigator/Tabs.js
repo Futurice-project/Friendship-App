@@ -8,6 +8,10 @@ import FollowingView from '../views/Following';
 import InboxView from '../views/Inbox';
 import MyProfile from '../views/MyProfile';
 
+import Matching from '../views/Matching';
+//import PeopleView from '../views/PeopleList';
+
+
 const TabNavigatorConfig = {
   tabBarOptions: {
     tintColor: 'black',
@@ -33,6 +37,7 @@ export default TabNavigator(
     Inbox: { screen: InboxView },
     MyProfile: { screen: MyProfile },
     LookingFor: { screen: LookingFor },
+    Matching: { screen: Matching },
 
     // ## End TabNavigator Views ##
   },

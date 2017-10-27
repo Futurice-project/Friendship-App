@@ -14,6 +14,7 @@ import ProfileUser from './../views/ProfileUser';
 import SearchList from './../views/Search';
 import EmojiPickerView from './../views/EmojiPicker';
 import LookingFor from './../views/LookingFor';
+import Matching from './../views/Matching';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -30,6 +31,7 @@ export default StackNavigator(
   {
     Welcome: { screen: WelcomeView },
     LookingFor: { screen: LookingFor },
+    Matching: { screen: Matching },
     Tabs: {
       screen: Tabs,
       navigationOptions: { header: () => null },
