@@ -93,6 +93,6 @@ export const MessageContent = styled.View`flex: 4;`;
 
 export const SignUpWrapper = styled.View`
   flex: 1;
-  background-color: #faf6f0;
+  background-color: #efebe9;
   align-items: center;
 `;
