@@ -18,17 +18,21 @@ import {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  users: state.users,
 });
 
 const mapDispatchToProps = dispatch => ({
   signIn: credentials => {
-    dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) }));
+    dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) }))
+      .then(() => dispatch(
+        NavigationActions.navigate({
+          routeName: 'SignOut',
+        }),
+      ));
   },
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SignIn',
+        routeName: 'SignUp',
       }),
     ),
   openWelcomeScreen: () =>
@@ -39,29 +43,36 @@ const mapDispatchToProps = dispatch => ({
     ),
 });
 
-class LoginView extends React.Component {
+class SignInView extends React.Component {
   static navigationOptions = {
     title: 'Sign up',
     header: () => null,
   };
 
   state = {
-    email: '',
-    password: '',
+    email: 'foo@bar.com',
+    password: 'foobar',
+    error: false,
   };
 
   renderStatus() {
-    if (this.props.auth.loading) {
-      return <Text style={styles.textStyle}>Pending request</Text>;
+    const { data, error, loading } = this.props.auth;
+    let status = '';
+    if (data.decoded) {
+      status = `Signed in as ${data.decoded.email}`;
+    }
+    if (this.state.error && error) {
+      status =  `Error ${error.statusCode}: ${error.message}`;
+    }
+    if (loading) {
+      status =  `Loading ...`;
     }
 
-    if (this.props.auth.error) {
-      return (
-        <Text style={styles.textStyle}>{this.props.auth.error.message}</Text>
-      );
-    }
+    return <Text style={styles.textStyle}>{status}</Text>;
+  }
 
-    return <Text style={styles.textStyle}> Success </Text>;
+  componentWillReceiveProps() {
+    this.setState({ error: true });
   }
 
   signIn() {
@@ -70,6 +81,7 @@ class LoginView extends React.Component {
   }
 
   render() {
+    console.log(this.props.auth);
     return (
       <KeyboardAvoidingView behavior="padding">
         <ViewContainer>
@@ -77,7 +89,7 @@ class LoginView extends React.Component {
             <HeaderWrapper>
               <Text
                 style={styles.headerText}
-                onpress={this.props.openWelcomeScreen}
+                onPress={this.props.openWelcomeScreen}
               >
                 Cancel
               </Text>
@@ -85,6 +97,7 @@ class LoginView extends React.Component {
                 Sign Up
               </Text>
             </HeaderWrapper>
+            <Text style={{ color: 'white' }}>Sign In</Text>
             <Centered style={{ flex: 2 }}>
               <TextInput
                 titleColor="#f9f7f6"
@@ -107,7 +120,7 @@ class LoginView extends React.Component {
             </Centered>
           </Padding>
           <TouchableOpacity onPress={() => this.signIn()}>
-            <RoundTab title="Sign In" style={{ flex: 1 }} />
+            <RoundTab title="Sign In" style={{ flex: 1 }} onPress={() => this.signIn()}/>
           </TouchableOpacity>
         </ViewContainer>
       </KeyboardAvoidingView>
@@ -148,4 +161,4 @@ const styles = {
   },
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInView);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
@@ -20,7 +20,12 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   signUp: credentials => {
-    dispatch(rest.actions.users.post({}, { body: JSON.stringify(credentials) }));
+    dispatch(
+      rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
+    );
+  },
+  signOut: () => {
+    dispatch({ type: 'SIGN_OUT' });
   },
   openSignIn: () =>
     dispatch(
@@ -36,42 +41,16 @@ const mapDispatchToProps = dispatch => ({
     ),
 });
 
-class SignUpView extends React.Component {
-  componentWillReceiveProps() {
-    this.setState({ error: true });
-  }
-
+class SignOutView extends Component {
   static navigationOptions = {
-    title: 'Sign up',
+    title: 'Sign Out',
     header: () => null,
   };
 
   state = {
-    email: 'qhieu45@gmail.com',
-    password: '123456',
-    error: false,
+    email: '',
+    password: '',
   };
-
-  renderStatus() {
-    const { data, error, loading } = this.props.users;
-    let status = '';
-    if (data.email) {
-      status = `Email ${data.email} successfully signed up!`;
-    }
-    if (this.state.error && error) {
-      status =  `Error ${error.statusCode}: ${error.message}`;
-    }
-    if (loading) {
-      status =  `Loading ...`;
-    }
-
-    return <Text style={styles.textStyle}>{status}</Text>;
-  }
-
-  signUp() {
-    const { email, password } = this.state;
-    this.props.signUp({ email, password });
-  }
 
   render() {
     return (
@@ -85,34 +64,13 @@ class SignUpView extends React.Component {
               >
                 Cancel
               </Text>
-              <Text style={styles.headerText} onPress={this.props.openSignIn}>
-                Sign In
-              </Text>
             </HeaderWrapper>
             <Centered style={{ flex: 2 }}>
-              <TextInput
-                titleColor="#f9f7f6"
-                title="EMAIL"
-                placeholder="HELLO@FRIENDSHIP.COM"
-                backColor="#faf6f0"
-                onChangeText={email => this.setState({ email })}
-                value={this.state.email}
-              />
-              <TextInput
-                secure
-                title="PASSWORD"
-                titleColor="#f9f7f6"
-                placeholder="*******"
-                backColor="#faf6f0"
-                onChangeText={password => this.setState({ password })}
-                value={this.state.password}
-              />
-              {this.renderStatus()}
+            <Text style={styles.headerText} onPress={this.props.signOut}>
+              Sign Out
+            </Text>
             </Centered>
           </Padding>
-          <TouchableOpacity onPress={() => this.signUp()}>
-            <RoundTab title="Sign Up" style={{ flex: 1 }} onPress={() => this.signUp()} />
-          </TouchableOpacity>
         </ViewContainer>
       </KeyboardAvoidingView>
     );
@@ -144,7 +102,7 @@ const styles = {
   textStyle: {
     fontFamily: 'NunitoSans-Regular',
     width: 205,
-    height: 40,
+    height: 20,
     fontSize: 15,
     textAlign: 'center',
     color: '#f673f8',
@@ -152,4 +110,4 @@ const styles = {
   },
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpView);
+export default connect(mapStateToProps, mapDispatchToProps)(SignOutView);
