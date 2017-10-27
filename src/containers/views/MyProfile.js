@@ -90,7 +90,7 @@ class MyProfile extends React.Component {
     } else {
       ageName = "It's a mystery";
     }
-    console.log(age);
+    // console.log(age);
     this.setState({ age: ageName });
   };
 

@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import { MenuContext } from 'react-native-popup-menu';
 import rest from '../../utils/rest';
 
+import { tagsLove, tagsHate, profileData } from '../../Data/DummyProfile';
 import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
 import { SmallHeader, Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
+import DetailsProfile from '../../components/DetailsProfile';
 import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
 
 const mapStateToProps = state => ({
@@ -44,7 +46,7 @@ class ProfileUser extends React.Component {
       this.setState({
         loaded: true,
       });
-      this.getAge();
+      this.getAge(this.props.userDetails.data.birthday);
     }
   }
 
@@ -54,8 +56,8 @@ class ProfileUser extends React.Component {
     this.props.refreshTagsForUser(personId);
   }
 
-  getAge = () => {
-    const birthDay = new Date(this.props.userDetails.data.birthday);
+  getAge = birthday => {
+    const birthDay = new Date(birthday);
     const now = new Date();
     let age = now.getFullYear() - birthDay.getFullYear();
     const m = now.getMonth() - birthDay.getMonth();
@@ -79,49 +81,34 @@ class ProfileUser extends React.Component {
     } else {
       ageName = "It's a mystery";
     }
-    this.setState({ age: ageName });
+    if (this.props.userDetails.data.birthday) {
+      this.setState({ age: ageName });
+    } else {
+      return ageName;
+    }
   };
 
   render = () => {
-    if (!this.props.auth.data.decoded) {
-      return (
-        <View style={{ marginTop: 30 }}>
-          <Text style={{ alignSelf: 'center' }}>You need to sign in!</Text>
-        </View>
-      );
-    }
     if (!this.state.loaded) {
       return <ActivityIndicator />;
     } else {
-      let love = this.props.tagsForUser.data.filter(e => e.love === true);
-      let hate = this.props.tagsForUser.data.filter(e => e.love === false);
+      let loveTags = this.props.tagsForUser.data.filter(e => e.love === true);
+      let hateTags = this.props.tagsForUser.data.filter(e => e.love === false);
+      let dataProfile = this.props.userDetails.data;
+      let age = this.state.age;
+
+      // we use dummy data for the preview when user not logged in
+      if (!this.props.auth.data.decoded) {
+        loveTags = tagsLove[this.props.navigation.state.params.personId - 1];
+        hateTags = tagsHate[this.props.navigation.state.params.personId - 1];
+        dataProfile =
+          profileData[this.props.navigation.state.params.personId - 1];
+        age = this.getAge(dataProfile.birthday);
+      }
       return (
         <ViewContainerTop style={styles.viewContent}>
-          <View style={styles.profileContainer}>
-            <View style={styles.whiteCircle}>
-              <Text style={styles.emoji}>
-                {this.props.userDetails.data.emoji}
-              </Text>
-            </View>
-            <Text style={styles.username}>
-              {this.props.userDetails.data.username}
-            </Text>
-            <Description>
-              {this.state.age}
-              , male
-              {this.props.userDetails.data.location ? (
-                ', ' + this.props.userDetails.data.location
-              ) : (
-                ''
-              )}
-            </Description>
-            <Description>I love ... and hate...</Description>
-            <SmallHeader>LOOKING FOR</SmallHeader>
-            <Description>
-              The events you will actively look friends for will be visible here
-            </Description>
-          </View>
-          <TabProfile hate={hate} love={love} />
+          <DetailsProfile data={dataProfile} age={age} />
+          <TabProfile hate={hateTags} love={loveTags} />
         </ViewContainerTop>
       );
     }
@@ -132,32 +119,6 @@ const styles = StyleSheet.create({
   viewContent: {
     backgroundColor: '#e8e9e8',
     paddingVertical: 0,
-  },
-  profileContainer: {
-    alignItems: 'center',
-    height: 300,
-    marginTop: 23,
-  },
-  whiteCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 64,
-    backgroundColor: '#ffffff',
-  },
-  emoji: {
-    backgroundColor: 'transparent',
-    alignSelf: 'center',
-    fontSize: 30,
-    paddingTop: 8,
-  },
-  username: {
-    height: 27,
-    fontSize: 20,
-    fontWeight: 'bold',
-    letterSpacing: 2.44,
-    textAlign: 'center',
-    color: '#60686d',
-    marginTop: 7,
   },
 });
 

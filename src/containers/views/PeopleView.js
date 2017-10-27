@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import { View, FlatList, ActivityIndicator, Text } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
 import { SearchBar } from 'react-native-elements';
 import throttle from 'lodash/throttle';
 
 import { Title, Header, SmallHeader, Description } from '../../components/Text';
-
+import { profileData } from '../../Data/DummyProfile';
 import { ViewContainerTop, Centered, IconImage } from '../../components/Layout';
 import Person from '../../components/Person';
 import Tag from '../../components/Tags';
@@ -15,6 +15,7 @@ import RoundTab from '../../components/RoundTab';
 
 const mapStateToProps = state => ({
   usersSearch: state.usersSearch,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -74,6 +75,18 @@ export class PeopleView extends React.Component {
   }, 1000);
 
   renderPeople() {
+    // console.log(JSON.stringify(this.props.usersSearch.data));
+
+    if (this.props.auth.data.token) {
+      data =
+        this.state.searchedUsername.length > 0
+          ? this.props.usersSearch.data
+          : this.state.data;
+    } else {
+      // for the preview
+      data = profileData;
+    }
+
     if (this.props.usersSearch.loading) {
       return <ActivityIndicator />;
     }
@@ -82,13 +95,7 @@ export class PeopleView extends React.Component {
         <RoundTab tint="#ffffff" title="PEOPLE" />
         <Centered style={{ paddingBottom: 45, backgroundColor: '#fff' }}>
           <FlatList
-            data={
-              this.state.searchedUsername.length > 0 ? (
-                this.props.usersSearch.data
-              ) : (
-                this.state.data
-              )
-            }
+            data={data}
             keyExtractor={item => item.id}
             renderItem={({ item }) => <Person box data={item} />}
             onEndReached={this.handleEnd}
@@ -103,25 +110,32 @@ export class PeopleView extends React.Component {
     );
   }
 
+  renderSearchBar() {
+    if (!this.props.auth.data.token) return null;
+    return (
+      <SearchBar
+        lightTheme
+        containerStyle={{
+          backgroundColor: '#e8e9e8',
+          borderTopColor: '#e8e9e8',
+          borderBottomColor: '#e8e9e8',
+          marginVertical: 10,
+          marginHorizontal: 5,
+        }}
+        inputStyle={{ backgroundColor: '#fff' }}
+        onChangeText={username => this.getUserByUsername(username)}
+        autoCapitalize="none"
+        autoCorrect={false}
+        placeholder="Search People"
+        clearIcon
+      />
+    );
+  }
+
   render() {
     return (
       <ViewContainerTop style={{ backgroundColor: '#e8e9e8' }}>
-        <SearchBar
-          lightTheme
-          containerStyle={{
-            backgroundColor: '#e8e9e8',
-            borderTopColor: '#e8e9e8',
-            borderBottomColor: '#e8e9e8',
-            marginVertical: 10,
-            marginHorizontal: 5,
-          }}
-          inputStyle={{ backgroundColor: '#fff' }}
-          onChangeText={username => this.getUserByUsername(username)}
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Search People"
-          clearIcon
-        />
+        {this.renderSearchBar()}
         {this.renderPeople()}
       </ViewContainerTop>
     );
