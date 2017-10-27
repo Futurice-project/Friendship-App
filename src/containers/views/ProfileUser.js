@@ -13,6 +13,8 @@ const mapStateToProps = state => ({
   auth: state.auth,
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
+  currentUser: state.currentUser,
+  tagsForCurrentUser: state.tagsForCurrentUser,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -27,6 +29,8 @@ class ProfileUser extends React.Component {
     age: '',
     description: '',
     profileTitle: 'Profile Page',
+    //  loveCommon: 0,
+    hateCommon: 0,
   };
 
   static navigationOptions = ({ navigation }) => ({
@@ -95,6 +99,30 @@ class ProfileUser extends React.Component {
     } else {
       let love = this.props.tagsForUser.data.filter(e => e.love === true);
       let hate = this.props.tagsForUser.data.filter(e => e.love === false);
+      let loveU = this.props.tagsForCurrentUser.data.filter(
+        e => e.love === true,
+      );
+      let hateU = this.props.tagsForCurrentUser.data.filter(
+        e => e.love === false,
+      );
+      let loveCommon = 0;
+      let hateCommon = 0;
+
+      loveU.filter(e =>
+        love.filter(y => {
+          if (e.name === y.name) {
+            loveCommon++;
+          }
+        }),
+      );
+      hateU.filter(e =>
+        hate.filter(y => {
+          if (e.name === y.name) {
+            hateCommon++;
+          }
+        }),
+      );
+
       return (
         <ViewContainerTop style={styles.viewContent}>
           <View style={styles.profileContainer}>
@@ -115,7 +143,9 @@ class ProfileUser extends React.Component {
                 ''
               )}
             </Description>
-            <Description>I love ... and hate...</Description>
+            <Description>
+              {loveCommon} YEAH & {hateCommon} NAAH in common{' '}
+            </Description>
             <SmallHeader>LOOKING FOR</SmallHeader>
             <Description>
               The events you will actively look friends for will be visible here
