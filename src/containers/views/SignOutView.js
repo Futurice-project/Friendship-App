@@ -66,9 +66,9 @@ class SignOutView extends Component {
               </Text>
             </HeaderWrapper>
             <Centered style={{ flex: 2 }}>
-            <Text style={styles.headerText} onPress={this.props.signOut}>
-              Sign Out
-            </Text>
+              <Text style={styles.headerText} onPress={this.props.signOut}>
+                Sign Out
+              </Text>
             </Centered>
           </Padding>
         </ViewContainer>

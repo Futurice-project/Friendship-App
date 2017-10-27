@@ -143,14 +143,13 @@ const styles = StyleSheet.create({
  *  Depending on the user's choice, the app will go to either the navigationScreen, the LoginScreen or the SignupScreen
  */
 export class WelcomeView extends React.Component {
-
   // testing stuff, user is led to SignOut Page if already signed in
   componentWillMount() {
     if (this.props.auth.data.decoded) {
       this.props.openSignOut();
     }
   }
-  
+
   static navigationOptions = {
     header: () => null,
   };

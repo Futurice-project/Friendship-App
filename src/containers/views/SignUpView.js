@@ -20,7 +20,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   signUp: credentials => {
-    dispatch(rest.actions.users.post({}, { body: JSON.stringify(credentials) }));
+    dispatch(
+      rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
+    );
   },
   openSignIn: () =>
     dispatch(
@@ -59,10 +61,10 @@ class SignUpView extends React.Component {
       status = `Email ${data.email} successfully signed up!`;
     }
     if (this.state.error && error) {
-      status =  `Error ${error.statusCode}: ${error.message}`;
+      status = `Error ${error.statusCode}: ${error.message}`;
     }
     if (loading) {
-      status =  `Loading ...`;
+      status = `Loading ...`;
     }
 
     return <Text style={styles.textStyle}>{status}</Text>;
@@ -111,7 +113,11 @@ class SignUpView extends React.Component {
             </Centered>
           </Padding>
           <TouchableOpacity onPress={() => this.signUp()}>
-            <RoundTab title="Sign Up" style={{ flex: 1 }} onPress={() => this.signUp()} />
+            <RoundTab
+              title="Sign Up"
+              style={{ flex: 1 }}
+              onPress={() => this.signUp()}
+            />
           </TouchableOpacity>
         </ViewContainer>
       </KeyboardAvoidingView>

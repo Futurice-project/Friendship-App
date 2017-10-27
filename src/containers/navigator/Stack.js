@@ -61,7 +61,7 @@ export default StackNavigator(
     },
     SignOut: {
       screen: SignOutView,
-      navigationOptions: { title: 'SignOut Page' },      
+      navigationOptions: { title: 'SignOut Page' },
     },
     ProfileUser: {
       screen: ProfileUser,
