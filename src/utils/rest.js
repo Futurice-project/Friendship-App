@@ -85,13 +85,8 @@ const rest = reduxApi({
   .use('fetch', adapterFetch(fetch))
   .use('responseHandler', (err, data) => {
     if (err) {
-      console.log('Error', err);
+      throw err;
     }
-    if (data) {
-      // console.log('Success', data);
-      return data;
-    }
-    throw err;
   });
 
 export default rest;

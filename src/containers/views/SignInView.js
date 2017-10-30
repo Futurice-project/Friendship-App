@@ -22,15 +22,15 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   signIn: credentials => {
-    dispatch(
-      rest.actions.auth({}, { body: JSON.stringify(credentials) }),
-    ).then(() =>
-      dispatch(
-        NavigationActions.navigate({
-          routeName: 'SignOut',
-        }),
-      ),
-    );
+    dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) }))
+      .then(() =>
+        dispatch(
+          NavigationActions.navigate({
+            routeName: 'SignOut',
+          }),
+        ),
+      )
+      .catch(err => console.log(err));
   },
   openSignUp: () =>
     dispatch(
@@ -84,7 +84,6 @@ class SignInView extends React.Component {
   }
 
   render() {
-    console.log(this.props.auth);
     return (
       <KeyboardAvoidingView behavior="padding">
         <ViewContainer>
@@ -122,13 +121,11 @@ class SignInView extends React.Component {
               {this.renderStatus()}
             </Centered>
           </Padding>
-          <TouchableOpacity onPress={() => this.signIn()}>
-            <RoundTab
-              title="Sign In"
-              style={{ flex: 1 }}
-              onPress={() => this.signIn()}
-            />
-          </TouchableOpacity>
+          <RoundTab
+            title="Sign In"
+            style={{ flex: 1 }}
+            onPress={() => this.signIn()}
+          />
         </ViewContainer>
       </KeyboardAvoidingView>
     );
