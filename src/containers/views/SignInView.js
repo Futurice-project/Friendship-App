@@ -13,7 +13,9 @@ import {
   TouchableOpacity,
   Text,
   KeyboardAvoidingView,
+  Keyboard,
   View,
+  Platform,
 } from 'react-native';
 
 const mapStateToProps = state => ({
@@ -52,10 +54,29 @@ class SignInView extends React.Component {
     header: () => null,
   };
 
+  // Creates a new key everytime there is a change on the keyboard
+  // This will solve the white space after opening textfields
+  // Because now it recognizes a change (key = different)
+  keyboardHideListener = () => {
+    this.setState({ keyboardAvoidingViewKey: new Date().getTime() });
+  };
+
+  componentDidMount() {
+    this.keyboardHideListener = Keyboard.addListener(
+      Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
+      this.keyboardHideListener,
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardHideListener.remove();
+  }
+
   state = {
     email: '',
     password: '',
     error: false,
+    keyboardAvoidingViewKey: 'keyboardAvoidingViewKey',
   };
 
   renderStatus() {
@@ -85,7 +106,10 @@ class SignInView extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAvoidingView
+        behavior="padding"
+        key={this.state.keyboardAvoidingViewKey}
+      >
         <ViewContainer>
           <Padding style={{ flex: 1 }}>
             <HeaderWrapper>
@@ -100,26 +124,81 @@ class SignInView extends React.Component {
               </Text>
             </HeaderWrapper>
             <Text style={{ color: 'white' }}>Sign In</Text>
-            <Centered style={{ flex: 2 }}>
-              <TextInput
-                titleColor="#f9f7f6"
-                title="EMAIL"
-                placeholder="HELLO@FRIENDSHIP.COM"
-                backColor="#faf6f0"
-                onChangeText={email => this.setState({ email })}
-                value={this.state.email}
-              />
-              <TextInput
-                secure
-                title="PASSWORD"
-                titleColor="#f9f7f6"
-                placeholder="*******"
-                backColor="#faf6f0"
-                onChangeText={password => this.setState({ password })}
-                value={this.state.password}
-              />
-              {this.renderStatus()}
-            </Centered>
+            {/*<Centered style={{ flex: 2 }}>*/}
+            <TextInput
+              titleColor="#f9f7f6"
+              title="EMAIL"
+              placeholder="HELLO@FRIENDSHIP.COM"
+              backColor="#faf6f0"
+              onChangeText={email => this.setState({ email })}
+              value={this.state.email}
+            />
+            <TextInput
+              secure
+              title="PASSWORD"
+              titleColor="#f9f7f6"
+              placeholder="*******"
+              backColor="#faf6f0"
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+            />
+            <TextInput
+              secure
+              title="PASSWORD"
+              titleColor="#f9f7f6"
+              placeholder="*******"
+              backColor="#faf6f0"
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+            />
+            <TextInput
+              secure
+              title="PASSWORD"
+              titleColor="#f9f7f6"
+              placeholder="*******"
+              backColor="#faf6f0"
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+            />
+            <TextInput
+              secure
+              title="PASSWORD"
+              titleColor="#f9f7f6"
+              placeholder="*******"
+              backColor="#faf6f0"
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+            />
+            <TextInput
+              secure
+              title="PASSWORD"
+              titleColor="#f9f7f6"
+              placeholder="*******"
+              backColor="#faf6f0"
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+            />
+            <TextInput
+              secure
+              title="PASSWORD"
+              titleColor="#f9f7f6"
+              placeholder="*******"
+              backColor="#faf6f0"
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+            />
+            <TextInput
+              secure
+              title="PASSWORD"
+              titleColor="#f9f7f6"
+              placeholder="*******"
+              backColor="#faf6f0"
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+            />
+
+            {this.renderStatus()}
+            {/*</Centered>*/}
           </Padding>
           <RoundTab
             title="Sign In"
