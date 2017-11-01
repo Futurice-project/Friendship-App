@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 //Contains that hold the input and the label
-const Container = styled.View`width: 100%;`;
+const Container = styled.View`align-self: center;`;
 
 //background color can be specified with backColor attribute
 const Input = styled.TextInput.attrs({
@@ -20,6 +20,7 @@ const Input = styled.TextInput.attrs({
   padding-left: 20px;
   text-align: left;
   height: 40;
+  width: 300;
 `;
 //this set the line inside the input
 const HorizontalLine = styled.View`
@@ -49,7 +50,7 @@ const InputTitle = styled.Text`
   width: 100;
   height: 25;
   font-family: 'NunitoSans-Regular';
-  font-size: 16;
+  font-size: 13;
   letter-spacing: 1.5;
   text-align: left;
   padding-left: 20px;

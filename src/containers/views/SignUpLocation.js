@@ -35,6 +35,7 @@ const SignUpWelcomeText = styled.Text`
   line-height: 25;
   color: #2d4359;
   text-align: justify;
+  padding-top: 15;
 `;
 
 export class SignUpLocation extends React.Component {
