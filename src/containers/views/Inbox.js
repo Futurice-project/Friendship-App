@@ -9,10 +9,13 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import { IconImage, MessageCard,
-ProfileIconCard,
-MessageContent,
-ViewContainerTop, } from '../../components/Layout';
+import {
+  IconImage,
+  MessageCard,
+  ProfileIconCard,
+  MessageContent,
+  ViewContainerTop,
+} from '../../components/Layout';
 import InboxCard from '../../components/InboxCard';
 import rest from '../../utils/rest';
 
@@ -161,7 +164,7 @@ export class InboxView extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <ViewContainerTop style={{ flex: 1 }}>
         {this.renderButton(() => this.openModal(0))}
         {this.renderModalContent(() => this.signIn(), 'Your username', 0)}
         {this.renderModalContent(
@@ -178,7 +181,7 @@ export class InboxView extends React.Component {
         {this.state.currentUser ? (
           this.renderButton(() => this.openModal(1), 'Add Converstion', true)
         ) : null}
-      </View>
+      </ViewContainerTop>
     );
   }
 }

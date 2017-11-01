@@ -47,6 +47,8 @@ const rest = reduxApi({
   },
   tagsForUser: {
     url: `${apiRoot}/tagsForUser/:userId`,
+    crud: true,
+  },
   chatRooms: {
     url: 'https://chat-app-thunghiem.herokuapp.com/chatrooms',
     crud: true,
@@ -61,24 +63,6 @@ const rest = reduxApi({
     options: {
       method: 'POST',
     },
-  },
-  // Add more API endpoints here! Examples below:
-
-  /*
-  // Endpoints which return an array (data defaults to [])
-  teams: {
-    url: `${apiRoot}/teams`,
-    transformer: transformers.array,
-    crud: true,
-  },
-  currentUser: {
-    url: `${apiRoot}/users/:userId`,
-    crud: true,
-  },
-  tagsForCurrentUser: {
-    url: `${apiRoot}/tagsForUser/:userId`,
-    transformer: transformers.array,
-    crud: true,
   },
 
   auth: {

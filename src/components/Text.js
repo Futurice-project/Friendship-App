@@ -5,6 +5,13 @@ export const Bold = Text.extend`font-weight: bold;`;
 
 export const CenteredText = Bold.extend`text-align: center;`;
 
+export const CenterIconText = styled.Text`
+  text-align: center;
+  padding-top: 11px;
+  color: white;
+  font-size: 20px;
+`;
+
 export const Description = styled.Text`
   font-size: 16px;
   line-height: 24;
@@ -14,6 +21,7 @@ export const Description = styled.Text`
   margin-bottom: 14px;
 `;
 
+export const GrayText = styled.Text`color: #b1b1b1;`;
 export const LastMessage = styled.Text`color: #b1b1b1;`;
 
 export const Title = Bold.extend`
@@ -30,6 +38,7 @@ export const Header = styled.Text`
   margin-bottom: 30px;
 `;
 
+// Text for inbox page
 export const SenderName = styled.Text`
   font-size: 18;
   font-weight: bold;
@@ -44,17 +53,7 @@ export const SmallHeader = styled.Text`
   margin-bottom: 14px;
 `;
 
-export const LastMessage = styled.Text`color: #b1b1b1;`;
-export const GrayText = styled.Text`color: #b1b1b1;`;
-
 export const TimeText = styled.Text`
   color: #555;
   font-size: 10px;
-`;
-
-export const CenterIconText = styled.Text`
-  text-align: center;
-  padding-top: 11px;
-  color: white;
-  font-size: 20px;
 `;

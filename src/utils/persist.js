@@ -8,6 +8,9 @@ const persistConfig = {
   // blacklisted reducers, useful when debugging to recover from broken state
   blacklist: [
     'navigatorState',
+    'chatRooms',
+    'chatRoomMessages',
+    'sendMessage',
     'users',
     'usersByPage',
     'usersSearch',

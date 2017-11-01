@@ -11,6 +11,7 @@ import PeopleView from './../views/PeopleView';
 import SignUpView from '../views/SignUpView';
 import SignInView from '../views/SignInView';
 import ProfileUser from './../views/ProfileUser';
+import ChatView from '../views/ChatView';
 import SearchList from './../views/Search';
 import EmojiPickerView from './../views/EmojiPicker';
 import LookingFor from './../views/LookingFor';

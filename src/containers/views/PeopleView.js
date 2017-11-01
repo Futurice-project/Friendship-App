@@ -7,8 +7,14 @@ import { SearchBar } from 'react-native-elements';
 import throttle from 'lodash/throttle';
 
 import { Title, Header, SmallHeader, Description } from '../../components/Text';
-
-import { ViewContainerTop, ViewContainer, Centered, FullscreenCentered, IconImage } from '../../components/Layout';
+import {
+  ViewContainerTop,
+  ViewContainer,
+  Centered,
+  FullscreenCentered,
+  IconImage,
+} from '../../components/Layout';
+import Spinner from '../../components/Spinner';
 import Person from '../../components/Person';
 import Tag from '../../components/Tags';
 import RoundTab from '../../components/RoundTab';
@@ -39,7 +45,6 @@ export class PeopleView extends React.Component {
 
   state = {
     data: [],
-
     searchedUsername: '',
     currentPage: 0,
     loading: false,
@@ -61,7 +66,10 @@ export class PeopleView extends React.Component {
       })
       .then(response => {
         this.setState({ currentPage: this.state.currentPage + 1 });
-        this.setState({ data: [...this.state.data, ...response], loading: false});
+        this.setState({
+          data: [...this.state.data, ...response],
+          loading: false,
+        });
       })
       .catch(err => console.error(err + ' error fetchData in peopleView.js'));
   };
@@ -76,7 +84,10 @@ export class PeopleView extends React.Component {
 
   // Creates a throttled function that only invokes func at most once per every 1 second.
   getUserByUsername = throttle(username => {
-    this.setState({ searchedUsername: username, infiniteScrollStop: username ? true : false, });
+    this.setState({
+      searchedUsername: username,
+      infiniteScrollStop: username ? true : false,
+    });
     this.props.refreshUsersSearch(username);
   }, 1000);
 
@@ -110,6 +121,11 @@ export class PeopleView extends React.Component {
     );
   }
 
+  renderSpinner() {
+    if (this.state.loading) {
+      return <Spinner fullflex={this.state.data.length === 0} />;
+    }
+  }
   render() {
     return (
       <ViewContainerTop style={{ backgroundColor: '#e8e9e8' }}>
@@ -147,9 +163,11 @@ export class PeopleView extends React.Component {
       <FullscreenCentered>
         <FlatList
           data={
-            this.state.searchedUsername.length > 0
-              ? this.state.filteredUsers
-              : this.state.data
+            this.state.searchedUsername.length > 0 ? (
+              this.state.filteredUsers
+            ) : (
+              this.state.data
+            )
           }
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
