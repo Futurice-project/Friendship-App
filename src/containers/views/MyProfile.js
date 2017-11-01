@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 //import { IconImage } from '../../components/Layout';
 import rest from '../../utils/rest';
@@ -16,6 +17,7 @@ import { SmallHeader, Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
 import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
+import { ImagePicker } from 'expo';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -24,6 +26,18 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateUser: userId =>
+    dispatch(
+      rest.actions.usersUpdate.patch(
+        { userId },
+        {
+          body: JSON.stringify({
+            description: '22',
+          }),
+        },
+      ),
+    ),
+
   refreshUser: userId => dispatch(rest.actions.currentUser.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForCurrentUser.get({ userId })),
@@ -44,6 +58,7 @@ class MyProfile extends React.Component {
     description: '',
     profileTitle: 'Profile Page',
     isModalVisible: false,
+    image: 'assets:/pictureProfil.jpg',
   };
 
   _showModal = () => this.setState({ isModalVisible: true });
@@ -80,6 +95,26 @@ class MyProfile extends React.Component {
     this.props.refreshTagsForUser(personId);
   }
 
+  _pickImage = async () => {
+    console.log('image URi = ' + this.state.image);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 2],
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+
+    console.log('image URi = ' + this.state.image);
+  };
+
+  getId = () => {
+    console.log('IDCURRENTUSER ' + this.props.currentUser.data.id);
+  };
+
   getAge = () => {
     const birthDay = new Date(this.props.currentUser.data.birthday);
     const now = new Date();
@@ -110,6 +145,8 @@ class MyProfile extends React.Component {
   };
 
   render = () => {
+    let { image } = this.state;
+
     if (!this.props.auth.data.decoded) {
       return (
         <View style={{ marginTop: 30 }}>
@@ -128,14 +165,23 @@ class MyProfile extends React.Component {
       });
       return (
         <ViewContainerTop style={styles.viewContent}>
-          <TouchableOpacity
-            onPress={this._showModal}
-            style={{ alignSelf: 'flex-end', marginRight: 15, marginTop: 32 }}
-          >
-            <Image
-              source={require('../../../assets//icon_profile_overlay.png')}
-            />
-          </TouchableOpacity>
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Image source={{ uri: image }} style={{ width: 400, height: 200 }}>
+              <TouchableOpacity
+                onPress={this._showModal}
+                style={{
+                  alignSelf: 'flex-end',
+                  marginRight: 40,
+                  marginTop: 32,
+                }}
+              >
+                <Image
+                  source={require('../../../assets//icon_profile_overlay.png')}
+                />
+              </TouchableOpacity>
+            </Image>
+          </View>
+
           <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>
@@ -181,7 +227,7 @@ class MyProfile extends React.Component {
 
               <ButtonOption>
                 <TouchableOpacity
-                  onPress={this._onPressButton}
+                  onPress={() => this.props.updateUser(1)}
                   style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
                 >
                   <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
@@ -192,7 +238,18 @@ class MyProfile extends React.Component {
 
               <ButtonOption>
                 <TouchableOpacity
-                  onPress={this._onPressButton}
+                  onPress={this._pickImage}
+                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
+                >
+                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
+                    Edit Image Cover
+                  </Text>
+                </TouchableOpacity>
+              </ButtonOption>
+
+              <ButtonOption>
+                <TouchableOpacity
+                  onPress={this.getId}
                   style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
                 >
                   <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>

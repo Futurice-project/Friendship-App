@@ -36,6 +36,13 @@ const rest = reduxApi({
     url: `${apiRoot}/users`,
     crud: true,
   },
+  usersUpdate: {
+    url: `${apiRoot}/users/:userId`,
+    crud: true,
+    options: {
+      method: 'PATCH',
+    },
+  },
   usersSearch: {
     url: `${apiRoot}/users/search/:username`,
     transformer: transformers.array,
