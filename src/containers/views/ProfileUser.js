@@ -1,11 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Modal } from 'react-native';
 import { connect } from 'react-redux';
 import { MenuContext } from 'react-native-popup-menu';
 import rest from '../../utils/rest';
 
-import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
+import Button from '../../components/Button';
+import {
+  ViewContainer,
+  ViewContainerTop,
+  Centered,
+  FlexRow,
+} from '../../components/Layout';
 import { SmallHeader, Description } from '../../components/Text';
+import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
 import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
 
@@ -19,6 +26,11 @@ const mapDispatchToProps = dispatch => ({
   refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForUser.get({ userId })),
+  reportUser: reportDetails => {
+    dispatch(
+      rest.actions.reports.post({}, { body: JSON.stringify(reportDetails) }),
+    );
+  },
 });
 
 class ProfileUser extends React.Component {
@@ -27,6 +39,8 @@ class ProfileUser extends React.Component {
     age: '',
     description: '',
     profileTitle: 'Profile Page',
+    isReportVisible: false,
+    reportDescription: 'Description',
   };
 
   static navigationOptions = ({ navigation }) => ({
@@ -82,6 +96,15 @@ class ProfileUser extends React.Component {
     this.setState({ age: ageName });
   };
 
+  showReport = () => this.setState({ isReportVisible: true });
+  hideReport = () => this.setState({ isReportVisible: false });
+  sendReport = () => {
+    const userId = 2;
+    const description = this.state.reportDescription;
+    const reported_by = this.props.auth.data.decoded.id;
+    this.props.reportUser({ userId, description, reported_by });
+  };
+
   render = () => {
     if (!this.props.auth.data.decoded) {
       return (
@@ -97,6 +120,50 @@ class ProfileUser extends React.Component {
       let hate = this.props.tagsForUser.data.filter(e => e.love === false);
       return (
         <ViewContainerTop style={styles.viewContent}>
+          <Modal visible={this.state.isReportVisible}>
+            <ViewContainer style={{ flex: 1 }}>
+              <View
+                style={{
+                  height: 400,
+                  backgroundColor: '#eee',
+                  borderRadius: 5,
+                  padding: 10,
+                  marginHorizontal: 20,
+                }}
+              >
+                <Text> Report {this.props.userDetails.data.username}</Text>
+                <TextInput
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  titleColor="#2d4359"
+                  title="REPORT USER"
+                  placeholder="DETAILS OF REPORT"
+                  backColor="#faf6f0"
+                  onChangeText={reportDescription =>
+                    this.setState({ reportDescription })}
+                  value={this.state.reportDescription}
+                />
+                <View style={{ flexDirection: 'row' }}>
+                  <Button
+                    title="Cancel"
+                    primary
+                    textColor="green"
+                    size="half"
+                    color="light"
+                    onPress={this.hideReport}
+                  />
+                  <Button
+                    title="Report"
+                    border
+                    textColor="black"
+                    size="half"
+                    color="dark"
+                    onPress={this.sendReport}
+                  />
+                </View>
+              </View>
+            </ViewContainer>
+          </Modal>
           <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>
@@ -112,14 +179,23 @@ class ProfileUser extends React.Component {
               {this.props.userDetails.data.location ? (
                 ', ' + this.props.userDetails.data.location
               ) : (
-                ''
+                ', Narnia'
               )}
             </Description>
-            <Description>I love ... and hate...</Description>
-            <SmallHeader>LOOKING FOR</SmallHeader>
-            <Description>
-              The events you will actively look friends for will be visible here
-            </Description>
+            <View
+              style={{ height: 100, backgroundColor: '#fff', marginBottom: 10 }}
+            >
+              <Text> Personality Placeholder</Text>
+              <Button
+                title="Report"
+                primary
+                border
+                textColor="green"
+                size="half"
+                color="light"
+                onPress={this.showReport}
+              />
+            </View>
           </View>
           <TabProfile hate={hate} love={love} />
         </ViewContainerTop>
@@ -135,7 +211,6 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     alignItems: 'center',
-    height: 300,
     marginTop: 23,
   },
   whiteCircle: {

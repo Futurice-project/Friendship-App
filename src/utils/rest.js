@@ -59,6 +59,10 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
+  reports: {
+    url: `${apiRoot}/reports`,
+    crud: true,
+  },
 
   auth: {
     url: `${apiRoot}/users/authenticate`,
