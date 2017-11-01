@@ -22,10 +22,20 @@ Information about request: `state.teams.error`, `state.teams.sync`, `state.teams
 let apiRoot;
 
 if (process.env.NODE_ENV === 'development') {
-  apiRoot = 'http://localhost:3888';
+  apiRoot = 'http://localhost:3888';  
 } else {
   apiRoot = 'https://my-app.herokuapp.com';
 }
+
+authTransformer = (data = {}) => {
+  if (data.token) {
+    return {
+      ...data,
+      decoded: jwtDecode(data.token),
+    };
+  }
+  return data;
+};
 
 const rest = reduxApi({
   personalities: {
@@ -50,18 +60,15 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
-
+  register: {
+    url: `${apiRoot}/users`,
+    transformer: authTransformer,
+    reducerName: 'auth',
+    options: { method: 'POST' },
+  },
   auth: {
     url: `${apiRoot}/users/authenticate`,
-    transformer: (data = {}) => {
-      if (data.token) {
-        return {
-          ...data,
-          decoded: jwtDecode(data.token),
-        };
-      }
-      return data;
-    },
+    transformer: authTransformer,
     options: {
       method: 'POST',
     },

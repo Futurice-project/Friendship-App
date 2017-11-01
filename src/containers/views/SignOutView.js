@@ -15,15 +15,10 @@ import {
 } from 'react-native';
 
 const mapStateToProps = state => ({
-  users: state.users,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
-  signUp: credentials => {
-    dispatch(
-      rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
-    );
-  },
   signOut: () => {
     dispatch({ type: 'SIGN_OUT' });
   },
@@ -52,6 +47,22 @@ class SignOutView extends Component {
     password: '',
   };
 
+  renderStatus() {
+    if (this.props.auth.data.decoded) {
+      const email = this.props.auth.data.decoded.email;
+      return (
+        <Text style={styles.textStyle} >
+          Signed in as { email }
+        </Text>
+      );
+    }
+    return (
+      <Text style={styles.textStyle} >
+        Not signed in!!
+      </Text>
+    )
+  }
+
   render() {
     return (
       <KeyboardAvoidingView behavior="padding">
@@ -66,6 +77,7 @@ class SignOutView extends Component {
               </Text>
             </HeaderWrapper>
             <Centered style={{ flex: 2 }}>
+              { this.renderStatus() }
               <Text style={styles.headerText} onPress={this.props.signOut}>
                 Sign Out
               </Text>
@@ -102,7 +114,7 @@ const styles = {
   textStyle: {
     fontFamily: 'NunitoSans-Regular',
     width: 205,
-    height: 20,
+    height: 60,
     fontSize: 15,
     textAlign: 'center',
     color: '#f673f8',

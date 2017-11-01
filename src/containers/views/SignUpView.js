@@ -15,14 +15,25 @@ import {
 } from 'react-native';
 
 const mapStateToProps = state => ({
-  users: state.users,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
+  // signUp: credentials => {
+  //   dispatch(
+  //     rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
+  //   );
+  // },
   signUp: credentials => {
-    dispatch(
-      rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
-    );
+    dispatch(rest.actions.register({}, { body: JSON.stringify(credentials) }))
+    .then(() =>
+      dispatch(
+        NavigationActions.navigate({
+          routeName: 'SignOut',
+        }),
+      ),
+    )
+    .catch(err => console.log(err));
   },
   openSignIn: () =>
     dispatch(
@@ -55,10 +66,24 @@ class SignUpView extends React.Component {
   };
 
   renderStatus() {
-    const { data, error, loading } = this.props.users;
+    // const { data, error, loading } = this.props.users;
+    // let status = '';
+    // if (data.email) {
+    //   status = `Email ${data.email} successfully signed up!`;
+    // }
+    // if (this.state.error && error) {
+    //   status = `Error ${error.statusCode}: ${error.message}`;
+    // }
+    // if (loading) {
+    //   status = `Loading ...`;
+    // }
+
+    // return <Text style={styles.textStyle}>{status}</Text>;
+
+    const { data, error, loading } = this.props.auth;
     let status = '';
-    if (data.email) {
-      status = `Email ${data.email} successfully signed up!`;
+    if (data.decoded) {
+      status = `Signed in as ${data.decoded.email}`;
     }
     if (this.state.error && error) {
       status = `Error ${error.statusCode}: ${error.message}`;
