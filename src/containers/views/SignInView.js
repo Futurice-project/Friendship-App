@@ -86,7 +86,11 @@ class SignInView extends React.Component {
       status = `Signed in as ${data.decoded.email}`;
     }
     if (this.state.error && error) {
-      status = `Error ${error.statusCode}: ${error.message}`;
+      if (this.state.email == '' || this.state.password == '') {
+        status = 'Please enter an e-mail and password';
+      } else {
+        status = `${error.message}`;
+      }
     }
     if (loading) {
       status = `Loading ...`;
@@ -181,7 +185,7 @@ const styles = {
   },
   textStyle: {
     fontFamily: 'NunitoSans-Regular',
-    width: 205,
+    width: '100%',
     height: 20,
     fontSize: 15,
     textAlign: 'center',
