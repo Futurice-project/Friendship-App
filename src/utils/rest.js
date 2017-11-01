@@ -22,7 +22,7 @@ Information about request: `state.teams.error`, `state.teams.sync`, `state.teams
 let apiRoot;
 
 if (process.env.NODE_ENV === 'development') {
-  apiRoot = 'http://localhost:3888';  
+  apiRoot = 'http://localhost:3888';
 } else {
   apiRoot = 'https://my-app.herokuapp.com';
 }

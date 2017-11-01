@@ -50,17 +50,9 @@ class SignOutView extends Component {
   renderStatus() {
     if (this.props.auth.data.decoded) {
       const email = this.props.auth.data.decoded.email;
-      return (
-        <Text style={styles.textStyle} >
-          Signed in as { email }
-        </Text>
-      );
+      return <Text style={styles.textStyle}>Signed in as {email}</Text>;
     }
-    return (
-      <Text style={styles.textStyle} >
-        Not signed in!!
-      </Text>
-    )
+    return <Text style={styles.textStyle}>Not signed in!!</Text>;
   }
 
   render() {
@@ -77,7 +69,7 @@ class SignOutView extends Component {
               </Text>
             </HeaderWrapper>
             <Centered style={{ flex: 2 }}>
-              { this.renderStatus() }
+              {this.renderStatus()}
               <Text style={styles.headerText} onPress={this.props.signOut}>
                 Sign Out
               </Text>

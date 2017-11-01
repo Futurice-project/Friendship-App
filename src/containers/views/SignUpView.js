@@ -26,14 +26,14 @@ const mapDispatchToProps = dispatch => ({
   // },
   signUp: credentials => {
     dispatch(rest.actions.register({}, { body: JSON.stringify(credentials) }))
-    .then(() =>
-      dispatch(
-        NavigationActions.navigate({
-          routeName: 'SignOut',
-        }),
-      ),
-    )
-    .catch(err => console.log(err));
+      .then(() =>
+        dispatch(
+          NavigationActions.navigate({
+            routeName: 'SignOut',
+          }),
+        ),
+      )
+      .catch(err => console.log(err));
   },
   openSignIn: () =>
     dispatch(
