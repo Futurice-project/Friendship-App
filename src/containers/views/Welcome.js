@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => ({
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SignUp',
+        routeName: 'SignUpLocation',
       }),
     ),
   openTabs: () =>
@@ -35,16 +35,10 @@ const mapDispatchToProps = dispatch => ({
         routeName: 'Tabs',
       }),
     ),
-  openLabel: () =>
+  openSignIn: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'LookingFor',
-      }),
-    ),
-  openLogIn: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'Login',
+        routeName: 'SignIn',
       }),
     ),
   openPreview: () =>
@@ -200,7 +194,7 @@ export class WelcomeView extends React.Component {
               textColor="white"
               color="light"
               size="half"
-              onPress={this.props.openLabel}
+              onPress={this.props.openSignIn}
             />
           </ConnectionOption>
         </Connection>

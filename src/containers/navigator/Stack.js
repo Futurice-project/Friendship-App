@@ -8,7 +8,7 @@ import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleView';
-import SignUpView from '../views/SignUpView';
+import SignUpLocation from '../views/SignUpLocation';
 import SignInView from '../views/SignInView';
 import SignOutView from '../views/SignOutView';
 import ProfileUser from './../views/ProfileUser';
@@ -57,9 +57,9 @@ export default StackNavigator(
       screen: SignInView,
       navigationOptions: { title: 'SignIn Page' },
     },
-    SignUp: {
-      screen: SignUpView,
-      navigationOptions: { title: 'SignUp Page' },
+    SignUpLocation: {
+      screen: SignUpLocation,
+      navigationOptions: { title: 'SignUpLocation Page' },
     },
     SignOut: {
       screen: SignOutView,

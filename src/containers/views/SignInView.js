@@ -38,7 +38,7 @@ const mapDispatchToProps = dispatch => ({
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SignUp',
+        routeName: 'SignUpLocation',
       }),
     ),
   openWelcomeScreen: () =>
