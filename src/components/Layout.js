@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     /*commented otherwise roundTab is not at the bottom
       paddingVertical: 10
-      
+
       */
   },
   contentContainerStyleTop: {
