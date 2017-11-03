@@ -99,7 +99,7 @@ class ProfileUser extends React.Component {
   showReport = () => this.setState({ isReportVisible: true });
   hideReport = () => this.setState({ isReportVisible: false });
   sendReport = () => {
-    const userId = 2;
+    const userId = this.props.userDetails.data.id;
     const description = this.state.reportDescription;
     const reported_by = this.props.auth.data.decoded.id;
     this.props.reportUser({ userId, description, reported_by });
