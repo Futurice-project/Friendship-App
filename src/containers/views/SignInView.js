@@ -16,6 +16,7 @@ import {
   Keyboard,
   View,
   Platform,
+  Dimensions,
 } from 'react-native';
 
 const mapStateToProps = state => ({
@@ -58,7 +59,18 @@ class SignInView extends React.Component {
   // This will solve the white space after opening textfields
   // Because now it recognizes a change (key = different)
   keyboardHideListener = () => {
-    this.setState({ keyboardAvoidingViewKey: new Date().getTime() });
+    this.setState({
+      keyboardAvoidingViewKey: new Date().getTime(),
+      keyboardOpen: false,
+    });
+  };
+
+  keyboardDidShowListener = e => {
+    console.log(e.endCoordinates.height);
+    this.setState({
+      keyboardOpen: true,
+      keyboardHeight: e.endCoordinates.height,
+    });
   };
 
   componentDidMount() {
@@ -66,10 +78,15 @@ class SignInView extends React.Component {
       Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
       this.keyboardHideListener,
     );
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShowListener,
+    );
   }
 
   componentWillUnmount() {
     this.keyboardHideListener.remove();
+    this.keyboardDidShowListener.remove();
   }
 
   state = {
@@ -78,6 +95,8 @@ class SignInView extends React.Component {
     error: false,
     validationError: '',
     keyboardAvoidingViewKey: 'keyboardAvoidingViewKey',
+    keyboardOpen: false,
+    keyboardHeight: '',
   };
 
   renderStatus() {
@@ -105,6 +124,27 @@ class SignInView extends React.Component {
     return <Text style={styles.statusTextStyle}>{status}</Text>;
   }
 
+  /**
+   * Renders SignInButton
+   * Changes position when keyboard is open and closed
+   * @returns {XML}
+   */
+  renderSignInButton() {
+    if (this.state.keyboardOpen) {
+      return (
+        <View style={{ marginBottom: 0 }}>
+          <RoundTab title="Sign In" onPress={() => this.signIn()} />
+        </View>
+      );
+    }
+
+    return (
+      <View>
+        <RoundTab title="Sign In" onPress={() => this.signIn()} />
+      </View>
+    );
+  }
+
   componentWillReceiveProps() {
     this.setState({ error: true });
   }
@@ -124,7 +164,6 @@ class SignInView extends React.Component {
       <KeyboardAvoidingView
         behavior="padding"
         key={this.state.keyboardAvoidingViewKey}
-        keyboardVerticalOffset={-64}
       >
         <ViewContainer>
           <Padding style={{ flex: 1 }}>
@@ -165,11 +204,7 @@ class SignInView extends React.Component {
               </Text>
             </Centered>
           </Padding>
-          <RoundTab
-            title="Sign In"
-            style={{ flex: 1 }}
-            onPress={() => this.signIn()}
-          />
+          {this.renderSignInButton()}
         </ViewContainer>
       </KeyboardAvoidingView>
     );
