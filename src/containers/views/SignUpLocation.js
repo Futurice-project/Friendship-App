@@ -70,30 +70,28 @@ export class SignUpLocation extends React.Component {
         </SignUpDivWrapper>
 
         <SignUpDivWrapper style={{ flex: 8, justifyContent: 'center' }}>
-          <View style={{ height: 44, width: 400, zIndex: 33 }}>
-            <MultiSelect
-              style={{ borderRadius: 27, backgroundColor: '#faf5f0' }}
-              hideTags
-              items={data}
-              uniqueKey="id"
-              ref={component => {
-                multiSelect = component;
-              }}
-              hideSubmitButton={true}
-              fixedHeight={true}
-              onSelectedItemsChange={this.onSelectedItemsChange}
-              selectedItems={selectedItems}
-              selectText="REGION*"
-              searchInputPlaceholderText="Search municipalities..."
-              tagRemoveIconColor="#CCC"
-              tagBorderColor="#CCC"
-              tagTextColor="#fff"
-              selectedItemTextColor="#CCC"
-              selectedItemIconColor="#CCC"
-              itemTextColor="#000"
-              searchInputStyle={{ color: '#000' }}
-            />
-          </View>
+          <MultiSelect
+            style={{ borderRadius: 27, backgroundColor: '#faf5f0' }}
+            hideTags
+            items={data}
+            uniqueKey="id"
+            ref={component => {
+              multiSelect = component;
+            }}
+            hideSubmitButton={true}
+            fixedHeight={true}
+            onSelectedItemsChange={this.onSelectedItemsChange}
+            selectedItems={selectedItems}
+            selectText="REGION*"
+            searchInputPlaceholderText="Search municipalities..."
+            tagRemoveIconColor="#CCC"
+            tagBorderColor="#CCC"
+            tagTextColor="#fff"
+            selectedItemTextColor="#CCC"
+            selectedItemIconColor="#CCC"
+            itemTextColor="#000"
+            searchInputStyle={{ color: '#000' }}
+          />
           <TextInput
             backColor="#faf5f0"
             title="WHAT'S YOUR NEIGHBORHOOD ?"
