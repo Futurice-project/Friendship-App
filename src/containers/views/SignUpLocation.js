@@ -57,7 +57,7 @@ export class SignUpLocation extends React.Component {
       </SignUpDivWrapper>
 
       <SignUpDivWrapper style={{ flex: 8, justifyContent: 'center' }}>
-        <DropDown title="YOUR LOCATION" />
+        {/* <DropDown title="YOUR LOCATION" /> */}
         <TextInput
           backColor="#faf5f0"
           title="WHAT'S YOUR NEIGHBORHOOD ?"
