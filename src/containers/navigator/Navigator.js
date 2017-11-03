@@ -27,7 +27,12 @@ export const handleBackButton = ({ navigatorState }, dispatch) => {
   const currentTab = navigatorState.routes[tabNavigatorIndex];
   const currentStackScreen = navigatorState;
 
-  if (currentTab.index !== 0 || currentStackScreen.index !== 0) {
+  /**
+   * Welcome screen is tab 1 in our case
+   * So i disabled navigation starting from tab 2
+   * This means u can't navigate back with the back button to the welcome screen
+   */
+  if (currentTab.index > 1 || currentStackScreen.index > 1) {
     dispatch(NavigationActions.back());
     return true;
   }
