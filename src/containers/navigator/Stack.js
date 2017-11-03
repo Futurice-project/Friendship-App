@@ -67,6 +67,7 @@ export default StackNavigator(
     },
     ProfileUser: {
       screen: ProfileUser,
+      navigationOptions: { header: () => null },
     },
     // ## End StackNavigator Views ##
   },
