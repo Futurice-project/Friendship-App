@@ -76,10 +76,16 @@ class SignInView extends React.Component {
     email: '',
     password: '',
     error: false,
+    validationError: '',
     keyboardAvoidingViewKey: 'keyboardAvoidingViewKey',
   };
 
   renderStatus() {
+    if (this.state.validationError) {
+      return (
+        <Text style={styles.statusTextStyle}>{this.state.validationError}</Text>
+      );
+    }
     const { data, error, loading } = this.props.auth;
     let status = '';
     if (data.decoded) {
@@ -96,7 +102,7 @@ class SignInView extends React.Component {
       status = `Loading ...`;
     }
 
-    return <Text style={styles.textStyle}>{status}</Text>;
+    return <Text style={styles.statusTextStyle}>{status}</Text>;
   }
 
   componentWillReceiveProps() {
@@ -105,6 +111,11 @@ class SignInView extends React.Component {
 
   signIn() {
     const { email, password } = this.state;
+    if (!email || !password) {
+      return this.setState({
+        validationError: 'Please enter both email & password!',
+      });
+    }
     this.props.signIn({ email, password });
   }
 
@@ -128,14 +139,14 @@ class SignInView extends React.Component {
                 Sign Up
               </Text>
             </HeaderWrapper>
-            <Text style={{ color: 'white' }}>Sign In</Text>
             <Centered style={{ flex: 2 }}>
               <TextInput
                 titleColor="#f9f7f6"
                 title="EMAIL"
                 placeholder="HELLO@FRIENDSHIP.COM"
                 backColor="#faf6f0"
-                onChangeText={email => this.setState({ email })}
+                onChangeText={email =>
+                  this.setState({ email, validationError: '' })}
                 value={this.state.email}
               />
               <TextInput
@@ -144,10 +155,14 @@ class SignInView extends React.Component {
                 titleColor="#f9f7f6"
                 placeholder="*******"
                 backColor="#faf6f0"
-                onChangeText={password => this.setState({ password })}
+                onChangeText={password =>
+                  this.setState({ password, validationError: '' })}
                 value={this.state.password}
               />
               {this.renderStatus()}
+              <Text style={styles.textStyle}>
+                Need help with your password?
+              </Text>
             </Centered>
           </Padding>
           <RoundTab
@@ -183,13 +198,22 @@ const styles = {
     textAlign: 'center',
     color: 'white',
   },
+  statusTextStyle: {
+    fontFamily: 'NunitoSans-Regular',
+    width: '100%',
+    height: 20,
+    fontSize: 15,
+    textAlign: 'center',
+    color: '#f673f7',
+    marginBottom: 10,
+  },
   textStyle: {
     fontFamily: 'NunitoSans-Regular',
     width: '100%',
     height: 20,
     fontSize: 15,
     textAlign: 'center',
-    color: '#f673f8',
+    color: '#f9f7f6',
     marginBottom: 10,
   },
 };
