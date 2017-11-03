@@ -20,55 +20,91 @@ import {
 } from 'react-native';
 
 class SignUpPersonality extends React.Component {
+  static navigationOptions = {
+    header: () => null,
+  };
+
   render() {
     return (
-      <ViewContainer>
-        <Text>aa</Text>
-      </ViewContainer>
+      <View>
+        <ViewContainer>
+          <Padding style={{ flex: 1 }}>
+            <Header>
+              <ProgressBar />
+              <ProgressBar />
+              <ProgressBar />
+              <ProgressBar />
+              <ProgressBar />
+            </Header>
+            <Title>PERSONALITY</Title>
+            <SubTitle>
+              <Text
+                style={{
+                  fontFamily: 'NunitoSans-Bold',
+                  fontSize: 20,
+                  color: '#efebe9',
+                }}
+              >
+                1/4{' '}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'NunitoSans-Regular',
+                  fontSize: 20,
+                  color: '#efebe9',
+                }}
+              >
+                Lifestyle
+              </Text>
+            </SubTitle>
+            <Text
+              style={{
+                fontFamily: 'NunitoSans-Light',
+                fontSize: 16,
+                color: '#efebe9',
+              }}
+            >
+              Are you more..
+            </Text>
+            <Centered style={{ flex: 2 }}>
+              <Personalities>
+                <Text>aa</Text>
+              </Personalities>
+            </Centered>
+          </Padding>
+        </ViewContainer>
+      </View>
     );
   }
 }
 
-const HeaderWrapper = styled.View`
-  margin-top: 20;
+const Personalities = styled.View`background-color: red;`;
+
+const Header = styled.View`
+  margin-top: 13;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  height: 50;
 `;
 
-const styles = {
-  headerText: {
-    fontFamily: 'NunitoSans-SemiBold',
-    fontSize: 20,
-    color: '#ff8a65',
-  },
-  buttonTextStyle: {
-    width: 230,
-    height: 27,
-    fontSize: 20,
-    fontWeight: 'bold',
-    fontFamily: 'NunitoSans-Regular',
-    textAlign: 'center',
-    color: 'white',
-  },
-  statusTextStyle: {
-    fontFamily: 'NunitoSans-Regular',
-    width: '100%',
-    height: 20,
-    fontSize: 15,
-    textAlign: 'center',
-    color: '#f673f7',
-    marginBottom: 10,
-  },
-  textStyle: {
-    fontFamily: 'NunitoSans-Regular',
-    width: '100%',
-    height: 20,
-    fontSize: 15,
-    textAlign: 'center',
-    color: '#f9f7f6',
-    marginBottom: 10,
-  },
-};
+const ProgressBar = styled.View`
+  background-color: #3a4853;
+  width: 19%;
+  height: 10;
+`;
+
+const Title = styled.Text`
+  font-size: 40;
+  fontFamily: 'Friendship_version_2';
+  color: #faf5f0;
+`;
+
+const SubTitle = styled.View`
+  margin-top: 10;
+  margin-bottom: 10;
+  display: flex;
+  flex-direction: row;
+`;
 
 export default SignUpPersonality;
