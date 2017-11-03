@@ -29,7 +29,7 @@ const ButtonText = styled.Text`
  * @param {string} tint - Changes the color of the image
  * @param {string} title - Sets the text of the button
  * @param {string} titleColor - Set the color of the title
-
+ * @param {boolean} disabled - Set if the button should not be clickable
  * @param {function} onPress - Sets the function of the button
   */
 
@@ -58,6 +58,7 @@ export default class RoundTab extends React.Component {
           height: this.state.imageHeight,
           justifyContent: 'center',
         }}
+        disabled={this.props.disabled}
         onPress={this.props.onPress}
       >
         {this.props.children}
