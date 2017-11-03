@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import data from '../../../assets/misc/municipalities.json';
-import MultiSelect from 'react-native-multiple-select';
+import MultiSelect from '../../utils/react-native-multiple-select';
 class DropdownList extends React.Component {
   state = {
     selectedItems: [],
@@ -65,17 +65,15 @@ class DropdownList extends React.Component {
           fixedHeight={true}
           onSelectedItemsChange={this.onSelectedItemsChange}
           selectedItems={selectedItems}
-          selectText="Region*"
+          selectText="REGION*"
           searchInputPlaceholderText="Search municipalities..."
           tagRemoveIconColor="#CCC"
           tagBorderColor="#CCC"
-          tagTextColor="#CCC"
+          tagTextColor="#fff"
           selectedItemTextColor="#CCC"
           selectedItemIconColor="#CCC"
           itemTextColor="#000"
-          searchInputStyle={{ color: '#fff' }}
-          submitButtonColor="#CCC"
-          submitButtonText="Submit"
+          searchInputStyle={{ color: '#000' }}
         />
         <View>
           <Text>{this.state.selectedItems}</Text>
