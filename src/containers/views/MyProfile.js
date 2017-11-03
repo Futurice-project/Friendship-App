@@ -161,12 +161,6 @@ class MyProfile extends React.Component {
             </Description>
           </View>
           <TabProfile hate={hate} love={love} myprofile={true} />
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            onPress={() => this.props.signOut()}
-          >
-            <Text style={styles.buttonTextStyle}>Sign Out</Text>
-          </TouchableOpacity>
 
           <Modal isVisible={this.state.isModalVisible}>
             <View style={{ flex: 1 }}>
@@ -203,7 +197,7 @@ class MyProfile extends React.Component {
 
               <ButtonOption>
                 <TouchableOpacity
-                  onPress={this._onPressButton}
+                  onPress={() => this.props.signOut()}
                   style={[styles.buttonStyle, { backgroundColor: '#2a343c' }]}
                 >
                   <Text style={[styles.textButtonStyle, { color: '#faf5f0' }]}>
