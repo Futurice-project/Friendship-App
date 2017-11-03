@@ -1,11 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
-import Button from '../../components/Button';
-import { Description, Bold } from '../../components/Text';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
-import TextInput from '../../components/TextInput';
-import RoundTab from '../../components/RoundTab';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
 import Personality from '../../components/Personality';
@@ -20,9 +16,63 @@ import {
   Dimensions,
 } from 'react-native';
 
+const mapStateToProps = state => ({
+  createUserPersonality: state.createUserPersonality,
+});
+
+const mapDispatchToProps = dispatch => ({
+  createUserPersonality: credentials => {
+    dispatch(
+      rest.actions.createUserPersonality(
+        {},
+        { body: JSON.stringify(credentials) },
+      ),
+    )
+      .then(() =>
+        dispatch(
+          NavigationActions.navigate({
+            routeName: 'SignOut',
+          }),
+        ),
+      )
+      .catch(err => console.log(err));
+  },
+});
+
 class SignUpPersonality extends React.Component {
   static navigationOptions = {
     header: () => null,
+  };
+
+  state = {
+    personalityId: '',
+    level: '',
+  };
+
+  handleClickRelaxed = () => {
+    this.setState(
+      {
+        personalityId: 1,
+        level: 5,
+      },
+      () => {
+        const { userId, personalityId, level } = this.state;
+        this.props.createUserPersonality({ personalityId, level });
+      },
+    );
+  };
+
+  handleClickAmbigious = () => {
+    this.setState(
+      {
+        personalityId: 2,
+        level: 5,
+      },
+      () => {
+        const { userId, personalityId, level } = this.state;
+        this.props.createUserPersonality({ personalityId, level });
+      },
+    );
   };
 
   render() {
@@ -69,7 +119,11 @@ class SignUpPersonality extends React.Component {
             </Text>
             <Centered>
               <Personalities>
-                <Personality title="RELAXED" image="relaxed" />
+                <Personality
+                  title="RELAXED"
+                  image="relaxed"
+                  onPress={this.handleClickRelaxed}
+                />
                 <Text
                   style={{
                     paddingBottom: 15,
@@ -81,7 +135,11 @@ class SignUpPersonality extends React.Component {
                 >
                   or
                 </Text>
-                <Personality title="AMBITIOUS" image="ambitious" />
+                <Personality
+                  title="AMBITIOUS"
+                  image="ambitious"
+                  onPress={this.handleClickAmbigious}
+                />
               </Personalities>
             </Centered>
           </Padding>
@@ -124,4 +182,4 @@ const SubTitle = styled.View`
   flex-direction: row;
 `;
 
-export default SignUpPersonality;
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpPersonality);
