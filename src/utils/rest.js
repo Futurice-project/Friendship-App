@@ -27,6 +27,16 @@ if (process.env.NODE_ENV === 'development') {
   apiRoot = 'https://my-app.herokuapp.com';
 }
 
+authTransformer = (data = {}) => {
+  if (data.token) {
+    return {
+      ...data,
+      decoded: jwtDecode(data.token),
+    };
+  }
+  return data;
+};
+
 const rest = reduxApi({
   personalities: {
     url: `${apiRoot}/personalities`,
@@ -64,17 +74,15 @@ const rest = reduxApi({
     crud: true,
   },
 
+  register: {
+    url: `${apiRoot}/users`,
+    transformer: authTransformer,
+    reducerName: 'auth',
+    options: { method: 'POST' },
+  },
   auth: {
     url: `${apiRoot}/users/authenticate`,
-    transformer: (data = {}) => {
-      if (data.token) {
-        return {
-          ...data,
-          decoded: jwtDecode(data.token),
-        };
-      }
-      return data;
-    },
+    transformer: authTransformer,
     options: {
       method: 'POST',
     },
@@ -98,13 +106,8 @@ const rest = reduxApi({
   .use('fetch', adapterFetch(fetch))
   .use('responseHandler', (err, data) => {
     if (err) {
-      console.log('Error', err);
+      throw err;
     }
-    if (data) {
-      // console.log('Success', data);
-      return data;
-    }
-    throw err;
   });
 
 export default rest;

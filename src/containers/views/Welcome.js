@@ -10,7 +10,10 @@ import RoundTab from '../../components/RoundTab';
 import { Image, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
 const mapDispatchToProps = dispatch => ({
   openSettings: () =>
     dispatch(
@@ -23,6 +26,12 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       NavigationActions.navigate({
         routeName: 'SignUp',
+      }),
+    ),
+  openSignOut: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SignOut',
       }),
     ),
   openLabel: () =>
@@ -134,6 +143,13 @@ const styles = StyleSheet.create({
  *  Depending on the user's choice, the app will go to either the navigationScreen, the LoginScreen or the SignupScreen
  */
 export class WelcomeView extends React.Component {
+  // testing stuff, user is led to SignOut Page if already signed in
+  componentWillMount() {
+    if (this.props.auth.data.decoded) {
+      this.props.openSignOut();
+    }
+  }
+
   static navigationOptions = {
     header: () => null,
   };
@@ -182,4 +198,4 @@ export class WelcomeView extends React.Component {
   );
 }
 
-export default connect(undefined, mapDispatchToProps)(WelcomeView);
+export default connect(mapStateToProps, mapDispatchToProps)(WelcomeView);

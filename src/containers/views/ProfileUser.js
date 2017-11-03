@@ -165,7 +165,7 @@ class ProfileUser extends React.Component {
           }
         }),
       );
-
+      let reportTitle = 'Report ' + this.props.userDetails.data.username;
       return (
         <ViewContainerTop style={styles.viewContent}>
           <TouchableOpacity
@@ -199,7 +199,7 @@ class ProfileUser extends React.Component {
             </Description>
             <View
               style={{
-                height: 100,
+                height: 80,
                 borderWidth: 1,
                 borderColor: '#fff',
                 marginBottom: 10,
@@ -246,18 +246,17 @@ class ProfileUser extends React.Component {
               <ViewContainer style={{ flex: 1 }}>
                 <View
                   style={{
-                    height: 400,
+                    height: 200,
                     backgroundColor: '#eee',
                     borderRadius: 5,
-                    padding: 10,
+                    paddingVertical: 10,
                   }}
                 >
-                  <Text> Report {this.props.userDetails.data.username}</Text>
                   <TextInput
                     autoCorrect={false}
                     autoCapitalize="none"
                     titleColor="#2d4359"
-                    title="REPORT USER"
+                    title={reportTitle}
                     placeholder="DETAILS OF REPORT"
                     backColor="#faf6f0"
                     onChangeText={reportDescription =>
