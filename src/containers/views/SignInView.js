@@ -82,7 +82,9 @@ class SignInView extends React.Component {
 
   renderStatus() {
     if (this.state.validationError) {
-      return <Text style={styles.statusTextStyle}>{this.state.validationError}</Text>;
+      return (
+        <Text style={styles.statusTextStyle}>{this.state.validationError}</Text>
+      );
     }
     const { data, error, loading } = this.props.auth;
     let status = '';
@@ -110,7 +112,9 @@ class SignInView extends React.Component {
   signIn() {
     const { email, password } = this.state;
     if (!email || !password) {
-      return this.setState({ validationError: 'Please enter both email & password!' });
+      return this.setState({
+        validationError: 'Please enter both email & password!',
+      });
     }
     this.props.signIn({ email, password });
   }
@@ -141,7 +145,8 @@ class SignInView extends React.Component {
                 title="EMAIL"
                 placeholder="HELLO@FRIENDSHIP.COM"
                 backColor="#faf6f0"
-                onChangeText={email => this.setState({ email, validationError: '' })}
+                onChangeText={email =>
+                  this.setState({ email, validationError: '' })}
                 value={this.state.email}
               />
               <TextInput
@@ -150,11 +155,14 @@ class SignInView extends React.Component {
                 titleColor="#f9f7f6"
                 placeholder="*******"
                 backColor="#faf6f0"
-                onChangeText={password => this.setState({ password, validationError: '' })}
+                onChangeText={password =>
+                  this.setState({ password, validationError: '' })}
                 value={this.state.password}
               />
               {this.renderStatus()}
-              <Text style={styles.textStyle}>Need help with your password?</Text>
+              <Text style={styles.textStyle}>
+                Need help with your password?
+              </Text>
             </Centered>
           </Padding>
           <RoundTab

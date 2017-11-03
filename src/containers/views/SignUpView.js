@@ -68,7 +68,9 @@ class SignUpView extends React.Component {
 
   renderStatus() {
     if (this.state.validationError) {
-      return <Text style={styles.statusTextStyle}>{this.state.validationError}</Text>;
+      return (
+        <Text style={styles.statusTextStyle}>{this.state.validationError}</Text>
+      );
     }
     const { data, error, loading } = this.props.auth;
     let status = '';
@@ -88,7 +90,9 @@ class SignUpView extends React.Component {
   signUp() {
     const { email, password } = this.state;
     if (!email || !password) {
-      return this.setState({ validationError: 'Please enter both email & password!' });
+      return this.setState({
+        validationError: 'Please enter both email & password!',
+      });
     }
     this.props.signUp({ email, password });
   }
@@ -115,7 +119,8 @@ class SignUpView extends React.Component {
                 title="EMAIL"
                 placeholder="HELLO@FRIENDSHIP.COM"
                 backColor="#faf6f0"
-                onChangeText={email => this.setState({ email, validationError: '' })}
+                onChangeText={email =>
+                  this.setState({ email, validationError: '' })}
                 value={this.state.email}
               />
               <TextInput
@@ -124,7 +129,8 @@ class SignUpView extends React.Component {
                 titleColor="#f9f7f6"
                 placeholder="*******"
                 backColor="#faf6f0"
-                onChangeText={password => this.setState({ password, validationError: '' })}
+                onChangeText={password =>
+                  this.setState({ password, validationError: '' })}
                 value={this.state.password}
               />
               {this.renderStatus()}
