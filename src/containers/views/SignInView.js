@@ -58,7 +58,17 @@ class SignInView extends React.Component {
   // This will solve the white space after opening textfields
   // Because now it recognizes a change (key = different)
   keyboardHideListener = () => {
-    this.setState({ keyboardAvoidingViewKey: new Date().getTime() });
+    this.setState({
+      keyboardAvoidingViewKey: new Date().getTime(),
+      keyboardOpen: false,
+    });
+  };
+
+  keyboardDidShowListener = e => {
+    this.setState({
+      keyboardOpen: true,
+      keyboardHeight: e.endCoordinates.height,
+    });
   };
 
   componentDidMount() {
@@ -66,10 +76,15 @@ class SignInView extends React.Component {
       Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
       this.keyboardHideListener,
     );
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShowListener,
+    );
   }
 
   componentWillUnmount() {
     this.keyboardHideListener.remove();
+    this.keyboardDidShowListener.remove();
   }
 
   state = {
@@ -77,6 +92,8 @@ class SignInView extends React.Component {
     password: '',
     error: false,
     keyboardAvoidingViewKey: 'keyboardAvoidingViewKey',
+    keyboardOpen: false,
+    keyboardHeight: '',
   };
 
   renderStatus() {
@@ -97,6 +114,25 @@ class SignInView extends React.Component {
     }
 
     return <Text style={styles.textStyle}>{status}</Text>;
+  }
+
+  /**
+   * Renders SignInButton
+   * Changes position when keyboard is open and closed
+   * @returns {XML}
+   */
+  renderSignInButton() {
+    if (this.state.keyboardOpen) {
+      //@ todo
+    }
+
+    return (
+      <RoundTab
+        title="Sign In"
+        style={{ marginBottom: '0' }}
+        onPress={() => this.signIn()}
+      />
+    );
   }
 
   componentWillReceiveProps() {
@@ -150,11 +186,7 @@ class SignInView extends React.Component {
               {this.renderStatus()}
             </Centered>
           </Padding>
-          <RoundTab
-            title="Sign In"
-            style={{ flex: 1 }}
-            onPress={() => this.signIn()}
-          />
+          {this.renderSignInButton()}
         </ViewContainer>
       </KeyboardAvoidingView>
     );
