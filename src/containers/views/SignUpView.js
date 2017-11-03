@@ -125,7 +125,7 @@ class SignUpView extends React.Component {
                 placeholder="HELLO@FRIENDSHIP.COM"
                 backColor="#faf6f0"
                 onChangeText={email =>
-                  this.setState({ email, validationError: '' })}
+                  this.setState({ email, validationError: '', error: false })}
                 value={this.state.email}
               />
               <TextInput
@@ -136,7 +136,11 @@ class SignUpView extends React.Component {
                 placeholder="*******"
                 backColor="#faf6f0"
                 onChangeText={password =>
-                  this.setState({ password, validationError: '' })}
+                  this.setState({
+                    password,
+                    validationError: '',
+                    error: false,
+                  })}
                 value={this.state.password}
               />
               {this.renderStatus()}
