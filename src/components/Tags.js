@@ -19,7 +19,7 @@ const mapDispatchToProps = dispatch => ({
 
 class Tag extends React.Component {
   render() {
-    let color = this.props.dark ? '#6eb1ea' : '#87df91';
+    let color = this.props.dark ? '#6eb1ea' : '#ff8a65';
     return (
       <TouchableOpacity
         style={[styles.rectangle, { backgroundColor: color }]}

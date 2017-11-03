@@ -2,7 +2,10 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 //Contains that hold the input and the label
-const Container = styled.View`align-self: center;`;
+const Container = styled.View`
+  padding-left: 20;
+  padding-right: 20;
+`;
 
 //background color can be specified with backColor attribute
 const Input = styled.TextInput.attrs({
@@ -20,7 +23,7 @@ const Input = styled.TextInput.attrs({
   padding-left: 20px;
   text-align: left;
   height: 40;
-  width: 300;
+  min-width: 300;
 `;
 //this set the line inside the input
 const HorizontalLine = styled.View`
@@ -67,7 +70,6 @@ const InputTitle = styled.Text`
  * @param {function} onChangeText - Function when the field is changed
  * @param {string} hint - Sets the value of t below the input
  */
-//export our component
 export default class TextInput extends React.Component {
   render = () => (
     <Container>
@@ -75,6 +77,10 @@ export default class TextInput extends React.Component {
         {this.props.title}
       </InputTitle>
       <Input
+        autoCorrect={this.props.autoCorrect}
+        keyboardType={this.props.keyboardType}
+        autoCapitalize={this.props.autoCapitalize}
+        returnKeyType={this.props.returnKeyType}
         //add the secure attribute to hide the text f.e password
         secure={this.props.secure}
         //specify the background color swith the backColor attribute

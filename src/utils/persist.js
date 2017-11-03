@@ -12,7 +12,9 @@ const persistConfig = {
     'usersByPage',
     'usersSearch',
     'userDetails',
-    'userTag',
+    'tagsForUser',
+    'currentUser',
+    'tagsForCurrentUser',
   ],
 };
 

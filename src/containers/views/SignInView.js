@@ -13,22 +13,31 @@ import {
   TouchableOpacity,
   Text,
   KeyboardAvoidingView,
+  Keyboard,
   View,
+  Platform,
 } from 'react-native';
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  users: state.users,
 });
 
 const mapDispatchToProps = dispatch => ({
   signIn: credentials => {
-    dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) }));
+    dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) }))
+      .then(() =>
+        dispatch(
+          NavigationActions.navigate({
+            routeName: 'SignOut',
+          }),
+        ),
+      )
+      .catch(err => console.log(err));
   },
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SignIn',
+        routeName: 'SignUp',
       }),
     ),
   openWelcomeScreen: () =>
@@ -39,29 +48,59 @@ const mapDispatchToProps = dispatch => ({
     ),
 });
 
-class LoginView extends React.Component {
+class SignInView extends React.Component {
   static navigationOptions = {
     title: 'Sign up',
     header: () => null,
   };
 
+  // Creates a new key everytime there is a change on the keyboard
+  // This will solve the white space after opening textfields
+  // Because now it recognizes a change (key = different)
+  keyboardHideListener = () => {
+    this.setState({ keyboardAvoidingViewKey: new Date().getTime() });
+  };
+
+  componentDidMount() {
+    this.keyboardHideListener = Keyboard.addListener(
+      Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
+      this.keyboardHideListener,
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardHideListener.remove();
+  }
+
   state = {
     email: '',
     password: '',
+    error: false,
+    keyboardAvoidingViewKey: 'keyboardAvoidingViewKey',
   };
 
   renderStatus() {
-    if (this.props.auth.loading) {
-      return <Text style={styles.textStyle}>Pending request</Text>;
+    const { data, error, loading } = this.props.auth;
+    let status = '';
+    if (data.decoded) {
+      status = `Signed in as ${data.decoded.email}`;
+    }
+    if (this.state.error && error) {
+      if (this.state.email == '' || this.state.password == '') {
+        status = 'Please enter an e-mail and password';
+      } else {
+        status = `${error.message}`;
+      }
+    }
+    if (loading) {
+      status = `Loading ...`;
     }
 
-    if (this.props.auth.error) {
-      return (
-        <Text style={styles.textStyle}>{this.props.auth.error.message}</Text>
-      );
-    }
+    return <Text style={styles.textStyle}>{status}</Text>;
+  }
 
-    return <Text style={styles.textStyle}> Success </Text>;
+  componentWillReceiveProps() {
+    this.setState({ error: true });
   }
 
   signIn() {
@@ -71,7 +110,11 @@ class LoginView extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAvoidingView
+        behavior="padding"
+        key={this.state.keyboardAvoidingViewKey}
+        keyboardVerticalOffset={-64}
+      >
         <ViewContainer>
           <Padding style={{ flex: 1 }}>
             <HeaderWrapper>
@@ -85,6 +128,7 @@ class LoginView extends React.Component {
                 Sign Up
               </Text>
             </HeaderWrapper>
+            <Text style={{ color: 'white' }}>Sign In</Text>
             <Centered style={{ flex: 2 }}>
               <TextInput
                 titleColor="#f9f7f6"
@@ -106,9 +150,11 @@ class LoginView extends React.Component {
               {this.renderStatus()}
             </Centered>
           </Padding>
-          <TouchableOpacity onPress={() => this.signIn()}>
-            <RoundTab title="Sign In" style={{ flex: 1 }} />
-          </TouchableOpacity>
+          <RoundTab
+            title="Sign In"
+            style={{ flex: 1 }}
+            onPress={() => this.signIn()}
+          />
         </ViewContainer>
       </KeyboardAvoidingView>
     );
@@ -139,7 +185,7 @@ const styles = {
   },
   textStyle: {
     fontFamily: 'NunitoSans-Regular',
-    width: 205,
+    width: '100%',
     height: 20,
     fontSize: 15,
     textAlign: 'center',
@@ -148,4 +194,4 @@ const styles = {
   },
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInView);

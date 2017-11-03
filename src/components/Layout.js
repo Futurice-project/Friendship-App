@@ -6,7 +6,9 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     minHeight: '100%',
     justifyContent: 'center',
-    paddingVertical: 10,
+    /*commented otherwise roundTab is not at the bottom
+      paddingVertical: 10
+      */
   },
   contentContainerStyleTop: {
     minHeight: '100%',
@@ -69,6 +71,19 @@ export const MessageCard = styled.View`
   padding-bottom: 12px;
   border: 0px solid #ddd;
   border-bottom-width: 1px;
+`;
+
+export const PopUpMenuCard = styled.View`
+  align-self: flex-end;
+  padding-top: 0px;
+`;
+
+export const TouchableHighlightButton = styled.View`
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 10px;
+  border: 1px solid #faf6f0;
+  border-bottom-width: 0px;
 `;
 
 export const ProfileIconCard = styled.View`

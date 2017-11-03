@@ -20,51 +20,36 @@ export default class TabProfile extends PureComponent {
     colorInactif: '#2d4359',
     colorTextButton: '#faf6f0',
     colorBackButton: '#2d4359',
-    pageIndex: null,
+    tabIndex: 0,
   };
 
   //allow when we change the tab to have the good colors
-  handleChangeScreen = ({ i }) => {
+  handleChangeTab = ({ i }) => {
     // **Update ** save current page index
-    if (this.state.pageIndex != i) {
-      this.setState({ pageIndex: i });
-
-      if (this.state.pageIndex == 1) {
-        this.setState({ backcolor: '#faf6f0' });
-        this.setState({ colorActif: '#6eb1ea' });
-        this.setState({ colorInactif: '#2d4359' });
-        this.setState({ colorTextButton: '#faf6f0' });
-        this.setState({ colorBackButton: '#2d4359' });
-      }
-      if (this.state.pageIndex == 0) {
-        this.setState({ backcolor: '#2d4359' });
-        this.setState({ colorActif: '#87df91' });
-        this.setState({ colorInactif: '#faf6f0' });
-        this.setState({ colorTextButton: '#6eb1ea' });
-        this.setState({ colorBackButton: '#faf6f0' });
-      }
+    if (i == 0) {
+      // NAAHS
+      this.setState({
+        backcolor: '#faf6f0',
+        colorInactif: '#2d4359',
+        colorActif: '#6eb1ea',
+        colorTextButton: '#faf6f0',
+        colorBackButton: '#2d4359',
+      });
+    } else {
+      // YEAH
+      this.setState({
+        backcolor: '#2d4359',
+        colorActif: '#ff8a65',
+        colorInactif: '#faf6f0',
+        colorTextButton: '#6eb1ea',
+        colorBackButton: '#faf6f0',
+      });
     }
   };
 
-  render = () => {
-    return (
-      <View>
-        <ScrollableTabView
-          onChangeTab={this.handleChangeScreen}
-          style={{ marginTop: 0, backgroundColor: this.state.backcolor }}
-          initialPage={0}
-          renderTabBar={() => <ScrollableTabBar />}
-          tabBarActiveTextColor={this.state.colorActif}
-          tabBarInactiveTextColor={this.state.colorInactif}
-        >
-          <View tabLabel="NAAHS" style={styles.tagList}>
-            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} dark />)}
-          </View>
-          <View tabLabel="YEAH" style={styles.tagList}>
-            {this.props.love.map(tag => <Tag key={tag.id} data={tag} />)}
-          </View>
-        </ScrollableTabView>
-
+  renderSendMsg() {
+    if (!this.props.myprofile) {
+      return (
         <View style={{ backgroundColor: this.state.backcolor }}>
           <ButtonOption>
             <TouchableOpacity
@@ -85,6 +70,29 @@ export default class TabProfile extends PureComponent {
             </TouchableOpacity>
           </ButtonOption>
         </View>
+      );
+    }
+  }
+
+  render = () => {
+    return (
+      <View>
+        <ScrollableTabView
+          onChangeTab={this.handleChangeTab}
+          style={{ marginTop: 0, backgroundColor: this.state.backcolor }}
+          initialPage={0}
+          renderTabBar={() => <ScrollableTabBar />}
+          tabBarActiveTextColor={this.state.colorActif}
+          tabBarInactiveTextColor={this.state.colorInactif}
+        >
+          <View tabLabel="NAAHS" style={styles.tagList}>
+            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} dark />)}
+          </View>
+          <View tabLabel="YEAH" style={styles.tagList}>
+            {this.props.love.map(tag => <Tag key={tag.id} data={tag} />)}
+          </View>
+        </ScrollableTabView>
+        {this.renderSendMsg()}
       </View>
     );
   };

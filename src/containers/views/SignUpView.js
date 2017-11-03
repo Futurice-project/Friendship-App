@@ -15,14 +15,25 @@ import {
 } from 'react-native';
 
 const mapStateToProps = state => ({
-  users: state.users,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
+  // signUp: credentials => {
+  //   dispatch(
+  //     rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
+  //   );
+  // },
   signUp: credentials => {
-    dispatch(
-      rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
-    );
+    dispatch(rest.actions.register({}, { body: JSON.stringify(credentials) }))
+      .then(() =>
+        dispatch(
+          NavigationActions.navigate({
+            routeName: 'SignOut',
+          }),
+        ),
+      )
+      .catch(err => console.log(err));
   },
   openSignIn: () =>
     dispatch(
@@ -32,13 +43,18 @@ const mapDispatchToProps = dispatch => ({
     ),
   openWelcomeScreen: () =>
     dispatch(
-      NavigationActions.navigate({
-        routeName: 'Welcome',
+      NavigationActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
       }),
     ),
 });
 
-class LoginView extends React.Component {
+class SignUpView extends React.Component {
+  componentWillReceiveProps() {
+    this.setState({ error: true });
+  }
+
   static navigationOptions = {
     title: 'Sign up',
     header: () => null,
@@ -47,20 +63,37 @@ class LoginView extends React.Component {
   state = {
     email: '',
     password: '',
+    error: false,
   };
 
   renderStatus() {
-    if (this.props.users.loading) {
-      return <Text style={styles.textStyle}>Pending request</Text>;
+    // const { data, error, loading } = this.props.users;
+    // let status = '';
+    // if (data.email) {
+    //   status = `Email ${data.email} successfully signed up!`;
+    // }
+    // if (this.state.error && error) {
+    //   status = `Error ${error.statusCode}: ${error.message}`;
+    // }
+    // if (loading) {
+    //   status = `Loading ...`;
+    // }
+
+    // return <Text style={styles.textStyle}>{status}</Text>;
+
+    const { data, error, loading } = this.props.auth;
+    let status = '';
+    if (data.decoded) {
+      status = `Signed in as ${data.decoded.email}`;
+    }
+    if (this.state.error && error) {
+      status = `Error ${error.statusCode}: ${error.message}`;
+    }
+    if (loading) {
+      status = `Loading ...`;
     }
 
-    if (this.props.users.error) {
-      return (
-        <Text style={styles.textStyle}>{this.props.users.error.message}</Text>
-      );
-    }
-
-    return <Text style={styles.textStyle}> Success </Text>;
+    return <Text style={styles.textStyle}>{status}</Text>;
   }
 
   signUp() {
@@ -86,6 +119,10 @@ class LoginView extends React.Component {
             </HeaderWrapper>
             <Centered style={{ flex: 2 }}>
               <TextInput
+                autoCorrect={false}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                returnKeyType="next"
                 titleColor="#f9f7f6"
                 title="EMAIL"
                 placeholder="HELLO@FRIENDSHIP.COM"
@@ -94,6 +131,7 @@ class LoginView extends React.Component {
                 value={this.state.email}
               />
               <TextInput
+                returnKeyType="go"
                 secure
                 title="PASSWORD"
                 titleColor="#f9f7f6"
@@ -106,7 +144,11 @@ class LoginView extends React.Component {
             </Centered>
           </Padding>
           <TouchableOpacity onPress={() => this.signUp()}>
-            <RoundTab title="Sign Up" style={{ flex: 1 }} />
+            <RoundTab
+              title="Sign Up"
+              style={{ flex: 1 }}
+              onPress={() => this.signUp()}
+            />
           </TouchableOpacity>
         </ViewContainer>
       </KeyboardAvoidingView>
@@ -139,7 +181,7 @@ const styles = {
   textStyle: {
     fontFamily: 'NunitoSans-Regular',
     width: 205,
-    height: 20,
+    height: 40,
     fontSize: 15,
     textAlign: 'center',
     color: '#f673f8',
@@ -147,4 +189,4 @@ const styles = {
   },
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpView);

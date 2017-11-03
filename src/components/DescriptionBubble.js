@@ -6,9 +6,9 @@ export const Bubble = styled.View`
   background-color: #fff;
   min-height: 132;
   flex-direction: column;
-  width: ${Dimensions.get('window').width - 20};
-  margin-left: 10;
-  margin-right: 10;
+  width: ${Dimensions.get('window').width - 32};
+
+  margin-bottom: 10;
   border-radius: 33;
 `;
 export const Title = styled.Text`
@@ -36,13 +36,22 @@ const Input = styled.TextInput.attrs({
   color: #9b9b9b;
   padding-left: 20;
 `;
+
+/**
+ * Styled DescriptionBubble component
+ * @param {string} text - Changes the text title of the
+ * @param {string} placeholder - Sets the placeholder text of the button
+  * @param {string} value - holds the value of the input
+ * @param {function} onChangeText - Sets the function of the input
+  */
 export default class DescriptionBubble extends React.Component {
   render = () => (
     <Bubble>
       <Title>{this.props.text}</Title>
       <Input
         placeholder={this.props.placeholder}
-        onTextChanged={this.props.onTextChanged}
+        value={this.props.value}
+        onChangeText={this.props.onChangeText}
       />
     </Bubble>
   );
