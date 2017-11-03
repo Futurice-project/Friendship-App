@@ -20,6 +20,8 @@ const mapStateToProps = state => ({
   auth: state.auth,
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
+  currentUser: state.currentUser,
+  tagsForCurrentUser: state.tagsForCurrentUser,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -41,6 +43,8 @@ class ProfileUser extends React.Component {
     profileTitle: 'Profile Page',
     isReportVisible: false,
     reportDescription: 'Description',
+    //  loveCommon: 0,
+    hateCommon: 0,
   };
 
   static navigationOptions = ({ navigation }) => ({
@@ -118,6 +122,30 @@ class ProfileUser extends React.Component {
     } else {
       let love = this.props.tagsForUser.data.filter(e => e.love === true);
       let hate = this.props.tagsForUser.data.filter(e => e.love === false);
+      let loveU = this.props.tagsForCurrentUser.data.filter(
+        e => e.love === true,
+      );
+      let hateU = this.props.tagsForCurrentUser.data.filter(
+        e => e.love === false,
+      );
+      let loveCommon = 0;
+      let hateCommon = 0;
+
+      loveU.filter(e =>
+        love.filter(y => {
+          if (e.name === y.name) {
+            loveCommon++;
+          }
+        }),
+      );
+      hateU.filter(e =>
+        hate.filter(y => {
+          if (e.name === y.name) {
+            hateCommon++;
+          }
+        }),
+      );
+
       return (
         <ViewContainerTop style={styles.viewContent}>
           <Modal visible={this.state.isReportVisible}>
@@ -181,6 +209,9 @@ class ProfileUser extends React.Component {
               ) : (
                 ', Narnia'
               )}
+            </Description>
+            <Description>
+              {loveCommon} YEAH & {hateCommon} NAAH in common{' '}
             </Description>
             <View
               style={{ height: 100, backgroundColor: '#fff', marginBottom: 10 }}
