@@ -16,6 +16,7 @@ import {
   Keyboard,
   View,
   Platform,
+  Dimensions,
 } from 'react-native';
 
 const mapStateToProps = state => ({
@@ -58,7 +59,18 @@ class SignInView extends React.Component {
   // This will solve the white space after opening textfields
   // Because now it recognizes a change (key = different)
   keyboardHideListener = () => {
-    this.setState({ keyboardAvoidingViewKey: new Date().getTime() });
+    this.setState({
+      keyboardAvoidingViewKey: new Date().getTime(),
+      keyboardOpen: false,
+    });
+  };
+
+  keyboardDidShowListener = e => {
+    console.log(e.endCoordinates.height);
+    this.setState({
+      keyboardOpen: true,
+      keyboardHeight: e.endCoordinates.height,
+    });
   };
 
   componentDidMount() {
@@ -66,20 +78,33 @@ class SignInView extends React.Component {
       Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
       this.keyboardHideListener,
     );
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShowListener,
+    );
   }
 
   componentWillUnmount() {
     this.keyboardHideListener.remove();
+    this.keyboardDidShowListener.remove();
   }
 
   state = {
     email: '',
     password: '',
     error: false,
+    validationError: '',
     keyboardAvoidingViewKey: 'keyboardAvoidingViewKey',
+    keyboardOpen: false,
+    keyboardHeight: '',
   };
 
   renderStatus() {
+    if (this.state.validationError) {
+      return (
+        <Text style={styles.statusTextStyle}>{this.state.validationError}</Text>
+      );
+    }
     const { data, error, loading } = this.props.auth;
     let status = '';
     if (data.decoded) {
@@ -96,7 +121,31 @@ class SignInView extends React.Component {
       status = `Loading ...`;
     }
 
-    return <Text style={styles.textStyle}>{status}</Text>;
+    return <Text style={styles.statusTextStyle}>{status}</Text>;
+  }
+
+  /**
+   * Renders SignInButton
+   * Changes position when keyboard is open and closed
+   * @returns {XML}
+   */
+  renderSignInButton() {
+    if (this.state.keyboardOpen) {
+      return (
+        <View
+          onPress={() => this.signIn()}
+          style={{ position: 'absolute', bottom: 0 }}
+        >
+          <RoundTab title="Sign In" onPress={() => this.signIn()} />
+        </View>
+      );
+    }
+
+    return (
+      <View onPress={() => this.signIn()}>
+        <RoundTab title="Sign In" onPress={() => this.signIn()} />
+      </View>
+    );
   }
 
   componentWillReceiveProps() {
@@ -105,6 +154,11 @@ class SignInView extends React.Component {
 
   signIn() {
     const { email, password } = this.state;
+    if (!email || !password) {
+      return this.setState({
+        validationError: 'Please enter both email & password!',
+      });
+    }
     this.props.signIn({ email, password });
   }
 
@@ -113,14 +167,13 @@ class SignInView extends React.Component {
       <KeyboardAvoidingView
         behavior="padding"
         key={this.state.keyboardAvoidingViewKey}
-        keyboardVerticalOffset={-64}
       >
         <ViewContainer>
           <Padding style={{ flex: 1 }}>
             <HeaderWrapper>
               <Text
                 style={styles.headerText}
-                onpress={this.props.openWelcomeScreen}
+                onPress={this.props.openWelcomeScreen}
               >
                 Cancel
               </Text>
@@ -128,14 +181,14 @@ class SignInView extends React.Component {
                 Sign Up
               </Text>
             </HeaderWrapper>
-            <Text style={{ color: 'white' }}>Sign In</Text>
             <Centered style={{ flex: 2 }}>
               <TextInput
                 titleColor="#f9f7f6"
                 title="EMAIL"
                 placeholder="HELLO@FRIENDSHIP.COM"
                 backColor="#faf6f0"
-                onChangeText={email => this.setState({ email })}
+                onChangeText={email =>
+                  this.setState({ email, validationError: '', error: false })}
                 value={this.state.email}
               />
               <TextInput
@@ -144,17 +197,21 @@ class SignInView extends React.Component {
                 titleColor="#f9f7f6"
                 placeholder="*******"
                 backColor="#faf6f0"
-                onChangeText={password => this.setState({ password })}
+                onChangeText={password =>
+                  this.setState({
+                    password,
+                    validationError: '',
+                    error: false,
+                  })}
                 value={this.state.password}
               />
               {this.renderStatus()}
+              <Text style={styles.textStyle}>
+                Need help with your password?
+              </Text>
             </Centered>
           </Padding>
-          <RoundTab
-            title="Sign In"
-            style={{ flex: 1 }}
-            onPress={() => this.signIn()}
-          />
+          {this.renderSignInButton()}
         </ViewContainer>
       </KeyboardAvoidingView>
     );
@@ -183,13 +240,22 @@ const styles = {
     textAlign: 'center',
     color: 'white',
   },
+  statusTextStyle: {
+    fontFamily: 'NunitoSans-Regular',
+    width: '100%',
+    height: 20,
+    fontSize: 15,
+    textAlign: 'center',
+    color: '#f673f7',
+    marginBottom: 10,
+  },
   textStyle: {
     fontFamily: 'NunitoSans-Regular',
     width: '100%',
     height: 20,
     fontSize: 15,
     textAlign: 'center',
-    color: '#f673f8',
+    color: '#f9f7f6',
     marginBottom: 10,
   },
 };

@@ -8,7 +8,6 @@ const Container = styled.View`
   padding-right: 20;
 `;
 
-
 //background color can be specified with backColor attribute
 const Input = styled.TextInput.attrs({
   underlineColorAndroid: 'transparent',
@@ -27,7 +26,6 @@ const Input = styled.TextInput.attrs({
   height: 40;
 
   min-width: 300;
-
 `;
 //this set the line inside the input
 const HorizontalLine = styled.View`
@@ -82,7 +80,6 @@ export default class TextInput extends React.Component {
         {this.props.title}
       </InputTitle>
       <Input
-        autoCorrect={this.props.autoCorrect}
         keyboardType={this.props.keyboardType}
         autoCapitalize={this.props.autoCapitalize}
         returnKeyType={this.props.returnKeyType}
