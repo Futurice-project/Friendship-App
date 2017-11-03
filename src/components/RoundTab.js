@@ -6,9 +6,8 @@ import image from '../../assets/img/roundTab/roundTab.png';
 const { width, height } = resolveAssetSource(image);
 
 //style for the image
-const ImageContainer = styled.Image.attrs({
-  tintColor: props => props.tint,
-})`
+const ImageContainer = styled.Image`
+  tint-color: ${props => props.tint || '#ff8a65'};
   justify-content: center;
   align-items: center;
 `;
@@ -53,7 +52,14 @@ export default class RoundTab extends React.Component {
       resizeMode="contain"
     >
       {/* {this.props.children} */}
-      <TouchableOpacity onPress={this.props.onPress}>
+      <TouchableOpacity
+        style={{
+          width: Dimensions.get('window').width,
+          height: this.state.imageHeight,
+          justifyContent: 'center',
+        }}
+        onPress={this.props.onPress}
+      >
         {this.props.children}
         <ButtonText>{this.props.title}</ButtonText>
       </TouchableOpacity>
