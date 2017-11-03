@@ -16,6 +16,7 @@ import SearchList from './../views/Search';
 import EmojiPickerView from './../views/EmojiPicker';
 import LookingFor from './../views/LookingFor';
 import Matching from './../views/Matching';
+import SignUpPersonality from '../views/SignUpPersonality';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -59,6 +60,10 @@ export default StackNavigator(
     },
     SignUpLocation: {
       screen: SignUpLocation,
+      navigationOptions: { title: 'SignUpLocation Page' },
+    },
+    SignUpPersonality: {
+      screen: SignUpPersonality,
       navigationOptions: { title: 'SignUpLocation Page' },
     },
     SignOut: {

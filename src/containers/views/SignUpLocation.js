@@ -6,9 +6,16 @@ import { Image, View } from 'react-native';
 import TextInput from '../../components/TextInput';
 import styled from 'styled-components/native';
 import RoundTab from '../../components/RoundTab';
+import { NavigationActions } from 'react-navigation';
 
-const mapDispatchToProps = dispatch => ({});
-
+const mapDispatchToProps = dispatch => ({
+  openPersonality: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SignUpPersonality',
+      }),
+    ),
+});
 const SignUpDivWrapper = styled.View`
   display: flex;
   background-color: #efebe9;
@@ -63,7 +70,7 @@ export class SignUpLocation extends React.Component {
           placeholder="LABEL"
         />
       </SignUpDivWrapper>
-      <RoundTab title="NEXT" />
+      <RoundTab title="Next" onPress={() => this.props.openPersonality()} />
     </SignUpWrapper>
   );
 
