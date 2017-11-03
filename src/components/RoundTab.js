@@ -3,24 +3,17 @@ import React from 'react';
 import { Image, Dimensions, TouchableOpacity } from 'react-native';
 import resolveAssetSource from 'resolveAssetSource';
 import image from '../../assets/img/roundTab/roundTab.png';
-
 const { width, height } = resolveAssetSource(image);
 
 //style for the image
-const ImageContainer = styled.Image`
-  tintColor: ${props => {
-    return props.tint ? props.tint : '#ff8a65';
-  }};
-  margin-bottom: 0;
-  right: 0;
-  left: 0;
-  ${'' /* without the -5, a space is below the image-->need further investigation */} bottom: -5;
+const ImageContainer = styled.Image.attrs({
+  tintColor: props => props.tint,
+})`
   justify-content: center;
   align-items: center;
 `;
 //style for the text of the button
 const ButtonText = styled.Text`
-  width: 230;
   height: 27;
   font-family: 'NunitoSans-Regular';
   font-size: 20;
@@ -37,6 +30,7 @@ const ButtonText = styled.Text`
  * @param {string} tint - Changes the color of the image
  * @param {string} title - Sets the text of the button
  * @param {string} titleColor - Set the color of the title
+
  * @param {function} onPress - Sets the function of the button
   */
 
@@ -61,9 +55,7 @@ export default class RoundTab extends React.Component {
       {/* {this.props.children} */}
       <TouchableOpacity onPress={this.props.onPress}>
         {this.props.children}
-        <ButtonText titleColor={this.props.titleColor}>
-          {this.props.title}
-        </ButtonText>
+        <ButtonText>{this.props.title}</ButtonText>
       </TouchableOpacity>
     </ImageContainer>
   );
