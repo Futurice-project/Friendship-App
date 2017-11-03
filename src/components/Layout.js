@@ -6,7 +6,10 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     minHeight: '100%',
     justifyContent: 'center',
-    paddingTop: 10,
+    /*commented otherwise roundTab is not at the bottom
+      paddingVertical: 10
+
+      */
   },
   contentContainerStyleTop: {
     minHeight: '100%',

@@ -10,6 +10,7 @@ import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleView';
 import SignUpView from '../views/SignUpView';
 import SignInView from '../views/SignInView';
+import SignOutView from '../views/SignOutView';
 import ProfileUser from './../views/ProfileUser';
 import SearchList from './../views/Search';
 import EmojiPickerView from './../views/EmojiPicker';
@@ -59,6 +60,10 @@ export default StackNavigator(
     SignUp: {
       screen: SignUpView,
       navigationOptions: { title: 'SignUp Page' },
+    },
+    SignOut: {
+      screen: SignOutView,
+      navigationOptions: { title: 'SignOut Page' },
     },
     ProfileUser: {
       screen: ProfileUser,

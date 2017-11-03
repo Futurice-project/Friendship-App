@@ -1,0 +1,115 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "react-native-multiple-select@^0.3.0",
+        "scope": null,
+        "escapedName": "react-native-multiple-select",
+        "name": "react-native-multiple-select",
+        "rawSpec": "^0.3.0",
+        "spec": ">=0.3.0 <0.4.0",
+        "type": "range"
+      },
+      "/home/robert/Documents/Friendship-App"
+    ]
+  ],
+  "_from": "react-native-multiple-select@>=0.3.0 <0.4.0",
+  "_id": "react-native-multiple-select@0.3.0",
+  "_inCache": true,
+  "_location": "/react-native-multiple-select",
+  "_nodeVersion": "8.8.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/react-native-multiple-select-0.3.0.tgz_1509074682075_0.19485411909408867"
+  },
+  "_npmUser": {
+    "name": "toystars",
+    "email": "toystars2008@gmail.com"
+  },
+  "_npmVersion": "5.5.1",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "react-native-multiple-select@^0.3.0",
+    "scope": null,
+    "escapedName": "react-native-multiple-select",
+    "name": "react-native-multiple-select",
+    "rawSpec": "^0.3.0",
+    "spec": ">=0.3.0 <0.4.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-multiple-select/-/react-native-multiple-select-0.3.0.tgz",
+  "_shasum": "0a1043684e3b88fb2eb0b7460d4b5d3ecc961ddb",
+  "_shrinkwrap": null,
+  "_spec": "react-native-multiple-select@^0.3.0",
+  "_where": "/home/robert/Documents/Friendship-App",
+  "author": {
+    "name": "Mustapha Babatunde Oluwaleke"
+  },
+  "bugs": {
+    "url": "https://github.com/toystars/react-native-multiple-select/issues"
+  },
+  "dependencies": {},
+  "description": "Simple multi-select component for react-native",
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "babel-jest": "^18.0.0",
+    "babel-preset-react-native": "^1.9.1",
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.9.0",
+    "jest": "^18.1.0",
+    "jest-react-native": "^18.0.0",
+    "react-test-renderer": "^15.4.2",
+    "remote-redux-devtools": "^0.5.7"
+  },
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-ethwGGFKlIkzpAKFr+QZ9aeZihI0ML5K2G54/ZgUlk3owTOESiXWmSz1Z4HiN/z8VyVEtIuN1ccbFWCTb/3AJw==",
+    "shasum": "0a1043684e3b88fb2eb0b7460d4b5d3ecc961ddb",
+    "tarball": "https://registry.npmjs.org/react-native-multiple-select/-/react-native-multiple-select-0.3.0.tgz"
+  },
+  "gitHead": "dff5b817744925efb51e8f293cd7d9032b7d2293",
+  "homepage": "https://github.com/toystars/react-native-multiple-select#readme",
+  "jest": {
+    "preset": "jest-react-native"
+  },
+  "keywords": [
+    "reactnative",
+    "multiselect",
+    "multi-select",
+    "react-native"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "toystars",
+      "email": "toystars2008@gmail.com"
+    }
+  ],
+  "name": "react-native-multiple-select",
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.10",
+    "react": "16.0.0-alpha.6",
+    "react-native": "^0.44.0",
+    "react-native-vector-icons": "^4.1.1"
+  },
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toystars/react-native-multiple-select.git"
+  },
+  "scripts": {
+    "lint": "eslint lib/",
+    "test": "jest"
+  },
+  "version": "0.3.0"
+}
