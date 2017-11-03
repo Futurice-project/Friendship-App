@@ -8,6 +8,7 @@ import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
+import Personality from '../../components/Personality';
 
 import {
   TouchableOpacity,
@@ -66,9 +67,21 @@ class SignUpPersonality extends React.Component {
             >
               Are you more..
             </Text>
-            <Centered style={{ flex: 2 }}>
+            <Centered>
               <Personalities>
-                <Text>aa</Text>
+                <Personality title="RELAXED" image="relaxed" />
+                <Text
+                  style={{
+                    paddingBottom: 15,
+                    paddingTop: 15,
+                    color: '#efebe9',
+                    fontFamily: 'NunitoSans-Light',
+                    fontSize: 16,
+                  }}
+                >
+                  or
+                </Text>
+                <Personality title="AMBITIOUS" image="ambitious" />
               </Personalities>
             </Centered>
           </Padding>
@@ -78,7 +91,11 @@ class SignUpPersonality extends React.Component {
   }
 }
 
-const Personalities = styled.View`background-color: red;`;
+const Personalities = styled.View`
+  margin-top: 50;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Header = styled.View`
   margin-top: 13;
