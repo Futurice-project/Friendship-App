@@ -132,7 +132,10 @@ class SignInView extends React.Component {
   renderSignInButton() {
     if (this.state.keyboardOpen) {
       return (
-        <View onPress={() => this.signIn()} style={{ marginBottom: 0 }}>
+        <View
+          onPress={() => this.signIn()}
+          style={{ position: 'absolute', bottom: 0 }}
+        >
           <RoundTab title="Sign In" onPress={() => this.signIn()} />
         </View>
       );
