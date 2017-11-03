@@ -16,6 +16,7 @@ import {
   Keyboard,
   View,
   Platform,
+  Dimensions,
 } from 'react-native';
 
 const mapStateToProps = state => ({
@@ -65,6 +66,7 @@ class SignInView extends React.Component {
   };
 
   keyboardDidShowListener = e => {
+    console.log(e.endCoordinates.height);
     this.setState({
       keyboardOpen: true,
       keyboardHeight: e.endCoordinates.height,
@@ -97,6 +99,7 @@ class SignInView extends React.Component {
   };
 
   renderStatus() {
+    console.log(this.props.auth);
     const { data, error, loading } = this.props.auth;
     let status = '';
     if (data.decoded) {
@@ -123,15 +126,17 @@ class SignInView extends React.Component {
    */
   renderSignInButton() {
     if (this.state.keyboardOpen) {
-      //@ todo
+      return (
+        <View style={{ marginBottom: 0 }}>
+          <RoundTab title="Sign In" onPress={() => this.signIn()} />
+        </View>
+      );
     }
 
     return (
-      <RoundTab
-        title="Sign In"
-        style={{ marginBottom: '0' }}
-        onPress={() => this.signIn()}
-      />
+      <View>
+        <RoundTab title="Sign In" onPress={() => this.signIn()} />
+      </View>
     );
   }
 
@@ -149,7 +154,6 @@ class SignInView extends React.Component {
       <KeyboardAvoidingView
         behavior="padding"
         key={this.state.keyboardAvoidingViewKey}
-        keyboardVerticalOffset={-64}
       >
         <ViewContainer>
           <Padding style={{ flex: 1 }}>
