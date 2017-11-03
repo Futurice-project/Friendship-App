@@ -95,5 +95,6 @@ export default {
     alignItems: 'center',
     height: 40,
     marginBottom: 10,
+    zIndex: 33,
   },
 };

@@ -7,6 +7,7 @@ import styled from 'styled-components/native';
 import RoundTab from '../../components/RoundTab';
 import data from '../../../assets/misc/municipalities.json';
 import MultiSelect from '../../utils/react-native-multiple-select';
+import { WelcomeView } from './Welcome';
 
 const mapDispatchToProps = dispatch => ({});
 
@@ -49,6 +50,8 @@ export class SignUpLocation extends React.Component {
   };
 
   render() {
+    const { selectedItems } = this.state;
+
     return (
       <SignUpWrapper>
         <SignUpDivWrapper
@@ -67,7 +70,7 @@ export class SignUpLocation extends React.Component {
         </SignUpDivWrapper>
 
         <SignUpDivWrapper style={{ flex: 8, justifyContent: 'center' }}>
-          <View style={{ height: 100, width: 400, zIndex: 33 }}>
+          <View style={{ height: 44, width: 400, zIndex: 33 }}>
             <MultiSelect
               style={{ borderRadius: 27, backgroundColor: '#faf5f0' }}
               hideTags
@@ -100,7 +103,6 @@ export class SignUpLocation extends React.Component {
         <RoundTab title="NEXT" />
       </SignUpWrapper>
     );
-    const { selectedItems } = this.state;
   }
 
   static navigationOptions = {
