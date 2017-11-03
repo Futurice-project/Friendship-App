@@ -132,14 +132,14 @@ class SignInView extends React.Component {
   renderSignInButton() {
     if (this.state.keyboardOpen) {
       return (
-        <View style={{ marginBottom: 0 }}>
+        <View onPress={() => this.signIn()} style={{ marginBottom: 0 }}>
           <RoundTab title="Sign In" onPress={() => this.signIn()} />
         </View>
       );
     }
 
     return (
-      <View>
+      <View onPress={() => this.signIn()}>
         <RoundTab title="Sign In" onPress={() => this.signIn()} />
       </View>
     );
@@ -170,7 +170,7 @@ class SignInView extends React.Component {
             <HeaderWrapper>
               <Text
                 style={styles.headerText}
-                onpress={this.props.openWelcomeScreen}
+                onPress={this.props.openWelcomeScreen}
               >
                 Cancel
               </Text>
@@ -185,7 +185,7 @@ class SignInView extends React.Component {
                 placeholder="HELLO@FRIENDSHIP.COM"
                 backColor="#faf6f0"
                 onChangeText={email =>
-                  this.setState({ email, validationError: '' })}
+                  this.setState({ email, validationError: '', error: false })}
                 value={this.state.email}
               />
               <TextInput
@@ -195,7 +195,11 @@ class SignInView extends React.Component {
                 placeholder="*******"
                 backColor="#faf6f0"
                 onChangeText={password =>
-                  this.setState({ password, validationError: '' })}
+                  this.setState({
+                    password,
+                    validationError: '',
+                    error: false,
+                  })}
                 value={this.state.password}
               />
               {this.renderStatus()}
