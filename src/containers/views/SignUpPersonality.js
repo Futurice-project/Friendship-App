@@ -23,9 +23,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getPersonalities: credentials => {
-    dispatch(rest.actions.personalities());
+    dispatch(rest.actions.personalities()).catch(err => console.log(err));
   },
-  createUserPersonality: credentials => {
+  addUserPersonality: credentials => {
     dispatch(
       rest.actions.createUserPersonality(
         {},
@@ -33,8 +33,14 @@ const mapDispatchToProps = dispatch => ({
       ),
     )
       .then(() => console.log('success'))
-      .catch(err => console.log(err));
+      .catch(err => console.log('err'));
   },
+  openNextView: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'Tabs',
+      }),
+    ),
 });
 
 class SignUpPersonality extends React.Component {
@@ -48,6 +54,7 @@ class SignUpPersonality extends React.Component {
     personalities: [],
     startIndex: 0,
     endIndex: 2,
+    newPersonalityChosen: false,
   };
 
   handleClick = personalityId => {
@@ -55,10 +62,11 @@ class SignUpPersonality extends React.Component {
       {
         personalityId: personalityId,
         level: 5,
+        newPersonalityChosen: true,
       },
       () => {
         const { userId, personalityId, level } = this.state;
-        this.props.createUserPersonality({ personalityId, level });
+        this.props.addUserPersonality({ personalityId, level });
       },
     );
   };
@@ -68,17 +76,23 @@ class SignUpPersonality extends React.Component {
   }
 
   componentWillReceiveProps() {
-    if (this.props.personalities) {
-      this.setState({ personalities: this.props.personalities.data.data });
-    }
-    if (this.props.createUserPersonality) {
-      console.log('eindelijk');
-      console.log(this.props.createUserPersonality);
+    if (this.props.createUserPersonality && this.state.newPersonalityChosen) {
+      if (!this.props.createUserPersonality.error) {
+        if (this.props.personalities.data.data.length == this.state.endIndex) {
+          this.props.openNextView();
+        } else {
+          this.setState({
+            newPersonalityChosen: false,
+            startIndex: this.state.startIndex + 2,
+            endIndex: this.state.endIndex + 2,
+          });
+        }
+      }
     }
   }
 
   renderTwoPersonalities() {
-    var personalities = this.state.personalities
+    var personalities = this.props.personalities.data.data
       .slice(this.state.startIndex, this.state.endIndex)
       .map(personality => {
         return (
