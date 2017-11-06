@@ -33,7 +33,7 @@ const mapDispatchToProps = dispatch => ({
       ),
     )
       .then(() => console.log('success'))
-      .catch(err => console.log('err'));
+      .catch(err => console.log(err));
   },
   openNextView: () =>
     dispatch(
@@ -76,7 +76,12 @@ class SignUpPersonality extends React.Component {
   }
 
   componentWillReceiveProps() {
-    if (this.props.createUserPersonality && this.state.newPersonalityChosen) {
+    // Check if we actually receive data
+    // Check if we just chose a new personality to prevent bugs
+    if (
+      this.props.createUserPersonality.data.data &&
+      this.state.newPersonalityChosen
+    ) {
       if (!this.props.createUserPersonality.error) {
         if (this.props.personalities.data.data.length == this.state.endIndex) {
           this.props.openNextView();
@@ -92,6 +97,10 @@ class SignUpPersonality extends React.Component {
   }
 
   renderTwoPersonalities() {
+    if (!this.props.personalities.data.data) {
+      return <Text>Network failed</Text>;
+    }
+
     var personalities = this.props.personalities.data.data
       .slice(this.state.startIndex, this.state.endIndex)
       .map(personality => {
@@ -106,6 +115,18 @@ class SignUpPersonality extends React.Component {
       });
 
     return <Personalities>{personalities}</Personalities>;
+  }
+
+  renderError() {
+    if (!this.props.createUserPersonality.error) {
+      return;
+    }
+
+    return (
+      <Error>
+        This personality is already chosen before and can't be added again
+      </Error>
+    );
   }
 
   render() {
@@ -151,6 +172,7 @@ class SignUpPersonality extends React.Component {
               Are you more..
             </Text>
             <Centered>{this.renderTwoPersonalities()}</Centered>
+            {this.renderError()}
           </Padding>
         </ViewContainer>
       </View>
@@ -176,6 +198,12 @@ const ProgressBar = styled.View`
   background-color: #3a4853;
   width: 19%;
   height: 10;
+`;
+
+const Error = styled.Text`
+  font-size: 11;
+  color: #faf5f0;
+  color: red;
 `;
 
 const Title = styled.Text`
