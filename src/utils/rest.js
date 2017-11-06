@@ -75,8 +75,6 @@ const rest = reduxApi({
   },
   createUserPersonality: {
     url: `${apiRoot}/user_personality`,
-    transformer: authTransformer,
-    reducerName: 'auth',
     options: { method: 'POST' },
   },
   register: {
