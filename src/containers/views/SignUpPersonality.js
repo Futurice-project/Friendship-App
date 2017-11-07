@@ -18,6 +18,7 @@ import {
 
 const mapStateToProps = state => ({
   createUserPersonality: state.createUserPersonality,
+  auth: state.auth,
   personalities: state.personalities,
 });
 
@@ -72,6 +73,7 @@ class SignUpPersonality extends React.Component {
   };
 
   componentDidMount() {
+    console.log('Testing token here!!!', this.props.auth);
     this.props.getPersonalities();
   }
 
