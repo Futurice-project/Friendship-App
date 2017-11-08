@@ -1,6 +1,8 @@
 import reduxApi, { transformers } from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
 import jwtDecode from 'jwt-decode';
+import { errorFetch } from '../state/error';
+import { NavigationActions } from 'react-navigation';
 
 // import { showError } from '../modules/ErrorSnackbar';
 
@@ -65,6 +67,15 @@ const rest = reduxApi({
     options: {
       method: 'POST',
     },
+    postfetch: [
+      function({ data, actions, dispatch, getState, request }) {
+        dispatch(
+          NavigationActions.navigate({
+            routeName: 'Tabs',
+          }),
+        );
+      },
+    ],
   },
 })
   .use('options', (url, params, getState) => {
@@ -85,6 +96,8 @@ const rest = reduxApi({
   .use('fetch', adapterFetch(fetch))
   .use('responseHandler', (err, data) => {
     if (err) {
+      console.log(store);
+      store.dispatch(errorFetch(err.message));
       console.log('Error', err);
     }
     if (data) {

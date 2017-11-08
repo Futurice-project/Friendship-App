@@ -3,10 +3,11 @@ import { reducers as restReducers } from '../utils/rest';
 
 // ## Reducer Imports ##
 import NavigatorStateReducer from '../state/navigator';
+import ErrorReducer from '../state/error';
 
 const reducers = {
   // ## Reducers ##
-
+  errorState: ErrorReducer,
   // Navigator state
   navigatorState: NavigatorStateReducer,
 

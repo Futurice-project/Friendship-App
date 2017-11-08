@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { View, FlatList, ActivityIndicator, Text } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
+import { errorFetch } from '../../state/error';
 import { SearchBar } from 'react-native-elements';
 import throttle from 'lodash/throttle';
 
@@ -24,6 +25,9 @@ const mapDispatchToProps = dispatch => ({
     method combines abort and direct call action methods. it prevent a warning about unhandled
     promises rejection */
     dispatch(rest.actions.usersSearch.force({ username }));
+  },
+  error: errorMessage => {
+    dispatch(errorFetch(errorMessage));
   },
 });
 
@@ -57,7 +61,7 @@ export class PeopleView extends React.Component {
         this.setState({ currentPage: this.state.currentPage + 1 });
         this.setState({ data: [...this.state.data, ...response] });
       })
-      .catch(err => console.error(err + ' error fetchData in peopleView.js'));
+      .catch(err => this.props.error(err.message));
   };
 
   handleEnd = () => {
@@ -76,15 +80,14 @@ export class PeopleView extends React.Component {
 
   renderPeople() {
     // console.log(JSON.stringify(this.props.usersSearch.data));
-
-    if (this.props.auth.data.token) {
+    if (this.props.navigation.state.routeName === 'Preview') {
+      // for the preview
+      data = profileData;
+    } else {
       data =
         this.state.searchedUsername.length > 0
           ? this.props.usersSearch.data
           : this.state.data;
-    } else {
-      // for the preview
-      data = profileData;
     }
 
     if (this.props.usersSearch.loading) {

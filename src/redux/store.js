@@ -2,6 +2,7 @@ import { applyMiddleware, createStore, compose } from 'redux';
 import enhancers from './enhancers';
 import middleware from './middleware';
 import reducer from './reducer';
+import { injectStore } from '../utils/rest';
 
 /* Enable redux dev tools only in development.
  * We suggest using React Native Debugger for debugging:
@@ -14,5 +15,7 @@ const enhancer = composeEnhancers(...enhancers, applyMiddleware(...middleware));
 
 // create the store
 const store = createStore(reducer, enhancer);
+
+injectStore(store);
 
 export default store;

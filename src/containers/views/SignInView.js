@@ -31,6 +31,8 @@ const mapDispatchToProps = dispatch => ({
         routeName: 'SignIn',
       }),
     ),
+  openPeopleView: () =>
+    dispatch(NavigationActions.navigate({ routeName: 'Tabs' })),
   openWelcomeScreen: () =>
     dispatch(
       NavigationActions.reset({
@@ -50,6 +52,17 @@ class LoginView extends React.Component {
     email: '',
     password: '',
   };
+
+  componentDidMount() {
+    if (this.props.auth.sync) {
+      if (
+        this.props.auth.data.decoded.scope === 'user' ||
+        this.props.auth.data.decoded.scope === 'admin'
+      ) {
+        this.props.openPeopleView();
+      }
+    }
+  }
 
   renderStatus() {
     if (this.props.auth.loading) {

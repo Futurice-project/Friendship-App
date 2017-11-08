@@ -12,6 +12,7 @@ import {
   AppContainer,
 } from './src/components/Layout';
 import { Font } from 'expo';
+import ErrorMessage from './src/components/ErrorMessage';
 
 export default class App extends React.Component {
   state = {
@@ -49,7 +50,10 @@ export default class App extends React.Component {
   renderApp = () =>
     this.state.rehydrated && this.state.fontLoaded ? (
       <Provider store={store}>
-        <Navigator />
+        <AppContainer>
+          <Navigator />
+          <ErrorMessage />
+        </AppContainer>
       </Provider>
     ) : null;
 

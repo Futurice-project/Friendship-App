@@ -34,6 +34,10 @@ export default StackNavigator(
       screen: Tabs,
       navigationOptions: { header: () => null },
     },
+    Preview: {
+      screen: PeopleView,
+      navigationOptions: { header: () => null },
+    },
     EmojiPicker: {
       screen: EmojiPickerView,
       navigationOptins: { title: 'Emoji Picker' },

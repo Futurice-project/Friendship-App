@@ -31,10 +31,10 @@ const mapDispatchToProps = dispatch => ({
         routeName: 'LookingFor',
       }),
     ),
-  openLogIn: () =>
+  openSignIn: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'Login',
+        routeName: 'SignIn',
       }),
     ),
   openPreview: () =>
@@ -146,7 +146,7 @@ export class WelcomeView extends React.Component {
       </LaunchingMessage>
 
       <LaunchingNavigationOptions>
-        <RoundTab title="Preview" onPress={this.props.openSettings}>
+        <RoundTab title="Preview" onPress={this.props.openPreview}>
           <PreviewLogo />
         </RoundTab>
         {/* <Preview onPress={this.props.openSettings}>
@@ -173,7 +173,7 @@ export class WelcomeView extends React.Component {
               textColor="white"
               color="light"
               size="half"
-              onPress={this.props.openLabel}
+              onPress={this.props.openSignIn}
             />
           </ConnectionOption>
         </Connection>
