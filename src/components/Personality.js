@@ -52,7 +52,6 @@ export default class Personality extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props.image);
     switch (this.props.image) {
       case 'relaxed': {
         const { width, height } = resolveAssetSource(relaxed);
@@ -137,6 +136,12 @@ export default class Personality extends React.Component {
     }
   }
 
+  // React-native Android does not support letter spacing
+  // This function hacks space between letters together
+  applyLetterSpacing(string, count = 1) {
+    return string.split('').join('\u200A'.repeat(count));
+  }
+
   render = () => {
     return (
       <View style={{ display: 'flex' }}>
@@ -161,7 +166,7 @@ export default class Personality extends React.Component {
             fontFamily: 'NunitoSans-SemiBold',
           }}
         >
-          {this.props.title}
+          {this.applyLetterSpacing(this.props.title.toUpperCase())}
         </Text>
       </View>
     );
