@@ -8,6 +8,8 @@ import {
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
+
+import Modal from 'react-native-modal';
 import { PopUpMenuCard, TouchableHighlightButton } from './Layout';
 
 class PopUpMenuUserProfile extends React.Component {
@@ -23,8 +25,8 @@ class PopUpMenuUserProfile extends React.Component {
               onSelect={() => alert('navigate to send message')}
               text="Send message"
             />
-            <MenuOption onSelect={() => this.onBlock}>
-              <Text>Block</Text>
+            <MenuOption onSelect={this.props.isReportVisible}>
+              <Text>Report</Text>
             </MenuOption>
           </MenuOptions>
         </Menu>
@@ -53,7 +55,6 @@ const styles = {
   optionsStyles: {
     optionsContainer: {
       backgroundColor: '#e8e9e8',
-      marginLeft: -87,
       marginTop: 75,
       width: 120,
       borderWidth: 0,
