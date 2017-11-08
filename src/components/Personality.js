@@ -5,8 +5,14 @@ import resolveAssetSource from 'resolveAssetSource';
 
 // Import personality images
 import placeholder from '../../assets/img/personalities/personalityPlaceholder.png';
-import relaxed from '../../assets/img/personalities/3_relaxed_128.png';
+import freeThinker from '../../assets/img/personalities/1_freethinker_128.png';
+import religion from '../../assets/img/personalities/1_religion_128.png';
+import openMinded from '../../assets/img/personalities/2_openminded_128.png';
+import traditional from '../../assets/img/personalities/2_traditional_128.png';
 import ambitious from '../../assets/img/personalities/3_ambitious_128.png';
+import relaxed from '../../assets/img/personalities/3_relaxed_128.png';
+import chillOut from '../../assets/img/personalities/4_chillout_128.png';
+import goingOut from '../../assets/img/personalities/4_goingout_128.png';
 
 //style for the image
 const ImageContainer = styled.Image`
@@ -61,6 +67,60 @@ export default class Personality extends React.Component {
         const { width, height } = resolveAssetSource(ambitious);
         this.setState({
           imageObject: ambitious,
+          imageHeight: height,
+          imageWidth: width,
+        });
+        break;
+      }
+      case 'traditional': {
+        const { width, height } = resolveAssetSource(traditional);
+        this.setState({
+          imageObject: traditional,
+          imageHeight: height,
+          imageWidth: width,
+        });
+        break;
+      }
+      case 'open-minded': {
+        const { width, height } = resolveAssetSource(openMinded);
+        this.setState({
+          imageObject: openMinded,
+          imageHeight: height,
+          imageWidth: width,
+        });
+        break;
+      }
+      case 'religion': {
+        const { width, height } = resolveAssetSource(religion);
+        this.setState({
+          imageObject: religion,
+          imageHeight: height,
+          imageWidth: width,
+        });
+        break;
+      }
+      case 'free thinker': {
+        const { width, height } = resolveAssetSource(freeThinker);
+        this.setState({
+          imageObject: freeThinker,
+          imageHeight: height,
+          imageWidth: width,
+        });
+        break;
+      }
+      case 'going out': {
+        const { width, height } = resolveAssetSource(goingOut);
+        this.setState({
+          imageObject: goingOut,
+          imageHeight: height,
+          imageWidth: width,
+        });
+        break;
+      }
+      case 'chilling out': {
+        const { width, height } = resolveAssetSource(chillOut);
+        this.setState({
+          imageObject: chillOut,
           imageHeight: height,
           imageWidth: width,
         });
