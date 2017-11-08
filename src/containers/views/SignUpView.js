@@ -9,7 +9,7 @@ import { NavigationActions } from 'react-navigation';
 
 import {
   TouchableOpacity,
-  Text,
+  // Text,
   KeyboardAvoidingView,
   View,
 } from 'react-native';
@@ -114,18 +114,11 @@ class SignUpView extends React.Component {
     return (
       <KeyboardAvoidingView behavior="padding">
         <ViewContainer>
+          <HeaderWrapper>
+            <SignUpTitle>YOUR PROFILE</SignUpTitle>
+            <Text>ADD PHOTOS</Text>
+          </HeaderWrapper>
           <Padding style={{ flex: 1 }}>
-            <HeaderWrapper>
-              <Text
-                style={styles.headerText}
-                onPress={this.props.openWelcomeScreen}
-              >
-                Cancel
-              </Text>
-              <Text style={styles.headerText} onPress={this.props.openSignIn}>
-                Sign In
-              </Text>
-            </HeaderWrapper>
             <Centered style={{ flex: 2 }}>
               <TextInput
                 autoCorrect={false}
@@ -172,10 +165,34 @@ class SignUpView extends React.Component {
 }
 
 const HeaderWrapper = styled.View`
+  width: 360;
+  height: 244;
   margin-top: 20;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  background-color: #e8e9e8;
+`;
+
+const SignUpTitle = styled.Text`
+  width: 320;
+  height: 45;
+  font-family: 'Friendship_version_2';
+  font-size: 40;
+  line-height: 45;
+  text-align: justify;
+  color: #839297;
+  margin-left: 30;
+  margin-right: 10;
+  margin-top: 37;
+`;
+
+const Text = styled.Text`
+  font-family: 'NunitoSans-SemiBold';
+  font-size: 18;
+  color: #4a4a4a;
+  text-align: justify;
+  margin-left: 30;
+  margin-top: 24;
 `;
 
 const styles = {
