@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 const mapStateToProps = state => ({
-  createUserPersonality: state.createUserPersonality,
+  createUserPersonalities: state.createUserPersonalities,
   auth: state.auth,
   personalities: state.personalities,
 });
@@ -26,22 +26,22 @@ const mapDispatchToProps = dispatch => ({
   getPersonalities: credentials => {
     dispatch(rest.actions.personalities()).catch(err => console.log(err));
   },
-  addUserPersonality: credentials => {
+  addUserPersonalities: credentials => {
     dispatch(
-      rest.actions.createUserPersonality(
+      rest.actions.createUserPersonalities(
         {},
         { body: JSON.stringify(credentials) },
       ),
     )
-      .then(() => console.log('success'))
+      .then(() => {
+        dispatch(
+          NavigationActions.navigate({
+            routeName: 'Tabs',
+          }),
+        );
+      })
       .catch(err => console.log(err));
   },
-  openNextView: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'Tabs',
-      }),
-    ),
 });
 
 class SignUpPersonality extends React.Component {
@@ -52,50 +52,72 @@ class SignUpPersonality extends React.Component {
   state = {
     personalityId: '',
     level: '',
-    personalities: [],
+    chosenPersonalities: [],
     startIndex: 0,
     endIndex: 2,
-    newPersonalityChosen: false,
+  };
+
+  /**
+   * Check's if the personalityId (the combination of the two oppositise personalites)
+   * already exists in the list, and duplicates
+   * It will return a new array with personalities
+   * @param personalityId
+   * @returns {Array}
+   */
+  removeDuplicateFromChosenPersonalities = personalityId => {
+    // Check if we need to search one index back
+    // This occurs for the second personality we want to check the previous chosen one as well
+    var searchBackwards = false;
+    var searchForwards = false;
+    if (personalityId % 2 == 0) {
+      searchBackwards = true;
+    } else {
+      searchForwards = true;
+    }
+
+    // Remove duplicates from array
+    var personalities = this.state.chosenPersonalities;
+    for (var i = 0; i < personalities.length; i++) {
+      if (
+        (searchBackwards && personalities[i].personalityId == personalityId) ||
+        personalities[i].personalityId == personalityId - 1
+      ) {
+        personalities.splice(i, 1);
+      }
+    }
+    for (var i = 0; i < personalities.length; i++) {
+      if (
+        (searchForwards && personalities[i].personalityId == personalityId) ||
+        personalities[i].personalityId == personalityId + 1
+      ) {
+        personalities.splice(i, 1);
+      }
+    }
+
+    return personalities;
   };
 
   handleClick = personalityId => {
-    this.setState(
-      {
-        personalityId: personalityId,
-        level: 5,
-        newPersonalityChosen: true,
-      },
-      () => {
-        const { userId, personalityId, level } = this.state;
-        this.props.addUserPersonality({ personalityId, level });
-      },
+    var personalities = this.removeDuplicateFromChosenPersonalities(
+      personalityId,
     );
+    personalities.push({ personalityId: personalityId, level: 5 });
+    if (this.props.personalities.data.data.length == this.state.endIndex) {
+      this.props.addUserPersonalities({
+        personalities: this.state.chosenPersonalities,
+      });
+    } else {
+      this.setState({
+        newPersonalityChosen: false,
+        startIndex: this.state.startIndex + 2,
+        endIndex: this.state.endIndex + 2,
+      });
+    }
   };
 
   componentDidMount() {
     console.log('Testing token here!!!', this.props.auth);
     this.props.getPersonalities();
-  }
-
-  componentWillReceiveProps() {
-    // Check if we actually receive data
-    // Check if we just chose a new personality to prevent bugs
-    if (
-      this.props.createUserPersonality.data.data &&
-      this.state.newPersonalityChosen
-    ) {
-      if (!this.props.createUserPersonality.error) {
-        if (this.props.personalities.data.data.length == this.state.endIndex) {
-          this.props.openNextView();
-        } else {
-          this.setState({
-            newPersonalityChosen: false,
-            startIndex: this.state.startIndex + 2,
-            endIndex: this.state.endIndex + 2,
-          });
-        }
-      }
-    }
   }
 
   renderTwoPersonalities() {
@@ -120,7 +142,7 @@ class SignUpPersonality extends React.Component {
   }
 
   renderError() {
-    if (!this.props.createUserPersonality.error) {
+    if (!this.props.createUserPersonalities.error) {
       return;
     }
 
