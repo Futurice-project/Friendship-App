@@ -29,16 +29,16 @@ const mapDispatchToProps = dispatch => ({
       .then(() =>
         dispatch(
           NavigationActions.navigate({
-            routeName: 'SignUpPersonality',
+            routeName: 'SignUpLocation',
           }),
         ),
       )
       .catch(err => console.log(err));
   },
-  openSignUpPersonality: () =>
+  openSignUpLocation: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SignUpPersonality',
+        routeName: 'SignUpLocation',
       }),
     ),
   openSignIn: () =>
@@ -59,7 +59,7 @@ const mapDispatchToProps = dispatch => ({
 class SignUpView extends React.Component {
   componentWillMount() {
     if (this.props.auth.data.decoded) {
-      this.props.openSignUpPersonality();
+      this.props.openSignUpLocation();
     }
   }
 

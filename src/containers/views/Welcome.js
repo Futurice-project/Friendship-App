@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => ({
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SignUpLocation',
+        routeName: 'SignUp',
       }),
     ),
   openTabs: () =>
@@ -151,7 +151,7 @@ export class WelcomeView extends React.Component {
 
   componentDidMount() {
     if (this.props.auth.data.decoded) {
-      this.props.openTabs();
+      // this.props.openTabs();
     }
   }
 
