@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "babel-register": "^6.26.0",
+    "eslint-config-rallycoding": "^3.2.0",
     "expo": "^19.0.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.4",
@@ -54,6 +55,7 @@
     "react-native-elements": "^0.17.0",
     "react-native-modal": "^4.1.1",
     "react-native-popup-menu": "^0.8.3",
+    "react-native-reversed-flat-list": "^1.0.2",
     "react-native-scrollable-tab-view": "^0.7.4",
     "react-native-slider": "^0.11.0",
     "react-navigation": "^1.0.0-beta.11",

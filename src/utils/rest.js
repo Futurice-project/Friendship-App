@@ -73,6 +73,25 @@ const rest = reduxApi({
     url: `${apiRoot}/reports`,
     crud: true,
   },
+  chatRooms: {
+    url: `${apiRoot}/chatrooms`,
+    crud: true,
+  },
+  chatRoomsWithUserId: {
+    url: `${apiRoot}/chatrooms/userid/:id`,
+    crud: true,
+  },
+  chatRoomMessages: {
+    url: `${apiRoot}/chatrooms/:id`,
+    crud: true,
+  },
+  sendMessage: {
+    url: `${apiRoot}/chatrooms/:id`,
+    crud: true,
+    options: {
+      method: 'POST',
+    },
+  },
   createUserPersonality: {
     url: `${apiRoot}/user_personality`,
     transformer: authTransformer,
