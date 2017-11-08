@@ -9,7 +9,7 @@ import RoundTab from '../../components/RoundTab';
 import { NavigationActions } from 'react-navigation';
 
 const mapDispatchToProps = dispatch => ({
-  openPersonality: () =>
+  openSignUpPersonality: () =>
     dispatch(
       NavigationActions.navigate({
         routeName: 'SignUpPersonality',
@@ -70,7 +70,10 @@ export class SignUpLocation extends React.Component {
           placeholder="LABEL"
         />
       </SignUpDivWrapper>
-      <RoundTab title="Next" onPress={() => this.props.openPersonality()} />
+      <RoundTab
+        title="Next"
+        onPress={() => this.props.openSignUpPersonality()}
+      />
     </SignUpWrapper>
   );
 

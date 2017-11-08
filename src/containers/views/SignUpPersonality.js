@@ -17,24 +17,29 @@ import {
 } from 'react-native';
 
 const mapStateToProps = state => ({
-  createUserPersonality: state.createUserPersonality,
+  createUserPersonalities: state.createUserPersonalities,
+  auth: state.auth,
+  personalities: state.personalities,
 });
 
 const mapDispatchToProps = dispatch => ({
-  createUserPersonality: credentials => {
+  getPersonalities: credentials => {
+    dispatch(rest.actions.personalities()).catch(err => console.log(err));
+  },
+  addUserPersonalities: credentials => {
     dispatch(
-      rest.actions.createUserPersonality(
+      rest.actions.createUserPersonalities(
         {},
         { body: JSON.stringify(credentials) },
       ),
     )
-      .then(() =>
+      .then(() => {
         dispatch(
           NavigationActions.navigate({
-            routeName: 'SignOut',
+            routeName: 'Tabs',
           }),
-        ),
-      )
+        );
+      })
       .catch(err => console.log(err));
   },
 });
@@ -47,33 +52,94 @@ class SignUpPersonality extends React.Component {
   state = {
     personalityId: '',
     level: '',
+    chosenPersonalities: [],
+    startIndex: 0,
+    endIndex: 2,
   };
 
-  handleClickRelaxed = () => {
-    this.setState(
-      {
-        personalityId: 1,
-        level: 5,
-      },
-      () => {
-        const { userId, personalityId, level } = this.state;
-        this.props.createUserPersonality({ personalityId, level });
-      },
-    );
+  /**
+   * Check's if the personalityId (the combination of the two oppositise personalites)
+   * already exists in the list, and duplicates
+   * It will return a new array with personalities
+   * @param personalityId
+   * @returns {Array}
+   */
+  removeDuplicateFromChosenPersonalities = personalityId => {
+    // Check if we need to search one index back
+    // This occurs for the second personality we want to check the previous chosen one as well
+    var searchBackwards = false;
+    var searchForwards = false;
+    if (personalityId % 2 == 0) {
+      searchBackwards = true;
+    } else {
+      searchForwards = true;
+    }
+
+    // Remove duplicates from array
+    var personalities = this.state.chosenPersonalities;
+    for (var i = 0; i < personalities.length; i++) {
+      if (
+        (searchBackwards && personalities[i].personalityId == personalityId) ||
+        personalities[i].personalityId == personalityId - 1
+      ) {
+        personalities.splice(i, 1);
+      }
+    }
+    for (var i = 0; i < personalities.length; i++) {
+      if (
+        (searchForwards && personalities[i].personalityId == personalityId) ||
+        personalities[i].personalityId == personalityId + 1
+      ) {
+        personalities.splice(i, 1);
+      }
+    }
+
+    return personalities;
   };
 
-  handleClickAmbigious = () => {
-    this.setState(
-      {
-        personalityId: 2,
-        level: 5,
-      },
-      () => {
-        const { userId, personalityId, level } = this.state;
-        this.props.createUserPersonality({ personalityId, level });
-      },
+  handleClick = personalityId => {
+    var personalities = this.removeDuplicateFromChosenPersonalities(
+      personalityId,
     );
+    personalities.push({ personalityId: personalityId, level: 5 });
+    if (this.props.personalities.data.data.length == this.state.endIndex) {
+      this.props.addUserPersonalities({
+        personalities: this.state.chosenPersonalities,
+      });
+    } else {
+      this.setState({
+        newPersonalityChosen: false,
+        startIndex: this.state.startIndex + 2,
+        endIndex: this.state.endIndex + 2,
+      });
+    }
   };
+
+  componentDidMount() {
+    console.log('Testing token here!!!', this.props.auth);
+    this.props.getPersonalities();
+  }
+
+  renderTwoPersonalities() {
+    if (!this.props.personalities.data.data) {
+      return <Text>Network failed</Text>;
+    }
+
+    var personalities = this.props.personalities.data.data
+      .slice(this.state.startIndex, this.state.endIndex)
+      .map(personality => {
+        return (
+          <Personality
+            key={personality.id}
+            title={personality.name}
+            image={personality.name}
+            onPress={() => this.handleClick(personality.id)}
+          />
+        );
+      });
+
+    return <Personalities>{personalities}</Personalities>;
+  }
 
   render() {
     return (
@@ -96,7 +162,8 @@ class SignUpPersonality extends React.Component {
                   color: '#efebe9',
                 }}
               >
-                1/4{' '}
+                {this.state.endIndex / 2}/{this.props.personalities.data.data
+                  .length / 2}{' '}
               </Text>
               <Text
                 style={{
@@ -117,31 +184,7 @@ class SignUpPersonality extends React.Component {
             >
               Are you more..
             </Text>
-            <Centered>
-              <Personalities>
-                <Personality
-                  title="RELAXED"
-                  image="relaxed"
-                  onPress={this.handleClickRelaxed}
-                />
-                <Text
-                  style={{
-                    paddingBottom: 15,
-                    paddingTop: 15,
-                    color: '#efebe9',
-                    fontFamily: 'NunitoSans-Light',
-                    fontSize: 16,
-                  }}
-                >
-                  or
-                </Text>
-                <Personality
-                  title="AMBITIOUS"
-                  image="ambitious"
-                  onPress={this.handleClickAmbigious}
-                />
-              </Personalities>
-            </Centered>
+            <Centered>{this.renderTwoPersonalities()}</Centered>
           </Padding>
         </ViewContainer>
       </View>
@@ -167,6 +210,12 @@ const ProgressBar = styled.View`
   background-color: #3a4853;
   width: 19%;
   height: 10;
+`;
+
+const Error = styled.Text`
+  font-size: 11;
+  color: #faf5f0;
+  color: red;
 `;
 
 const Title = styled.Text`
