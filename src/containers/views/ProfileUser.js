@@ -115,12 +115,11 @@ class ProfileUser extends React.Component {
     this.setState({ age: ageName });
   };
   // Modal functions
-  showOptions = () => this.setState({ isOptionsVisible: true });
-  hideOptions = () => this.setState({ isOptionsVisible: false });
+  showOptions = () => this.setState({ isOptionsVisible: !isOptionsVisible });
   showReport = () => {
-    this.setState({ isReportVisible: true });
+    const { isReportVisible } = this.state;
+    this.setState({ isReportVisible: !isReportVisible });
   };
-  hideReport = () => this.setState({ isReportVisible: false });
   sendReport = () => {
     const userId = this.props.userDetails.data.id;
     const description = this.state.reportDescription;
@@ -168,6 +167,10 @@ class ProfileUser extends React.Component {
       let reportTitle = 'Report ' + this.props.userDetails.data.username;
       return (
         <ViewContainerTop style={styles.viewContent}>
+          <MenuContext>
+            <PopUpMenuUserProfile isReportVisible={this.showReport} />
+          </MenuContext>
+
           <TouchableOpacity
             onPress={this.showOptions}
             style={{ alignSelf: 'flex-end', marginRight: 15, marginTop: 32 }}
@@ -209,81 +212,48 @@ class ProfileUser extends React.Component {
             </View>
           </View>
           <TabProfile hate={hate} love={love} />
-          <Modal isVisible={this.state.isOptionsVisible}>
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity
-                onPress={this.hideOptions}
-                style={{ alignSelf: 'flex-end' }}
+
+          <Modal visible={this.state.isReportVisible} backdropOpacity={1}>
+            <ViewContainer style={{ flex: 1 }}>
+              <View
+                style={{
+                  height: 200,
+                  backgroundColor: '#eee',
+                  borderRadius: 5,
+                  paddingVertical: 10,
+                }}
               >
-                <Image
-                  source={require('../../../assets//icon_profile_overlay.png')}
+                <TextInput
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  titleColor="#2d4359"
+                  title={reportTitle}
+                  placeholder="DETAILS OF REPORT"
+                  backColor="#faf6f0"
+                  onChangeText={reportDescription =>
+                    this.setState({ reportDescription })}
+                  value={this.state.reportDescription}
                 />
-              </TouchableOpacity>
-
-              <ButtonOption>
-                <TouchableOpacity
-                  onPress={this.showReport}
-                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
-                >
-                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
-                    Report
-                  </Text>
-                </TouchableOpacity>
-              </ButtonOption>
-
-              <ButtonOption>
-                <TouchableOpacity
-                  onPress={this._onPressButton}
-                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
-                >
-                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
-                    Manage Privacy
-                  </Text>
-                </TouchableOpacity>
-              </ButtonOption>
-            </View>
-            <Modal visible={this.state.isReportVisible}>
-              <ViewContainer style={{ flex: 1 }}>
-                <View
-                  style={{
-                    height: 200,
-                    backgroundColor: '#eee',
-                    borderRadius: 5,
-                    paddingVertical: 10,
-                  }}
-                >
-                  <TextInput
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    titleColor="#2d4359"
-                    title={reportTitle}
-                    placeholder="DETAILS OF REPORT"
-                    backColor="#faf6f0"
-                    onChangeText={reportDescription =>
-                      this.setState({ reportDescription })}
-                    value={this.state.reportDescription}
+                <View style={{ flexDirection: 'row' }}>
+                  <Button
+                    title="Cancel"
+                    primary
+                    textColor="green"
+                    size="half"
+                    color="light"
+                    onPress={this.showReport}
                   />
-                  <View style={{ flexDirection: 'row' }}>
-                    <Button
-                      title="Cancel"
-                      primary
-                      textColor="green"
-                      size="half"
-                      color="light"
-                      onPress={this.hideReport}
-                    />
-                    <Button
-                      title="Report"
-                      border
-                      textColor="black"
-                      size="half"
-                      color="dark"
-                      onPress={this.sendReport}
-                    />
-                  </View>
+                  <Button
+                    title="Report"
+                    border
+                    textColor="black"
+                    size="half"
+                    color="dark"
+                    onPress={this.sendReport}
+                  />
                 </View>
-              </ViewContainer>
-            </Modal>
+              </View>
+            </ViewContainer>
           </Modal>
         </ViewContainerTop>
       );
