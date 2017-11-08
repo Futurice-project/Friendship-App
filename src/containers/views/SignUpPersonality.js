@@ -141,18 +141,6 @@ class SignUpPersonality extends React.Component {
     return <Personalities>{personalities}</Personalities>;
   }
 
-  renderError() {
-    if (!this.props.createUserPersonalities.error) {
-      return;
-    }
-
-    return (
-      <Error>
-        This personality is already chosen before and can't be added again
-      </Error>
-    );
-  }
-
   render() {
     return (
       <View>
@@ -174,7 +162,8 @@ class SignUpPersonality extends React.Component {
                   color: '#efebe9',
                 }}
               >
-                1/4{' '}
+                {this.state.endIndex / 2}/{this.props.personalities.data.data
+                  .length / 2}{' '}
               </Text>
               <Text
                 style={{
@@ -196,7 +185,6 @@ class SignUpPersonality extends React.Component {
               Are you more..
             </Text>
             <Centered>{this.renderTwoPersonalities()}</Centered>
-            {this.renderError()}
           </Padding>
         </ViewContainer>
       </View>
