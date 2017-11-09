@@ -80,11 +80,7 @@ class InboxCard extends React.Component {
     return (
       <TouchableHighlight
         onPress={() =>
-          this.props.openChatView(
-            this.props.data.id,
-            this.props.data.creator.username,
-            this.props.data.creator.emoji,
-          )}
+          this.props.openChatView(this.props.data.id, username, emoji)}
         underlayColor={'#ddd'}
       >
         <View style={styles.inboxCard}>

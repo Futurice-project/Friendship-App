@@ -57,12 +57,14 @@ export class ChatRequest extends React.Component {
     const userCreatorId = this.props.currentUserId;
     const userReceiverId = this.props.navigation.state.params.user.id;
 
-    this.props.createChatRoom(userCreatorId, userReceiverId, this.sendMessage);
+    this.props.createChatRoom(userCreatorId, userReceiverId, this.openChatView);
   };
 
-  sendMessage = chatroomId => {
+  openChatView = chatroomId => {
     Keyboard.dismiss();
+    const { username, emoji } = this.props.navigation.state.params.user;
 
+    this.props.openChatView(chatroomId, username, emoji);
     this.props.sendMessage(
       chatroomId,
       this.state.text,
@@ -71,12 +73,8 @@ export class ChatRequest extends React.Component {
     );
   };
 
-  openChatView = chatroomId => {
-    const { username, emoji } = this.props.navigation.state.params.user;
-    this.props.openChatView(chatroomId, username, emoji);
-  };
-
   render() {
+    const { username } = this.props.navigation.state.params.user;
     return (
       <View style={{ flex: 1, marginTop: 20 }}>
         <Text
@@ -86,8 +84,9 @@ export class ChatRequest extends React.Component {
           CANCEL
         </Text>
         <RoundTab tint="#fff" />
-        <Text style={styles.inviteText}>{`Tell ${this.props.navigation.state
-          .params.user.username} what you would like to talk about:`}</Text>
+        <Text
+          style={styles.inviteText}
+        >{`Tell ${username} what you would like to talk about:`}</Text>
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
           <TextInput
             style={{
@@ -138,14 +137,13 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
-  sendMessage: (id, textMessage, userId, callback) => {
+  sendMessage: (id, textMessage, userId) => {
     dispatch(
       rest.actions.sendMessage(
         { id },
         {
           body: JSON.stringify({ textMessage, userId }),
         },
-        (err, data) => callback(id),
       ),
     );
   },
