@@ -91,6 +91,12 @@ const rest = reduxApi({
     options: {
       method: 'POST',
     },
+    postfetch: [
+      function({ dispatch, actions, data }) {
+        const id = data.chatroom_id;
+        dispatch(actions.chatRoomMessages({ id }));
+      },
+    ],
   },
   createUserPersonality: {
     url: `${apiRoot}/user_personality`,

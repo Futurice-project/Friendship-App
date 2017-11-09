@@ -32,7 +32,7 @@ export class Inbox extends React.Component {
   state = {};
 
   componentDidMount() {
-    this.props.chatRoomsWithUserId(11);
+    this.props.chatRoomsWithUserId(this.props.currentUserId);
   }
 
   keyExtractor = item => item.chatroomid;
@@ -41,7 +41,6 @@ export class Inbox extends React.Component {
   };
 
   render() {
-    console.log(this.props.currentUserId);
     return (
       <View style={{ flex: 1, marginTop: 100 }}>
         <RoundTab tint="#ffffff" title="CHATS" fontSize="12" />

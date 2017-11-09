@@ -42,23 +42,47 @@ class ChatView extends Component {
       .params.chatroom.creator.username}`,
   });
 
+  componentDidMount = () => {
+    this.props.getChatRoomMessage(
+      this.props.navigation.state.params.chatroom.chatroomid,
+    );
+  };
+
   state = {
     text: '',
   };
 
+  sendMessage = () => {
+    const chatroomId = this.props.navigation.state.params.chatroom.chatroomid;
+    const textMessage = this.state.text;
+    const userId = this.props.currentUserId;
+
+    this.props.sendMessage(chatroomId, textMessage, userId);
+    this.setState({ text: '' });
+  };
+
   keyExtractor = item => item.id;
   renderItem = ({ item }) => {
+    const textAlign =
+      item.user_id == this.props.currentUserId ? 'right' : 'left';
+    const messageCardStyle =
+      item.user_id == this.props.currentUserId
+        ? styles.SendCard
+        : styles.ReceiveCard;
     return (
-      <View>
+      <View style={messageCardStyle}>
         <Text
           style={{
-            flex: 1,
-            padding: 20,
-            backgroundColor: '#d8d8d8',
-            margin: 10,
             color: '#4a4a4a',
+            textAlign: textAlign,
+            fontSize: 10,
+            color: '#60686d',
+            marginBottom: 10,
           }}
         >
+          Time
+        </Text>
+        <Text style={{ color: '#4a4a4a', textAlign: textAlign }}>
           {item.text_message}
         </Text>
       </View>
@@ -66,6 +90,7 @@ class ChatView extends Component {
   };
 
   render() {
+    console.log(this.props.chatRoomMessages);
     return (
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -76,7 +101,7 @@ class ChatView extends Component {
         })()}
       >
         <ReversedFlatList
-          data={this.props.navigation.state.params.chatroom.messages || []}
+          data={this.props.chatRoomMessages || []}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
           style={{ flex: 1, backgroundColor: 'white' }}
@@ -90,7 +115,7 @@ class ChatView extends Component {
             onSubmitEditing={() => {}}
           />
           <ChatInputButtonCard>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => this.sendMessage()}>
               <Text
                 style={{
                   fontWeight: 'normal',
@@ -109,6 +134,27 @@ class ChatView extends Component {
   }
 }
 
+const styles = {
+  SendCard: {
+    flex: 1,
+    padding: 20,
+    paddingBottom: 30,
+    backgroundColor: '#f1f1f3',
+    margin: 10,
+    marginRight: 20,
+    marginLeft: 40,
+  },
+  ReceiveCard: {
+    flex: 1,
+    padding: 20,
+    paddingBottom: 30,
+    backgroundColor: '#d8d8d8',
+    margin: 10,
+    marginRight: 40,
+    marginLeft: 20,
+  },
+};
+
 const mapDispatchToProps = dispatch => ({
   onViewProfile: profileId =>
     dispatch(
@@ -120,12 +166,12 @@ const mapDispatchToProps = dispatch => ({
   getChatRoomMessage: id => {
     dispatch(rest.actions.chatRoomMessages({ id }));
   },
-  sendMessage: (id, text, user) => {
+  sendMessage: (id, textMessage, userId) => {
     dispatch(
       rest.actions.sendMessage(
         { id },
         {
-          body: JSON.stringify({ text, user }),
+          body: JSON.stringify({ textMessage, userId }),
         },
       ),
     );
@@ -133,6 +179,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
+  currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
   chatRoomMessages: state.chatRoomMessages.data.messages,
   sentMessage: state.sendMessage,
 });
