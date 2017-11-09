@@ -71,6 +71,12 @@ class InboxCard extends React.Component {
       lastMessage.text_message.length > 35
         ? lastMessage.text_message.slice(0, 35) + '...'
         : lastMessage.text_message;
+    const username =
+      this.props.currentUserId == creator.id
+        ? receiver.username
+        : creator.username;
+    const emoji =
+      this.props.currentUserId == creator.id ? receiver.emoji : creator.emoji;
     return (
       <TouchableHighlight
         onPress={() =>
@@ -84,12 +90,12 @@ class InboxCard extends React.Component {
         <View style={styles.inboxCard}>
           <View style={styles.inboxCardIcon}>
             <View style={styles.iconHolder}>
-              <Text style={styles.userEmoji}>{creator.emoji}</Text>
+              <Text style={styles.userEmoji}>{emoji}</Text>
             </View>
           </View>
           <View style={styles.inboxCardContent}>
             <View style={styles.inboxCardHeader}>
-              <Text style={styles.inboxCardName}>{creator.username}</Text>
+              <Text style={styles.inboxCardName}>{username}</Text>
               <Text style={styles.inboxCardTime}>Time</Text>
             </View>
             <Text style={styles.inboxCardMessage}>{lastMessageText}</Text>
@@ -100,4 +106,8 @@ class InboxCard extends React.Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(InboxCard);
+const mapStateToProps = state => ({
+  currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(InboxCard);

@@ -57,18 +57,22 @@ export class ChatRequest extends React.Component {
     const userCreatorId = this.props.currentUserId;
     const userReceiverId = this.props.navigation.state.params.user.id;
 
-    this.props.createChatRoom(userCreatorId, userReceiverId, this.openChatView);
+    this.props.createChatRoom(userCreatorId, userReceiverId, this.sendMessage);
   };
 
-  openChatView = chatroomId => {
+  sendMessage = chatroomId => {
     Keyboard.dismiss();
-    const { username, emoji } = this.props.navigation.state.params.user;
 
     this.props.sendMessage(
       chatroomId,
       this.state.text,
       this.props.currentUserId,
+      this.openChatView,
     );
+  };
+
+  openChatView = chatroomId => {
+    const { username, emoji } = this.props.navigation.state.params.user;
     this.props.openChatView(chatroomId, username, emoji);
   };
 
@@ -134,13 +138,14 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
-  sendMessage: (id, textMessage, userId) => {
+  sendMessage: (id, textMessage, userId, callback) => {
     dispatch(
       rest.actions.sendMessage(
         { id },
         {
           body: JSON.stringify({ textMessage, userId }),
         },
+        (err, data) => callback(id),
       ),
     );
   },

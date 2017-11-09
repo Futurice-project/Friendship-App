@@ -43,9 +43,7 @@ class ChatView extends Component {
   });
 
   componentDidMount = () => {
-    this.props.getChatRoomMessage(
-      this.props.navigation.state.params.chatroomId,
-    );
+    this.props.chatRoomMessages(this.props.navigation.state.params.chatroomId);
   };
 
   componentWillReceiveProps = () => {
@@ -169,7 +167,7 @@ const mapDispatchToProps = dispatch => ({
         params: { profileId },
       }),
     ),
-  getChatRoomMessage: id => {
+  chatRoomMessages: id => {
     dispatch(rest.actions.chatRoomMessages({ id }));
   },
   sendMessage: (id, textMessage, userId) => {
