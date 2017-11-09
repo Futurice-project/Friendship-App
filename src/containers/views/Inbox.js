@@ -14,6 +14,7 @@ import { IconImage } from '../../components/Layout';
 import rest from '../../utils/rest';
 import RoundTab from '../../components/RoundTab';
 import InboxCard from '../../components/InboxCard';
+import SuggestionList from '../../components/SuggestionList';
 
 export class Inbox extends React.Component {
   static navigationOptions = {
@@ -35,20 +36,32 @@ export class Inbox extends React.Component {
     this.props.chatRoomsWithUserId(this.props.currentUserId);
   }
 
-  keyExtractor = item => item.chatroomid;
+  keyExtractor = item => item.id;
   renderItem = ({ item }) => {
     return <InboxCard data={item} />;
   };
 
   render() {
     return (
-      <View style={{ flex: 1, marginTop: 100 }}>
+      <View style={{ flex: 1 }}>
+        <Text
+          style={{
+            fontSize: 12,
+            textAlign: 'center',
+            color: '#60686d',
+            marginTop: 30,
+            fontWeight: 'bold',
+          }}
+        >
+          SUGGESTIONS
+        </Text>
+        <SuggestionList />
         <RoundTab tint="#ffffff" title="CHATS" fontSize="12" />
         <FlatList
           data={this.props.chatrooms}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
-          style={{ flex: 1, backgroundColor: 'white' }}
+          style={{ flex: 1, backgroundColor: 'white', minHeight: 300 }}
         />
       </View>
     );

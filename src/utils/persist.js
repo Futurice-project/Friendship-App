@@ -19,6 +19,7 @@ const persistConfig = {
     'chatRoomMessages',
     'sendMessage',
     'chatRoomsWithUserId',
+    'createChatRoom',
   ],
 };
 

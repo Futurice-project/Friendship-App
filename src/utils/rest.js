@@ -46,6 +46,10 @@ const rest = reduxApi({
     url: `${apiRoot}/users`,
     crud: true,
   },
+  usersByPage: {
+    url: `${apiRoot}/users/page/:number`,
+    crud: true,
+  },
   usersSearch: {
     url: `${apiRoot}/users/search/:username`,
     transformer: transformers.array,
@@ -76,6 +80,13 @@ const rest = reduxApi({
   chatRooms: {
     url: `${apiRoot}/chatrooms`,
     crud: true,
+  },
+  createChatRoom: {
+    url: `${apiRoot}/chatrooms`,
+    crud: true,
+    options: {
+      method: 'POST',
+    },
   },
   chatRoomsWithUserId: {
     url: `${apiRoot}/chatrooms/userid/:id`,

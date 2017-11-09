@@ -38,14 +38,20 @@ const TextInputCard = styled.View`
 
 class ChatView extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.chatroom.creator.emoji} ${navigation.state
-      .params.chatroom.creator.username}`,
+    title: `${navigation.state.params.userEmoji} ${navigation.state.params
+      .username}`,
   });
 
   componentDidMount = () => {
     this.props.getChatRoomMessage(
-      this.props.navigation.state.params.chatroom.chatroomid,
+      this.props.navigation.state.params.chatroomId,
     );
+  };
+
+  componentWillReceiveProps = () => {
+    if (this.props.chatroom) {
+      this.props.navigation.setParams({ chatroom: this.props.chatroom });
+    }
   };
 
   state = {
@@ -53,7 +59,8 @@ class ChatView extends Component {
   };
 
   sendMessage = () => {
-    const chatroomId = this.props.navigation.state.params.chatroom.chatroomid;
+    //Keyboard.dismiss();
+    const chatroomId = this.props.navigation.state.params.chatroomId;
     const textMessage = this.state.text;
     const userId = this.props.currentUserId;
 
@@ -90,7 +97,6 @@ class ChatView extends Component {
   };
 
   render() {
-    console.log(this.props.chatRoomMessages);
     return (
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -101,7 +107,7 @@ class ChatView extends Component {
         })()}
       >
         <ReversedFlatList
-          data={this.props.chatRoomMessages || []}
+          data={this.props.chatRoom.messages || []}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
           style={{ flex: 1, backgroundColor: 'white' }}
@@ -112,7 +118,7 @@ class ChatView extends Component {
             placeholder={'Message '}
             onChangeText={text => this.setState({ text })}
             value={this.state.text}
-            onSubmitEditing={() => {}}
+            onSubmitEditing={() => this.sendMessage()}
           />
           <ChatInputButtonCard>
             <TouchableOpacity onPress={() => this.sendMessage()}>
@@ -180,7 +186,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
-  chatRoomMessages: state.chatRoomMessages.data.messages,
+  chatRoom: state.chatRoomMessages.data,
   sentMessage: state.sendMessage,
 });
 

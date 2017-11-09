@@ -2,56 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { TouchableHighlight, View, Text } from 'react-native';
-import {
-  MessageCard,
-  ProfileIconCard,
-  MessageContent,
-  CircleView,
-  ProfileImage,
-} from './Layout';
-import { SenderName, GrayText, CenterIconText } from './Text';
-
-const mapDispatchToProps = dispatch => ({
-  openChatView: chatroom =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'ChatView',
-        params: { chatroom },
-      }),
-    ),
-});
-
-class InboxCard extends React.Component {
-  render() {
-    const { creator, receiver, messages } = this.props.data;
-    const lastMessage = messages[messages.length - 1];
-    const lastMessageText =
-      lastMessage.text_message.length > 35
-        ? lastMessage.text_message.slice(0, 35) + '...'
-        : lastMessage.text_message;
-    return (
-      <TouchableHighlight
-        onPress={() => this.props.openChatView(this.props.data)}
-        underlayColor={'#ddd'}
-      >
-        <View style={styles.inboxCard}>
-          <View style={styles.inboxCardIcon}>
-            <View style={styles.iconHolder}>
-              <Text style={styles.userEmoji}>{creator.emoji}</Text>
-            </View>
-          </View>
-          <View style={styles.inboxCardContent}>
-            <View style={styles.inboxCardHeader}>
-              <Text style={styles.inboxCardName}>{creator.username}</Text>
-              <Text style={styles.inboxCardTime}>Time</Text>
-            </View>
-            <Text style={styles.inboxCardMessage}>{lastMessageText}</Text>
-          </View>
-        </View>
-      </TouchableHighlight>
-    );
-  }
-}
 
 const styles = {
   inboxCard: {
@@ -102,5 +52,52 @@ const styles = {
     justifyContent: 'center',
   },
 };
+
+const mapDispatchToProps = dispatch => ({
+  openChatView: (chatroomId, username, userEmoji) =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'ChatView',
+        params: { chatroomId, username, userEmoji },
+      }),
+    ),
+});
+
+class InboxCard extends React.Component {
+  render() {
+    const { creator, receiver, messages } = this.props.data;
+    const lastMessage = messages[messages.length - 1];
+    const lastMessageText =
+      lastMessage.text_message.length > 35
+        ? lastMessage.text_message.slice(0, 35) + '...'
+        : lastMessage.text_message;
+    return (
+      <TouchableHighlight
+        onPress={() =>
+          this.props.openChatView(
+            this.props.data.id,
+            this.props.data.creator.username,
+            this.props.data.creator.emoji,
+          )}
+        underlayColor={'#ddd'}
+      >
+        <View style={styles.inboxCard}>
+          <View style={styles.inboxCardIcon}>
+            <View style={styles.iconHolder}>
+              <Text style={styles.userEmoji}>{creator.emoji}</Text>
+            </View>
+          </View>
+          <View style={styles.inboxCardContent}>
+            <View style={styles.inboxCardHeader}>
+              <Text style={styles.inboxCardName}>{creator.username}</Text>
+              <Text style={styles.inboxCardTime}>Time</Text>
+            </View>
+            <Text style={styles.inboxCardMessage}>{lastMessageText}</Text>
+          </View>
+        </View>
+      </TouchableHighlight>
+    );
+  }
+}
 
 export default connect(null, mapDispatchToProps)(InboxCard);

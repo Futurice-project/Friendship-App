@@ -45,7 +45,6 @@
   },
   "dependencies": {
     "babel-register": "^6.26.0",
-    "eslint-config-rallycoding": "^3.2.0",
     "expo": "^19.0.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.4",
