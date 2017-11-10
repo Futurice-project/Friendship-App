@@ -15,13 +15,30 @@ If you have moved the 'Tabs' route, you need to:
     where to find your TabNavigator
     (or make it ignore tabs altogether)`;
 
+/**
+ * Override the back button
+ * Return true if you handle the back button yourself
+ * Return false if you want the OS to handle the back button (close the app)
+ * @param navigatorState
+ * @param dispatch
+ * @returns {boolean}
+ */
 export const handleBackButton = ({ navigatorState }, dispatch) => {
   const tabNavigatorIndex = navigatorState.routes.findIndex(
-    route => route.routeName === 'Welcome',
+    route => route.routeName === 'Tabs',
   );
 
+  // If the tab navigator is missing
   if (tabNavigatorIndex === -1) {
-    throw new Error(missingTabNavigator);
+    if (navigatorState.routes.length == 1) {
+      // We are on the homescreen, so we want the os to handle the back button
+      // Pressing the back button will then close the app
+      return false;
+    }
+    // We are not on the homescreen, we want to go back in the stack
+    // We return true because we handle the navigation ourselfs
+    dispatch(NavigationActions.back());
+    return true;
   }
 
   const currentTab = navigatorState.routes[tabNavigatorIndex];

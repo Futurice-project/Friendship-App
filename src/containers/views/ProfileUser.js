@@ -1,24 +1,53 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { MenuContext } from 'react-native-popup-menu';
+import Modal from 'react-native-modal';
+
 import rest from '../../utils/rest';
 
-import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
+import Button from '../../components/Button';
+import {
+  ViewContainer,
+  ViewContainerTop,
+  Centered,
+  FlexRow,
+} from '../../components/Layout';
 import { SmallHeader, Description } from '../../components/Text';
+import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
+import styled from 'styled-components/native';
 import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
+
+const ButtonOption = styled.View`
+  align-items: center;
+  marginTop: 5px;
+`;
 
 const mapStateToProps = state => ({
   auth: state.auth,
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
+  currentUser: state.currentUser,
+  tagsForCurrentUser: state.tagsForCurrentUser,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForUser.get({ userId })),
+  reportUser: reportDetails => {
+    dispatch(
+      rest.actions.reports.post({}, { body: JSON.stringify(reportDetails) }),
+    );
+  },
 });
 
 class ProfileUser extends React.Component {
@@ -26,7 +55,11 @@ class ProfileUser extends React.Component {
     loaded: false,
     age: '',
     description: '',
-    profileTitle: 'Profile Page',
+    isOptionsVisible: false,
+    isReportVisible: false,
+    reportDescription: 'Description',
+    //  loveCommon: 0,
+    hateCommon: 0,
   };
 
   static navigationOptions = ({ navigation }) => ({
@@ -81,6 +114,20 @@ class ProfileUser extends React.Component {
     }
     this.setState({ age: ageName });
   };
+  // Modal functions
+  showOptions = () => this.setState({ isOptionsVisible: true });
+  hideOptions = () => this.setState({ isOptionsVisible: false });
+  showReport = () => {
+    this.setState({ isReportVisible: true });
+  };
+  hideReport = () => this.setState({ isReportVisible: false });
+  sendReport = () => {
+    const userId = this.props.userDetails.data.id;
+    const description = this.state.reportDescription;
+    const reported_by = this.props.auth.data.decoded.id;
+    this.props.reportUser({ userId, description, reported_by });
+    this.setState({ isReportVisible: false });
+  };
 
   render = () => {
     if (!this.props.auth.data.decoded) {
@@ -95,8 +142,40 @@ class ProfileUser extends React.Component {
     } else {
       let love = this.props.tagsForUser.data.filter(e => e.love === true);
       let hate = this.props.tagsForUser.data.filter(e => e.love === false);
+      let loveU = this.props.tagsForCurrentUser.data.filter(
+        e => e.love === true,
+      );
+      let hateU = this.props.tagsForCurrentUser.data.filter(
+        e => e.love === false,
+      );
+      let loveCommon = 0;
+      let hateCommon = 0;
+
+      loveU.filter(e =>
+        love.filter(y => {
+          if (e.name === y.name) {
+            loveCommon++;
+          }
+        }),
+      );
+      hateU.filter(e =>
+        hate.filter(y => {
+          if (e.name === y.name) {
+            hateCommon++;
+          }
+        }),
+      );
+      let reportTitle = 'Report ' + this.props.userDetails.data.username;
       return (
         <ViewContainerTop style={styles.viewContent}>
+          <TouchableOpacity
+            onPress={this.showOptions}
+            style={{ alignSelf: 'flex-end', marginRight: 15, marginTop: 32 }}
+          >
+            <Image
+              source={require('../../../assets//icon_profile_overlay.png')}
+            />
+          </TouchableOpacity>
           <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>
@@ -112,16 +191,100 @@ class ProfileUser extends React.Component {
               {this.props.userDetails.data.location ? (
                 ', ' + this.props.userDetails.data.location
               ) : (
-                ''
+                ', Narnia'
               )}
             </Description>
-            <Description>I love ... and hate...</Description>
-            <SmallHeader>LOOKING FOR</SmallHeader>
             <Description>
-              The events you will actively look friends for will be visible here
+              {loveCommon} YEAH & {hateCommon} NAAH in common{' '}
             </Description>
+            <View
+              style={{
+                height: 80,
+                borderWidth: 1,
+                borderColor: '#fff',
+                marginBottom: 10,
+              }}
+            >
+              <Text> Personality Placeholder</Text>
+            </View>
           </View>
           <TabProfile hate={hate} love={love} />
+          <Modal isVisible={this.state.isOptionsVisible}>
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity
+                onPress={this.hideOptions}
+                style={{ alignSelf: 'flex-end' }}
+              >
+                <Image
+                  source={require('../../../assets//icon_profile_overlay.png')}
+                />
+              </TouchableOpacity>
+
+              <ButtonOption>
+                <TouchableOpacity
+                  onPress={this.showReport}
+                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
+                >
+                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
+                    Report
+                  </Text>
+                </TouchableOpacity>
+              </ButtonOption>
+
+              <ButtonOption>
+                <TouchableOpacity
+                  onPress={this._onPressButton}
+                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
+                >
+                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
+                    Manage Privacy
+                  </Text>
+                </TouchableOpacity>
+              </ButtonOption>
+            </View>
+            <Modal visible={this.state.isReportVisible}>
+              <ViewContainer style={{ flex: 1 }}>
+                <View
+                  style={{
+                    height: 200,
+                    backgroundColor: '#eee',
+                    borderRadius: 5,
+                    paddingVertical: 10,
+                  }}
+                >
+                  <TextInput
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    titleColor="#2d4359"
+                    title={reportTitle}
+                    placeholder="DETAILS OF REPORT"
+                    backColor="#faf6f0"
+                    onChangeText={reportDescription =>
+                      this.setState({ reportDescription })}
+                    value={this.state.reportDescription}
+                  />
+                  <View style={{ flexDirection: 'row' }}>
+                    <Button
+                      title="Cancel"
+                      primary
+                      textColor="green"
+                      size="half"
+                      color="light"
+                      onPress={this.hideReport}
+                    />
+                    <Button
+                      title="Report"
+                      border
+                      textColor="black"
+                      size="half"
+                      color="dark"
+                      onPress={this.sendReport}
+                    />
+                  </View>
+                </View>
+              </ViewContainer>
+            </Modal>
+          </Modal>
         </ViewContainerTop>
       );
     }
@@ -135,7 +298,6 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     alignItems: 'center',
-    height: 300,
     marginTop: 23,
   },
   whiteCircle: {
@@ -158,6 +320,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#60686d',
     marginTop: 7,
+  },
+  buttonStyle: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: 241,
+    height: 47,
+    borderRadius: 34,
+    backgroundColor: 'red',
+    marginTop: 20,
+  },
+  buttonTextStyle: {
+    alignSelf: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#faf6f0',
   },
 });
 

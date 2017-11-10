@@ -12,6 +12,7 @@ import {
   Text,
   KeyboardAvoidingView,
   View,
+  FlatList,
 } from 'react-native';
 
 const mapStateToProps = state => ({
@@ -29,12 +30,18 @@ const mapDispatchToProps = dispatch => ({
       .then(() =>
         dispatch(
           NavigationActions.navigate({
-            routeName: 'SignOut',
+            routeName: 'SignUpLocation',
           }),
         ),
       )
       .catch(err => console.log(err));
   },
+  openSignUpLocation: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SignUpLocation',
+      }),
+    ),
   openSignIn: () =>
     dispatch(
       NavigationActions.navigate({
@@ -51,6 +58,12 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class SignUpView extends React.Component {
+  componentWillMount() {
+    if (this.props.auth.data.decoded) {
+      this.props.openSignUpLocation();
+    }
+  }
+
   componentWillReceiveProps() {
     this.setState({ error: true });
   }
@@ -64,23 +77,15 @@ class SignUpView extends React.Component {
     email: '',
     password: '',
     error: false,
+    validationError: '',
   };
 
   renderStatus() {
-    // const { data, error, loading } = this.props.users;
-    // let status = '';
-    // if (data.email) {
-    //   status = `Email ${data.email} successfully signed up!`;
-    // }
-    // if (this.state.error && error) {
-    //   status = `Error ${error.statusCode}: ${error.message}`;
-    // }
-    // if (loading) {
-    //   status = `Loading ...`;
-    // }
-
-    // return <Text style={styles.textStyle}>{status}</Text>;
-
+    if (this.state.validationError) {
+      return (
+        <Text style={styles.statusTextStyle}>{this.state.validationError}</Text>
+      );
+    }
     const { data, error, loading } = this.props.auth;
     let status = '';
     if (data.decoded) {
@@ -93,11 +98,16 @@ class SignUpView extends React.Component {
       status = `Loading ...`;
     }
 
-    return <Text style={styles.textStyle}>{status}</Text>;
+    return <Text style={styles.statusTextStyle}>{status}</Text>;
   }
 
   signUp() {
     const { email, password } = this.state;
+    if (!email || !password) {
+      return this.setState({
+        validationError: 'Please enter both email & password!',
+      });
+    }
     this.props.signUp({ email, password });
   }
 
@@ -105,18 +115,90 @@ class SignUpView extends React.Component {
     return (
       <KeyboardAvoidingView behavior="padding">
         <ViewContainer>
+          <HeaderWrapper>
+            <SignUpTitle>YOUR PROFILE</SignUpTitle>
+            <LabelText style={{ marginTop: 24 }}>ADD PHOTO(S)</LabelText>
+            <ScrollViewPhoto
+              contentContainerStyle={styles.scrollViewPhotoContainer}
+              horizontal
+            >
+              <PhotoBox style={{ backgroundColor: '#949795' }}>
+                <PlusSignText>+</PlusSignText>
+              </PhotoBox>
+              <PhotoBox>
+                <PlusSignText>+</PlusSignText>
+              </PhotoBox>
+              <PhotoBox>
+                <PlusSignText>+</PlusSignText>
+              </PhotoBox>
+              <PhotoBox>
+                <PlusSignText>+</PlusSignText>
+              </PhotoBox>
+              <PhotoBox>
+                <PlusSignText>+</PlusSignText>
+              </PhotoBox>
+            </ScrollViewPhoto>
+          </HeaderWrapper>
+          <FirstLabelWrapper>
+            <LabelText style={{ marginTop: 21 }}>PICK YOUR MOOD</LabelText>
+            {/* change to FlatList later on to render form database? */}
+            <ScrollViewPhoto
+              contentContainerStyle={styles.scrollViewPhotoContainer}
+              horizontal
+              style={{ height: 77, marginTop: 22 }}
+            >
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+            </ScrollViewPhoto>
+          </FirstLabelWrapper>
+
           <Padding style={{ flex: 1 }}>
-            <HeaderWrapper>
-              <Text
-                style={styles.headerText}
-                onPress={this.props.openWelcomeScreen}
-              >
-                Cancel
-              </Text>
-              <Text style={styles.headerText} onPress={this.props.openSignIn}>
-                Sign In
-              </Text>
-            </HeaderWrapper>
             <Centered style={{ flex: 2 }}>
               <TextInput
                 autoCorrect={false}
@@ -127,7 +209,8 @@ class SignUpView extends React.Component {
                 title="EMAIL"
                 placeholder="HELLO@FRIENDSHIP.COM"
                 backColor="#faf6f0"
-                onChangeText={email => this.setState({ email })}
+                onChangeText={email =>
+                  this.setState({ email, validationError: '', error: false })}
                 value={this.state.email}
               />
               <TextInput
@@ -137,7 +220,12 @@ class SignUpView extends React.Component {
                 titleColor="#f9f7f6"
                 placeholder="*******"
                 backColor="#faf6f0"
-                onChangeText={password => this.setState({ password })}
+                onChangeText={password =>
+                  this.setState({
+                    password,
+                    validationError: '',
+                    error: false,
+                  })}
                 value={this.state.password}
               />
               {this.renderStatus()}
@@ -157,12 +245,77 @@ class SignUpView extends React.Component {
 }
 
 const HeaderWrapper = styled.View`
+  width: 100%;
+  height: 244;
   margin-top: 20;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  background-color: #e8e9e8;
 `;
 
+const FirstLabelWrapper = styled.View`
+  width: 100%;
+  height: 451;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f7f6;
+`;
+
+const SignUpTitle = styled.Text`
+  width: 320;
+  height: 45;
+  font-family: 'Friendship_version_2';
+  font-size: 40;
+  line-height: 45;
+  text-align: justify;
+  color: #839297;
+  margin-left: 30;
+  margin-right: 10;
+  margin-top: 37;
+`;
+
+const LabelText = styled.Text`
+  font-family: 'NunitoSans-SemiBold';
+  font-size: 13;
+  color: #4a4a4a;
+  text-align: justify;
+  margin-left: 30;
+`;
+
+const PlusSignText = styled.Text`
+  padding: 0;
+  font-size: 50;
+  font-weight: 400;
+  color: #60686d;
+  text-align: center;
+`;
+
+const PhotoBox = styled.View`
+  width: 93;
+  height: 93;
+  background-color: #e8e9e8
+  margin-right: 15;
+  border-width: 1;
+  border-color: #839297;
+  justify-content: center;
+`;
+
+const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
+
+const MoodImageContainer = styled.View`
+  height: 70;
+  width: 70;
+  background-color: lightblue;
+  border-radius: 35;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12;
+`;
+
+const MoodImage = styled.Image`
+  width: 48;
+  height: 48;
+`;
 const styles = {
   headerText: {
     fontFamily: 'NunitoSans-SemiBold',
@@ -178,14 +331,29 @@ const styles = {
     textAlign: 'center',
     color: 'white',
   },
-  textStyle: {
+  statusTextStyle: {
     fontFamily: 'NunitoSans-Regular',
-    width: 205,
-    height: 40,
+    width: '100%',
+    height: 20,
     fontSize: 15,
     textAlign: 'center',
-    color: '#f673f8',
+    color: '#f673f7',
     marginBottom: 10,
+  },
+  textStyle: {
+    fontFamily: 'NunitoSans-Regular',
+    width: '100%',
+    height: 20,
+    fontSize: 15,
+    textAlign: 'center',
+    color: '#f9f7f6',
+    marginBottom: 10,
+  },
+  scrollViewPhotoContainer: {
+    justifyContent: 'space-around',
+    height: 93,
+    paddingRight: 23,
+    paddingLeft: 23,
   },
 };
 

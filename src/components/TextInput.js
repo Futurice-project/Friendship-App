@@ -77,7 +77,6 @@ export default class TextInput extends React.Component {
         {this.props.title}
       </InputTitle>
       <Input
-        autoCorrect={this.props.autoCorrect}
         keyboardType={this.props.keyboardType}
         autoCapitalize={this.props.autoCapitalize}
         returnKeyType={this.props.returnKeyType}

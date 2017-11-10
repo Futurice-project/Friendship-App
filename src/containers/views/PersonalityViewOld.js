@@ -113,4 +113,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PersonalityView);
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalityViewOld);

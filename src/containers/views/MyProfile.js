@@ -14,6 +14,8 @@ import rest from '../../utils/rest';
 import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
 import { SmallHeader, Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
+import Modal from 'react-native-modal';
+import styled from 'styled-components/native';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -30,13 +32,23 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
+const ButtonOption = styled.View`
+  align-items: center;
+  marginTop: 5px;
+`;
+
 class MyProfile extends React.Component {
   state = {
     loaded: false,
     age: '',
     description: '',
     profileTitle: 'Profile Page',
+    isModalVisible: false,
   };
+
+  _showModal = () => this.setState({ isModalVisible: true });
+
+  _hideModal = () => this.setState({ isModalVisible: false });
 
   static navigationOptions = ({ navigation }) => ({
     tabBarIcon: ({ tintColor }) => (
@@ -116,6 +128,14 @@ class MyProfile extends React.Component {
       });
       return (
         <ViewContainerTop style={styles.viewContent}>
+          <TouchableOpacity
+            onPress={this._showModal}
+            style={{ alignSelf: 'flex-end', marginRight: 15, marginTop: 32 }}
+          >
+            <Image
+              source={require('../../../assets//icon_profile_overlay.png')}
+            />
+          </TouchableOpacity>
           <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>
@@ -141,12 +161,52 @@ class MyProfile extends React.Component {
             </Description>
           </View>
           <TabProfile hate={hate} love={love} myprofile={true} />
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            onPress={() => this.props.signOut()}
-          >
-            <Text style={styles.buttonTextStyle}>Sign Out</Text>
-          </TouchableOpacity>
+
+          <Modal isVisible={this.state.isModalVisible}>
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity
+                onPress={this._hideModal}
+                style={{ alignSelf: 'flex-end' }}
+              >
+                <Image
+                  source={require('../../../assets//icon_profile_overlay.png')}
+                />
+              </TouchableOpacity>
+
+              <ButtonOption>
+                <TouchableOpacity
+                  onPress={this._onPressButton}
+                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
+                >
+                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
+                    Edit Profile
+                  </Text>
+                </TouchableOpacity>
+              </ButtonOption>
+
+              <ButtonOption>
+                <TouchableOpacity
+                  onPress={this._onPressButton}
+                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
+                >
+                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
+                    Manage Privacy
+                  </Text>
+                </TouchableOpacity>
+              </ButtonOption>
+
+              <ButtonOption>
+                <TouchableOpacity
+                  onPress={() => this.props.signOut()}
+                  style={[styles.buttonStyle, { backgroundColor: '#2a343c' }]}
+                >
+                  <Text style={[styles.textButtonStyle, { color: '#faf5f0' }]}>
+                    Log Out
+                  </Text>
+                </TouchableOpacity>
+              </ButtonOption>
+            </View>
+          </Modal>
         </ViewContainerTop>
       );
     }

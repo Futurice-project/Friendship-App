@@ -5,8 +5,7 @@ import { SignUpViewWrapper, SignUpWrapper } from '../../components/Layout';
 import { Image, View } from 'react-native';
 import styled from 'styled-components/native';
 import RoundTab from '../../components/RoundTab';
-import data from '../../../assets/misc/municipalities.json';
-import MultiSelect from '../../utils/react-native-multiple-select';
+import { NavigationActions } from 'react-navigation';
 
 const SignUpDivWrapper = styled.View`
   display: flex;
@@ -108,6 +107,12 @@ const mapDispatchToProps = dispatch => ({
   getLocations: credentials => {
     dispatch(rest.actions.locations());
   },
+  openSignUpPersonality: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SignUpPersonality',
+      }),
+    ),
 });
 const mapStateToProps = state => ({
   locations: state.locations,

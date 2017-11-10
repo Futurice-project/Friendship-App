@@ -6,9 +6,8 @@ import image from '../../assets/img/roundTab/roundTab.png';
 const { width, height } = resolveAssetSource(image);
 
 //style for the image
-const ImageContainer = styled.Image.attrs({
-  tintColor: props => props.tint,
-})`
+const ImageContainer = styled.Image`
+  tint-color: ${props => props.tint || '#ff8a65'};
   justify-content: center;
   align-items: center;
 `;
@@ -31,7 +30,7 @@ const ButtonText = styled.Text`
  * @param {string} tint - Changes the color of the image
  * @param {string} title - Sets the text of the button
  * @param {string} titleColor - Set the color of the title
-
+ * @param {boolean} disabled - Set if the button should not be clickable
  * @param {function} onPress - Sets the function of the button
   */
 
@@ -54,7 +53,15 @@ export default class RoundTab extends React.Component {
       resizeMode="contain"
     >
       {/* {this.props.children} */}
-      <TouchableOpacity onPress={this.props.onPress}>
+      <TouchableOpacity
+        style={{
+          width: Dimensions.get('window').width,
+          height: this.state.imageHeight,
+          justifyContent: 'center',
+        }}
+        disabled={this.props.disabled}
+        onPress={this.props.onPress}
+      >
         {this.props.children}
         <ButtonText>{this.props.title}</ButtonText>
       </TouchableOpacity>
