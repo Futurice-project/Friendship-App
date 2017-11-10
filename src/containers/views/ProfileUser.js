@@ -10,7 +10,6 @@ import {
 import { connect } from 'react-redux';
 import { MenuContext } from 'react-native-popup-menu';
 import Modal from 'react-native-modal';
-
 import rest from '../../utils/rest';
 
 import Button from '../../components/Button';
@@ -24,15 +23,8 @@ import {
 import { SmallHeader, Description } from '../../components/Text';
 import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
-
-import DescriptionBubble from '../../components/DescriptionBubble';
 import styled from 'styled-components/native';
 import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
-
-const ButtonOption = styled.View`
-  align-items: center;
-  marginTop: 5px;
-`;
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -46,11 +38,6 @@ const mapDispatchToProps = dispatch => ({
   refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForUser.get({ userId })),
-  reportUser: reportDetails => {
-    dispatch(
-      rest.actions.reports.post({}, { body: JSON.stringify(reportDetails) }),
-    );
-  },
 });
 
 class ProfileUser extends React.Component {
@@ -67,11 +54,6 @@ class ProfileUser extends React.Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.personName,
-    headerRight: (
-      <MenuContext>
-        <PopUpMenuUserProfile />
-      </MenuContext>
-    ),
   });
 
   componentWillReceiveProps(nextProps) {
@@ -118,7 +100,6 @@ class ProfileUser extends React.Component {
     this.setState({ age: ageName });
   };
   // Modal functions
-  showOptions = () => this.setState({ isOptionsVisible: !isOptionsVisible });
   showReport = () => {
     const { isReportVisible } = this.state;
     this.setState({ isReportVisible: !isReportVisible });
@@ -127,7 +108,17 @@ class ProfileUser extends React.Component {
     const userId = this.props.userDetails.data.id;
     const description = this.state.reportDescription;
     const reported_by = this.props.auth.data.decoded.id;
-    this.props.reportUser({ userId, description, reported_by });
+    fetch(`http://localhost:3888/reports`, {
+      method: 'post',
+      headers: {
+        Authorization: this.props.auth.data.token,
+      },
+      body: JSON.stringify({
+        userId: userId,
+        description: description,
+        reported_by: reported_by,
+      }),
+    });
     this.setState({ isReportVisible: false });
   };
 
@@ -221,7 +212,7 @@ class ProfileUser extends React.Component {
                 autoCapitalize="none"
                 titleColor="#2d4359"
                 title={reportTitle}
-                placeholder="DETAILS OF REPORT"
+                placeholder="Description"
                 backColor="#faf6f0"
                 onChangeText={reportDescription =>
                   this.setState({ reportDescription })}
