@@ -219,7 +219,7 @@ class SignUpView extends React.Component {
                   placeholderTextColor="#4a4a4a"
                   placeholder="EMAIL*"
                   onChangeText={email =>
-                  this.setState({ email, validationError: '', error: false })}
+                    this.setState({ email, validationError: '', error: false })}
                   value={this.state.email}
                 />
               </LabelView>
@@ -236,13 +236,17 @@ class SignUpView extends React.Component {
                   placeholderTextColor="#4a4a4a"
                   placeholder="PASSWORD*"
                   onChangeText={password =>
-                  this.setState({ password, validationError: '', error: false, })}
+                    this.setState({
+                      password,
+                      validationError: '',
+                      error: false,
+                    })}
                   value={this.state.password}
                 />
               </LabelView>
             </LabelContainer>
           </FirstLabelWrapper>
-            
+
           <SecondLabelWrapper>
             <LabelContainer>
               <LabelView>
@@ -258,7 +262,7 @@ class SignUpView extends React.Component {
               </View>
             </LabelContainer>
             <LabelContainer>
-              <View style={{width:278}}>
+              <View style={{ width: 278 }}>
                 <LabelTextInput
                   autoCorrect={false}
                   underlineColorAndroid="transparent"
@@ -269,13 +273,21 @@ class SignUpView extends React.Component {
               <View style={{ width: 278 }}>
                 <LabelTextHelper>(visible)</LabelTextHelper>
               </View>
-              <GenderBoxContainer style={{height: 44}}>
-                <GenderBox><LabelText>WOMAN</LabelText></GenderBox>
-                <GenderBox><LabelText>MAN</LabelText></GenderBox>
+              <GenderBoxContainer style={{ height: 44 }}>
+                <GenderBox>
+                  <LabelText>WOMAN</LabelText>
+                </GenderBox>
+                <GenderBox>
+                  <LabelText>MAN</LabelText>
+                </GenderBox>
               </GenderBoxContainer>
-              <GenderBoxContainer style={{height: 44, marginLeft: '38%'}}>
-                <GenderBox><LabelText>HUMAN</LabelText></GenderBox>
-                <GenderBox><LabelText>OTHER</LabelText></GenderBox>
+              <GenderBoxContainer style={{ height: 44, marginLeft: '38%' }}>
+                <GenderBox>
+                  <LabelText>HUMAN</LabelText>
+                </GenderBox>
+                <GenderBox>
+                  <LabelText>OTHER</LabelText>
+                </GenderBox>
               </GenderBoxContainer>
             </LabelContainer>
             <RoundTabContainer>
@@ -319,7 +331,7 @@ const SecondLabelWrapper = styled.View`
   height: 422;
   flex-direction: column;
   background-color: #e8e9e8;
-`
+`;
 
 const SignUpTitle = styled.Text`
   width: 320;
@@ -403,7 +415,7 @@ const GenderBoxContainer = styled.View`
   margin-left: 26%;
   flex-direction: row;
   margin-top: 12;
-`
+`;
 
 const GenderBox = styled.View`
   height: 44;
@@ -413,11 +425,9 @@ const GenderBox = styled.View`
   padding-left: 15;
   margin-right: 11;
   justify-content: center;
-`
+`;
 
-const RoundTabContainer = styled.View`
-  margin-top: auto;
-`
+const RoundTabContainer = styled.View`margin-top: auto;`;
 
 const styles = {
   headerText: {
