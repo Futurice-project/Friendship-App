@@ -21,6 +21,22 @@ UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
 
 import styles, { colorPack } from './styles';
+import styled from 'styled-components/native';
+
+//The title is displayed in bold over the input
+const InputTitle = styled.Text`
+  color: ${props => props.titleColor || '#2d4359'};
+  font-weight: 600;
+  width: 100;
+  height: 25;
+  font-family: 'NunitoSans-Regular';
+  font-size: 13;
+  letter-spacing: 1.5;
+  text-align: left;
+  padding-left: 30px;
+  margin-bottom: 16px;
+  width: 100%;
+`;
 
 export default class MultiSelect extends Component {
   static propTypes = {
@@ -96,7 +112,10 @@ export default class MultiSelect extends Component {
     const { items, uniqueKey } = this.props;
     return find(items, singleItem => singleItem[uniqueKey] === itemKey) || {};
   };
-
+  _returnList = selectedItems => {
+    const array = selectedItems.map(item => ' ' + this._findItem(item).name);
+    return array;
+  };
   getSelectedItemsExt = optionalSelctedItems => (
     <View
       style={{
@@ -117,7 +136,9 @@ export default class MultiSelect extends Component {
       const foundItem = this._findItem(item);
       return get(foundItem, 'name') || selectText;
     }
-    return `${selectText} (${selectedItems.length} selected)`;
+
+    const array = this._returnList(selectedItems);
+    return `(${selectedItems.length} selected) ${array}`;
   };
 
   _displaySelectedItems = optionalSelctedItems => {
@@ -195,7 +216,7 @@ export default class MultiSelect extends Component {
   };
 
   _toggleSelector = () => {
-    //  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    //LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     this.setState({
       selector: !this.state.selector,
     });
@@ -376,9 +397,14 @@ export default class MultiSelect extends Component {
     return (
       <View
         style={{
+          flex: 1,
+          flexDirection: 'column',
           marginBottom: 10,
         }}
       >
+        <InputTitle titleColor={this.props.titleColor}>
+          {this.props.title}
+        </InputTitle>
         {selector ? (
           <View style={styles.selectorView(fixedHeight)}>
             <View style={styles.inputGroup}>

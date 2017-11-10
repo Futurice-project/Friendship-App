@@ -42,6 +42,10 @@ const rest = reduxApi({
     url: `${apiRoot}/personalities`,
     crud: true,
   },
+  locations: {
+    url: `${apiRoot}/locations`,
+    crud: true,
+  },
   users: {
     url: `${apiRoot}/users`,
     crud: true,

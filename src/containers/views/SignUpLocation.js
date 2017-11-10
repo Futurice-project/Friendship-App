@@ -1,15 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import rest from '../../utils/rest';
 import { SignUpViewWrapper, SignUpWrapper } from '../../components/Layout';
 import { Image, View } from 'react-native';
-import TextInput from '../../components/TextInput';
 import styled from 'styled-components/native';
 import RoundTab from '../../components/RoundTab';
 import data from '../../../assets/misc/municipalities.json';
 import MultiSelect from '../../utils/react-native-multiple-select';
-import { WelcomeView } from './Welcome';
-
-const mapDispatchToProps = dispatch => ({});
 
 const SignUpDivWrapper = styled.View`
   display: flex;
@@ -69,17 +66,19 @@ export class SignUpLocation extends React.Component {
           </SignUpWelcomeText>
         </SignUpDivWrapper>
 
-        <SignUpDivWrapper style={{ flex: 8, justifyContent: 'center' }}>
+        <SignUpDivWrapper
+          style={{ flex: 8, justifyContent: 'center', marginTop: 50 }}
+        >
           <MultiSelect
             style={{ borderRadius: 27, backgroundColor: '#faf5f0' }}
             hideTags
-            items={data}
+            items={this.props.locations.data.data}
             uniqueKey="id"
             ref={component => {
               multiSelect = component;
             }}
             hideSubmitButton={true}
-            fixedHeight={true}
+            fixedHeight={false}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={selectedItems}
             selectText="REGION*"
@@ -87,15 +86,11 @@ export class SignUpLocation extends React.Component {
             tagRemoveIconColor="#CCC"
             tagBorderColor="#CCC"
             tagTextColor="#fff"
-            selectedItemTextColor="#CCC"
-            selectedItemIconColor="#CCC"
+            selectedItemTextColor="#ff8a65"
+            selectedItemIconColor="#ff8a65"
             itemTextColor="#000"
             searchInputStyle={{ color: '#000' }}
-          />
-          <TextInput
-            backColor="#faf5f0"
-            title="WHAT'S YOUR NEIGHBORHOOD ?"
-            placeholder="LABEL"
+            title="YOUR LOCATION"
           />
         </SignUpDivWrapper>
         <RoundTab title="NEXT" />
@@ -109,4 +104,13 @@ export class SignUpLocation extends React.Component {
   };
 }
 
-export default connect(undefined, mapDispatchToProps)(SignUpLocation);
+const mapDispatchToProps = dispatch => ({
+  getLocations: credentials => {
+    dispatch(rest.actions.locations());
+  },
+});
+const mapStateToProps = state => ({
+  locations: state.locations,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpLocation);
