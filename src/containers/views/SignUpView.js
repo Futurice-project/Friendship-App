@@ -195,7 +195,7 @@ class SignUpView extends React.Component {
                 />
               </MoodImageContainer>
             </ScrollViewPhoto>
-            <FirstLabelContainer>
+            <LabelContainer>
               <LabelView>
                 <LabelTextInput
                   autoCorrect={false}
@@ -207,72 +207,87 @@ class SignUpView extends React.Component {
               <View style={{ width: 278 }}>
                 <LabelTextHelper>(visible)</LabelTextHelper>
               </View>
-            </FirstLabelContainer>
-            <FirstLabelContainer>
+            </LabelContainer>
+            <LabelContainer>
               <LabelView>
                 <LabelTextInput
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  returnKeyType="next"
                   autoCorrect={false}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="EMAIL*"
+                  onChangeText={email =>
+                  this.setState({ email, validationError: '', error: false })}
+                  value={this.state.email}
                 />
               </LabelView>
               <View style={{ width: 278 }}>
                 <LabelTextHelper>(private)</LabelTextHelper>
               </View>
-            </FirstLabelContainer>
-            <FirstLabelContainer style={{ height: 55 }}>
+            </LabelContainer>
+            <LabelContainer style={{ height: 55 }}>
               <LabelView>
                 <LabelTextInput
+                  returnKeyType="go"
                   secureTextEntry
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="PASSWORD*"
+                  onChangeText={password =>
+                  this.setState({ password, validationError: '', error: false, })}
+                  value={this.state.password}
                 />
               </LabelView>
-            </FirstLabelContainer>
+            </LabelContainer>
           </FirstLabelWrapper>
-
-          <Padding style={{ flex: 1 }}>
-            <Centered style={{ flex: 2 }}>
-              <TextInput
-                autoCorrect={false}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                returnKeyType="next"
-                titleColor="#f9f7f6"
-                title="EMAIL"
-                placeholder="HELLO@FRIENDSHIP.COM"
-                backColor="#faf6f0"
-                onChangeText={email =>
-                  this.setState({ email, validationError: '', error: false })}
-                value={this.state.email}
+            
+          <SecondLabelWrapper>
+            <LabelContainer>
+              <LabelView>
+                <LabelTextInput
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="AGE RANGE*"
+                />
+              </LabelView>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(visible)</LabelTextHelper>
+              </View>
+            </LabelContainer>
+            <LabelContainer>
+              <View style={{width:278}}>
+                <LabelTextInput
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="GENDER*"
+                />
+              </View>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(visible)</LabelTextHelper>
+              </View>
+              <GenderBoxContainer style={{height: 44}}>
+                <GenderBox><LabelText>WOMAN</LabelText></GenderBox>
+                <GenderBox><LabelText>MAN</LabelText></GenderBox>
+              </GenderBoxContainer>
+              <GenderBoxContainer style={{height: 44, marginLeft: '38%'}}>
+                <GenderBox><LabelText>HUMAN</LabelText></GenderBox>
+                <GenderBox><LabelText>OTHER</LabelText></GenderBox>
+              </GenderBoxContainer>
+            </LabelContainer>
+            <RoundTabContainer>
+              <RoundTab
+                titleColor="white"
+                tint="#2d4359"
+                title="Sign Up"
+                style={{ flex: 1 }}
+                onPress={() => this.signUp()}
               />
-              <TextInput
-                returnKeyType="go"
-                secure
-                title="PASSWORD"
-                titleColor="#f9f7f6"
-                placeholder="*******"
-                backColor="#faf6f0"
-                onChangeText={password =>
-                  this.setState({
-                    password,
-                    validationError: '',
-                    error: false,
-                  })}
-                value={this.state.password}
-              />
-              {this.renderStatus()}
-            </Centered>
-          </Padding>
-          <TouchableOpacity onPress={() => this.signUp()}>
-            <RoundTab
-              title="Sign Up"
-              style={{ flex: 1 }}
-              onPress={() => this.signUp()}
-            />
-          </TouchableOpacity>
+            </RoundTabContainer>
+          </SecondLabelWrapper>
         </ViewContainer>
       </KeyboardAvoidingView>
     );
@@ -297,6 +312,14 @@ const FirstLabelWrapper = styled.View`
   background-color: #f9f7f6;
   padding-bottom: 16;
 `;
+
+const SecondLabelWrapper = styled.View`
+  padding-top: 29;
+  width: 100%;
+  height: 422;
+  flex-direction: column;
+  background-color: #e8e9e8;
+`
 
 const SignUpTitle = styled.Text`
   width: 320;
@@ -367,12 +390,34 @@ const MoodImage = styled.Image`
   height: 48;
 `;
 
-const FirstLabelContainer = styled.View`
+const LabelContainer = styled.View`
   height: 77;
   align-items: center;
   width: 100%;
   margin-top: 10;
 `;
+
+const GenderBoxContainer = styled.View`
+  height: 44;
+  width: 100%;
+  margin-left: 26%;
+  flex-direction: row;
+  margin-top: 12;
+`
+
+const GenderBox = styled.View`
+  height: 44;
+  background-color: #ffffff;
+  width: 36%;
+  border-radius: 27;
+  padding-left: 15;
+  margin-right: 11;
+  justify-content: center;
+`
+
+const RoundTabContainer = styled.View`
+  margin-top: auto;
+`
 
 const styles = {
   headerText: {
