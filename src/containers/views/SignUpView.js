@@ -12,6 +12,7 @@ import {
   Text,
   KeyboardAvoidingView,
   View,
+  FlatList,
 } from 'react-native';
 
 const mapStateToProps = state => ({
@@ -140,6 +141,61 @@ class SignUpView extends React.Component {
           </HeaderWrapper>
           <FirstLabelWrapper>
             <LabelText style={{ marginTop: 21 }}>PICK YOUR MOOD</LabelText>
+            {/* change to FlatList later on to render form database? */}
+            <ScrollViewPhoto
+              contentContainerStyle={styles.scrollViewPhotoContainer}
+              horizontal
+              style={{ height: 77, marginTop: 22 }}
+            >
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+              <MoodImageContainer>
+                <MoodImage
+                  source={{
+                    uri:
+                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+                  }}
+                />
+              </MoodImageContainer>
+            </ScrollViewPhoto>
           </FirstLabelWrapper>
 
           <Padding style={{ flex: 1 }}>
@@ -187,7 +243,6 @@ class SignUpView extends React.Component {
     );
   }
 }
-Text;
 
 const HeaderWrapper = styled.View`
   width: 100%;
@@ -247,6 +302,20 @@ const PhotoBox = styled.View`
 
 const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
 
+const MoodImageContainer = styled.View`
+  height: 70;
+  width: 70;
+  background-color: lightblue;
+  border-radius: 35;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12;
+`;
+
+const MoodImage = styled.Image`
+  width: 48;
+  height: 48;
+`;
 const styles = {
   headerText: {
     fontFamily: 'NunitoSans-SemiBold',
