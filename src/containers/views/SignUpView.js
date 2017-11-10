@@ -20,11 +20,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // signUp: credentials => {
-  //   dispatch(
-  //     rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
-  //   );
-  // },
   signUp: credentials => {
     dispatch(rest.actions.register({}, { body: JSON.stringify(credentials) }))
       .then(() =>
@@ -203,24 +198,34 @@ class SignUpView extends React.Component {
             <FirstLabelContainer>
               <LabelView>
                 <LabelTextInput
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="(NICK)NAME*"
                 />
               </LabelView>
-              <LabelTextHelper>(visible)</LabelTextHelper>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(visible)</LabelTextHelper>
+              </View>
             </FirstLabelContainer>
             <FirstLabelContainer>
               <LabelView>
                 <LabelTextInput
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="EMAIL*"
                 />
               </LabelView>
-              <LabelTextHelper>(private)</LabelTextHelper>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(private)</LabelTextHelper>
+              </View>
             </FirstLabelContainer>
             <FirstLabelContainer style={{ height: 55 }}>
               <LabelView>
                 <LabelTextInput
+                  secureTextEntry
+                  underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="PASSWORD*"
                 />
@@ -276,7 +281,7 @@ class SignUpView extends React.Component {
 
 const HeaderWrapper = styled.View`
   width: 100%;
-  height: 244;
+  height: 260;
   margin-top: 20;
   display: flex;
   flex-direction: column;
@@ -310,7 +315,6 @@ const LabelView = styled.View`
   width: 278;
   border-bottom-width: 2;
   border-bottom-color: #979797;
-  margin-left: 30;
 `;
 
 const LabelText = styled.Text`
@@ -325,7 +329,6 @@ const LabelTextInput = styled.TextInput``;
 const LabelTextHelper = styled.Text`
   font-family: 'NunitoSans-SemiBold';
   font-size: 14;
-  margin-left: 30;
   color: #9b9b9b;
 `;
 
@@ -366,6 +369,7 @@ const MoodImage = styled.Image`
 
 const FirstLabelContainer = styled.View`
   height: 77;
+  align-items: center;
   width: 100%;
   margin-top: 10;
 `;
