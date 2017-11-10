@@ -6,6 +6,7 @@ import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
 import Personality from '../../components/Personality';
+import ProgressBar from '../../components/ProgressBar';
 
 import {
   TouchableOpacity,
@@ -161,14 +162,8 @@ class SignUpPersonality extends React.Component {
     return (
       <View>
         <ViewContainer>
+          <ProgressBar color="#3a4853" steps="5" />
           <Padding style={{ flex: 1 }}>
-            <Header>
-              <ProgressBar />
-              <ProgressBar />
-              <ProgressBar />
-              <ProgressBar />
-              <ProgressBar />
-            </Header>
             <Title>PERSONALITY</Title>
             <SubTitle>
               <Text
@@ -221,11 +216,11 @@ const Header = styled.View`
   height: 50;
 `;
 
-const ProgressBar = styled.View`
-  background-color: #3a4853;
-  width: 19%;
-  height: 10;
-`;
+// const ProgressBar = styled.View`
+//   background-color: #3a4853;
+//   width: 19%;
+//   height: 10;
+// `;
 
 const Error = styled.Text`
   font-size: 11;
@@ -234,6 +229,7 @@ const Error = styled.Text`
 `;
 
 const Title = styled.Text`
+  margin-top: 50;
   font-size: 40;
   fontFamily: 'Friendship_version_2';
   color: #faf5f0;
