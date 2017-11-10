@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
+import * as personalities from '../../state/personalities';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
@@ -20,9 +21,22 @@ const mapStateToProps = state => ({
   createUserPersonalities: state.createUserPersonalities,
   auth: state.auth,
   personalities: state.personalities,
+  navigatorState: state.navigatorState,
+  personalityState: state.personalityState,
 });
 
 const mapDispatchToProps = dispatch => ({
+  incrementView: (length, endIndex) => {
+    dispatch(personalities.increment(length, endIndex));
+  },
+  changeView: index => {
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SignUpPersonality',
+        params: { index: 1 },
+      }),
+    );
+  },
   getPersonalities: credentials => {
     dispatch(rest.actions.personalities()).catch(err => console.log(err));
   },
@@ -52,9 +66,6 @@ class SignUpPersonality extends React.Component {
   state = {
     personalityId: '',
     level: '',
-    chosenPersonalities: [],
-    startIndex: 0,
-    endIndex: 2,
   };
 
   /**
@@ -76,7 +87,7 @@ class SignUpPersonality extends React.Component {
     }
 
     // Remove duplicates from array
-    var personalities = this.state.chosenPersonalities;
+    var personalities = this.props.personalityState.chosenPersonalities;
     for (var i = 0; i < personalities.length; i++) {
       if (
         (searchBackwards && personalities[i].personalityId == personalityId) ||
@@ -102,21 +113,23 @@ class SignUpPersonality extends React.Component {
       personalityId,
     );
     personalities.push({ personalityId: personalityId, level: 5 });
-    if (this.props.personalities.data.data.length == this.state.endIndex) {
+    if (
+      this.props.personalities.data.data.length ==
+      this.props.personalityState.endIndex
+    ) {
       this.props.addUserPersonalities({
-        personalities: this.state.chosenPersonalities,
+        personalities: this.props.chosenPersonalities,
       });
     } else {
-      this.setState({
-        newPersonalityChosen: false,
-        startIndex: this.state.startIndex + 2,
-        endIndex: this.state.endIndex + 2,
-      });
+      this.props.incrementView(
+        this.props.personalities.data.data.length,
+        this.props.personalityState.endIndex,
+      );
     }
   };
 
-  componentDidMount() {
-    console.log('Testing token here!!!', this.props.auth);
+  componentDidUpdate() {
+    // console.log('Testing token here!!!', this.props.auth);
     this.props.getPersonalities();
   }
 
@@ -126,7 +139,10 @@ class SignUpPersonality extends React.Component {
     }
 
     var personalities = this.props.personalities.data.data
-      .slice(this.state.startIndex, this.state.endIndex)
+      .slice(
+        this.props.personalityState.startIndex,
+        this.props.personalityState.endIndex,
+      )
       .map(personality => {
         return (
           <Personality
@@ -162,8 +178,7 @@ class SignUpPersonality extends React.Component {
                   color: '#efebe9',
                 }}
               >
-                {this.state.endIndex / 2}/{this.props.personalities.data.data
-                  .length / 2}{' '}
+                {this.props.personalityState.endIndex / 2}/{this.props.personalities.data.data.length / 2}{' '}
               </Text>
               <Text
                 style={{
