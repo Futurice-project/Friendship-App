@@ -19,6 +19,8 @@ import LookingFor from './../views/LookingFor';
 import Matching from './../views/Matching';
 import SignUpLocation from '../views/SignUpLocation';
 import SignUpPersonality from '../views/SignUpPersonality';
+import ChatView from './../views/ChatView';
+import ChatRequest from './../views/ChatRequest';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -79,6 +81,13 @@ export default StackNavigator(
     },
     ProfileUser: {
       screen: ProfileUser,
+      navigationOptions: { header: () => null },
+    },
+    ChatView: {
+      screen: ChatView,
+    },
+    ChatRequest: {
+      screen: ChatRequest,
       navigationOptions: { header: () => null },
     },
     // ## End StackNavigator Views ##
