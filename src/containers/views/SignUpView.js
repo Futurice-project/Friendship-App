@@ -9,7 +9,7 @@ import { NavigationActions } from 'react-navigation';
 
 import {
   TouchableOpacity,
-  // Text,
+  Text,
   KeyboardAvoidingView,
   View,
 } from 'react-native';
@@ -116,8 +116,32 @@ class SignUpView extends React.Component {
         <ViewContainer>
           <HeaderWrapper>
             <SignUpTitle>YOUR PROFILE</SignUpTitle>
-            <Text>ADD PHOTOS</Text>
+            <LabelText style={{ marginTop: 24 }}>ADD PHOTO(S)</LabelText>
+            <ScrollViewPhoto
+              contentContainerStyle={styles.scrollViewPhotoContainer}
+              horizontal
+            >
+              <PhotoBox style={{ backgroundColor: '#949795' }}>
+                <PlusSignText>+</PlusSignText>
+              </PhotoBox>
+              <PhotoBox>
+                <PlusSignText>+</PlusSignText>
+              </PhotoBox>
+              <PhotoBox>
+                <PlusSignText>+</PlusSignText>
+              </PhotoBox>
+              <PhotoBox>
+                <PlusSignText>+</PlusSignText>
+              </PhotoBox>
+              <PhotoBox>
+                <PlusSignText>+</PlusSignText>
+              </PhotoBox>
+            </ScrollViewPhoto>
           </HeaderWrapper>
+          <FirstLabelWrapper>
+            <LabelText style={{ marginTop: 21 }}>PICK YOUR MOOD</LabelText>
+          </FirstLabelWrapper>
+
           <Padding style={{ flex: 1 }}>
             <Centered style={{ flex: 2 }}>
               <TextInput
@@ -163,14 +187,23 @@ class SignUpView extends React.Component {
     );
   }
 }
+Text;
 
 const HeaderWrapper = styled.View`
-  width: 360;
+  width: 100%;
   height: 244;
   margin-top: 20;
   display: flex;
   flex-direction: column;
   background-color: #e8e9e8;
+`;
+
+const FirstLabelWrapper = styled.View`
+  width: 100%;
+  height: 451;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f7f6;
 `;
 
 const SignUpTitle = styled.Text`
@@ -186,14 +219,33 @@ const SignUpTitle = styled.Text`
   margin-top: 37;
 `;
 
-const Text = styled.Text`
+const LabelText = styled.Text`
   font-family: 'NunitoSans-SemiBold';
-  font-size: 18;
+  font-size: 13;
   color: #4a4a4a;
   text-align: justify;
   margin-left: 30;
-  margin-top: 24;
 `;
+
+const PlusSignText = styled.Text`
+  padding: 0;
+  font-size: 50;
+  font-weight: 400;
+  color: #60686d;
+  text-align: center;
+`;
+
+const PhotoBox = styled.View`
+  width: 93;
+  height: 93;
+  background-color: #e8e9e8
+  margin-right: 15;
+  border-width: 1;
+  border-color: #839297;
+  justify-content: center;
+`;
+
+const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
 
 const styles = {
   headerText: {
@@ -227,6 +279,12 @@ const styles = {
     textAlign: 'center',
     color: '#f9f7f6',
     marginBottom: 10,
+  },
+  scrollViewPhotoContainer: {
+    justifyContent: 'space-around',
+    height: 93,
+    paddingRight: 23,
+    paddingLeft: 23,
   },
 };
 
