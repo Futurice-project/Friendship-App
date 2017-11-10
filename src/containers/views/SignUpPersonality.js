@@ -119,7 +119,7 @@ class SignUpPersonality extends React.Component {
       this.props.personalityState.endIndex
     ) {
       this.props.addUserPersonalities({
-        personalities: this.props.chosenPersonalities,
+        personalities: this.props.personalityState.chosenPersonalities,
       });
     } else {
       this.props.incrementView(
