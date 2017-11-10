@@ -46,6 +46,10 @@ const rest = reduxApi({
     url: `${apiRoot}/users`,
     crud: true,
   },
+  usersByPage: {
+    url: `${apiRoot}/users/page/:number`,
+    crud: true,
+  },
   usersSearch: {
     url: `${apiRoot}/users/search/:username`,
     transformer: transformers.array,
@@ -73,8 +77,44 @@ const rest = reduxApi({
     url: `${apiRoot}/reports`,
     crud: true,
   },
+  chatRooms: {
+    url: `${apiRoot}/chatrooms`,
+    crud: true,
+  },
+  createChatRoom: {
+    url: `${apiRoot}/chatrooms`,
+    crud: true,
+    options: {
+      method: 'POST',
+    },
+  },
+  chatRoomsWithUserId: {
+    url: `${apiRoot}/chatrooms/userid/:id`,
+    crud: true,
+  },
+  chatRoomMessages: {
+    url: `${apiRoot}/chatrooms/:id`,
+    crud: true,
+  },
+  sendMessage: {
+    url: `${apiRoot}/chatrooms/:id`,
+    crud: true,
+    options: {
+      method: 'POST',
+    },
+    postfetch: [
+      function({ dispatch, actions, data }) {
+        const id = data.chatroom_id;
+        dispatch(actions.chatRoomMessages({ id }));
+      },
+    ],
+  },
   createUserPersonality: {
     url: `${apiRoot}/user_personality`,
+    options: { method: 'POST' },
+  },
+  createUserPersonalities: {
+    url: `${apiRoot}/user_personalities`,
     options: { method: 'POST' },
   },
   register: {

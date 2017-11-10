@@ -28,8 +28,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) }))
       .then(() =>
         dispatch(
-          NavigationActions.navigate({
-            routeName: 'SignOut',
+          NavigationActions.reset({
+            index: 0, // active route = 0 (top of the stack)
+            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
           }),
         ),
       )
