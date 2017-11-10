@@ -8,7 +8,6 @@ import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleView';
-import SignUpLocation from '../views/SignUpLocation';
 import SignInView from '../views/SignInView';
 import SignUpView from '../views/SignUpView';
 import SignOutView from '../views/SignOutView';
