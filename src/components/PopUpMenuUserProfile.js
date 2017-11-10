@@ -3,6 +3,7 @@ import { Text, View, TouchableHighlight } from 'react-native';
 import { Icon } from 'react-native-elements';
 import {
   Menu,
+  MenuContext,
   MenuOptions,
   MenuOption,
   MenuTrigger,
@@ -13,37 +14,49 @@ import Modal from 'react-native-modal';
 import { PopUpMenuCard, TouchableHighlightButton } from './Layout';
 
 class PopUpMenuUserProfile extends React.Component {
+  closeMenu() {
+    console.log(this);
+    this.menu.close();
+  }
+  onRef = r => {
+    this.menu = r;
+  };
   render() {
     return (
       <PopUpMenuCard>
-        <Menu renderer={renderers.SlideInMenu}>
-          <MenuTrigger customStyles={styles.triggerStyles}>
-            <Icon name="more-vert" />
-          </MenuTrigger>
-          <MenuOptions customStyles={styles.optionsStyles}>
-            <MenuOption
-              onSelect={() => alert('navigate to send message')}
-              text="Follow Profile"
-            />
-            <MenuOption
-              onSelect={() => alert('navigate to send message')}
-              text="Chat"
-            />
-            <MenuOption
-              onSelect={() => alert('navigate to send message')}
-              text="Invite to Group"
-            />
-            <MenuOption
-              onSelect={() => alert('navigate to send message')}
-              text="Invite to Happening"
-            />
-            <MenuOption
-              onSelect={() => alert('navigate to send message')}
-              text="Block"
-            />
-            <MenuOption onSelect={this.props.isReportVisible} text="Report" />
-          </MenuOptions>
-        </Menu>
+        <MenuContext>
+          <Menu
+            ref={this.onRef}
+            renderer={renderers.SlideInMenu}
+            onBackdropPress={() => this.closeMenu()}
+          >
+            <MenuTrigger customStyles={styles.triggerStyles}>
+              <Icon name="more-vert" />
+            </MenuTrigger>
+            <MenuOptions customStyles={styles.optionsStyles}>
+              <MenuOption
+                value={1}
+                onSelect={() => alert('navigate to send message')}
+                text="Follow Profile"
+              />
+              <MenuOption
+                value={2}
+                onSelect={() => alert('navigate to send message')}
+                text="Chat"
+              />
+              <MenuOption
+                onSelect={() => alert('navigate to send message')}
+                text="Invite to Group"
+              />
+              <MenuOption
+                onSelect={() => alert('navigate to send message')}
+                text="Invite to Happening"
+              />
+              <MenuOption text="Close" />
+              <MenuOption onSelect={this.props.isReportVisible} text="Report" />
+            </MenuOptions>
+          </Menu>
+        </MenuContext>
       </PopUpMenuCard>
     );
   }
@@ -68,16 +81,18 @@ const styles = {
   },
   optionsStyles: {
     optionsContainer: {
-      backgroundColor: '#e8e9e8',
-      marginTop: 85,
-      width: 120,
+      backgroundColor: '#2a343c',
+      marginLeft: -185,
+      marginTop: 270,
+      width: 220,
       borderWidth: 0,
     },
     optionText: {
-      color: '#60686d',
+      color: '#ffffff',
+      fontSize: 18,
     },
     optionWrapper: {
-      padding: 10,
+      padding: 11,
     },
   },
   touchableHighlightProps: {

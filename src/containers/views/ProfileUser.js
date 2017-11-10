@@ -19,10 +19,13 @@ import {
   ViewContainerTop,
   Centered,
   FlexRow,
+  HeaderButton,
 } from '../../components/Layout';
 import { SmallHeader, Description } from '../../components/Text';
 import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
+
+import DescriptionBubble from '../../components/DescriptionBubble';
 import styled from 'styled-components/native';
 import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
 
@@ -57,7 +60,7 @@ class ProfileUser extends React.Component {
     description: '',
     isOptionsVisible: false,
     isReportVisible: false,
-    reportDescription: 'Description',
+    reportDescription: '',
     //  loveCommon: 0,
     hateCommon: 0,
   };
@@ -167,9 +170,6 @@ class ProfileUser extends React.Component {
       let reportTitle = 'Report ' + this.props.userDetails.data.username;
       return (
         <ViewContainerTop style={styles.viewContent}>
-          <MenuContext>
-            <PopUpMenuUserProfile isReportVisible={this.showReport} />
-          </MenuContext>
           <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>
@@ -194,8 +194,7 @@ class ProfileUser extends React.Component {
             <View
               style={{
                 height: 80,
-                borderWidth: 1,
-                borderColor: '#fff',
+                backgroundColor: '#fff',
                 marginBottom: 10,
               }}
             >
@@ -204,48 +203,53 @@ class ProfileUser extends React.Component {
           </View>
           <TabProfile hate={hate} love={love} />
 
-          <Modal visible={this.state.isReportVisible} backdropOpacity={1}>
-            <ViewContainer style={{ flex: 1 }}>
-              <View
-                style={{
-                  height: 200,
-                  backgroundColor: '#eee',
-                  borderRadius: 5,
-                  paddingVertical: 10,
-                }}
-              >
-                <TextInput
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  titleColor="#2d4359"
-                  title={reportTitle}
-                  placeholder="DETAILS OF REPORT"
-                  backColor="#faf6f0"
-                  onChangeText={reportDescription =>
-                    this.setState({ reportDescription })}
-                  value={this.state.reportDescription}
+          <Modal
+            visible={this.state.isReportVisible}
+            backdropColor="black"
+            backdropOpacity={1}
+          >
+            <View
+              style={{
+                height: 200,
+                backgroundColor: '#eee',
+                borderRadius: 10,
+                paddingVertical: 10,
+              }}
+            >
+              <TextInput
+                autoCorrect={false}
+                autoCapitalize="none"
+                titleColor="#2d4359"
+                title={reportTitle}
+                placeholder="DETAILS OF REPORT"
+                backColor="#faf6f0"
+                onChangeText={reportDescription =>
+                  this.setState({ reportDescription })}
+                value={this.state.reportDescription}
+              />
+              <View style={{ flexDirection: 'row' }}>
+                <Button
+                  title="Cancel"
+                  primary
+                  textColor="green"
+                  size="half"
+                  color="light"
+                  onPress={this.showReport}
                 />
-                <View style={{ flexDirection: 'row' }}>
-                  <Button
-                    title="Cancel"
-                    primary
-                    textColor="green"
-                    size="half"
-                    color="light"
-                    onPress={this.showReport}
-                  />
-                  <Button
-                    title="Report"
-                    border
-                    textColor="black"
-                    size="half"
-                    color="dark"
-                    onPress={this.sendReport}
-                  />
-                </View>
+                <Button
+                  title="Report"
+                  border
+                  textColor="black"
+                  size="half"
+                  color="dark"
+                  onPress={this.sendReport}
+                />
               </View>
-            </ViewContainer>
+            </View>
           </Modal>
+          <HeaderButton>
+            <PopUpMenuUserProfile isReportVisible={this.showReport} />
+          </HeaderButton>
         </ViewContainerTop>
       );
     }

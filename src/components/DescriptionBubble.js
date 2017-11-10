@@ -12,13 +12,16 @@ export const Bubble = styled.View`
   border-radius: 33;
 `;
 export const Title = styled.Text`
+  color: ${props => props.titleColor || '#2d4359'};
+  font-weight: 600;
+  width: 100;
+  height: 25;
   font-family: 'NunitoSans-Regular';
-  font-size: 13;
-  letter-spacing: 1.19;
+  font-size: 16;
+  letter-spacing: 1.5;
   text-align: left;
-  color: #60686d;
-  padding-left: 20;
-  padding-top: 20;
+  padding-left: 20px;
+  width: 100%;
 `;
 
 const Input = styled.TextInput.attrs({
