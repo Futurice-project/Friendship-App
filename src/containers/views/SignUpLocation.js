@@ -1,21 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import rest from '../../utils/rest';
 import { SignUpViewWrapper, SignUpWrapper } from '../../components/Layout';
-import DropDown from '../../components/DropDown';
 import { Image, View } from 'react-native';
-import TextInput from '../../components/TextInput';
 import styled from 'styled-components/native';
 import RoundTab from '../../components/RoundTab';
 import { NavigationActions } from 'react-navigation';
+import MultiSelect from '../../utils/react-native-multiple-select/lib/react-native-multi-select';
 
-const mapDispatchToProps = dispatch => ({
-  openSignUpPersonality: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SignUpPersonality',
-      }),
-    ),
-});
 const SignUpDivWrapper = styled.View`
   display: flex;
   background-color: #efebe9;
@@ -42,40 +34,79 @@ const SignUpWelcomeText = styled.Text`
   line-height: 25;
   color: #2d4359;
   text-align: justify;
+  padding-top: 15;
 `;
 
 export class SignUpLocation extends React.Component {
-  render = () => (
-    <SignUpWrapper>
-      <SignUpDivWrapper
-        style={{
-          paddingTop: 60,
-          paddingLeft: 30,
-          paddingRight: 30,
-          backgroundColor: 'transparent',
-          flex: 2,
-        }}
-      >
-        <SignUpTitle>HEY!</SignUpTitle>
-        <SignUpWelcomeText>
-          With this information, we will find the people closest to you.
-        </SignUpWelcomeText>
-      </SignUpDivWrapper>
+  componentWillMount() {
+    this.props.getLocations();
+  }
 
-      <SignUpDivWrapper style={{ flex: 8, justifyContent: 'center' }}>
-        <DropDown title="YOUR LOCATION" />
-        <TextInput
-          backColor="#faf5f0"
-          title="WHAT'S YOUR NEIGHBORHOOD ?"
-          placeholder="LABEL"
+  state = {
+    selectedItems: [],
+  };
+
+  onSelectedItemsChange = selectedItems => {
+    this.setState({ selectedItems });
+  };
+
+  render() {
+    const { selectedItems } = this.state;
+
+    return (
+      <SignUpWrapper>
+        <SignUpDivWrapper
+          style={{
+            paddingTop: 60,
+            paddingLeft: 30,
+            paddingRight: 30,
+            backgroundColor: 'transparent',
+            flex: 2,
+          }}
+        >
+          <SignUpTitle>HEY!</SignUpTitle>
+          <SignUpWelcomeText>
+            With this information, we will find the people closest to you.
+          </SignUpWelcomeText>
+        </SignUpDivWrapper>
+
+        <SignUpDivWrapper
+          style={{ flex: 8, justifyContent: 'center', marginTop: 50 }}
+        >
+          <MultiSelect
+            style={{ borderRadius: 27, backgroundColor: '#faf5f0' }}
+            hideTags
+            items={this.props.locations.data.data}
+            uniqueKey="id"
+            ref={component => {
+              multiSelect = component;
+            }}
+            hideSubmitButton={true}
+            fixedHeight={true}
+            onSelectedItemsChange={this.onSelectedItemsChange}
+            selectedItems={selectedItems}
+            selectText="REGION*"
+            searchInputPlaceholderText="Search municipalities..."
+            tagRemoveIconColor="#CCC"
+            tagBorderColor="#CCC"
+            tagTextColor="#fff"
+            selectedItemTextColor="#ff8a65"
+            selectedItemIconColor="#ff8a65"
+            itemTextColor="#000"
+            searchInputStyle={{ color: '#000' }}
+            title="YOUR LOCATION"
+          />
+        </SignUpDivWrapper>
+        <RoundTab
+          title="NEXT"
+          onPress={() => {
+            this.props.postUserLocations(this.state.selectedItems);
+            this.props.openSignUpPersonality();
+          }}
         />
-      </SignUpDivWrapper>
-      <RoundTab
-        title="Next"
-        onPress={() => this.props.openSignUpPersonality()}
-      />
-    </SignUpWrapper>
-  );
+      </SignUpWrapper>
+    );
+  }
 
   static navigationOptions = {
     title: 'SignUpLocation',
@@ -83,4 +114,33 @@ export class SignUpLocation extends React.Component {
   };
 }
 
-export default connect(undefined, mapDispatchToProps)(SignUpLocation);
+const mapDispatchToProps = dispatch => ({
+  getLocations: () => {
+    dispatch(rest.actions.locations());
+  },
+  postUserLocations: locations => {
+    newLocations = locations.map(location => {
+      return { locationId: location };
+    });
+    const locationsObject = {
+      locations: newLocations,
+    };
+    dispatch(
+      rest.actions.createUserLocations(
+        {},
+        { body: JSON.stringify(locationsObject) },
+      ),
+    );
+  },
+  openSignUpPersonality: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SignUpPersonality',
+      }),
+    ),
+});
+const mapStateToProps = state => ({
+  locations: state.locations,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpLocation);

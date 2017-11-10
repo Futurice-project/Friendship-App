@@ -17,6 +17,7 @@ import SearchList from './../views/Search';
 import EmojiPickerView from './../views/EmojiPicker';
 import LookingFor from './../views/LookingFor';
 import Matching from './../views/Matching';
+import SignUpLocation from '../views/SignUpLocation';
 import SignUpPersonality from '../views/SignUpPersonality';
 import ChatView from './../views/ChatView';
 import ChatRequest from './../views/ChatRequest';
@@ -34,6 +35,7 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
+    SignUpLocation: { screen: SignUpLocation },
     Welcome: { screen: WelcomeView },
     LookingFor: { screen: LookingFor },
     Matching: { screen: Matching },

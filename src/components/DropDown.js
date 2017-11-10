@@ -5,9 +5,28 @@ import { Item } from 'react-native/Libraries/Components/Picker/Picker';
 
 const DropDownWrapper = styled.View`
   background-color: #faf6f0;
-  height: 44;
+  height: 40;
   width: 300;
   border-radius: 27;
+`;
+
+//Contains that hold the input and the label
+const Container = styled.View`
+  align-self: center;
+  marginBottom: 15px;
+`;
+
+//The title is displayed in bold over the input
+const InputTitle = styled.Text`
+  color: ${props => props.titleColor || '#2d4359'};
+  font-weight: 600;
+  width: auto;
+  height: 25;
+  font-family: 'NunitoSans-Regular';
+  font-size: 13;
+  letter-spacing: 1.5;
+  text-align: left;
+  paddingLeft: 20px;
 `;
 
 export default class DropDown extends React.Component {
@@ -34,19 +53,24 @@ export default class DropDown extends React.Component {
 
   render() {
     return (
-      <DropDownWrapper>
-        <Picker
-          mode="dropdown"
-          selectedValue={this.state.selected1}
-          onValueChange={this.onValueChange.bind(this)}
-          prompt="Test"
-        >
-          <Item label="Cats" value="key0" />
-          <Item label="Dogs" value="key1" />
-          <Item label="Birds" value="key2" />
-          <Item label="Elephants" value="key3" />
-        </Picker>
-      </DropDownWrapper>
+      <Container>
+        <InputTitle titleColor={this.props.titleColor}>
+          {this.props.title}
+        </InputTitle>
+        <DropDownWrapper>
+          <Picker
+            mode="dropdown"
+            selectedValue={this.state.selected1}
+            onValueChange={this.onValueChange.bind(this)}
+            prompt="Test"
+          >
+            <Item label="Cats" value="key0" />
+            <Item label="Dogs" value="key1" />
+            <Item label="Birds" value="key2" />
+            <Item label="Elephants" value="key3" />
+          </Picker>
+        </DropDownWrapper>
+      </Container>
     );
   }
 }
