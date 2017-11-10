@@ -23,11 +23,25 @@ class PopUpMenuUserProfile extends React.Component {
           <MenuOptions customStyles={styles.optionsStyles}>
             <MenuOption
               onSelect={() => alert('navigate to send message')}
-              text="Send message"
+              text="Follow Profile"
             />
-            <MenuOption onSelect={this.props.isReportVisible}>
-              <Text>Report</Text>
-            </MenuOption>
+            <MenuOption
+              onSelect={() => alert('navigate to send message')}
+              text="Chat"
+            />
+            <MenuOption
+              onSelect={() => alert('navigate to send message')}
+              text="Invite to Group"
+            />
+            <MenuOption
+              onSelect={() => alert('navigate to send message')}
+              text="Invite to Happening"
+            />
+            <MenuOption
+              onSelect={() => alert('navigate to send message')}
+              text="Block"
+            />
+            <MenuOption onSelect={this.props.isReportVisible} text="Report" />
           </MenuOptions>
         </Menu>
       </PopUpMenuCard>
@@ -55,7 +69,7 @@ const styles = {
   optionsStyles: {
     optionsContainer: {
       backgroundColor: '#e8e9e8',
-      marginTop: 75,
+      marginTop: 85,
       width: 120,
       borderWidth: 0,
     },

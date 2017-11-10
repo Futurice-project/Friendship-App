@@ -170,15 +170,6 @@ class ProfileUser extends React.Component {
           <MenuContext>
             <PopUpMenuUserProfile isReportVisible={this.showReport} />
           </MenuContext>
-
-          <TouchableOpacity
-            onPress={this.showOptions}
-            style={{ alignSelf: 'flex-end', marginRight: 15, marginTop: 32 }}
-          >
-            <Image
-              source={require('../../../assets//icon_profile_overlay.png')}
-            />
-          </TouchableOpacity>
           <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>
