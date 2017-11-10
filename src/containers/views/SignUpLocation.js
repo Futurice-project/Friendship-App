@@ -6,6 +6,7 @@ import { Image, View } from 'react-native';
 import styled from 'styled-components/native';
 import RoundTab from '../../components/RoundTab';
 import { NavigationActions } from 'react-navigation';
+import MultiSelect from '../../utils/react-native-multiple-select/lib/react-native-multi-select';
 
 const SignUpDivWrapper = styled.View`
   display: flex;
@@ -37,6 +38,10 @@ const SignUpWelcomeText = styled.Text`
 `;
 
 export class SignUpLocation extends React.Component {
+  componentWillMount() {
+    this.props.getLocations();
+  }
+
   state = {
     selectedItems: [],
   };
@@ -77,7 +82,7 @@ export class SignUpLocation extends React.Component {
               multiSelect = component;
             }}
             hideSubmitButton={true}
-            fixedHeight={false}
+            fixedHeight={true}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={selectedItems}
             selectText="REGION*"
@@ -92,7 +97,13 @@ export class SignUpLocation extends React.Component {
             title="YOUR LOCATION"
           />
         </SignUpDivWrapper>
-        <RoundTab title="NEXT" />
+        <RoundTab
+          title="NEXT"
+          onPress={() => {
+            this.props.postUserLocations(this.state.selectedItems);
+            this.props.openSignUpPersonality();
+          }}
+        />
       </SignUpWrapper>
     );
   }
@@ -104,8 +115,22 @@ export class SignUpLocation extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getLocations: credentials => {
+  getLocations: () => {
     dispatch(rest.actions.locations());
+  },
+  postUserLocations: locations => {
+    newLocations = locations.map(location => {
+      return { locationId: location };
+    });
+    const locationsObject = {
+      locations: newLocations,
+    };
+    dispatch(
+      rest.actions.createUserLocations(
+        {},
+        { body: JSON.stringify(locationsObject) },
+      ),
+    );
   },
   openSignUpPersonality: () =>
     dispatch(
