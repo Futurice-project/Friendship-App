@@ -20,11 +20,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // signUp: credentials => {
-  //   dispatch(
-  //     rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
-  //   );
-  // },
   signUp: credentials => {
     dispatch(rest.actions.register({}, { body: JSON.stringify(credentials) }))
       .then(() =>
@@ -117,7 +112,9 @@ class SignUpView extends React.Component {
         <ViewContainer>
           <HeaderWrapper>
             <SignUpTitle>YOUR PROFILE</SignUpTitle>
-            <LabelText style={{ marginTop: 24 }}>ADD PHOTO(S)</LabelText>
+            <LabelText style={{ marginTop: 24, marginLeft: 30 }}>
+              ADD PHOTO(S)
+            </LabelText>
             <ScrollViewPhoto
               contentContainerStyle={styles.scrollViewPhotoContainer}
               horizontal
@@ -140,10 +137,12 @@ class SignUpView extends React.Component {
             </ScrollViewPhoto>
           </HeaderWrapper>
           <FirstLabelWrapper>
-            <LabelText style={{ marginTop: 21 }}>PICK YOUR MOOD</LabelText>
+            <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
+              PICK YOUR MOOD
+            </LabelText>
             {/* change to FlatList later on to render form database? */}
             <ScrollViewPhoto
-              contentContainerStyle={styles.scrollViewPhotoContainer}
+              contentContainerStyle={styles.scrollViewMoodContainer}
               horizontal
               style={{ height: 77, marginTop: 22 }}
             >
@@ -196,48 +195,111 @@ class SignUpView extends React.Component {
                 />
               </MoodImageContainer>
             </ScrollViewPhoto>
+            <LabelContainer>
+              <LabelView>
+                <LabelTextInput
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="(NICK)NAME*"
+                />
+              </LabelView>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(visible)</LabelTextHelper>
+              </View>
+            </LabelContainer>
+            <LabelContainer>
+              <LabelView>
+                <LabelTextInput
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="EMAIL*"
+                  onChangeText={email =>
+                    this.setState({ email, validationError: '', error: false })}
+                  value={this.state.email}
+                />
+              </LabelView>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(private)</LabelTextHelper>
+              </View>
+            </LabelContainer>
+            <LabelContainer style={{ height: 55 }}>
+              <LabelView>
+                <LabelTextInput
+                  returnKeyType="go"
+                  secureTextEntry
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="PASSWORD*"
+                  onChangeText={password =>
+                    this.setState({
+                      password,
+                      validationError: '',
+                      error: false,
+                    })}
+                  value={this.state.password}
+                />
+              </LabelView>
+            </LabelContainer>
           </FirstLabelWrapper>
 
-          <Padding style={{ flex: 1 }}>
-            <Centered style={{ flex: 2 }}>
-              <TextInput
-                autoCorrect={false}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                returnKeyType="next"
-                titleColor="#f9f7f6"
-                title="EMAIL"
-                placeholder="HELLO@FRIENDSHIP.COM"
-                backColor="#faf6f0"
-                onChangeText={email =>
-                  this.setState({ email, validationError: '', error: false })}
-                value={this.state.email}
+          <SecondLabelWrapper>
+            <LabelContainer>
+              <LabelView>
+                <LabelTextInput
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="AGE RANGE*"
+                />
+              </LabelView>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(visible)</LabelTextHelper>
+              </View>
+            </LabelContainer>
+            <LabelContainer>
+              <View style={{ width: 278 }}>
+                <LabelTextInput
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="GENDER*"
+                />
+              </View>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(visible)</LabelTextHelper>
+              </View>
+              <GenderBoxContainer style={{ height: 44 }}>
+                <GenderBox>
+                  <LabelText>WOMAN</LabelText>
+                </GenderBox>
+                <GenderBox>
+                  <LabelText>MAN</LabelText>
+                </GenderBox>
+              </GenderBoxContainer>
+              <GenderBoxContainer style={{ height: 44, marginLeft: '38%' }}>
+                <GenderBox>
+                  <LabelText>HUMAN</LabelText>
+                </GenderBox>
+                <GenderBox>
+                  <LabelText>OTHER</LabelText>
+                </GenderBox>
+              </GenderBoxContainer>
+            </LabelContainer>
+            <RoundTabContainer>
+              <RoundTab
+                titleColor="white"
+                tint="#2d4359"
+                title="Sign Up"
+                style={{ flex: 1 }}
+                onPress={() => this.signUp()}
               />
-              <TextInput
-                returnKeyType="go"
-                secure
-                title="PASSWORD"
-                titleColor="#f9f7f6"
-                placeholder="*******"
-                backColor="#faf6f0"
-                onChangeText={password =>
-                  this.setState({
-                    password,
-                    validationError: '',
-                    error: false,
-                  })}
-                value={this.state.password}
-              />
-              {this.renderStatus()}
-            </Centered>
-          </Padding>
-          <TouchableOpacity onPress={() => this.signUp()}>
-            <RoundTab
-              title="Sign Up"
-              style={{ flex: 1 }}
-              onPress={() => this.signUp()}
-            />
-          </TouchableOpacity>
+            </RoundTabContainer>
+          </SecondLabelWrapper>
         </ViewContainer>
       </KeyboardAvoidingView>
     );
@@ -246,7 +308,7 @@ class SignUpView extends React.Component {
 
 const HeaderWrapper = styled.View`
   width: 100%;
-  height: 244;
+  height: 260;
   margin-top: 20;
   display: flex;
   flex-direction: column;
@@ -255,10 +317,20 @@ const HeaderWrapper = styled.View`
 
 const FirstLabelWrapper = styled.View`
   width: 100%;
-  height: 451;
+  height: 427;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   background-color: #f9f7f6;
+  padding-bottom: 16;
+`;
+
+const SecondLabelWrapper = styled.View`
+  padding-top: 29;
+  width: 100%;
+  height: 422;
+  flex-direction: column;
+  background-color: #e8e9e8;
 `;
 
 const SignUpTitle = styled.Text`
@@ -274,12 +346,25 @@ const SignUpTitle = styled.Text`
   margin-top: 37;
 `;
 
+const LabelView = styled.View`
+  width: 278;
+  border-bottom-width: 2;
+  border-bottom-color: #979797;
+`;
+
 const LabelText = styled.Text`
   font-family: 'NunitoSans-SemiBold';
-  font-size: 13;
+  font-size: 18;
   color: #4a4a4a;
-  text-align: justify;
-  margin-left: 30;
+  text-align: left;
+`;
+
+const LabelTextInput = styled.TextInput``;
+
+const LabelTextHelper = styled.Text`
+  font-family: 'NunitoSans-SemiBold';
+  font-size: 14;
+  color: #9b9b9b;
 `;
 
 const PlusSignText = styled.Text`
@@ -293,7 +378,7 @@ const PlusSignText = styled.Text`
 const PhotoBox = styled.View`
   width: 93;
   height: 93;
-  background-color: #e8e9e8
+  background-color: #e8e9e8;
   margin-right: 15;
   border-width: 1;
   border-color: #839297;
@@ -305,7 +390,7 @@ const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
 const MoodImageContainer = styled.View`
   height: 70;
   width: 70;
-  background-color: lightblue;
+  background-color: #ffffff;
   border-radius: 35;
   justify-content: center;
   align-items: center;
@@ -316,6 +401,34 @@ const MoodImage = styled.Image`
   width: 48;
   height: 48;
 `;
+
+const LabelContainer = styled.View`
+  height: 77;
+  align-items: center;
+  width: 100%;
+  margin-top: 10;
+`;
+
+const GenderBoxContainer = styled.View`
+  height: 44;
+  width: 100%;
+  margin-left: 26%;
+  flex-direction: row;
+  margin-top: 12;
+`;
+
+const GenderBox = styled.View`
+  height: 44;
+  background-color: #ffffff;
+  width: 36%;
+  border-radius: 27;
+  padding-left: 15;
+  margin-right: 11;
+  justify-content: center;
+`;
+
+const RoundTabContainer = styled.View`margin-top: auto;`;
+
 const styles = {
   headerText: {
     fontFamily: 'NunitoSans-SemiBold',
@@ -349,9 +462,21 @@ const styles = {
     color: '#f9f7f6',
     marginBottom: 10,
   },
+  placeholderTextStyle: {
+    fontFamily: 'NunitoSans-SemiBold',
+    fontSize: 18,
+    color: '#4a4a4a',
+    textAlign: 'left',
+  },
   scrollViewPhotoContainer: {
     justifyContent: 'space-around',
     height: 93,
+    paddingRight: 23,
+    paddingLeft: 23,
+  },
+  scrollViewMoodContainer: {
+    justifyContent: 'space-around',
+    height: 70,
     paddingRight: 23,
     paddingLeft: 23,
   },

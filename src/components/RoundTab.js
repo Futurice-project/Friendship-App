@@ -63,7 +63,9 @@ export default class RoundTab extends React.Component {
         onPress={this.props.onPress}
       >
         {this.props.children}
-        <ButtonText>{this.props.title}</ButtonText>
+        <ButtonText style={{ color: this.props.titleColor }}>
+          {this.props.title}
+        </ButtonText>
       </TouchableOpacity>
     </ImageContainer>
   );
