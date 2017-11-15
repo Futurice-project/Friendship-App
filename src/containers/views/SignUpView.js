@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ImagePicker from 'react-native-image-picker';
+import { NavigationActions } from 'react-navigation';
+import styled from 'styled-components/native';
+
 import rest from '../../utils/rest';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
-import styled from 'styled-components/native';
-import { NavigationActions } from 'react-navigation';
 
 import {
   TouchableOpacity,
@@ -17,6 +19,7 @@ import {
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  userDetails: state.userDetails,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -50,6 +53,37 @@ const mapDispatchToProps = dispatch => ({
         actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
       }),
     ),
+  saveImage: imageUri => {
+    let formdata = new FormData();
+
+    if (imageUri) {
+      formdata.append('image', {
+        uri: imageUri,
+        name: 'image.png',
+        type: 'multipart/form-data',
+      });
+    }
+
+    dispatch(
+      rest.actions.userDetails.post(
+        {},
+        {
+          body: formdata,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        (err, data) => {
+          if (!err) {
+            console.log('Uploaded successfully!!! Testing here');
+          } else {
+            console.log('Error ', err);
+            console.log('Data: ', data);
+          }
+        },
+      ),
+    );
+  },
 });
 
 class SignUpView extends React.Component {
@@ -71,6 +105,7 @@ class SignUpView extends React.Component {
   state = {
     email: '',
     password: '',
+    username: '',
     error: false,
     validationError: '',
   };
@@ -97,13 +132,13 @@ class SignUpView extends React.Component {
   }
 
   signUp() {
-    const { email, password } = this.state;
+    const { email, password, username } = this.state;
     if (!email || !password) {
       return this.setState({
         validationError: 'Please enter both email & password!',
       });
     }
-    this.props.signUp({ email, password });
+    this.props.signUp({ email, password, username });
   }
 
   render() {
@@ -202,6 +237,13 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="(NICK)NAME*"
+                  onChangeText={username =>
+                    this.setState({
+                      username,
+                      validationError: '',
+                      error: false,
+                    })}
+                  value={this.state.username}
                 />
               </LabelView>
               <View style={{ width: 278 }}>

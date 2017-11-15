@@ -30,7 +30,7 @@ const mapDispatchToProps = dispatch => ({
         dispatch(
           NavigationActions.reset({
             index: 0, // active route = 0 (top of the stack)
-            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
+            actions: [NavigationActions.navigate({ routeName: 'SignOut' })],
           }),
         ),
       )
