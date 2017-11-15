@@ -20,7 +20,14 @@ import {
   Centered,
   FlexRow,
 } from '../../components/Layout';
-import { SmallHeader, Description } from '../../components/Text';
+import {
+  SmallHeader,
+  Description,
+  Incommon,
+  FrienshipFont,
+  YeahColor,
+  NaahColor,
+} from '../../components/Text';
 import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
 import styled from 'styled-components/native';
@@ -28,7 +35,14 @@ import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
 
 const ButtonOption = styled.View`
   align-items: center;
-  marginTop: 5px;
+  margin-top: 5px;
+`;
+
+const DescriptionWrapper = styled.View`
+  background-color: #efebe9;
+  display: flex;
+  align-items: center;
+  padding: 14px 48px;
 `;
 
 const mapStateToProps = state => ({
@@ -196,18 +210,32 @@ class ProfileUser extends React.Component {
             <Text style={styles.username}>
               {this.props.userDetails.data.username}
             </Text>
+            <Incommon>
+              <YeahColor>
+                {loveCommon}
+                <FrienshipFont> YEAH</FrienshipFont>
+              </YeahColor>{' '}
+              &{' '}
+              <NaahColor>
+                {hateCommon}
+                <FrienshipFont> NAAH</FrienshipFont>
+              </NaahColor>{' '}
+              in common{' '}
+            </Incommon>
             <Description>
-              {this.state.age + ', '}
-              {this.state.genders}
               {this.props.userDetails.data.location ? (
-                ', ' + this.props.userDetails.data.location
+                this.props.userDetails.data.location
               ) : (
-                ', Narnia'
+                'Narnia'
               )}
+              {', ' + this.state.age + ', '}
+              {this.state.genders}
             </Description>
-            <Description>
-              {loveCommon} YEAH & {hateCommon} NAAH in common{' '}
-            </Description>
+            <DescriptionWrapper>
+              <Description>
+                {this.props.userDetails.data.description}
+              </Description>
+            </DescriptionWrapper>
             <View
               style={{
                 height: 80,
