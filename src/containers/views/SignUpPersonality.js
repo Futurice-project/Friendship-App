@@ -18,6 +18,10 @@ import {
   Dimensions,
 } from 'react-native';
 
+/**
+ * Map states from redux-api to this components props
+ * @param state
+ */
 const mapStateToProps = state => ({
   createUserPersonalities: state.createUserPersonalities,
   auth: state.auth,
@@ -27,9 +31,19 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  /**
+   * Call redux action personalities.increment
+   * implementation is described in the redux reducer/actions 'personalities'
+   * @param length
+   * @param endIndex
+   */
   incrementView: (length, endIndex) => {
     dispatch(personalities.increment(length, endIndex));
   },
+  /**
+   * Navigate to the SignUpPersonality view
+   * @param index
+   */
   changeView: index => {
     dispatch(
       NavigationActions.navigate({
@@ -38,9 +52,17 @@ const mapDispatchToProps = dispatch => ({
       }),
     );
   },
+  /**
+   * Retrieve personalities
+   * @param credentials
+   */
   getPersonalities: credentials => {
     dispatch(rest.actions.personalities()).catch(err => console.log(err));
   },
+  /**
+   * Add user personalities
+   * @param credentials
+   */
   addUserPersonalities: credentials => {
     dispatch(
       rest.actions.createUserPersonalities(
@@ -60,6 +82,10 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class SignUpPersonality extends React.Component {
+  /**
+   * Disable header
+   * @type {{header: (()=>null)}}
+   */
   static navigationOptions = {
     header: () => null,
   };
@@ -109,6 +135,11 @@ class SignUpPersonality extends React.Component {
     return personalities;
   };
 
+  /**
+   * Handle a personality click
+   * Set the state with new chosen personalities
+   * @param personalityId
+   */
   handleClick = personalityId => {
     var personalities = this.removeDuplicateFromChosenPersonalities(
       personalityId,
@@ -129,11 +160,20 @@ class SignUpPersonality extends React.Component {
     }
   };
 
-  componentDidUpdate() {
+  /**
+   * Retrieve all the personalities when loading the component
+   * for the first time
+   */
+  componentDidMount() {
     // console.log('Testing token here!!!', this.props.auth);
     this.props.getPersonalities();
   }
 
+  /**
+   * Renders personalities with personality component according to
+   * the list from the personality state
+   * @returns {XML}
+   */
   renderTwoPersonalities() {
     if (!this.props.personalities.data.data) {
       return <Text>Network failed</Text>;
@@ -158,6 +198,12 @@ class SignUpPersonality extends React.Component {
     return <Personalities>{personalities}</Personalities>;
   }
 
+  /**
+   * Render a text component containing the progress of the
+   * steps in this view
+   * Example: (1/4, 2/4)
+   * @returns {XML}
+   */
   renderProgress() {
     if (!this.props.personalities.data.data) {
       return;
@@ -176,8 +222,11 @@ class SignUpPersonality extends React.Component {
     );
   }
 
+  /**
+   * Render the component
+   * @returns {XML}
+   */
   render() {
-    console.log(this.props);
     return (
       <View>
         <ViewContainer>
@@ -226,12 +275,6 @@ const Header = styled.View`
   justify-content: space-between;
   height: 50;
 `;
-
-// const ProgressBar = styled.View`
-//   background-color: #3a4853;
-//   width: 19%;
-//   height: 10;
-// `;
 
 const Error = styled.Text`
   font-size: 11;

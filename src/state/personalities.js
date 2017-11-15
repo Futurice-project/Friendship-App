@@ -3,6 +3,13 @@ export const DECREMENT = 'DECREMENT';
 export const RESET = 'RESET';
 import React from 'react';
 
+/**
+ * Increment personality startIndex & endIndex in the redux state
+ * When we are at the end of the list we will reset the start & end point
+ * @param length
+ * @param endIndex
+ * @returns {*}
+ */
 export function increment(length, endIndex) {
   if (endIndex + 2 > length) {
     return { type: RESET };
@@ -10,10 +17,18 @@ export function increment(length, endIndex) {
   return { type: INCREMENT };
 }
 
+/**
+ * Decrement personality startIndex & endIndex in the redux state
+ * @returns {{type: string}}
+ */
 export function decrement() {
   return { type: DECREMENT };
 }
 
+/**
+ * Reset personality state to initial values
+ * @returns {{type: string}}
+ */
 export function reset() {
   return { type: RESET };
 }
