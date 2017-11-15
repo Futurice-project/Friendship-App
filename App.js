@@ -1,7 +1,15 @@
 import React from 'react';
-import { BackHandler, ActivityIndicator, StatusBar, View } from 'react-native';
+import {
+  BackHandler,
+  ActivityIndicator,
+  StatusBar,
+  View,
+  Keyboard,
+  Platform,
+} from 'react-native';
 import { Provider } from 'react-redux';
 import store from './src/redux/store';
+import { connect } from 'react-redux';
 import persistStore from './src/utils/persist';
 import Navigator, {
   handleBackButton,
@@ -13,10 +21,33 @@ import {
 } from './src/components/Layout';
 import { Font } from 'expo';
 
-export default class App extends React.Component {
+const mapDispatchToProps = dispatch => ({
+  // @todo call keyboard state functions here
+  // @todo from redux
+  setStateHideKeyboard: () => {},
+  setStateShowKeyBoard: () => {},
+});
+
+class App extends React.Component {
   state = {
     rehydrated: false,
     fontLoaded: false,
+  };
+
+  /**
+   * When show hide of react's keyboard is fired, this function is called
+   * it will call the redux reducer to handle state changes in the keyboard
+   */
+  keyboardHideListener = () => {
+    console.log('hide');
+  };
+
+  /**
+   * When show event of react's keyboard is fired, this function is called
+   * it will call the redux reducer to handle state changes in the keyboard
+   */
+  keyboardDidShowListener = () => {
+    console.log('show');
   };
 
   componentDidMount = async () => {
@@ -37,6 +68,15 @@ export default class App extends React.Component {
       Futurice: require('./assets/fonts/Friendship/Friendship-Regular.ttf'),
     });
     this.setState({ fontLoaded: true });
+
+    this.keyboardHideListener = Keyboard.addListener(
+      Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
+      this.keyboardHideListener,
+    );
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShowListener,
+    );
   };
 
   renderActivityIndicator = () =>
@@ -60,3 +100,5 @@ export default class App extends React.Component {
     </AppContainer>
   );
 }
+
+export default connect(mapDispatchToProps)(App);
