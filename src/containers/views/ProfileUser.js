@@ -35,6 +35,7 @@ const mapStateToProps = state => ({
   auth: state.auth,
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
+  userGenders: state.userGenders,
   currentUser: state.currentUser,
   tagsForCurrentUser: state.tagsForCurrentUser,
 });
@@ -43,6 +44,8 @@ const mapDispatchToProps = dispatch => ({
   refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForUser.get({ userId })),
+  refreshUserGenders: userId =>
+    dispatch(rest.actions.userGenders.get({ userId })),
   reportUser: reportDetails => {
     dispatch(
       rest.actions.reports.post({}, { body: JSON.stringify(reportDetails) }),
@@ -78,6 +81,7 @@ class ProfileUser extends React.Component {
         loaded: true,
       });
       this.getAge();
+      this.getGenders();
     }
   }
 
@@ -85,7 +89,14 @@ class ProfileUser extends React.Component {
     const personId = this.props.navigation.state.params.personId;
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
+    this.props.refreshUserGenders(personId);
   }
+
+  getGenders = () => {
+    const gendersArr = this.props.userGenders.data.map(x => x.gender);
+    const genders = gendersArr.join(' and ');
+    this.setState({ genders: genders });
+  };
 
   getAge = () => {
     const birthDay = new Date(this.props.userDetails.data.birthday);
@@ -186,8 +197,8 @@ class ProfileUser extends React.Component {
               {this.props.userDetails.data.username}
             </Text>
             <Description>
-              {this.state.age}
-              , male
+              {this.state.age + ', '}
+              {this.state.genders}
               {this.props.userDetails.data.location ? (
                 ', ' + this.props.userDetails.data.location
               ) : (
