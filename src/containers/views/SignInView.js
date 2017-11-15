@@ -8,6 +8,7 @@ import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
+import { TouchableWithoutFeedback } from 'react-native';
 
 import {
   TouchableOpacity,
@@ -163,55 +164,76 @@ class SignInView extends React.Component {
     this.props.signIn({ email, password });
   }
 
+  /**
+   * This handler will be called when pressing the TouchableWithoutFeedback
+   * This way we can handle clicks and close the keyboard accordingly
+   * We want to close the keyboard when clicking anywhere but the sign in button
+   */
+  viewClickHandler = () => {
+    if (this.state.keyboardOpen) {
+      Keyboard.dismiss();
+    }
+  };
+
   render() {
     return (
       <KeyboardAvoidingView
         behavior="padding"
         key={this.state.keyboardAvoidingViewKey}
       >
-        <ViewContainer>
-          <Padding style={{ flex: 1 }}>
-            <HeaderWrapper>
-              <Text
-                style={styles.headerText}
-                onPress={this.props.openWelcomeScreen}
-              >
-                Cancel
-              </Text>
-              <Text style={styles.headerText} onPress={this.props.openSignUp}>
-                Sign Up
-              </Text>
-            </HeaderWrapper>
-            <Centered style={{ flex: 2 }}>
-              <TextInput
-                titleColor="#f9f7f6"
-                title="EMAIL"
-                placeholder="HELLO@FRIENDSHIP.COM"
-                backColor="#faf6f0"
-                onChangeText={email =>
-                  this.setState({ email, validationError: '', error: false })}
-                value={this.state.email}
-              />
-              <TextInput
-                secure
-                title="PASSWORD"
-                titleColor="#f9f7f6"
-                placeholder="*******"
-                backColor="#faf6f0"
-                onChangeText={password =>
-                  this.setState({
-                    password,
-                    validationError: '',
-                    error: false,
-                  })}
-                value={this.state.password}
-              />
-              {this.renderStatus()}
-              <Text style={styles.textStyle}>
-                Need help with your password?
-              </Text>
-            </Centered>
-          </Padding>
+        {
+          // keyboardShouldPersistTapsalways set to always means:
+          // the keyboard will not dismiss automatically, and the scroll view will not catch taps
+          // This way we can handle the closing behaviour ourselves
+        }
+        <ViewContainer
+          keyboardShouldPersistTaps="always"
+          onPress={console.log('aa')}
+        >
+          <TouchableWithoutFeedback onPress={this.viewClickHandler}>
+            <Padding style={{ flex: 1 }}>
+              <HeaderWrapper>
+                <Text
+                  style={styles.headerText}
+                  onPress={this.props.openWelcomeScreen}
+                >
+                  Cancel
+                </Text>
+                <Text style={styles.headerText} onPress={this.props.openSignUp}>
+                  Sign Up
+                </Text>
+              </HeaderWrapper>
+              <Centered style={{ flex: 2 }}>
+                <TextInput
+                  titleColor="#f9f7f6"
+                  title="EMAIL"
+                  placeholder="HELLO@FRIENDSHIP.COM"
+                  backColor="#faf6f0"
+                  onChangeText={email =>
+                    this.setState({ email, validationError: '', error: false })}
+                  value={this.state.email}
+                />
+                <TextInput
+                  secure
+                  title="PASSWORD"
+                  titleColor="#f9f7f6"
+                  placeholder="*******"
+                  backColor="#faf6f0"
+                  onChangeText={password =>
+                    this.setState({
+                      password,
+                      validationError: '',
+                      error: false,
+                    })}
+                  value={this.state.password}
+                />
+                {this.renderStatus()}
+                <Text style={styles.textStyle}>
+                  Need help with your password?
+                </Text>
+              </Centered>
+            </Padding>
+          </TouchableWithoutFeedback>
           {this.renderSignInButton()}
         </ViewContainer>
       </KeyboardAvoidingView>
@@ -225,6 +247,8 @@ const HeaderWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
 `;
+
+export const ContentWrapper = styled.View`flex: 1;`;
 
 const styles = {
   headerText: {
