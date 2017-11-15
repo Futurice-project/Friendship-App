@@ -158,7 +158,26 @@ class SignUpPersonality extends React.Component {
     return <Personalities>{personalities}</Personalities>;
   }
 
+  renderProgress() {
+    if (!this.props.personalities.data.data) {
+      return;
+    }
+
+    return (
+      <Text
+        style={{
+          fontFamily: 'NunitoSans-Bold',
+          fontSize: 20,
+          color: '#efebe9',
+        }}
+      >
+        {this.props.personalityState.endIndex / 2}/{this.props.personalities.data.data.length / 2}{' '}
+      </Text>
+    );
+  }
+
   render() {
+    console.log(this.props);
     return (
       <View>
         <ViewContainer>
@@ -166,15 +185,7 @@ class SignUpPersonality extends React.Component {
           <Padding style={{ flex: 1 }}>
             <Title>PERSONALITY</Title>
             <SubTitle>
-              <Text
-                style={{
-                  fontFamily: 'NunitoSans-Bold',
-                  fontSize: 20,
-                  color: '#efebe9',
-                }}
-              >
-                {this.props.personalityState.endIndex / 2}/{this.props.personalities.data.data.length / 2}{' '}
-              </Text>
+              {this.renderProgress()}
               <Text
                 style={{
                   fontFamily: 'NunitoSans-Regular',
