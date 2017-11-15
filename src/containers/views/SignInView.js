@@ -20,11 +20,23 @@ import {
   Dimensions,
 } from 'react-native';
 
+/**
+ * Maps the auth state from to the props of this component
+ * The auth state contains the logging state
+ * @param state
+ */
 const mapStateToProps = state => ({
   auth: state.auth,
 });
 
+// Map functions to props
 const mapDispatchToProps = dispatch => ({
+  /**
+   * Call signIn action that tries logging in with the redux-api library
+   * If it's successful we wil navigate to another page
+   * Else we will log the errors
+   * @param credentials
+   */
   signIn: credentials => {
     dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) }))
       .then(() =>
@@ -37,12 +49,18 @@ const mapDispatchToProps = dispatch => ({
       )
       .catch(err => console.log(err));
   },
+  /**
+   * Navigates to the SignUpLocation screen
+   */
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
         routeName: 'SignUpLocation',
       }),
     ),
+  /**
+   * Navigates to the Welcome screen
+   */
   openWelcomeScreen: () =>
     dispatch(
       NavigationActions.navigate({
@@ -52,14 +70,20 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class SignInView extends React.Component {
+  /**
+   * Disable headers
+   * @type {{title: string, header: (()=>null)}}
+   */
   static navigationOptions = {
     title: 'Sign up',
     header: () => null,
   };
 
-  // Creates a new key everytime there is a change on the keyboard
-  // This will solve the white space after opening textfields
-  // Because now it recognizes a change (key = different)
+  /**
+   * Creates a new key everytime there is a change on the keyboard
+   * This will solve the white space after clicking on a text input
+   * Because of the key it will recoqnize a change (key = different each time)
+   */
   keyboardHideListener = () => {
     this.setState({
       keyboardAvoidingViewKey: new Date().getTime(),
@@ -67,14 +91,24 @@ class SignInView extends React.Component {
     });
   };
 
+  /**
+   * Every time the keyboard opens we want to set this in the state
+   * this way we can render accordingly
+   * @param e
+   */
   keyboardDidShowListener = e => {
-    console.log(e.endCoordinates.height);
     this.setState({
       keyboardOpen: true,
       keyboardHeight: e.endCoordinates.height,
     });
   };
 
+  /**
+   * Because of the weird keyboard behaviour of avoiding text inputs
+   * we need to handle the behaviour ourselves
+   * After the component is mounted this function is called.
+   * A listener is added for the hide & show event to handle keyboard changes ourselves
+   */
   componentDidMount() {
     this.keyboardHideListener = Keyboard.addListener(
       Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
@@ -86,6 +120,10 @@ class SignInView extends React.Component {
     );
   }
 
+  /**
+   * After unmounting the view
+   * we remove the keyboard listeners
+   */
   componentWillUnmount() {
     this.keyboardHideListener.remove();
     this.keyboardDidShowListener.remove();
@@ -101,6 +139,11 @@ class SignInView extends React.Component {
     keyboardHeight: '',
   };
 
+  /**
+   * After we try logging in trough or redux-api call
+   * We want to render errors from the back-end accordingly
+   * @returns {XML}
+   */
   renderStatus() {
     if (this.state.validationError) {
       return (
@@ -154,6 +197,13 @@ class SignInView extends React.Component {
     this.setState({ error: true });
   }
 
+  /**
+   * This function will create a validation error when
+   * username or password are empty.
+   * Else it will call the redux-api function which tries to sign in the user
+   * based on the email and password that is set in the components state
+   * @returns {*|SignInView}
+   */
   signIn() {
     const { email, password } = this.state;
     if (!email || !password) {
@@ -175,21 +225,22 @@ class SignInView extends React.Component {
     }
   };
 
+  /**
+   * Render the component.
+   * KeyboardShouldPersistTaps should be set to 'always' for the ViewContainer
+   * this way the keyboard in this view will not dismiss automatically.
+   * We handle the keyboard closing our own with a TouchableWithoutFeedback
+   * which calls the viewClickHandler function
+   *    - The keyboard will only close when pressing anywhere but the sign-in button
+   * @returns {XML}
+   */
   render() {
     return (
       <KeyboardAvoidingView
         behavior="padding"
         key={this.state.keyboardAvoidingViewKey}
       >
-        {
-          // keyboardShouldPersistTapsalways set to always means:
-          // the keyboard will not dismiss automatically, and the scroll view will not catch taps
-          // This way we can handle the closing behaviour ourselves
-        }
-        <ViewContainer
-          keyboardShouldPersistTaps="always"
-          onPress={console.log('aa')}
-        >
+        <ViewContainer keyboardShouldPersistTaps="always">
           <TouchableWithoutFeedback onPress={this.viewClickHandler}>
             <Padding style={{ flex: 1 }}>
               <HeaderWrapper>
