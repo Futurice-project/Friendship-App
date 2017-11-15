@@ -57,6 +57,7 @@ const mapDispatchToProps = dispatch => ({
       }),
     ),
   saveImage: imageUri => {
+    // const { id } = this.props.auth.data.decoded;
     let formdata = new FormData();
 
     if (imageUri) {
@@ -68,8 +69,8 @@ const mapDispatchToProps = dispatch => ({
     }
 
     dispatch(
-      rest.actions.userDetails.post(
-        {},
+      rest.actions.userDetails.patch(
+        // { userId: 54 }, replace with real userId here later
         {
           body: formdata,
           headers: {
@@ -91,9 +92,9 @@ const mapDispatchToProps = dispatch => ({
 
 class SignUpView extends React.Component {
   componentWillMount() {
-    if (this.props.auth.data.decoded) {
-      this.props.openSignUpLocation();
-    }
+    // if (this.props.auth.data.decoded) {
+    //   this.props.openSignUpLocation();
+    // }
   }
 
   componentWillReceiveProps() {
@@ -120,10 +121,11 @@ class SignUpView extends React.Component {
       aspect: [4, 3],
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       this.setState({ image: result.uri });
+
+      // later
+      // this.props.saveImage(this.state.image);
     }
 
     // console.log('Opening gallery??');
