@@ -8,7 +8,6 @@ import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleView';
-import SignUpLocation from '../views/SignUpLocation';
 import SignInView from '../views/SignInView';
 import SignUpView from '../views/SignUpView';
 import SignOutView from '../views/SignOutView';
@@ -17,6 +16,7 @@ import SearchList from './../views/Search';
 import EmojiPickerView from './../views/EmojiPicker';
 import LookingFor from './../views/LookingFor';
 import Matching from './../views/Matching';
+import SignUpLocation from '../views/SignUpLocation';
 import SignUpPersonality from '../views/SignUpPersonality';
 import ChatView from './../views/ChatView';
 import ChatRequest from './../views/ChatRequest';
@@ -35,6 +35,7 @@ const StackNavigatorConfig = {
 export default StackNavigator(
   {
     Welcome: { screen: WelcomeView },
+    SignUpLocation: { screen: SignUpLocation },
     LookingFor: { screen: LookingFor },
     Matching: { screen: Matching },
     Tabs: {

@@ -11,13 +11,13 @@ export const injectStore = _store => {
 };
 
 /*
-// Endpoint configurations
-These example endpoints can be called by dispatching the respective actions, e.g:
-dispatch(rest.actions.teams.post({teamId: 42}, { body: JSON.stringify(exampleData) }));
-Results in: POST /teams?teamId=42 with POST data from 'exampleData'
-Result of request can be found in: `state.teams.data`
-Information about request: `state.teams.error`, `state.teams.sync`, `state.teams.error`...
-*/
+ // Endpoint configurations
+ These example endpoints can be called by dispatching the respective actions, e.g:
+ dispatch(rest.actions.teams.post({teamId: 42}, { body: JSON.stringify(exampleData) }));
+ Results in: POST /teams?teamId=42 with POST data from 'exampleData'
+ Result of request can be found in: `state.teams.data`
+ Information about request: `state.teams.error`, `state.teams.sync`, `state.teams.error`...
+ */
 
 let apiRoot;
 
@@ -30,6 +30,10 @@ if (process.env.NODE_ENV === 'development') {
 const rest = reduxApi({
   personalities: {
     url: `${apiRoot}/personalities`,
+    crud: true,
+  },
+  locations: {
+    url: `${apiRoot}/locations`,
     crud: true,
   },
   users: {
@@ -78,6 +82,10 @@ const rest = reduxApi({
     options: {
       method: 'POST',
     },
+  },
+  createUserLocations: {
+    url: `${apiRoot}/user_locations`,
+    options: { method: 'POST' },
   },
 })
   .use('options', (url, params, getState) => {

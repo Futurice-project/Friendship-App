@@ -24,6 +24,21 @@ If you have moved the 'Tabs' route, you need to:
  * @returns {boolean}
  */
 export const handleBackButton = ({ navigatorState }, dispatch) => {
+  // Since we don't have a seperat view for each personality
+  // we need to handle the back navigation ourself
+  if (
+    navigatorState.routes[navigatorState.index].routeName == 'SignUpPersonality'
+  ) {
+    // if(navigatorState.routes[navigatorState.index].params.index == 0){
+    //   // We can go back if it's the first personality view
+    //   dispatch(NavigationActions.back());
+    //   return true;
+    // }
+
+    // Don't go back
+    return true;
+  }
+
   const tabNavigatorIndex = navigatorState.routes.findIndex(
     route => route.routeName === 'Tabs',
   );

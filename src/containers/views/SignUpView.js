@@ -1,11 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+// import ImagePicker from 'react-native-image-picker';
+// import ImageResizer from 'react-native-image-resizer';
+import { ImagePicker } from 'expo';
+import { NavigationActions } from 'react-navigation';
+import styled from 'styled-components/native';
+
 import rest from '../../utils/rest';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
-import styled from 'styled-components/native';
-import { NavigationActions } from 'react-navigation';
 
 import {
   TouchableOpacity,
@@ -13,18 +17,15 @@ import {
   KeyboardAvoidingView,
   View,
   FlatList,
+  Image,
 } from 'react-native';
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  userDetails: state.userDetails,
 });
 
 const mapDispatchToProps = dispatch => ({
-  // signUp: credentials => {
-  //   dispatch(
-  //     rest.actions.users.post({}, { body: JSON.stringify(credentials) }),
-  //   );
-  // },
   signUp: credentials => {
     dispatch(rest.actions.register({}, { body: JSON.stringify(credentials) }))
       .then(() =>
@@ -55,13 +56,45 @@ const mapDispatchToProps = dispatch => ({
         actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
       }),
     ),
+  saveImage: imageUri => {
+    // const { id } = this.props.auth.data.decoded;
+    let formdata = new FormData();
+
+    if (imageUri) {
+      formdata.append('image', {
+        uri: imageUri,
+        name: 'image.png',
+        type: 'multipart/form-data',
+      });
+    }
+
+    dispatch(
+      rest.actions.userDetails.patch(
+        // { userId: 54 }, replace with real userId here later
+        {
+          body: formdata,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        (err, data) => {
+          if (!err) {
+            console.log('Uploaded successfully!!! Testing here');
+          } else {
+            console.log('Error ', err);
+            console.log('Data: ', data);
+          }
+        },
+      ),
+    );
+  },
 });
 
 class SignUpView extends React.Component {
   componentWillMount() {
-    if (this.props.auth.data.decoded) {
-      this.props.openSignUpLocation();
-    }
+    // if (this.props.auth.data.decoded) {
+    //   this.props.openSignUpLocation();
+    // }
   }
 
   componentWillReceiveProps() {
@@ -76,8 +109,63 @@ class SignUpView extends React.Component {
   state = {
     email: '',
     password: '',
+    username: '',
     error: false,
     validationError: '',
+  };
+
+  openImageGallery = async () => {
+    let { image } = this.state;
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+
+      // later
+      // this.props.saveImage(this.state.image);
+    }
+
+    // console.log('Opening gallery??');
+    // console.log(ImagePicker);
+    // this.setState({ disableSave: true });
+    // const options = {
+    //   title: 'Choose Profile Picture',
+    //   takePhotoButtonTitle: 'Take Photo',
+    //   chooseFromLibraryButtonTitle: 'Choose From Library',
+    //   cancelButtonTitle: 'Cancel',
+    //   mediaType: 'photo',
+    //   allowsEditing: true,
+    //   permissionDenied: {
+    //     title: 'Denied permission',
+    //     text: 'Cannot access gallery',
+    //     reTryTitle: 'Retry',
+    //     okTitle: 'OK now!!',
+    //   },
+    // };
+    // ImagePicker.showImagePicker(options, response => {
+    //   if (response.didCancel) {
+    //     console.log('User cancelled image picker');
+    //     // this.setState({ disableSave: false });
+    //   } else if (response.error) {
+    //     console.log('ImagePicker Error: ', response.error);
+    //     // this.setState({ disableSave: false });
+    //   } else {
+    //     ImageResizer.createResizedImage(response.uri, 512, 512, 'PNG', 100)
+    //       .then(resizedImage => {
+    //         // resizeImageUri is the URI of the new image that can now be displayed, uploaded...
+    //         this.setState({
+    //           // disableSave: false,
+    //           image: resizedImage.uri,
+    //         });
+    //       })
+    //       .catch(err => {
+    //         console.log(err);
+    //       });
+    //   }
+    // });
   };
 
   renderStatus() {
@@ -102,28 +190,38 @@ class SignUpView extends React.Component {
   }
 
   signUp() {
-    const { email, password } = this.state;
+    const { email, password, username } = this.state;
     if (!email || !password) {
       return this.setState({
         validationError: 'Please enter both email & password!',
       });
     }
-    this.props.signUp({ email, password });
+    this.props.signUp({ email, password, username });
   }
 
   render() {
+    const image = { uri: this.state.image };
     return (
       <KeyboardAvoidingView behavior="padding">
         <ViewContainer>
           <HeaderWrapper>
             <SignUpTitle>YOUR PROFILE</SignUpTitle>
-            <LabelText style={{ marginTop: 24 }}>ADD PHOTO(S)</LabelText>
+            <LabelText style={{ marginTop: 24, marginLeft: 30 }}>
+              ADD PHOTO(S)
+            </LabelText>
             <ScrollViewPhoto
               contentContainerStyle={styles.scrollViewPhotoContainer}
               horizontal
             >
-              <PhotoBox style={{ backgroundColor: '#949795' }}>
-                <PlusSignText>+</PlusSignText>
+              <PhotoBox
+                style={{ backgroundColor: '#949795' }}
+                onPress={this.openImageGallery}
+              >
+                {image.uri ? (
+                  <Image style={{ width: 93, height: 93 }} source={image} />
+                ) : (
+                  <PlusSignText>+</PlusSignText>
+                )}
               </PhotoBox>
               <PhotoBox>
                 <PlusSignText>+</PlusSignText>
@@ -140,10 +238,12 @@ class SignUpView extends React.Component {
             </ScrollViewPhoto>
           </HeaderWrapper>
           <FirstLabelWrapper>
-            <LabelText style={{ marginTop: 21 }}>PICK YOUR MOOD</LabelText>
+            <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
+              PICK YOUR MOOD
+            </LabelText>
             {/* change to FlatList later on to render form database? */}
             <ScrollViewPhoto
-              contentContainerStyle={styles.scrollViewPhotoContainer}
+              contentContainerStyle={styles.scrollViewMoodContainer}
               horizontal
               style={{ height: 77, marginTop: 22 }}
             >
@@ -196,48 +296,118 @@ class SignUpView extends React.Component {
                 />
               </MoodImageContainer>
             </ScrollViewPhoto>
+            <LabelContainer>
+              <LabelView>
+                <LabelTextInput
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="(NICK)NAME*"
+                  onChangeText={username =>
+                    this.setState({
+                      username,
+                      validationError: '',
+                      error: false,
+                    })}
+                  value={this.state.username}
+                />
+              </LabelView>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(visible)</LabelTextHelper>
+              </View>
+            </LabelContainer>
+            <LabelContainer>
+              <LabelView>
+                <LabelTextInput
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="EMAIL*"
+                  onChangeText={email =>
+                    this.setState({ email, validationError: '', error: false })}
+                  value={this.state.email}
+                />
+              </LabelView>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(private)</LabelTextHelper>
+              </View>
+            </LabelContainer>
+            <LabelContainer style={{ height: 55 }}>
+              <LabelView>
+                <LabelTextInput
+                  returnKeyType="go"
+                  secureTextEntry
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="PASSWORD*"
+                  onChangeText={password =>
+                    this.setState({
+                      password,
+                      validationError: '',
+                      error: false,
+                    })}
+                  value={this.state.password}
+                />
+              </LabelView>
+            </LabelContainer>
           </FirstLabelWrapper>
 
-          <Padding style={{ flex: 1 }}>
-            <Centered style={{ flex: 2 }}>
-              <TextInput
-                autoCorrect={false}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                returnKeyType="next"
-                titleColor="#f9f7f6"
-                title="EMAIL"
-                placeholder="HELLO@FRIENDSHIP.COM"
-                backColor="#faf6f0"
-                onChangeText={email =>
-                  this.setState({ email, validationError: '', error: false })}
-                value={this.state.email}
+          <SecondLabelWrapper>
+            <LabelContainer>
+              <LabelView>
+                <LabelTextInput
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="AGE RANGE*"
+                />
+              </LabelView>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(visible)</LabelTextHelper>
+              </View>
+            </LabelContainer>
+            <LabelContainer>
+              <View style={{ width: 278 }}>
+                <LabelTextInput
+                  autoCorrect={false}
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="#4a4a4a"
+                  placeholder="GENDER*"
+                />
+              </View>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>(visible)</LabelTextHelper>
+              </View>
+              <GenderBoxContainer style={{ height: 44 }}>
+                <GenderBox>
+                  <LabelText>WOMAN</LabelText>
+                </GenderBox>
+                <GenderBox>
+                  <LabelText>MAN</LabelText>
+                </GenderBox>
+              </GenderBoxContainer>
+              <GenderBoxContainer style={{ height: 44, marginLeft: '38%' }}>
+                <GenderBox>
+                  <LabelText>HUMAN</LabelText>
+                </GenderBox>
+                <GenderBox>
+                  <LabelText>OTHER</LabelText>
+                </GenderBox>
+              </GenderBoxContainer>
+            </LabelContainer>
+            <RoundTabContainer>
+              <RoundTab
+                titleColor="white"
+                tint="#2d4359"
+                title="Sign Up"
+                style={{ flex: 1 }}
+                onPress={() => this.signUp()}
               />
-              <TextInput
-                returnKeyType="go"
-                secure
-                title="PASSWORD"
-                titleColor="#f9f7f6"
-                placeholder="*******"
-                backColor="#faf6f0"
-                onChangeText={password =>
-                  this.setState({
-                    password,
-                    validationError: '',
-                    error: false,
-                  })}
-                value={this.state.password}
-              />
-              {this.renderStatus()}
-            </Centered>
-          </Padding>
-          <TouchableOpacity onPress={() => this.signUp()}>
-            <RoundTab
-              title="Sign Up"
-              style={{ flex: 1 }}
-              onPress={() => this.signUp()}
-            />
-          </TouchableOpacity>
+            </RoundTabContainer>
+          </SecondLabelWrapper>
         </ViewContainer>
       </KeyboardAvoidingView>
     );
@@ -246,7 +416,7 @@ class SignUpView extends React.Component {
 
 const HeaderWrapper = styled.View`
   width: 100%;
-  height: 244;
+  height: 260;
   margin-top: 20;
   display: flex;
   flex-direction: column;
@@ -255,10 +425,20 @@ const HeaderWrapper = styled.View`
 
 const FirstLabelWrapper = styled.View`
   width: 100%;
-  height: 451;
+  height: 427;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   background-color: #f9f7f6;
+  padding-bottom: 16;
+`;
+
+const SecondLabelWrapper = styled.View`
+  padding-top: 29;
+  width: 100%;
+  height: 422;
+  flex-direction: column;
+  background-color: #e8e9e8;
 `;
 
 const SignUpTitle = styled.Text`
@@ -274,12 +454,25 @@ const SignUpTitle = styled.Text`
   margin-top: 37;
 `;
 
+const LabelView = styled.View`
+  width: 278;
+  border-bottom-width: 2;
+  border-bottom-color: #979797;
+`;
+
 const LabelText = styled.Text`
   font-family: 'NunitoSans-SemiBold';
-  font-size: 13;
+  font-size: 18;
   color: #4a4a4a;
-  text-align: justify;
-  margin-left: 30;
+  text-align: left;
+`;
+
+const LabelTextInput = styled.TextInput``;
+
+const LabelTextHelper = styled.Text`
+  font-family: 'NunitoSans-SemiBold';
+  font-size: 14;
+  color: #9b9b9b;
 `;
 
 const PlusSignText = styled.Text`
@@ -290,10 +483,10 @@ const PlusSignText = styled.Text`
   text-align: center;
 `;
 
-const PhotoBox = styled.View`
+const PhotoBox = styled.TouchableOpacity`
   width: 93;
   height: 93;
-  background-color: #e8e9e8
+  background-color: #e8e9e8;
   margin-right: 15;
   border-width: 1;
   border-color: #839297;
@@ -305,7 +498,7 @@ const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
 const MoodImageContainer = styled.View`
   height: 70;
   width: 70;
-  background-color: lightblue;
+  background-color: #ffffff;
   border-radius: 35;
   justify-content: center;
   align-items: center;
@@ -316,6 +509,34 @@ const MoodImage = styled.Image`
   width: 48;
   height: 48;
 `;
+
+const LabelContainer = styled.View`
+  height: 77;
+  align-items: center;
+  width: 100%;
+  margin-top: 10;
+`;
+
+const GenderBoxContainer = styled.View`
+  height: 44;
+  width: 100%;
+  margin-left: 26%;
+  flex-direction: row;
+  margin-top: 12;
+`;
+
+const GenderBox = styled.View`
+  height: 44;
+  background-color: #ffffff;
+  width: 36%;
+  border-radius: 27;
+  padding-left: 15;
+  margin-right: 11;
+  justify-content: center;
+`;
+
+const RoundTabContainer = styled.View`margin-top: auto;`;
+
 const styles = {
   headerText: {
     fontFamily: 'NunitoSans-SemiBold',
@@ -349,9 +570,21 @@ const styles = {
     color: '#f9f7f6',
     marginBottom: 10,
   },
+  placeholderTextStyle: {
+    fontFamily: 'NunitoSans-SemiBold',
+    fontSize: 18,
+    color: '#4a4a4a',
+    textAlign: 'left',
+  },
   scrollViewPhotoContainer: {
     justifyContent: 'space-around',
     height: 93,
+    paddingRight: 23,
+    paddingLeft: 23,
+  },
+  scrollViewMoodContainer: {
+    justifyContent: 'space-around',
+    height: 70,
     paddingRight: 23,
     paddingLeft: 23,
   },

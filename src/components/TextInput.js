@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 //Contains that hold the input and the label
-
 const Container = styled.View`
   padding-left: 20;
   padding-right: 20;
@@ -24,7 +23,6 @@ const Input = styled.TextInput.attrs({
   padding-left: 20px;
   text-align: left;
   height: 40;
-
   min-width: 300;
 `;
 //this set the line inside the input
@@ -55,7 +53,7 @@ const InputTitle = styled.Text`
   width: 100;
   height: 25;
   font-family: 'NunitoSans-Regular';
-  font-size: 16;
+  font-size: 13;
   letter-spacing: 1.5;
   text-align: left;
   padding-left: 20px;
@@ -72,7 +70,6 @@ const InputTitle = styled.Text`
  * @param {function} onChangeText - Function when the field is changed
  * @param {string} hint - Sets the value of t below the input
  */
-//export our component
 export default class TextInput extends React.Component {
   render = () => (
     <Container>
