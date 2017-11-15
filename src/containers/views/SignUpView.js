@@ -1,11 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+// import ImagePicker from 'react-native-image-picker';
+// import ImageResizer from 'react-native-image-resizer';
+import { ImagePicker } from 'expo';
+import { NavigationActions } from 'react-navigation';
+import styled from 'styled-components/native';
+
 import rest from '../../utils/rest';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
-import styled from 'styled-components/native';
-import { NavigationActions } from 'react-navigation';
 
 import {
   TouchableOpacity,
@@ -13,10 +17,12 @@ import {
   KeyboardAvoidingView,
   View,
   FlatList,
+  Image,
 } from 'react-native';
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  userDetails: state.userDetails,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -50,13 +56,45 @@ const mapDispatchToProps = dispatch => ({
         actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
       }),
     ),
+  saveImage: imageUri => {
+    // const { id } = this.props.auth.data.decoded;
+    let formdata = new FormData();
+
+    if (imageUri) {
+      formdata.append('image', {
+        uri: imageUri,
+        name: 'image.png',
+        type: 'multipart/form-data',
+      });
+    }
+
+    dispatch(
+      rest.actions.userDetails.patch(
+        // { userId: 54 }, replace with real userId here later
+        {
+          body: formdata,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        (err, data) => {
+          if (!err) {
+            console.log('Uploaded successfully!!! Testing here');
+          } else {
+            console.log('Error ', err);
+            console.log('Data: ', data);
+          }
+        },
+      ),
+    );
+  },
 });
 
 class SignUpView extends React.Component {
   componentWillMount() {
-    if (this.props.auth.data.decoded) {
-      this.props.openSignUpLocation();
-    }
+    // if (this.props.auth.data.decoded) {
+    //   this.props.openSignUpLocation();
+    // }
   }
 
   componentWillReceiveProps() {
@@ -71,8 +109,63 @@ class SignUpView extends React.Component {
   state = {
     email: '',
     password: '',
+    username: '',
     error: false,
     validationError: '',
+  };
+
+  openImageGallery = async () => {
+    let { image } = this.state;
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+
+      // later
+      // this.props.saveImage(this.state.image);
+    }
+
+    // console.log('Opening gallery??');
+    // console.log(ImagePicker);
+    // this.setState({ disableSave: true });
+    // const options = {
+    //   title: 'Choose Profile Picture',
+    //   takePhotoButtonTitle: 'Take Photo',
+    //   chooseFromLibraryButtonTitle: 'Choose From Library',
+    //   cancelButtonTitle: 'Cancel',
+    //   mediaType: 'photo',
+    //   allowsEditing: true,
+    //   permissionDenied: {
+    //     title: 'Denied permission',
+    //     text: 'Cannot access gallery',
+    //     reTryTitle: 'Retry',
+    //     okTitle: 'OK now!!',
+    //   },
+    // };
+    // ImagePicker.showImagePicker(options, response => {
+    //   if (response.didCancel) {
+    //     console.log('User cancelled image picker');
+    //     // this.setState({ disableSave: false });
+    //   } else if (response.error) {
+    //     console.log('ImagePicker Error: ', response.error);
+    //     // this.setState({ disableSave: false });
+    //   } else {
+    //     ImageResizer.createResizedImage(response.uri, 512, 512, 'PNG', 100)
+    //       .then(resizedImage => {
+    //         // resizeImageUri is the URI of the new image that can now be displayed, uploaded...
+    //         this.setState({
+    //           // disableSave: false,
+    //           image: resizedImage.uri,
+    //         });
+    //       })
+    //       .catch(err => {
+    //         console.log(err);
+    //       });
+    //   }
+    // });
   };
 
   renderStatus() {
@@ -97,16 +190,17 @@ class SignUpView extends React.Component {
   }
 
   signUp() {
-    const { email, password } = this.state;
+    const { email, password, username } = this.state;
     if (!email || !password) {
       return this.setState({
         validationError: 'Please enter both email & password!',
       });
     }
-    this.props.signUp({ email, password });
+    this.props.signUp({ email, password, username });
   }
 
   render() {
+    const image = { uri: this.state.image };
     return (
       <KeyboardAvoidingView behavior="padding">
         <ViewContainer>
@@ -119,8 +213,15 @@ class SignUpView extends React.Component {
               contentContainerStyle={styles.scrollViewPhotoContainer}
               horizontal
             >
-              <PhotoBox style={{ backgroundColor: '#949795' }}>
-                <PlusSignText>+</PlusSignText>
+              <PhotoBox
+                style={{ backgroundColor: '#949795' }}
+                onPress={this.openImageGallery}
+              >
+                {image.uri ? (
+                  <Image style={{ width: 93, height: 93 }} source={image} />
+                ) : (
+                  <PlusSignText>+</PlusSignText>
+                )}
               </PhotoBox>
               <PhotoBox>
                 <PlusSignText>+</PlusSignText>
@@ -202,6 +303,13 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="(NICK)NAME*"
+                  onChangeText={username =>
+                    this.setState({
+                      username,
+                      validationError: '',
+                      error: false,
+                    })}
+                  value={this.state.username}
                 />
               </LabelView>
               <View style={{ width: 278 }}>
@@ -375,7 +483,7 @@ const PlusSignText = styled.Text`
   text-align: center;
 `;
 
-const PhotoBox = styled.View`
+const PhotoBox = styled.TouchableOpacity`
   width: 93;
   height: 93;
   background-color: #e8e9e8;
