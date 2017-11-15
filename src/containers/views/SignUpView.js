@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ImagePicker from 'react-native-image-picker';
+// import ImagePicker from 'react-native-image-picker';
+// import ImageResizer from 'react-native-image-resizer';
+import { ImagePicker } from 'expo';
 import { NavigationActions } from 'react-navigation';
 import styled from 'styled-components/native';
 
@@ -15,6 +17,7 @@ import {
   KeyboardAvoidingView,
   View,
   FlatList,
+  Image,
 } from 'react-native';
 
 const mapStateToProps = state => ({
@@ -110,6 +113,59 @@ class SignUpView extends React.Component {
     validationError: '',
   };
 
+  openImageGallery = async () => {
+    let { image } = this.state;
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+
+    // console.log('Opening gallery??');
+    // console.log(ImagePicker);
+    // this.setState({ disableSave: true });
+    // const options = {
+    //   title: 'Choose Profile Picture',
+    //   takePhotoButtonTitle: 'Take Photo',
+    //   chooseFromLibraryButtonTitle: 'Choose From Library',
+    //   cancelButtonTitle: 'Cancel',
+    //   mediaType: 'photo',
+    //   allowsEditing: true,
+    //   permissionDenied: {
+    //     title: 'Denied permission',
+    //     text: 'Cannot access gallery',
+    //     reTryTitle: 'Retry',
+    //     okTitle: 'OK now!!',
+    //   },
+    // };
+    // ImagePicker.showImagePicker(options, response => {
+    //   if (response.didCancel) {
+    //     console.log('User cancelled image picker');
+    //     // this.setState({ disableSave: false });
+    //   } else if (response.error) {
+    //     console.log('ImagePicker Error: ', response.error);
+    //     // this.setState({ disableSave: false });
+    //   } else {
+    //     ImageResizer.createResizedImage(response.uri, 512, 512, 'PNG', 100)
+    //       .then(resizedImage => {
+    //         // resizeImageUri is the URI of the new image that can now be displayed, uploaded...
+    //         this.setState({
+    //           // disableSave: false,
+    //           image: resizedImage.uri,
+    //         });
+    //       })
+    //       .catch(err => {
+    //         console.log(err);
+    //       });
+    //   }
+    // });
+  };
+
   renderStatus() {
     if (this.state.validationError) {
       return (
@@ -142,6 +198,7 @@ class SignUpView extends React.Component {
   }
 
   render() {
+    const image = { uri: this.state.image };
     return (
       <KeyboardAvoidingView behavior="padding">
         <ViewContainer>
@@ -154,8 +211,15 @@ class SignUpView extends React.Component {
               contentContainerStyle={styles.scrollViewPhotoContainer}
               horizontal
             >
-              <PhotoBox style={{ backgroundColor: '#949795' }}>
-                <PlusSignText>+</PlusSignText>
+              <PhotoBox
+                style={{ backgroundColor: '#949795' }}
+                onPress={this.openImageGallery}
+              >
+                {image.uri ? (
+                  <Image style={{ width: 93, height: 93 }} source={image} />
+                ) : (
+                  <PlusSignText>+</PlusSignText>
+                )}
               </PhotoBox>
               <PhotoBox>
                 <PlusSignText>+</PlusSignText>
@@ -417,7 +481,7 @@ const PlusSignText = styled.Text`
   text-align: center;
 `;
 
-const PhotoBox = styled.View`
+const PhotoBox = styled.TouchableOpacity`
   width: 93;
   height: 93;
   background-color: #e8e9e8;
