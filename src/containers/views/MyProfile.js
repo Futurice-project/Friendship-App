@@ -37,7 +37,14 @@ const mapDispatchToProps = dispatch => ({
 
 const ButtonOption = styled.View`
   align-items: center;
-  marginTop: 5px;
+  margin-top: 5px;
+`;
+
+const DescriptionWrapper = styled.View`
+  background-color: #efebe9;
+  display: flex;
+  align-items: center;
+  padding: 14px 48px;
 `;
 
 class MyProfile extends React.Component {
@@ -158,19 +165,19 @@ class MyProfile extends React.Component {
               {this.props.currentUser.data.username}
             </Text>
             <Description>
-              {this.state.age + ', '}
-              {this.state.genders}
               {this.props.currentUser.data.location ? (
-                ', ' + this.props.currentUser.data.location
+                this.props.currentUser.data.location
               ) : (
-                ''
+                'Narnia'
               )}
+              {', ' + this.state.age + ', '}
+              {this.state.genders}
             </Description>
-            <Description>I love ... and hate...</Description>
-            <SmallHeader>LOOKING FOR</SmallHeader>
-            <Description>
-              The events you will actively look friends for will be visible here
-            </Description>
+            <DescriptionWrapper>
+              <Description>
+                {this.props.currentUser.data.description}
+              </Description>
+            </DescriptionWrapper>
           </View>
           <TabProfile hate={hate} love={love} myprofile={true} />
 
