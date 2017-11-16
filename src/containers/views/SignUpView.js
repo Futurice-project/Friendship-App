@@ -11,6 +11,7 @@ import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
 import ProgressBar from '../../components/ProgressBar';
+import GenderBox from '../../components/GenderBox';
 
 import {
   TouchableOpacity,
@@ -111,6 +112,8 @@ class SignUpView extends React.Component {
     email: '',
     password: '',
     username: '',
+    birthyear: '',
+    genders: '',
     error: false,
     validationError: '',
   };
@@ -191,13 +194,17 @@ class SignUpView extends React.Component {
   }
 
   signUp() {
-    const { email, password, username } = this.state;
-    if (!email || !password) {
+    const { email, password, username, birthyear, genders } = this.state;
+    if (!email || !password || !username) {
       return this.setState({
-        validationError: 'Please enter both email & password!',
+        validationError: 'Please enter at least username, email & password!',
       });
     }
-    this.props.signUp({ email, password, username });
+    this.props.signUp({ email, password, username, birthyear, genders });
+  }
+
+  updateGenders(value) {
+    this.setState({ genders: [...this.state.genders, value] });
   }
 
   // renderMoodImageContainer, remove later when getting emoji from db?
@@ -216,6 +223,7 @@ class SignUpView extends React.Component {
   }
 
   render() {
+    console.log(this.state.genders);
     const image = { uri: this.state.image };
     return (
       <KeyboardAvoidingView behavior="padding">
@@ -300,6 +308,13 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="BIRTH YEAR*"
+                  onChangeText={birthyear =>
+                    this.setState({
+                      birthyear,
+                      validationError: '',
+                      error: false,
+                    })}
+                  value={this.state.birthyear}
                 />
               </LabelView>
               <View style={{ width: 278 }}>
@@ -321,20 +336,24 @@ class SignUpView extends React.Component {
                 <LabelTextHelper>(visible)</LabelTextHelper>
               </View>
               <GenderBoxContainer style={{ height: 44 }}>
-                <GenderBox>
-                  <LabelText>WOMAN</LabelText>
-                </GenderBox>
-                <GenderBox>
-                  <LabelText>MAN</LabelText>
-                </GenderBox>
+                <GenderBox
+                  updateGenders={() => this.updateGenders(1)}
+                  gender="WOMAN"
+                />
+                <GenderBox
+                  updateGenders={() => this.updateGenders(2)}
+                  gender="MAN"
+                />
               </GenderBoxContainer>
               <GenderBoxContainer style={{ height: 44, marginLeft: '38%' }}>
-                <GenderBox>
-                  <LabelText>HUMAN</LabelText>
-                </GenderBox>
-                <GenderBox>
-                  <LabelText>OTHER</LabelText>
-                </GenderBox>
+                <GenderBox
+                  updateGenders={() => this.updateGenders(3)}
+                  gender="HUMAN"
+                />
+                <GenderBox
+                  updateGenders={() => this.updateGenders(4)}
+                  gender="OTHER"
+                />
               </GenderBoxContainer>
             </LabelContainer>
           </FirstLabelWrapper>
@@ -492,15 +511,15 @@ const GenderBoxContainer = styled.View`
   margin-top: 12;
 `;
 
-const GenderBox = styled.View`
-  height: 44;
-  background-color: #ffffff;
-  width: 36%;
-  border-radius: 27;
-  padding-left: 15;
-  margin-right: 11;
-  justify-content: center;
-`;
+// const GenderBox = styled.View`
+//   height: 44;
+//   background-color: #ffffff;
+//   width: 36%;
+//   border-radius: 27;
+//   padding-left: 15;
+//   margin-right: 11;
+//   justify-content: center;
+// `;
 
 const RoundTabContainer = styled.View`margin-top: auto;`;
 
