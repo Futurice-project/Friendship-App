@@ -204,7 +204,12 @@ class SignUpView extends React.Component {
   }
 
   updateGenders(value) {
-    this.setState({ genders: [...this.state.genders, value] });
+    if (this.state.genders.indexOf(value) > -1) {
+      const genders = this.state.genders.slice();
+      genders.splice(this.state.genders.indexOf(value), 1);
+      return this.setState({ genders });
+    }
+    return this.setState({ genders: [...this.state.genders, value] });
   }
 
   // renderMoodImageContainer, remove later when getting emoji from db?
