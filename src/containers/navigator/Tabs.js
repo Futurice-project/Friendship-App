@@ -1,5 +1,4 @@
-import { TabNavigator, TabBarBottom } from 'react-navigation';
-
+import { TabBarBottom, TabNavigator } from 'react-navigation';
 // ## View Imports ##
 
 import LookingFor from '../views/LookingFor';
@@ -37,7 +36,6 @@ export default TabNavigator(
     MyProfile: { screen: MyProfile },
     LookingFor: { screen: LookingFor },
     Matching: { screen: Matching },
-
     // ## End TabNavigator Views ##
   },
   {
