@@ -22,24 +22,18 @@ import {
  * Map states from redux-api to this components props
  * @param state
  */
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   createUserPersonalities: state.createUserPersonalities,
   auth: state.auth,
-  personalities: state.personalities,
+  index: ownProps.navigation.state.params
+    ? ownProps.navigation.state.params.index
+    : 0,
+  personalities: state.personalities ? state.personalities.data.data : 0,
   navigatorState: state.navigatorState,
   personalityState: state.personalityState,
 });
 
 const mapDispatchToProps = dispatch => ({
-  /**
-   * Call redux action personalities.increment
-   * implementation is described in the redux reducer/actions 'personalities'
-   * @param length
-   * @param endIndex
-   */
-  incrementView: (length, endIndex) => {
-    dispatch(personalities.increment(length, endIndex));
-  },
   /**
    * Navigate to the SignUpPersonality view
    * @param index
@@ -48,9 +42,12 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       NavigationActions.navigate({
         routeName: 'SignUpPersonality',
-        params: { index: 1 },
+        params: { index: index },
       }),
     );
+  },
+  updateChosenPersonalities: personality => {
+    dispatch(personalities.add(personality));
   },
   /**
    * Retrieve personalities
@@ -72,8 +69,9 @@ const mapDispatchToProps = dispatch => ({
     )
       .then(() => {
         dispatch(
-          NavigationActions.navigate({
-            routeName: 'Tabs',
+          NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
           }),
         );
       })
@@ -113,22 +111,32 @@ class SignUpPersonality extends React.Component {
       searchForwards = true;
     }
 
+    console.log(personalityId);
+
     // Remove duplicates from array
     var personalities = this.props.personalityState.chosenPersonalities;
+
+    // Search backwards for duplicates
     for (var i = 0; i < personalities.length; i++) {
-      if (
-        (searchBackwards && personalities[i].personalityId == personalityId) ||
-        personalities[i].personalityId == personalityId - 1
-      ) {
-        personalities.splice(i, 1);
+      if (searchBackwards) {
+        if (
+          personalities[i] == personalityId - 1 ||
+          personalities[i] == personalityId
+        ) {
+          personalities.splice(i, 1);
+        }
       }
     }
+
+    // Search forward for duplicates
     for (var i = 0; i < personalities.length; i++) {
-      if (
-        (searchForwards && personalities[i].personalityId == personalityId) ||
-        personalities[i].personalityId == personalityId + 1
-      ) {
-        personalities.splice(i, 1);
+      if (searchForwards) {
+        if (
+          personalities[i] == personalityId + 1 ||
+          personalities[i] == personalityId
+        ) {
+          personalities.splice(i, 1);
+        }
       }
     }
 
@@ -141,22 +149,21 @@ class SignUpPersonality extends React.Component {
    * @param personalityId
    */
   handleClick = personalityId => {
+    // Create new list with non duplicate personalities
     var personalities = this.removeDuplicateFromChosenPersonalities(
       personalityId,
     );
     personalities.push({ personalityId: personalityId, level: 5 });
-    if (
-      this.props.personalities.data.data.length ==
-      this.props.personalityState.endIndex
-    ) {
+
+    if (this.props.index + 2 >= this.props.personalities.length) {
+      // We are at the end of the list
       this.props.addUserPersonalities({
-        personalities: this.props.personalityState.chosenPersonalities,
+        personalities: personalities,
       });
     } else {
-      this.props.incrementView(
-        this.props.personalities.data.data.length,
-        this.props.personalityState.endIndex,
-      );
+      // Change the view and increment the index
+      this.props.updateChosenPersonalities(personalities);
+      this.props.changeView(this.props.index + 2);
     }
   };
 
@@ -175,15 +182,12 @@ class SignUpPersonality extends React.Component {
    * @returns {XML}
    */
   renderTwoPersonalities() {
-    if (!this.props.personalities.data.data) {
+    if (!this.props.personalities) {
       return <Text>Network failed</Text>;
     }
 
-    var personalities = this.props.personalities.data.data
-      .slice(
-        this.props.personalityState.startIndex,
-        this.props.personalityState.endIndex,
-      )
+    var personalities = this.props.personalities
+      .slice(this.props.index, this.props.index + 2)
       .map(personality => {
         return (
           <Personality
@@ -205,7 +209,7 @@ class SignUpPersonality extends React.Component {
    * @returns {XML}
    */
   renderProgress() {
-    if (!this.props.personalities.data.data) {
+    if (!this.props.personalities) {
       return;
     }
 
@@ -217,7 +221,7 @@ class SignUpPersonality extends React.Component {
           color: '#efebe9',
         }}
       >
-        {this.props.personalityState.endIndex / 2}/{this.props.personalities.data.data.length / 2}{' '}
+        {this.props.index / 2 + 1}/{this.props.personalities.length / 2}{' '}
       </Text>
     );
   }
