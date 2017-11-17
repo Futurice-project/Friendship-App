@@ -161,6 +161,23 @@ class ProfileUser extends React.Component {
     this.setState({ isReportVisible: false });
   };
 
+  renderPersonalities() {
+    var personalities = this.props.personalitiesForUser.data.map(
+      personality => {
+        return (
+          <Personality
+            key={personality.personalityId}
+            title={personality.name}
+            image={personality.name}
+            profile={true}
+          />
+        );
+      },
+    );
+
+    return <Centered>{personalities}</Centered>;
+  }
+
   render = () => {
     if (!this.props.auth.data.decoded) {
       return (
@@ -243,30 +260,9 @@ class ProfileUser extends React.Component {
                 {this.props.userDetails.data.description}
               </Description>
             </DescriptionWrapper>
-            <View
-              style={{
-                flexStart: 'left',
-                height: 90,
-                borderWidth: 1,
-                borderColor: '#fff',
-                marginBottom: 10,
-                backgroundColor: 'transparent',
-              }}
-            >
-              <FlatList
-                data={this.props.personalitiesForUser.data}
-                keyExtractor={item => item.personalityId}
-                renderItem={({ item }) => (
-                  <Personality
-                    key={item.personalityId}
-                    title={item.name}
-                    image={item.name}
-                    profile={true}
-                  />
-                )}
-                horizontal
-              />
-            </View>
+          </View>
+          <View style={styles.personalityPlaceholder}>
+            {this.renderPersonalities()}
           </View>
           <TabProfile hate={hate} love={love} />
           <Modal isVisible={this.state.isOptionsVisible}>
@@ -359,10 +355,16 @@ const styles = StyleSheet.create({
   profileContainer: {
     alignItems: 'center',
     marginTop: 23,
+    marginLeft: 0,
   },
-  personalityIcon: {
-    height: 60,
-    width: 60,
+  personalityPlaceholder: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // height: 90,
+    // borderWidth: 1,
+    // borderColor: '#fff',
+    // marginBottom: 10,
+    // backgroundColor: 'transparent',
   },
   whiteCircle: {
     width: 64,
