@@ -1,7 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import ImagePicker from 'react-native-image-picker';
-// import ImageResizer from 'react-native-image-resizer';
 import { ImagePicker } from 'expo';
 import { NavigationActions } from 'react-navigation';
 import styled from 'styled-components/native';
@@ -10,6 +8,8 @@ import rest from '../../utils/rest';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
+import ProgressBar from '../../components/ProgressBar';
+import GenderBox from '../../components/GenderBox';
 
 import {
   TouchableOpacity,
@@ -22,20 +22,52 @@ import {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  userDetails: state.userDetails,
 });
 
 const mapDispatchToProps = dispatch => ({
-  signUp: credentials => {
-    dispatch(rest.actions.register({}, { body: JSON.stringify(credentials) }))
-      .then(() =>
-        dispatch(
-          NavigationActions.navigate({
-            routeName: 'SignUpLocation',
-          }),
-        ),
-      )
-      .catch(err => console.log(err));
+  signUp: (userData, genders, imageUri) => {
+    let formdata = new FormData();
+    if (imageUri) {
+      formdata.append('image', {
+        uri: imageUri,
+        name: 'image.png',
+        type: 'multipart/form-data',
+      });
+    }
+    if (genders) {
+      formdata.append('genders', JSON.stringify(genders));
+    }
+
+    if (userData) {
+      for (var key in userData) {
+        formdata.append(key, userData[key]);
+      }
+    }
+
+    dispatch(
+      rest.actions.register(
+        {},
+        {
+          body: formdata,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        (err, data) => {
+          if (!err) {
+            console.log('Everything works?');
+            dispatch(
+              NavigationActions.navigate({
+                routeName: 'SignUpLocation',
+              }),
+            );
+          } else {
+            console.log('Error ', err);
+            console.log('Data: ', data);
+          }
+        },
+      ),
+    );
   },
   openSignUpLocation: () =>
     dispatch(
@@ -56,38 +88,6 @@ const mapDispatchToProps = dispatch => ({
         actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
       }),
     ),
-  saveImage: imageUri => {
-    // const { id } = this.props.auth.data.decoded;
-    let formdata = new FormData();
-
-    if (imageUri) {
-      formdata.append('image', {
-        uri: imageUri,
-        name: 'image.png',
-        type: 'multipart/form-data',
-      });
-    }
-
-    dispatch(
-      rest.actions.userDetails.patch(
-        // { userId: 54 }, replace with real userId here later
-        {
-          body: formdata,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-        (err, data) => {
-          if (!err) {
-            console.log('Uploaded successfully!!! Testing here');
-          } else {
-            console.log('Error ', err);
-            console.log('Data: ', data);
-          }
-        },
-      ),
-    );
-  },
 });
 
 class SignUpView extends React.Component {
@@ -110,6 +110,8 @@ class SignUpView extends React.Component {
     email: '',
     password: '',
     username: '',
+    birthyear: '',
+    genders: '',
     error: false,
     validationError: '',
   };
@@ -190,13 +192,37 @@ class SignUpView extends React.Component {
   }
 
   signUp() {
-    const { email, password, username } = this.state;
-    if (!email || !password) {
+    const { email, password, username, birthyear, genders, image } = this.state;
+    if (!email || !password || !username) {
       return this.setState({
-        validationError: 'Please enter both email & password!',
+        validationError: 'Please enter at least username, email & password!',
       });
     }
-    this.props.signUp({ email, password, username });
+    this.props.signUp({ email, password, username, birthyear }, genders, image);
+  }
+
+  updateGenders(value) {
+    if (this.state.genders.indexOf(value) > -1) {
+      const genders = this.state.genders.slice();
+      genders.splice(this.state.genders.indexOf(value), 1);
+      return this.setState({ genders });
+    }
+    return this.setState({ genders: [...this.state.genders, value] });
+  }
+
+  // renderMoodImageContainer, remove later when getting emoji from db?
+  renderEmojis() {
+    const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    return array.map(num => (
+      <MoodImageContainer key={num}>
+        <MoodImage
+          source={{
+            uri:
+              'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
+          }}
+        />
+      </MoodImageContainer>
+    ));
   }
 
   render() {
@@ -205,39 +231,8 @@ class SignUpView extends React.Component {
       <KeyboardAvoidingView behavior="padding">
         <ViewContainer>
           <HeaderWrapper>
+            <ProgressBar color="#d8d8d8" steps="1" />
             <SignUpTitle>YOUR PROFILE</SignUpTitle>
-            <LabelText style={{ marginTop: 24, marginLeft: 30 }}>
-              ADD PHOTO(S)
-            </LabelText>
-            <ScrollViewPhoto
-              contentContainerStyle={styles.scrollViewPhotoContainer}
-              horizontal
-            >
-              <PhotoBox
-                style={{ backgroundColor: '#949795' }}
-                onPress={this.openImageGallery}
-              >
-                {image.uri ? (
-                  <Image style={{ width: 93, height: 93 }} source={image} />
-                ) : (
-                  <PlusSignText>+</PlusSignText>
-                )}
-              </PhotoBox>
-              <PhotoBox>
-                <PlusSignText>+</PlusSignText>
-              </PhotoBox>
-              <PhotoBox>
-                <PlusSignText>+</PlusSignText>
-              </PhotoBox>
-              <PhotoBox>
-                <PlusSignText>+</PlusSignText>
-              </PhotoBox>
-              <PhotoBox>
-                <PlusSignText>+</PlusSignText>
-              </PhotoBox>
-            </ScrollViewPhoto>
-          </HeaderWrapper>
-          <FirstLabelWrapper>
             <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
               PICK YOUR MOOD
             </LabelText>
@@ -245,56 +240,9 @@ class SignUpView extends React.Component {
             <ScrollViewPhoto
               contentContainerStyle={styles.scrollViewMoodContainer}
               horizontal
-              style={{ height: 77, marginTop: 22 }}
+              style={{ height: 70, marginTop: 22 }}
             >
-              <MoodImageContainer>
-                <MoodImage
-                  source={{
-                    uri:
-                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
-                  }}
-                />
-              </MoodImageContainer>
-              <MoodImageContainer>
-                <MoodImage
-                  source={{
-                    uri:
-                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
-                  }}
-                />
-              </MoodImageContainer>
-              <MoodImageContainer>
-                <MoodImage
-                  source={{
-                    uri:
-                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
-                  }}
-                />
-              </MoodImageContainer>
-              <MoodImageContainer>
-                <MoodImage
-                  source={{
-                    uri:
-                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
-                  }}
-                />
-              </MoodImageContainer>
-              <MoodImageContainer>
-                <MoodImage
-                  source={{
-                    uri:
-                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
-                  }}
-                />
-              </MoodImageContainer>
-              <MoodImageContainer>
-                <MoodImage
-                  source={{
-                    uri:
-                      'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
-                  }}
-                />
-              </MoodImageContainer>
+              {this.renderEmojis()}
             </ScrollViewPhoto>
             <LabelContainer>
               <LabelView>
@@ -335,7 +283,7 @@ class SignUpView extends React.Component {
                 <LabelTextHelper>(private)</LabelTextHelper>
               </View>
             </LabelContainer>
-            <LabelContainer style={{ height: 55 }}>
+            <LabelContainer style={{ height: 55, marginBottom: 18 }}>
               <LabelView>
                 <LabelTextInput
                   returnKeyType="go"
@@ -353,20 +301,28 @@ class SignUpView extends React.Component {
                 />
               </LabelView>
             </LabelContainer>
-          </FirstLabelWrapper>
-
-          <SecondLabelWrapper>
-            <LabelContainer>
+          </HeaderWrapper>
+          <FirstLabelWrapper>
+            <LabelContainer style={{ marginTop: 19 }}>
               <LabelView>
                 <LabelTextInput
                   autoCorrect={false}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
-                  placeholder="AGE RANGE*"
+                  placeholder="BIRTH YEAR*"
+                  onChangeText={birthyear =>
+                    this.setState({
+                      birthyear,
+                      validationError: '',
+                      error: false,
+                    })}
+                  value={this.state.birthyear}
                 />
               </LabelView>
               <View style={{ width: 278 }}>
-                <LabelTextHelper>(visible)</LabelTextHelper>
+                <LabelTextHelper>
+                  (This will be displayed as age range)
+                </LabelTextHelper>
               </View>
             </LabelContainer>
             <LabelContainer>
@@ -382,27 +338,61 @@ class SignUpView extends React.Component {
                 <LabelTextHelper>(visible)</LabelTextHelper>
               </View>
               <GenderBoxContainer style={{ height: 44 }}>
-                <GenderBox>
-                  <LabelText>WOMAN</LabelText>
-                </GenderBox>
-                <GenderBox>
-                  <LabelText>MAN</LabelText>
-                </GenderBox>
+                <GenderBox
+                  updateGenders={() => this.updateGenders(1)}
+                  gender="WOMAN"
+                />
+                <GenderBox
+                  updateGenders={() => this.updateGenders(2)}
+                  gender="MAN"
+                />
               </GenderBoxContainer>
               <GenderBoxContainer style={{ height: 44, marginLeft: '38%' }}>
-                <GenderBox>
-                  <LabelText>HUMAN</LabelText>
-                </GenderBox>
-                <GenderBox>
-                  <LabelText>OTHER</LabelText>
-                </GenderBox>
+                <GenderBox
+                  updateGenders={() => this.updateGenders(3)}
+                  gender="HUMAN"
+                />
+                <GenderBox
+                  updateGenders={() => this.updateGenders(4)}
+                  gender="OTHER"
+                />
               </GenderBoxContainer>
             </LabelContainer>
+          </FirstLabelWrapper>
+
+          <SecondLabelWrapper>
+            <LabelText
+              style={{
+                marginLeft: 30,
+                color: '#4a4a4a',
+                fontSize: 15,
+                fontFamily: 'NunitoSans-SemiBold',
+              }}
+            >
+              ADD PHOTO
+            </LabelText>
+            <View style={{ width: 278, marginLeft: 30 }}>
+              <LabelTextHelper>
+                This can be a photo of anything you like
+              </LabelTextHelper>
+            </View>
+            <ScrollViewPhoto
+              contentContainerStyle={styles.scrollViewPhotoContainer}
+              horizontal
+            >
+              <PhotoBox onPress={this.openImageGallery}>
+                {image.uri ? (
+                  <Image style={{ width: 93, height: 93 }} source={image} />
+                ) : (
+                  <PlusSignText>+</PlusSignText>
+                )}
+              </PhotoBox>
+            </ScrollViewPhoto>
             <RoundTabContainer>
               <RoundTab
                 titleColor="white"
                 tint="#2d4359"
-                title="Sign Up"
+                title="Next"
                 style={{ flex: 1 }}
                 onPress={() => this.signUp()}
               />
@@ -416,8 +406,7 @@ class SignUpView extends React.Component {
 
 const HeaderWrapper = styled.View`
   width: 100%;
-  height: 260;
-  margin-top: 20;
+  height: 505;
   display: flex;
   flex-direction: column;
   background-color: #e8e9e8;
@@ -425,10 +414,9 @@ const HeaderWrapper = styled.View`
 
 const FirstLabelWrapper = styled.View`
   width: 100%;
-  height: 427;
+  height: 306;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   background-color: #f9f7f6;
   padding-bottom: 16;
 `;
@@ -436,7 +424,7 @@ const FirstLabelWrapper = styled.View`
 const SecondLabelWrapper = styled.View`
   padding-top: 29;
   width: 100%;
-  height: 422;
+  height: 276;
   flex-direction: column;
   background-color: #e8e9e8;
 `;
@@ -525,15 +513,15 @@ const GenderBoxContainer = styled.View`
   margin-top: 12;
 `;
 
-const GenderBox = styled.View`
-  height: 44;
-  background-color: #ffffff;
-  width: 36%;
-  border-radius: 27;
-  padding-left: 15;
-  margin-right: 11;
-  justify-content: center;
-`;
+// const GenderBox = styled.View`
+//   height: 44;
+//   background-color: #ffffff;
+//   width: 36%;
+//   border-radius: 27;
+//   padding-left: 15;
+//   margin-right: 11;
+//   justify-content: center;
+// `;
 
 const RoundTabContainer = styled.View`margin-top: auto;`;
 
@@ -570,17 +558,10 @@ const styles = {
     color: '#f9f7f6',
     marginBottom: 10,
   },
-  placeholderTextStyle: {
-    fontFamily: 'NunitoSans-SemiBold',
-    fontSize: 18,
-    color: '#4a4a4a',
-    textAlign: 'left',
-  },
   scrollViewPhotoContainer: {
     justifyContent: 'space-around',
     height: 93,
-    paddingRight: 23,
-    paddingLeft: 23,
+    paddingLeft: 30,
   },
   scrollViewMoodContainer: {
     justifyContent: 'space-around',

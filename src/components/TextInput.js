@@ -69,6 +69,9 @@ const InputTitle = styled.Text`
  * @param {string} value - Sets the value of the Input
  * @param {function} onChangeText - Function when the field is changed
  * @param {string} hint - Sets the value of t below the input
+ * @param {enum} returnKeyType - Sets how the return key should look
+ * @param {enum} keyboardType - Set the type of keyboard
+ * @param {enum} autoCapitalize - Determine if the input autoCapitalize certain characters
  */
 export default class TextInput extends React.Component {
   render = () => (

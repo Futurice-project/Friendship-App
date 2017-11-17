@@ -6,10 +6,11 @@ export const Bubble = styled.View`
   background-color: #fff;
   min-height: 132;
   flex-direction: column;
-  width: ${Dimensions.get('window').width - 32};
-
-  margin-bottom: 10;
+  width: 320;
+  align-self: center;
+  ${'' /* width: 320 ${Dimensions.get("window").width - 60}; */} margin-bottom: 10;
   border-radius: 33;
+  overflow: hidden;
 `;
 export const Title = styled.Text`
   font-family: 'NunitoSans-Regular';
@@ -35,6 +36,7 @@ const Input = styled.TextInput.attrs({
   text-align: left;
   color: #9b9b9b;
   padding-left: 20;
+  padding-right: 20;
 `;
 
 /**

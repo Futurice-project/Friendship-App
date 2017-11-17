@@ -1,8 +1,17 @@
 import React from 'react';
-import { BackHandler, ActivityIndicator, StatusBar, View } from 'react-native';
+import {
+  BackHandler,
+  ActivityIndicator,
+  StatusBar,
+  View,
+  Keyboard,
+  Platform,
+} from 'react-native';
 import { Provider } from 'react-redux';
 import store from './src/redux/store';
+import { connect } from 'react-redux';
 import persistStore from './src/utils/persist';
+import * as keyboard from './src/state/keyboard';
 import Navigator, {
   handleBackButton,
 } from './src/containers/navigator/Navigator';
@@ -17,6 +26,22 @@ export default class App extends React.Component {
   state = {
     rehydrated: false,
     fontLoaded: false,
+  };
+
+  /**
+   * When show hide of react's keyboard is fired, this function is called
+   * it will call the redux reducer to handle state changes in the keyboard
+   */
+  keyboardHideListener = () => {
+    store.dispatch(keyboard.hide());
+  };
+
+  /**
+   * When show event of react's keyboard is fired, this function is called
+   * it will call the redux reducer to handle state changes in the keyboard
+   */
+  keyboardDidShowListener = () => {
+    store.dispatch(keyboard.show());
   };
 
   componentDidMount = async () => {
@@ -37,6 +62,15 @@ export default class App extends React.Component {
       Futurice: require('./assets/fonts/Friendship/Friendship-Regular.ttf'),
     });
     this.setState({ fontLoaded: true });
+
+    this.keyboardHideListener = Keyboard.addListener(
+      Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
+      this.keyboardHideListener,
+    );
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShowListener,
+    );
   };
 
   renderActivityIndicator = () =>
@@ -59,4 +93,13 @@ export default class App extends React.Component {
       {this.renderApp()}
     </AppContainer>
   );
+
+  /**
+   * After unmounting the view
+   * we remove the keyboard listeners
+   */
+  componentWillUnmount() {
+    this.keyboardHideListener.remove();
+    this.keyboardDidShowListener.remove();
+  }
 }
