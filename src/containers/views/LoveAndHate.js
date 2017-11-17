@@ -6,6 +6,7 @@ import LoveAndHate from '../../components/LoveAndHate';
 import styled from 'styled-components/native';
 import { View } from 'react-native';
 import ProgressBar from '../../components/ProgressBar';
+import RoundTab from '../../components/RoundTab';
 
 const SubTitle = styled.View`
   margin-top: 10;
@@ -30,14 +31,16 @@ export default class LoveAndHateView extends React.Component {
     data: ['football', 'boxing', 'concerts', 'reading', 'skiing', 'drinking'],
   };
 
-  renderDescription = () => (
-    <Description>
-      Here's a sample view using your <Bold>LoveAndHate</Bold> component.
-    </Description>
-  );
-
   renderLoveAndHate() {
-    return <LoveAndHate />;
+    return (
+      <Centered>
+        <LoveAndHate activity="Football" />
+        <LoveAndHate activity="Boxing" />
+        <LoveAndHate activity="Concerts" />
+        <LoveAndHate activity="Reading" />
+        <LoveAndHate activity="Skiing" />
+      </Centered>
+    );
   }
 
   renderProgress() {
@@ -62,7 +65,7 @@ export default class LoveAndHateView extends React.Component {
     <View>
       <ViewContainer>
         <ProgressBar color="#3a4853" steps="5" />
-        <Padding style={{ flex: 1 }}>
+        <Padding>
           <Title>YEAH & NAAH...</Title>
           <SubTitle>
             {/*this.renderProgress()*/}
@@ -76,10 +79,19 @@ export default class LoveAndHateView extends React.Component {
               1/2 Activities
             </Text>
           </SubTitle>
-          <Centered>{this.renderLoveAndHate()}</Centered>
         </Padding>
+        <Padding
+          style={{
+            flex: 1,
+            paddingTop: -16,
+            paddingLeft: -16,
+            paddingRight: -16,
+          }}
+        >
+          {this.renderLoveAndHate()}
+        </Padding>
+        <RoundTab title="NEXT" />
       </ViewContainer>
-      {this.renderDescription()}
     </View>
   );
 }
