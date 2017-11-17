@@ -10,6 +10,7 @@ import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
 import ProgressBar from '../../components/ProgressBar';
 import GenderBox from '../../components/GenderBox';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 import {
   TouchableOpacity,
@@ -18,6 +19,7 @@ import {
   View,
   FlatList,
   Image,
+  Alert,
 } from 'react-native';
 
 const mapStateToProps = state => ({
@@ -107,11 +109,12 @@ class SignUpView extends React.Component {
   };
 
   state = {
-    email: '',
-    password: '',
-    username: '',
+    email: 'hieu7@abc.com',
+    password: '1234',
+    username: 'hieu7',
     birthyear: '',
     genders: '',
+    loading: false,
     error: false,
     validationError: '',
   };
@@ -125,49 +128,9 @@ class SignUpView extends React.Component {
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
-
       // later
       // this.props.saveImage(this.state.image);
     }
-
-    // console.log('Opening gallery??');
-    // console.log(ImagePicker);
-    // this.setState({ disableSave: true });
-    // const options = {
-    //   title: 'Choose Profile Picture',
-    //   takePhotoButtonTitle: 'Take Photo',
-    //   chooseFromLibraryButtonTitle: 'Choose From Library',
-    //   cancelButtonTitle: 'Cancel',
-    //   mediaType: 'photo',
-    //   allowsEditing: true,
-    //   permissionDenied: {
-    //     title: 'Denied permission',
-    //     text: 'Cannot access gallery',
-    //     reTryTitle: 'Retry',
-    //     okTitle: 'OK now!!',
-    //   },
-    // };
-    // ImagePicker.showImagePicker(options, response => {
-    //   if (response.didCancel) {
-    //     console.log('User cancelled image picker');
-    //     // this.setState({ disableSave: false });
-    //   } else if (response.error) {
-    //     console.log('ImagePicker Error: ', response.error);
-    //     // this.setState({ disableSave: false });
-    //   } else {
-    //     ImageResizer.createResizedImage(response.uri, 512, 512, 'PNG', 100)
-    //       .then(resizedImage => {
-    //         // resizeImageUri is the URI of the new image that can now be displayed, uploaded...
-    //         this.setState({
-    //           // disableSave: false,
-    //           image: resizedImage.uri,
-    //         });
-    //       })
-    //       .catch(err => {
-    //         console.log(err);
-    //       });
-    //   }
-    // });
   };
 
   renderStatus() {
@@ -225,7 +188,14 @@ class SignUpView extends React.Component {
     ));
   }
 
+  renderLoadingIndicator() {
+    if (this.props.auth.loading) {
+      return <LoadingIndicator />;
+    }
+  }
+
   render() {
+    console.log(this.props.auth);
     const image = { uri: this.state.image };
     return (
       <KeyboardAvoidingView behavior="padding">
@@ -399,6 +369,7 @@ class SignUpView extends React.Component {
             </RoundTabContainer>
           </SecondLabelWrapper>
         </ViewContainer>
+        {this.renderLoadingIndicator()}
       </KeyboardAvoidingView>
     );
   }
