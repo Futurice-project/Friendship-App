@@ -127,7 +127,7 @@ class SignUpView extends React.Component {
     });
 
     if (!result.cancelled) {
-      this.setState({ image: result.uri });
+      this.setState({ image: result.uri, error: false });
       // later
       // this.props.saveImage(this.state.image);
     }
@@ -135,30 +135,28 @@ class SignUpView extends React.Component {
 
   renderStatus() {
     if (this.state.validationError) {
-      return (
-        <Text style={styles.statusTextStyle}>{this.state.validationError}</Text>
+      return Alert.alert(
+        'Validation Error',
+        this.state.validationError,
+        [{ text: 'OK', onPress: () => console.log('OK') }],
+        { cancelable: false },
       );
     }
-    const { data, error, loading } = this.props.auth;
-    let status = '';
-    if (data.decoded) {
-      status = `Signed in as ${data.decoded.email}`;
+    if (this.state.error && this.props.auth.error) {
+      return Alert.alert(
+        'Error',
+        this.props.auth.error.message,
+        [{ text: 'OK', onPress: () => console.log('OK') }],
+        { cancelable: false },
+      );
     }
-    if (this.state.error && error) {
-      status = `Error ${error.statusCode}: ${error.message}`;
-    }
-    if (loading) {
-      status = `Loading ...`;
-    }
-
-    return <Text style={styles.statusTextStyle}>{status}</Text>;
   }
 
   signUp() {
     const { email, password, username, birthyear, genders, image } = this.state;
-    if (!email || !password || !username) {
+    if (!email || !password || !username || !birthyear) {
       return this.setState({
-        validationError: 'Please enter at least username, email & password!',
+        validationError: 'Please enter all required fields',
       });
     }
     this.props.signUp({ email, password, username, birthyear }, genders, image);
@@ -168,9 +166,12 @@ class SignUpView extends React.Component {
     if (this.state.genders.indexOf(value) > -1) {
       const genders = this.state.genders.slice();
       genders.splice(this.state.genders.indexOf(value), 1);
-      return this.setState({ genders });
+      return this.setState({ genders, error: false });
     }
-    return this.setState({ genders: [...this.state.genders, value] });
+    return this.setState({
+      genders: [...this.state.genders, value],
+      error: false,
+    });
   }
 
   // renderMoodImageContainer, remove later when getting emoji from db?
@@ -196,6 +197,7 @@ class SignUpView extends React.Component {
 
   render() {
     console.log(this.props.auth);
+    this.renderStatus();
     const image = { uri: this.state.image };
     return (
       <KeyboardAvoidingView behavior="padding">
