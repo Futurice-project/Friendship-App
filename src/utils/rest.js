@@ -73,6 +73,11 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
+  personalitiesForUser: {
+    url: `${apiRoot}/user_personality/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
   currentUserGenders: {
     url: `${apiRoot}/user_gender/:userId`,
     transformer: transformers.array,
@@ -130,11 +135,6 @@ const rest = reduxApi({
   createUserPersonalities: {
     url: `${apiRoot}/user_personalities`,
     options: { method: 'POST' },
-  },
-  personalitiesForUser: {
-    url: `${apiRoot}/user_personality/:userId`,
-    transformer: transformers.array,
-    crud: true,
   },
   register: {
     url: `${apiRoot}/users`,

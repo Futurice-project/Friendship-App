@@ -5,11 +5,13 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
+  FlatList,
   Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { MenuContext } from 'react-native-popup-menu';
 import Modal from 'react-native-modal';
+import resolveAssetSource from 'resolveAssetSource';
 
 import rest from '../../utils/rest';
 
@@ -32,6 +34,7 @@ import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
 import styled from 'styled-components/native';
 import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
+import Personality from '../../components/Personality';
 
 const ButtonOption = styled.View`
   align-items: center;
@@ -69,17 +72,6 @@ const mapDispatchToProps = dispatch => ({
     );
   },
 });
-
-const personalities = {
-  freethinker: require('../../../assets/personalities/Personalities/1_freethinker_60.png'),
-  religion: require('../../../assets/personalities/Personalities/1_religion_60.png'),
-  openminded: require('../../../assets/personalities/Personalities/2_openminded_60.png'),
-  traditional: require('../../../assets/personalities/Personalities/2_traditional_60.png'),
-  ambitious: require('../../../assets/personalities/Personalities/3_ambitious_60.png'),
-  relaxed: require('../../../assets/personalities/Personalities/3_relaxed_60.png'),
-  chillout: require('../../../assets/personalities/Personalities/4_chillout_60.png'),
-  goingout: require('../../../assets/personalities/Personalities/4_goingout_60.png'),
-};
 
 class ProfileUser extends React.Component {
   state = {
@@ -261,19 +253,19 @@ class ProfileUser extends React.Component {
                 backgroundColor: 'transparent',
               }}
             >
-              <Image
-                source={require('../../../assets/personalities/Personalities/1_freethinker_60.png')}
+              <FlatList
+                data={this.props.personalitiesForUser.data}
+                keyExtractor={item => item.personalityId}
+                renderItem={({ item }) => (
+                  <Personality
+                    key={item.personalityId}
+                    title={item.name}
+                    image={item.name}
+                    profile={true}
+                  />
+                )}
+                horizontal
               />
-              <Image
-                source={require('../../../assets/personalities/Personalities/2_traditional_60.png')}
-              />
-              <Image
-                source={require('../../../assets/personalities/Personalities/3_ambitious_60.png')}
-              />
-              <Image
-                source={require('../../../assets/personalities/Personalities/4_chillout_60.png')}
-              />
-              {/* <Text> {this.props.userDetails.data.personalities}</Text> */}
             </View>
           </View>
           <TabProfile hate={hate} love={love} />

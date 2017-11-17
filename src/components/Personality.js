@@ -6,13 +6,21 @@ import resolveAssetSource from 'resolveAssetSource';
 // Import personality images
 import placeholder from '../../assets/img/personalities/personalityPlaceholder.png';
 import freeThinker from '../../assets/img/personalities/1_freethinker_128.png';
+import freeThinkerSmall from '../../assets/img/personalities/1_freethinker_60.png';
 import religion from '../../assets/img/personalities/1_religion_128.png';
+import religionSmall from '../../assets/img/personalities/1_religion_60.png';
 import openMinded from '../../assets/img/personalities/2_openminded_128.png';
+import openMindedSmall from '../../assets/img/personalities/2_openminded_60.png';
 import traditional from '../../assets/img/personalities/2_traditional_128.png';
+import traditionalSmall from '../../assets/img/personalities/2_traditional_60.png';
 import ambitious from '../../assets/img/personalities/3_ambitious_128.png';
+import ambitiousSmall from '../../assets/img/personalities/3_ambitious_60.png';
 import relaxed from '../../assets/img/personalities/3_relaxed_128.png';
+import relaxedSmall from '../../assets/img/personalities/3_relaxed_60.png';
 import chillOut from '../../assets/img/personalities/4_chillout_128.png';
+import chillOutSmall from '../../assets/img/personalities/4_chillout_60.png';
 import goingOut from '../../assets/img/personalities/4_goingout_128.png';
+import goingOutSmall from '../../assets/img/personalities/4_goingout_60.png';
 
 //style for the image
 const ImageContainer = styled.Image`
@@ -57,7 +65,9 @@ export default class Personality extends React.Component {
   componentDidMount() {
     switch (this.props.image) {
       case 'relaxed': {
-        const { width, height } = resolveAssetSource(relaxed);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? relaxedSmall : relaxed,
+        );
         this.setState({
           imageObject: relaxed,
           imageHeight: height,
@@ -66,7 +76,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'ambitious': {
-        const { width, height } = resolveAssetSource(ambitious);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? ambitiousSmall : ambitious,
+        );
         this.setState({
           imageObject: ambitious,
           imageHeight: height,
@@ -75,7 +87,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'traditional': {
-        const { width, height } = resolveAssetSource(traditional);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? traditionalSmall : traditional,
+        );
         this.setState({
           imageObject: traditional,
           imageHeight: height,
@@ -84,7 +98,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'open-minded': {
-        const { width, height } = resolveAssetSource(openMinded);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? openMindedSmall : openMinded,
+        );
         this.setState({
           imageObject: openMinded,
           imageHeight: height,
@@ -93,7 +109,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'religion': {
-        const { width, height } = resolveAssetSource(religion);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? religionSmall : religion,
+        );
         this.setState({
           imageObject: religion,
           imageHeight: height,
@@ -102,7 +120,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'free thinker': {
-        const { width, height } = resolveAssetSource(freeThinker);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? freeThinkerSmall : freeThinker,
+        );
         this.setState({
           imageObject: freeThinker,
           imageHeight: height,
@@ -111,7 +131,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'going out': {
-        const { width, height } = resolveAssetSource(goingOut);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? goingOutSmall : goingOut,
+        );
         this.setState({
           imageObject: goingOut,
           imageHeight: height,
@@ -120,7 +142,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'chilling out': {
-        const { width, height } = resolveAssetSource(chillOut);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? chillOutSmall : chillOut,
+        );
         this.setState({
           imageObject: chillOut,
           imageHeight: height,
