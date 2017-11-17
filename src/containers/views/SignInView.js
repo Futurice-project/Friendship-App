@@ -27,6 +27,8 @@ import {
  */
 const mapStateToProps = state => ({
   auth: state.auth,
+  keyboardOpen: state.keyboardState ? state.keyboardState.keyboardOpen : false,
+  keyboardKey: state.keyboardState ? state.keyboardState.keyboardKey : 'test',
 });
 
 // Map functions to props
@@ -79,64 +81,11 @@ class SignInView extends React.Component {
     header: () => null,
   };
 
-  /**
-   * Creates a new key everytime there is a change on the keyboard
-   * This will solve the white space after clicking on a text input
-   * Because of the key it will recoqnize a change (key = different each time)
-   */
-  keyboardHideListener = () => {
-    this.setState({
-      keyboardAvoidingViewKey: new Date().getTime(),
-      keyboardOpen: false,
-    });
-  };
-
-  /**
-   * Every time the keyboard opens we want to set this in the state
-   * this way we can render accordingly
-   * @param e
-   */
-  keyboardDidShowListener = e => {
-    this.setState({
-      keyboardOpen: true,
-      keyboardHeight: e.endCoordinates.height,
-    });
-  };
-
-  /**
-   * Because of the weird keyboard behaviour of avoiding text inputs
-   * we need to handle the behaviour ourselves
-   * After the component is mounted this function is called.
-   * A listener is added for the hide & show event to handle keyboard changes ourselves
-   */
-  componentDidMount() {
-    this.keyboardHideListener = Keyboard.addListener(
-      Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
-      this.keyboardHideListener,
-    );
-    this.keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      this.keyboardDidShowListener,
-    );
-  }
-
-  /**
-   * After unmounting the view
-   * we remove the keyboard listeners
-   */
-  componentWillUnmount() {
-    this.keyboardHideListener.remove();
-    this.keyboardDidShowListener.remove();
-  }
-
   state = {
     email: '',
     password: '',
     error: false,
     validationError: '',
-    keyboardAvoidingViewKey: 'keyboardAvoidingViewKey',
-    keyboardOpen: false,
-    keyboardHeight: '',
   };
 
   /**
@@ -175,7 +124,7 @@ class SignInView extends React.Component {
    * @returns {XML}
    */
   renderSignInButton() {
-    if (this.state.keyboardOpen) {
+    if (this.props.keyboardOpen) {
       return (
         <View
           onPress={() => this.signIn()}
@@ -220,7 +169,7 @@ class SignInView extends React.Component {
    * We want to close the keyboard when clicking anywhere but the sign in button
    */
   viewClickHandler = () => {
-    if (this.state.keyboardOpen) {
+    if (this.props.keyboardOpen) {
       Keyboard.dismiss();
     }
   };
@@ -238,7 +187,7 @@ class SignInView extends React.Component {
     return (
       <KeyboardAvoidingView
         behavior="padding"
-        key={this.state.keyboardAvoidingViewKey}
+        keyboardKey={this.props.keyboardKey}
       >
         <ViewContainer keyboardShouldPersistTaps="always">
           <TouchableWithoutFeedback onPress={this.viewClickHandler}>

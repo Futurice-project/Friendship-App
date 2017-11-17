@@ -8,7 +8,6 @@ import React from 'react';
  * Because of the key it will recognize a change (key = different each time)
  */
 export function hide(e) {
-  console.log('hide');
   return { type: HIDE };
 }
 
@@ -17,7 +16,6 @@ export function hide(e) {
  * this way we can render accordingly
  */
 export function show(e) {
-  console.log('show');
   return { type: SHOW };
 }
 
@@ -25,18 +23,12 @@ export default function(state = null, action) {
   switch (action.type) {
     case HIDE:
       return {
-        keyboardAvoidingViewKey: new Date().getTime(),
         keyboardOpen: false,
       };
     case SHOW:
       return {
-        keyboardAvoidingViewKey: 'keyboardAvoidingViewKey',
-        keyboardOpen: false,
-      };
-    default:
-      return {
-        keyboardAvoidingViewKey: 'keyboardAvoidingViewKey',
-        keyboardOpen: false,
+        keyboardKey: new Date().getTime(),
+        keyboardOpen: true,
       };
   }
 

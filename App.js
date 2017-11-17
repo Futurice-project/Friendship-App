@@ -93,4 +93,13 @@ export default class App extends React.Component {
       {this.renderApp()}
     </AppContainer>
   );
+
+  /**
+   * After unmounting the view
+   * we remove the keyboard listeners
+   */
+  componentWillUnmount() {
+    this.keyboardHideListener.remove();
+    this.keyboardDidShowListener.remove();
+  }
 }
