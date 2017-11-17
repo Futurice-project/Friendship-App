@@ -1,7 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import ImagePicker from 'react-native-image-picker';
-// import ImageResizer from 'react-native-image-resizer';
 import { ImagePicker } from 'expo';
 import { NavigationActions } from 'react-navigation';
 import styled from 'styled-components/native';
@@ -24,20 +22,52 @@ import {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  userDetails: state.userDetails,
 });
 
 const mapDispatchToProps = dispatch => ({
-  signUp: credentials => {
-    dispatch(rest.actions.register({}, { body: JSON.stringify(credentials) }))
-      .then(() =>
-        dispatch(
-          NavigationActions.navigate({
-            routeName: 'SignUpLocation',
-          }),
-        ),
-      )
-      .catch(err => console.log(err));
+  signUp: (userData, genders, imageUri) => {
+    let formdata = new FormData();
+    if (imageUri) {
+      formdata.append('image', {
+        uri: imageUri,
+        name: 'image.png',
+        type: 'multipart/form-data',
+      });
+    }
+    if (genders) {
+      formdata.append('genders', JSON.stringify(genders));
+    }
+
+    if (userData) {
+      for (var key in userData) {
+        formdata.append(key, userData[key]);
+      }
+    }
+
+    dispatch(
+      rest.actions.register(
+        {},
+        {
+          body: formdata,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        (err, data) => {
+          if (!err) {
+            console.log('Everything works?');
+            dispatch(
+              NavigationActions.navigate({
+                routeName: 'SignUpLocation',
+              }),
+            );
+          } else {
+            console.log('Error ', err);
+            console.log('Data: ', data);
+          }
+        },
+      ),
+    );
   },
   openSignUpLocation: () =>
     dispatch(
@@ -58,38 +88,6 @@ const mapDispatchToProps = dispatch => ({
         actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
       }),
     ),
-  saveImage: imageUri => {
-    // const { id } = this.props.auth.data.decoded;
-    let formdata = new FormData();
-
-    if (imageUri) {
-      formdata.append('image', {
-        uri: imageUri,
-        name: 'image.png',
-        type: 'multipart/form-data',
-      });
-    }
-
-    dispatch(
-      rest.actions.userDetails.patch(
-        // { userId: 54 }, replace with real userId here later
-        {
-          body: formdata,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-        (err, data) => {
-          if (!err) {
-            console.log('Uploaded successfully!!! Testing here');
-          } else {
-            console.log('Error ', err);
-            console.log('Data: ', data);
-          }
-        },
-      ),
-    );
-  },
 });
 
 class SignUpView extends React.Component {
@@ -194,13 +192,13 @@ class SignUpView extends React.Component {
   }
 
   signUp() {
-    const { email, password, username, birthyear, genders } = this.state;
+    const { email, password, username, birthyear, genders, image } = this.state;
     if (!email || !password || !username) {
       return this.setState({
         validationError: 'Please enter at least username, email & password!',
       });
     }
-    this.props.signUp({ email, password, username, birthyear, genders });
+    this.props.signUp({ email, password, username, birthyear }, genders, image);
   }
 
   updateGenders(value) {
@@ -228,7 +226,6 @@ class SignUpView extends React.Component {
   }
 
   render() {
-    console.log(this.state.genders);
     const image = { uri: this.state.image };
     return (
       <KeyboardAvoidingView behavior="padding">
