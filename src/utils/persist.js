@@ -22,6 +22,7 @@ const persistConfig = {
     'sendMessage',
     'chatRoomsWithUserId',
     'createChatRoom',
+    'personalities',
   ],
 };
 

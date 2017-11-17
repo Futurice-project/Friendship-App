@@ -33,9 +33,9 @@ const styles = {
 };
 
 export class SuggestionList extends React.Component {
-  componentDidMount() {
-    this.props.usersByPage(0);
-  }
+  // componentDidMount() {
+  //   this.props.usersByPage(0);
+  // }
 
   keyExtractor = item => item.id;
   renderItem = ({ item }) => {
