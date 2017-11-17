@@ -8,6 +8,7 @@ import React from 'react';
  * Because of the key it will recognize a change (key = different each time)
  */
 export function hide(e) {
+  console.log('hide');
   return { type: HIDE };
 }
 
@@ -16,6 +17,7 @@ export function hide(e) {
  * this way we can render accordingly
  */
 export function show(e) {
+  console.log('show');
   return { type: SHOW };
 }
 

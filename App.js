@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import store from './src/redux/store';
 import { connect } from 'react-redux';
 import persistStore from './src/utils/persist';
+import * as keyboard from './src/state/keyboard';
 import Navigator, {
   handleBackButton,
 } from './src/containers/navigator/Navigator';
@@ -21,14 +22,7 @@ import {
 } from './src/components/Layout';
 import { Font } from 'expo';
 
-const mapDispatchToProps = dispatch => ({
-  // @todo call keyboard state functions here
-  // @todo from redux
-  setStateHideKeyboard: () => {},
-  setStateShowKeyBoard: () => {},
-});
-
-class App extends React.Component {
+export default class App extends React.Component {
   state = {
     rehydrated: false,
     fontLoaded: false,
@@ -39,7 +33,7 @@ class App extends React.Component {
    * it will call the redux reducer to handle state changes in the keyboard
    */
   keyboardHideListener = () => {
-    console.log('hide');
+    store.dispatch(keyboard.hide());
   };
 
   /**
@@ -47,7 +41,7 @@ class App extends React.Component {
    * it will call the redux reducer to handle state changes in the keyboard
    */
   keyboardDidShowListener = () => {
-    console.log('show');
+    store.dispatch(keyboard.show());
   };
 
   componentDidMount = async () => {
@@ -100,5 +94,3 @@ class App extends React.Component {
     </AppContainer>
   );
 }
-
-export default connect(mapDispatchToProps)(App);
