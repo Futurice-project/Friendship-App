@@ -109,9 +109,9 @@ class SignUpView extends React.Component {
   };
 
   state = {
-    email: 'hieu7@abc.com',
-    password: '1234',
-    username: 'hieu7',
+    email: '',
+    password: '',
+    username: '',
     birthyear: '',
     genders: '',
     loading: false,
