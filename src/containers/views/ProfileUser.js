@@ -50,6 +50,7 @@ const mapStateToProps = state => ({
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
   userGenders: state.userGenders,
+  personalitiesForUser: state.personalitiesForUser,
   currentUser: state.currentUser,
   tagsForCurrentUser: state.tagsForCurrentUser,
 });
@@ -60,12 +61,25 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.tagsForUser.get({ userId })),
   refreshUserGenders: userId =>
     dispatch(rest.actions.userGenders.get({ userId })),
+  refreshPersonalitiesForUser: userId =>
+    dispatch(rest.actions.personalitiesForUser.get({ userId })),
   reportUser: reportDetails => {
     dispatch(
       rest.actions.reports.post({}, { body: JSON.stringify(reportDetails) }),
     );
   },
 });
+
+const personalities = {
+  freethinker: require('../../../assets/personalities/Personalities/1_freethinker_60.png'),
+  religion: require('../../../assets/personalities/Personalities/1_religion_60.png'),
+  openminded: require('../../../assets/personalities/Personalities/2_openminded_60.png'),
+  traditional: require('../../../assets/personalities/Personalities/2_traditional_60.png'),
+  ambitious: require('../../../assets/personalities/Personalities/3_ambitious_60.png'),
+  relaxed: require('../../../assets/personalities/Personalities/3_relaxed_60.png'),
+  chillout: require('../../../assets/personalities/Personalities/4_chillout_60.png'),
+  goingout: require('../../../assets/personalities/Personalities/4_goingout_60.png'),
+};
 
 class ProfileUser extends React.Component {
   state = {
@@ -104,6 +118,7 @@ class ProfileUser extends React.Component {
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
     this.props.refreshUserGenders(personId);
+    this.props.refreshPersonalitiesForUser(personId);
   }
 
   getGenders = () => {
@@ -238,13 +253,27 @@ class ProfileUser extends React.Component {
             </DescriptionWrapper>
             <View
               style={{
-                height: 80,
+                flexStart: 'left',
+                height: 90,
                 borderWidth: 1,
                 borderColor: '#fff',
                 marginBottom: 10,
+                backgroundColor: 'transparent',
               }}
             >
-              <Text> Personality Placeholder</Text>
+              <Image
+                source={require('../../../assets/personalities/Personalities/1_freethinker_60.png')}
+              />
+              <Image
+                source={require('../../../assets/personalities/Personalities/2_traditional_60.png')}
+              />
+              <Image
+                source={require('../../../assets/personalities/Personalities/3_ambitious_60.png')}
+              />
+              <Image
+                source={require('../../../assets/personalities/Personalities/4_chillout_60.png')}
+              />
+              {/* <Text> {this.props.userDetails.data.personalities}</Text> */}
             </View>
           </View>
           <TabProfile hate={hate} love={love} />
@@ -338,6 +367,10 @@ const styles = StyleSheet.create({
   profileContainer: {
     alignItems: 'center',
     marginTop: 23,
+  },
+  personalityIcon: {
+    height: 60,
+    width: 60,
   },
   whiteCircle: {
     width: 64,
