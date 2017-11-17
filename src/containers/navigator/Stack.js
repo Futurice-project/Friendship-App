@@ -34,7 +34,7 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
-    Welcome: { screen: WelcomeView },
+    Welcome: { screen: SignUpPersonality },
     SignUpLocation: { screen: SignUpLocation },
     LookingFor: { screen: LookingFor },
     SignUpMatching: { screen: SignUpMatching },
