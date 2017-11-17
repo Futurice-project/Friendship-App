@@ -30,6 +30,10 @@ export default function(state = null, action) {
         keyboardKey: new Date().getTime(),
         keyboardOpen: true,
       };
+    default:
+      return {
+        keyboardOpen: false,
+      };
   }
 
   return state;
