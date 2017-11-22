@@ -1,23 +1,27 @@
 import styled from 'styled-components/native';
 import React from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
-
+import {
+  TouchableWithoutFeedback,
+  LayoutAnimation,
+  UIManager,
+  Platform,
+} from 'react-native';
 
 export const ToggleSwitch = styled.View`
   width: 20;
   height: 20;
   background-color: #3b3b3d;
-
   border-radius: 40;
-  left: ${props => (props.value ? 5 : 72)};
-
+  left: ${props => (props.value ? 33 : 5)};
 `;
 
 export const ToggleText = styled.Text`
-  height: 50;
   font-family: 'NunitoSans-Regular';
   font-size: 13;
-  letter-spacing: 1.59;
+  font-weight: 600;
+  margin-top: 50;
+  letter-spacing: 1.5;
+  text-align: left;
   text-align: ${props => (props.right ? 'right' : 'left')}};
   padding: 5px;
   color: ${props => props.tint || '#4a4a4a'};
@@ -32,8 +36,8 @@ export const ContainerView = styled.View`
 
 export const ToggleView = styled.View`
   background-color: #ffffff;
-  width: 97;
-  height: 50;
+  width: 58;
+  height: 30;
   border-width: 0.5;
   border-color: #e1e1e1;
   border-radius: 40;
@@ -53,15 +57,45 @@ export const TextWrapper = styled.View`
 	* @param {string} rightText - Sets the text of the right side of the switch
 	* @param {string} leftText - Sets the text of the left side of the switch
  */
+
+var CustomLayoutAnimation = {
+  duration: 300,
+  create: {
+    type: LayoutAnimation.Types.spring,
+    property: LayoutAnimation.Properties.scaleXY,
+    springDamping: 0.7,
+  },
+  update: {
+    type: LayoutAnimation.Types.spring,
+  },
+};
+/**
+ * Styled Toggle component
+ * @param {string} leftText - Sets the text on the left side
+ * @param {string} rightText - Sets the text on the right side
+ * @param {boolean} value - Sets the value of the switch
+ * @param {function} onPress - Set the function of the toggle, should be changing the boolean value
+ */
 export default class Toggle extends React.Component {
+  constructor() {
+    super();
+    //The following code must be set to use LayoutAnimation
+    if (Platform.OS === 'android') {
+      UIManager.setLayoutAnimationEnabledExperimental &&
+        UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+  }
   render = () => (
-    <ContainerView>
+    <ContainerView style={{ marginBottom: 28 }}>
       <TextWrapper>
         <ToggleText right>{this.props.leftText}</ToggleText>
       </TextWrapper>
       <TouchableWithoutFeedback
         style={{ flex: 1 }}
-        onPress={this.props.onPress}
+        onPress={() => {
+          LayoutAnimation.configureNext(CustomLayoutAnimation);
+          this.props.onPress();
+        }}
       >
         <ToggleView>
           <ToggleSwitch value={this.props.value} />

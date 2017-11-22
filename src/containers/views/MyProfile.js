@@ -21,12 +21,15 @@ const mapStateToProps = state => ({
   auth: state.auth,
   currentUser: state.currentUser,
   tagsForCurrentUser: state.tagsForCurrentUser,
+  currentUserGenders: state.currentUserGenders,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshUser: userId => dispatch(rest.actions.currentUser.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForCurrentUser.get({ userId })),
+  refreshUserGenders: userId =>
+    dispatch(rest.actions.currentUserGenders.get({ userId })),
   signOut: () => {
     dispatch({ type: 'SIGN_OUT' });
   },
@@ -34,7 +37,14 @@ const mapDispatchToProps = dispatch => ({
 
 const ButtonOption = styled.View`
   align-items: center;
-  marginTop: 5px;
+  margin-top: 5px;
+`;
+
+const DescriptionWrapper = styled.View`
+  background-color: #efebe9;
+  display: flex;
+  align-items: center;
+  padding: 14px 48px;
 `;
 
 class MyProfile extends React.Component {
@@ -63,12 +73,14 @@ class MyProfile extends React.Component {
     // render the profile user when we have the data.
     if (
       !nextProps.currentUser.loading &&
-      !nextProps.tagsForCurrentUser.loading
+      !nextProps.tagsForCurrentUser.loading &&
+      !nextProps.currentUserGenders.loading
     ) {
       this.setState({
         loaded: true,
       });
       this.getAge();
+      this.getGenders();
     }
   }
 
@@ -78,7 +90,14 @@ class MyProfile extends React.Component {
       : null;
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
+    this.props.refreshUserGenders(personId);
   }
+
+  getGenders = () => {
+    const gendersArr = this.props.currentUserGenders.data.map(x => x.gender);
+    const genders = gendersArr.join(' and ');
+    this.setState({ genders: genders });
+  };
 
   getAge = () => {
     const birthDay = new Date(this.props.currentUser.data.birthday);
@@ -105,7 +124,6 @@ class MyProfile extends React.Component {
     } else {
       ageName = "It's a mystery";
     }
-    console.log(age);
     this.setState({ age: ageName });
   };
 
@@ -146,19 +164,19 @@ class MyProfile extends React.Component {
               {this.props.currentUser.data.username}
             </Text>
             <Description>
-              {this.state.age}
-              , male
               {this.props.currentUser.data.location ? (
-                ', ' + this.props.currentUser.data.location
+                this.props.currentUser.data.location
               ) : (
-                ''
+                'Narnia'
               )}
+              {', ' + this.state.age + ', '}
+              {this.state.genders}
             </Description>
-            <Description>I love ... and hate...</Description>
-            <SmallHeader>LOOKING FOR</SmallHeader>
-            <Description>
-              The events you will actively look friends for will be visible here
-            </Description>
+            <DescriptionWrapper>
+              <Description>
+                {this.props.currentUser.data.description}
+              </Description>
+            </DescriptionWrapper>
           </View>
           <TabProfile hate={hate} love={love} myprofile={true} />
 

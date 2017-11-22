@@ -52,7 +52,6 @@ export default class RoundTab extends React.Component {
       source={require('../../assets/img/roundTab/roundTab.png')}
       resizeMode="contain"
     >
-      {/* {this.props.children} */}
       <TouchableOpacity
         style={{
           width: Dimensions.get('window').width,
@@ -63,7 +62,9 @@ export default class RoundTab extends React.Component {
         onPress={this.props.onPress}
       >
         {this.props.children}
-        <ButtonText>{this.props.title}</ButtonText>
+        <ButtonText style={{ color: this.props.titleColor }}>
+          {this.props.title}
+        </ButtonText>
       </TouchableOpacity>
     </ImageContainer>
   );

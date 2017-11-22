@@ -8,6 +8,7 @@ import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
+import { TouchableWithoutFeedback } from 'react-native';
 
 import {
   TouchableOpacity,
@@ -19,28 +20,49 @@ import {
   Dimensions,
 } from 'react-native';
 
+/**
+ * Maps the auth state from to the props of this component
+ * The auth state contains the logging state
+ * @param state
+ */
 const mapStateToProps = state => ({
   auth: state.auth,
+  keyboardOpen: state.keyboardState ? state.keyboardState.keyboardOpen : false,
+  keyboardKey: state.keyboardState ? state.keyboardState.keyboardKey : 'test',
 });
 
+// Map functions to props
 const mapDispatchToProps = dispatch => ({
+  /**
+   * Call signIn action that tries logging in with the redux-api library
+   * If it's successful we wil navigate to another page
+   * Else we will log the errors
+   * @param credentials
+   */
   signIn: credentials => {
     dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) }))
       .then(() =>
         dispatch(
-          NavigationActions.navigate({
-            routeName: 'SignOut',
+          NavigationActions.reset({
+            index: 0, // active route = 0 (top of the stack)
+            actions: [NavigationActions.navigate({ routeName: 'SignOut' })],
           }),
         ),
       )
       .catch(err => console.log(err));
   },
+  /**
+   * Navigates to the SignUpLocation screen
+   */
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
         routeName: 'SignUpLocation',
       }),
     ),
+  /**
+   * Navigates to the Welcome screen
+   */
   openWelcomeScreen: () =>
     dispatch(
       NavigationActions.navigate({
@@ -50,55 +72,27 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class SignInView extends React.Component {
+  /**
+   * Disable headers
+   * @type {{title: string, header: (()=>null)}}
+   */
   static navigationOptions = {
     title: 'Sign up',
     header: () => null,
   };
-
-  // Creates a new key everytime there is a change on the keyboard
-  // This will solve the white space after opening textfields
-  // Because now it recognizes a change (key = different)
-  keyboardHideListener = () => {
-    this.setState({
-      keyboardAvoidingViewKey: new Date().getTime(),
-      keyboardOpen: false,
-    });
-  };
-
-  keyboardDidShowListener = e => {
-    console.log(e.endCoordinates.height);
-    this.setState({
-      keyboardOpen: true,
-      keyboardHeight: e.endCoordinates.height,
-    });
-  };
-
-  componentDidMount() {
-    this.keyboardHideListener = Keyboard.addListener(
-      Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
-      this.keyboardHideListener,
-    );
-    this.keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      this.keyboardDidShowListener,
-    );
-  }
-
-  componentWillUnmount() {
-    this.keyboardHideListener.remove();
-    this.keyboardDidShowListener.remove();
-  }
 
   state = {
     email: '',
     password: '',
     error: false,
     validationError: '',
-    keyboardAvoidingViewKey: 'keyboardAvoidingViewKey',
-    keyboardOpen: false,
-    keyboardHeight: '',
   };
 
+  /**
+   * After we try logging in trough or redux-api call
+   * We want to render errors from the back-end accordingly
+   * @returns {XML}
+   */
   renderStatus() {
     if (this.state.validationError) {
       return (
@@ -130,7 +124,7 @@ class SignInView extends React.Component {
    * @returns {XML}
    */
   renderSignInButton() {
-    if (this.state.keyboardOpen) {
+    if (this.props.keyboardOpen) {
       return (
         <View
           onPress={() => this.signIn()}
@@ -152,6 +146,13 @@ class SignInView extends React.Component {
     this.setState({ error: true });
   }
 
+  /**
+   * This function will create a validation error when
+   * username or password are empty.
+   * Else it will call the redux-api function which tries to sign in the user
+   * based on the email and password that is set in the components state
+   * @returns {*|SignInView}
+   */
   signIn() {
     const { email, password } = this.state;
     if (!email || !password) {
@@ -162,55 +163,77 @@ class SignInView extends React.Component {
     this.props.signIn({ email, password });
   }
 
+  /**
+   * This handler will be called when pressing the TouchableWithoutFeedback
+   * This way we can handle clicks and close the keyboard accordingly
+   * We want to close the keyboard when clicking anywhere but the sign in button
+   */
+  viewClickHandler = () => {
+    if (this.props.keyboardOpen) {
+      Keyboard.dismiss();
+    }
+  };
+
+  /**
+   * Render the component.
+   * KeyboardShouldPersistTaps should be set to 'always' for the ViewContainer
+   * this way the keyboard in this view will not dismiss automatically.
+   * We handle the keyboard closing our own with a TouchableWithoutFeedback
+   * which calls the viewClickHandler function
+   *    - The keyboard will only close when pressing anywhere but the sign-in button
+   * @returns {XML}
+   */
   render() {
     return (
       <KeyboardAvoidingView
         behavior="padding"
-        key={this.state.keyboardAvoidingViewKey}
+        keyboardKey={this.props.keyboardKey}
       >
-        <ViewContainer>
-          <Padding style={{ flex: 1 }}>
-            <HeaderWrapper>
-              <Text
-                style={styles.headerText}
-                onPress={this.props.openWelcomeScreen}
-              >
-                Cancel
-              </Text>
-              <Text style={styles.headerText} onPress={this.props.openSignUp}>
-                Sign Up
-              </Text>
-            </HeaderWrapper>
-            <Centered style={{ flex: 2 }}>
-              <TextInput
-                titleColor="#f9f7f6"
-                title="EMAIL"
-                placeholder="HELLO@FRIENDSHIP.COM"
-                backColor="#faf6f0"
-                onChangeText={email =>
-                  this.setState({ email, validationError: '', error: false })}
-                value={this.state.email}
-              />
-              <TextInput
-                secure
-                title="PASSWORD"
-                titleColor="#f9f7f6"
-                placeholder="*******"
-                backColor="#faf6f0"
-                onChangeText={password =>
-                  this.setState({
-                    password,
-                    validationError: '',
-                    error: false,
-                  })}
-                value={this.state.password}
-              />
-              {this.renderStatus()}
-              <Text style={styles.textStyle}>
-                Need help with your password?
-              </Text>
-            </Centered>
-          </Padding>
+        <ViewContainer keyboardShouldPersistTaps="always">
+          <TouchableWithoutFeedback onPress={this.viewClickHandler}>
+            <Padding style={{ flex: 1 }}>
+              <HeaderWrapper>
+                <Text
+                  style={styles.headerText}
+                  onPress={this.props.openWelcomeScreen}
+                >
+                  Cancel
+                </Text>
+                <Text style={styles.headerText} onPress={this.props.openSignUp}>
+                  Sign Up
+                </Text>
+              </HeaderWrapper>
+              <Centered style={{ flex: 2 }}>
+                <TextInput
+                  titleColor="#f9f7f6"
+                  title="EMAIL"
+                  placeholder="HELLO@FRIENDSHIP.COM"
+                  backColor="#faf6f0"
+                  onChangeText={email =>
+                    this.setState({ email, validationError: '', error: false })}
+                  value={this.state.email}
+                />
+                <TextInput
+                  secure
+                  title="PASSWORD"
+                  titleColor="#f9f7f6"
+                  placeholder="*******"
+                  backColor="#faf6f0"
+                  onChangeText={password =>
+                    this.setState({
+                      password,
+                      validationError: '',
+                      error: false,
+                    })}
+                  value={this.state.password}
+                />
+                {this.renderStatus()}
+                <Text style={styles.textStyle}>
+                  Need help with your password?
+                </Text>
+              </Centered>
+            </Padding>
+          </TouchableWithoutFeedback>
           {this.renderSignInButton()}
         </ViewContainer>
       </KeyboardAvoidingView>
@@ -224,6 +247,8 @@ const HeaderWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
 `;
+
+export const ContentWrapper = styled.View`flex: 1;`;
 
 const styles = {
   headerText: {

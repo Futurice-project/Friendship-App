@@ -11,20 +11,20 @@ export const injectStore = _store => {
 };
 
 /*
-// Endpoint configurations
-These example endpoints can be called by dispatching the respective actions, e.g:
-dispatch(rest.actions.teams.post({teamId: 42}, { body: JSON.stringify(exampleData) }));
-Results in: POST /teams?teamId=42 with POST data from 'exampleData'
-Result of request can be found in: `state.teams.data`
-Information about request: `state.teams.error`, `state.teams.sync`, `state.teams.error`...
-*/
+ // Endpoint configurations
+ These example endpoints can be called by dispatching the respective actions, e.g:
+ dispatch(rest.actions.teams.post({teamId: 42}, { body: JSON.stringify(exampleData) }));
+ Results in: POST /teams?teamId=42 with POST data from 'exampleData'
+ Result of request can be found in: `state.teams.data`
+ Information about request: `state.teams.error`, `state.teams.sync`, `state.teams.error`...
+ */
 
 let apiRoot;
 
 if (process.env.NODE_ENV === 'development') {
   apiRoot = 'http://localhost:3888';
 } else {
-  apiRoot = 'https://my-app.herokuapp.com';
+  apiRoot = 'https://friendshipbackend.herokuapp.com';
 }
 
 authTransformer = (data = {}) => {
@@ -42,8 +42,16 @@ const rest = reduxApi({
     url: `${apiRoot}/personalities`,
     crud: true,
   },
+  locations: {
+    url: `${apiRoot}/locations`,
+    crud: true,
+  },
   users: {
     url: `${apiRoot}/users`,
+    crud: true,
+  },
+  usersByPage: {
+    url: `${apiRoot}/users/page/:number`,
     crud: true,
   },
   usersSearch: {
@@ -60,6 +68,16 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
+  userGenders: {
+    url: `${apiRoot}/user_gender/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  currentUserGenders: {
+    url: `${apiRoot}/user_gender/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
   currentUser: {
     url: `${apiRoot}/users/:userId`,
     crud: true,
@@ -68,6 +86,42 @@ const rest = reduxApi({
     url: `${apiRoot}/tagsForUser/:userId`,
     transformer: transformers.array,
     crud: true,
+  },
+  reports: {
+    url: `${apiRoot}/reports`,
+    crud: true,
+  },
+  chatRooms: {
+    url: `${apiRoot}/chatrooms`,
+    crud: true,
+  },
+  createChatRoom: {
+    url: `${apiRoot}/chatrooms`,
+    crud: true,
+    options: {
+      method: 'POST',
+    },
+  },
+  chatRoomsWithUserId: {
+    url: `${apiRoot}/chatrooms/userid/:id`,
+    crud: true,
+  },
+  chatRoomMessages: {
+    url: `${apiRoot}/chatrooms/:id`,
+    crud: true,
+  },
+  sendMessage: {
+    url: `${apiRoot}/chatrooms/:id`,
+    crud: true,
+    options: {
+      method: 'POST',
+    },
+    postfetch: [
+      function({ dispatch, actions, data }) {
+        const id = data.chatroom_id;
+        dispatch(actions.chatRoomMessages({ id }));
+      },
+    ],
   },
   createUserPersonality: {
     url: `${apiRoot}/user_personality`,
@@ -89,6 +143,10 @@ const rest = reduxApi({
     options: {
       method: 'POST',
     },
+  },
+  createUserLocations: {
+    url: `${apiRoot}/user_locations`,
+    options: { method: 'POST' },
   },
 })
   .use('options', (url, params, getState) => {

@@ -20,16 +20,36 @@ import {
   FlexRow,
   HeaderButton,
 } from '../../components/Layout';
-import { SmallHeader, Description } from '../../components/Text';
+import {
+  SmallHeader,
+  Description,
+  Incommon,
+  FrienshipFont,
+  YeahColor,
+  NaahColor,
+} from '../../components/Text';
 import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
 import styled from 'styled-components/native';
 import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
 
+const ButtonOption = styled.View`
+  align-items: center;
+  margin-top: 5px;
+`;
+
+const DescriptionWrapper = styled.View`
+  background-color: #efebe9;
+  display: flex;
+  align-items: center;
+  padding: 14px 48px;
+`;
+
 const mapStateToProps = state => ({
   auth: state.auth,
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
+  userGenders: state.userGenders,
   currentUser: state.currentUser,
   tagsForCurrentUser: state.tagsForCurrentUser,
 });
@@ -38,6 +58,13 @@ const mapDispatchToProps = dispatch => ({
   refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForUser.get({ userId })),
+  refreshUserGenders: userId =>
+    dispatch(rest.actions.userGenders.get({ userId })),
+  reportUser: reportDetails => {
+    dispatch(
+      rest.actions.reports.post({}, { body: JSON.stringify(reportDetails) }),
+    );
+  },
 });
 
 class ProfileUser extends React.Component {
@@ -63,6 +90,7 @@ class ProfileUser extends React.Component {
         loaded: true,
       });
       this.getAge();
+      this.getGenders();
     }
   }
 
@@ -70,7 +98,14 @@ class ProfileUser extends React.Component {
     const personId = this.props.navigation.state.params.personId;
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
+    this.props.refreshUserGenders(personId);
   }
+
+  getGenders = () => {
+    const gendersArr = this.props.userGenders.data.map(x => x.gender);
+    const genders = gendersArr.join(' and ');
+    this.setState({ genders: genders });
+  };
 
   getAge = () => {
     const birthDay = new Date(this.props.userDetails.data.birthday);
@@ -170,18 +205,32 @@ class ProfileUser extends React.Component {
             <Text style={styles.username}>
               {this.props.userDetails.data.username}
             </Text>
+            <Incommon>
+              <YeahColor>
+                {loveCommon}
+                <FrienshipFont> YEAH</FrienshipFont>
+              </YeahColor>{' '}
+              &{' '}
+              <NaahColor>
+                {hateCommon}
+                <FrienshipFont> NAAH</FrienshipFont>
+              </NaahColor>{' '}
+              in common{' '}
+            </Incommon>
             <Description>
-              {this.state.age}
-              , male
               {this.props.userDetails.data.location ? (
-                ', ' + this.props.userDetails.data.location
+                this.props.userDetails.data.location
               ) : (
-                ', Narnia'
+                'Narnia'
               )}
+              {', ' + this.state.age + ', '}
+              {this.state.genders}
             </Description>
-            <Description>
-              {loveCommon} YEAH & {hateCommon} NAAH in common{' '}
-            </Description>
+            <DescriptionWrapper>
+              <Description>
+                {this.props.userDetails.data.description}
+              </Description>
+            </DescriptionWrapper>
             <View
               style={{
                 height: 80,

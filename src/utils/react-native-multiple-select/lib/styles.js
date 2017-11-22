@@ -23,7 +23,7 @@ export default {
     flexDirection: 'row',
   },
   footerWrapperNC: {
-    width: 320,
+    //width: 320,
     flexDirection: 'column',
   },
   subSection: {
@@ -32,12 +32,12 @@ export default {
     borderColor: colorPack.borderColor,
     paddingLeft: 20,
     paddingRight: 20,
-    flex: 1,
+    width: Dimensions.get('window').width - 40,
     height: 44,
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
-    marginRight: 40,
+
     borderRadius: 27,
   },
   greyButton: {
@@ -74,8 +74,8 @@ export default {
       flexDirection: 'column',
       marginBottom: 10,
       elevation: 2,
+      width: Dimensions.get('window').width - 40,
       marginLeft: 20,
-      marginRight: 40,
     };
     if (fixedHeight) {
       style.height = 250;
@@ -85,15 +85,16 @@ export default {
   inputGroup: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 16,
     height: 44,
+    paddingLeft: 10,
     backgroundColor: colorPack.light,
     borderRadius: 27,
   },
   dropdownView: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 40,
+    height: 44,
+    zIndex: 33,
     marginBottom: 10,
   },
 };

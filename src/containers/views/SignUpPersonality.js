@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
+import * as personalities from '../../state/personalities';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
 import Personality from '../../components/Personality';
+import ProgressBar from '../../components/ProgressBar';
 
 import {
   TouchableOpacity,
@@ -16,16 +18,48 @@ import {
   Dimensions,
 } from 'react-native';
 
-const mapStateToProps = state => ({
+/**
+ * Map states from redux-api to this components props
+ * @param state
+ */
+const mapStateToProps = (state, ownProps) => ({
   createUserPersonalities: state.createUserPersonalities,
   auth: state.auth,
-  personalities: state.personalities,
+  index: ownProps.navigation.state.params
+    ? ownProps.navigation.state.params.index
+    : 0,
+  personalities: state.personalities ? state.personalities.data.data : 0,
+  navigatorState: state.navigatorState,
+  personalityState: state.personalityState,
 });
 
 const mapDispatchToProps = dispatch => ({
+  /**
+   * Navigate to the SignUpPersonality view
+   * @param index
+   */
+  changeView: index => {
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SignUpPersonality',
+        params: { index: index },
+      }),
+    );
+  },
+  updateChosenPersonalities: personality => {
+    dispatch(personalities.add(personality));
+  },
+  /**
+   * Retrieve personalities
+   * @param credentials
+   */
   getPersonalities: credentials => {
     dispatch(rest.actions.personalities()).catch(err => console.log(err));
   },
+  /**
+   * Add user personalities
+   * @param credentials
+   */
   addUserPersonalities: credentials => {
     dispatch(
       rest.actions.createUserPersonalities(
@@ -35,8 +69,9 @@ const mapDispatchToProps = dispatch => ({
     )
       .then(() => {
         dispatch(
-          NavigationActions.navigate({
-            routeName: 'Tabs',
+          NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
           }),
         );
       })
@@ -45,6 +80,10 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class SignUpPersonality extends React.Component {
+  /**
+   * Disable header
+   * @type {{header: (()=>null)}}
+   */
   static navigationOptions = {
     header: () => null,
   };
@@ -52,9 +91,6 @@ class SignUpPersonality extends React.Component {
   state = {
     personalityId: '',
     level: '',
-    chosenPersonalities: [],
-    startIndex: 0,
-    endIndex: 2,
   };
 
   /**
@@ -75,58 +111,83 @@ class SignUpPersonality extends React.Component {
       searchForwards = true;
     }
 
+    console.log(personalityId);
+
     // Remove duplicates from array
-    var personalities = this.state.chosenPersonalities;
+    var personalities = this.props.personalityState.chosenPersonalities;
+
+    // Search backwards for duplicates
     for (var i = 0; i < personalities.length; i++) {
-      if (
-        (searchBackwards && personalities[i].personalityId == personalityId) ||
-        personalities[i].personalityId == personalityId - 1
-      ) {
-        personalities.splice(i, 1);
+      if (searchBackwards) {
+        if (
+          personalities[i] == personalityId - 1 ||
+          personalities[i] == personalityId
+        ) {
+          personalities.splice(i, 1);
+        }
       }
     }
+
+    // Search forward for duplicates
     for (var i = 0; i < personalities.length; i++) {
-      if (
-        (searchForwards && personalities[i].personalityId == personalityId) ||
-        personalities[i].personalityId == personalityId + 1
-      ) {
-        personalities.splice(i, 1);
+      if (searchForwards) {
+        if (
+          personalities[i] == personalityId + 1 ||
+          personalities[i] == personalityId
+        ) {
+          personalities.splice(i, 1);
+        }
       }
     }
 
     return personalities;
   };
 
+  /**
+   * Handle a personality click
+   * Set the state with new chosen personalities
+   * @param personalityId
+   */
   handleClick = personalityId => {
+    // Create new list with non duplicate personalities
     var personalities = this.removeDuplicateFromChosenPersonalities(
       personalityId,
     );
     personalities.push({ personalityId: personalityId, level: 5 });
-    if (this.props.personalities.data.data.length == this.state.endIndex) {
+
+    if (this.props.index + 2 >= this.props.personalities.length) {
+      // We are at the end of the list
       this.props.addUserPersonalities({
-        personalities: this.state.chosenPersonalities,
+        personalities: personalities,
       });
     } else {
-      this.setState({
-        newPersonalityChosen: false,
-        startIndex: this.state.startIndex + 2,
-        endIndex: this.state.endIndex + 2,
-      });
+      // Change the view and increment the index
+      this.props.updateChosenPersonalities(personalities);
+      this.props.changeView(this.props.index + 2);
     }
   };
 
+  /**
+   * Retrieve all the personalities when loading the component
+   * for the first time
+   */
   componentDidMount() {
-    console.log('Testing token here!!!', this.props.auth);
+    // console.log('Testing token here!!!', this.props.auth);
     this.props.getPersonalities();
   }
 
+  /**
+   * Renders personalities with personality component according to
+   * the list from the personality state
+   * @returns {XML}
+   */
   renderTwoPersonalities() {
-    if (!this.props.personalities.data.data) {
+    if (!this.props.personalities) {
       return <Text>Network failed</Text>;
     }
 
-    var personalities = this.props.personalities.data.data
-      .slice(this.state.startIndex, this.state.endIndex)
+    var personalities = this.props.personalities
+      .slice(this.props.index, this.props.index + 2)
       .map(personality => {
         return (
           <Personality
@@ -141,30 +202,43 @@ class SignUpPersonality extends React.Component {
     return <Personalities>{personalities}</Personalities>;
   }
 
+  /**
+   * Render a text component containing the progress of the
+   * steps in this view
+   * Example: (1/4, 2/4)
+   * @returns {XML}
+   */
+  renderProgress() {
+    if (!this.props.personalities) {
+      return;
+    }
+
+    return (
+      <Text
+        style={{
+          fontFamily: 'NunitoSans-Bold',
+          fontSize: 20,
+          color: '#efebe9',
+        }}
+      >
+        {this.props.index / 2 + 1}/{this.props.personalities.length / 2}{' '}
+      </Text>
+    );
+  }
+
+  /**
+   * Render the component
+   * @returns {XML}
+   */
   render() {
     return (
       <View>
         <ViewContainer>
+          <ProgressBar color="#3a4853" steps="5" />
           <Padding style={{ flex: 1 }}>
-            <Header>
-              <ProgressBar />
-              <ProgressBar />
-              <ProgressBar />
-              <ProgressBar />
-              <ProgressBar />
-            </Header>
             <Title>PERSONALITY</Title>
             <SubTitle>
-              <Text
-                style={{
-                  fontFamily: 'NunitoSans-Bold',
-                  fontSize: 20,
-                  color: '#efebe9',
-                }}
-              >
-                {this.state.endIndex / 2}/{this.props.personalities.data.data
-                  .length / 2}{' '}
-              </Text>
+              {this.renderProgress()}
               <Text
                 style={{
                   fontFamily: 'NunitoSans-Regular',
@@ -206,12 +280,6 @@ const Header = styled.View`
   height: 50;
 `;
 
-const ProgressBar = styled.View`
-  background-color: #3a4853;
-  width: 19%;
-  height: 10;
-`;
-
 const Error = styled.Text`
   font-size: 11;
   color: #faf5f0;
@@ -219,6 +287,7 @@ const Error = styled.Text`
 `;
 
 const Title = styled.Text`
+  margin-top: 50;
   font-size: 40;
   fontFamily: 'Friendship_version_2';
   color: #faf5f0;

@@ -8,7 +8,6 @@ import Tabs from './Tabs';
 import SettingsView from '../views/Settings';
 import WelcomeView from '../views/Welcome';
 import PeopleView from './../views/PeopleView';
-import SignUpLocation from '../views/SignUpLocation';
 import SignInView from '../views/SignInView';
 import SignUpView from '../views/SignUpView';
 import SignOutView from '../views/SignOutView';
@@ -16,8 +15,11 @@ import ProfileUser from './../views/ProfileUser';
 import SearchList from './../views/Search';
 import EmojiPickerView from './../views/EmojiPicker';
 import LookingFor from './../views/LookingFor';
-import Matching from './../views/Matching';
+import SignUpMatching from './../views/SignUpMatching';
+import SignUpLocation from '../views/SignUpLocation';
 import SignUpPersonality from '../views/SignUpPersonality';
+import ChatView from './../views/ChatView';
+import ChatRequest from './../views/ChatRequest';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -33,8 +35,9 @@ const StackNavigatorConfig = {
 export default StackNavigator(
   {
     Welcome: { screen: WelcomeView },
+    SignUpLocation: { screen: SignUpLocation },
     LookingFor: { screen: LookingFor },
-    Matching: { screen: Matching },
+    SignUpMatching: { screen: SignUpMatching },
     Tabs: {
       screen: Tabs,
       navigationOptions: { header: () => null },
@@ -77,6 +80,13 @@ export default StackNavigator(
     },
     ProfileUser: {
       screen: ProfileUser,
+      navigationOptions: { header: () => null },
+    },
+    ChatView: {
+      screen: ChatView,
+    },
+    ChatRequest: {
+      screen: ChatRequest,
       navigationOptions: { header: () => null },
     },
     // ## End StackNavigator Views ##

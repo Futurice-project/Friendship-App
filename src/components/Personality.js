@@ -23,6 +23,7 @@ const ImageContainer = styled.Image`
   justify-content: center;
   align-items: center;
 `;
+
 //style for the text of the button
 const ButtonText = styled.Text`
   width: 230;
@@ -42,8 +43,6 @@ const ButtonText = styled.Text`
  * @param {string} title - Sets the title of the personality
  * @param {function} onPress - Sets the function after clicking on a personality
   */
-
-//add style justoifyContent:'flex-end set it at the end of the view'
 export default class Personality extends React.Component {
   state = {
     imageObject: placeholder,
@@ -51,6 +50,10 @@ export default class Personality extends React.Component {
     imageWidth: 0,
   };
 
+  /**
+   * When the component is mounting we switch images based on the set text name
+   * in this.props.image
+   */
   componentDidMount() {
     switch (this.props.image) {
       case 'relaxed': {
@@ -136,12 +139,21 @@ export default class Personality extends React.Component {
     }
   }
 
-  // React-native Android does not support letter spacing
-  // This function hacks space between letters together
+  /**
+   * React native doesn't support letter spacing
+   * This function hacks a similair design together
+   * @param string
+   * @param count
+   * @returns {string}
+   */
   applyLetterSpacing(string, count = 1) {
     return string.split('').join('\u200A'.repeat(count));
   }
 
+  /**
+   * Render the component
+   * @returns {XML}
+   */
   render = () => {
     return (
       <View style={{ display: 'flex' }}>
