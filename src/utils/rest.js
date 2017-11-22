@@ -87,10 +87,6 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
-  reports: {
-    url: `${apiRoot}/reports`,
-    crud: true,
-  },
   chatRooms: {
     url: `${apiRoot}/chatrooms`,
     crud: true,
