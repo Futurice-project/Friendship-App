@@ -1,27 +1,17 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { connect } from 'react-redux';
-import { MenuContext } from 'react-native-popup-menu';
 import Modal from 'react-native-modal';
 import rest from '../../utils/rest';
+import styled from 'styled-components/native';
 
 import Button from '../../components/Button';
 import {
-  ViewContainer,
   ViewContainerTop,
   Centered,
-  FlexRow,
   HeaderButton,
 } from '../../components/Layout';
 import {
-  SmallHeader,
   Description,
   Incommon,
   FrienshipFont,
@@ -30,13 +20,7 @@ import {
 } from '../../components/Text';
 import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
-import styled from 'styled-components/native';
 import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
-
-const ButtonOption = styled.View`
-  align-items: center;
-  margin-top: 5px;
-`;
 
 const DescriptionWrapper = styled.View`
   background-color: #efebe9;
@@ -60,11 +44,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.tagsForUser.get({ userId })),
   refreshUserGenders: userId =>
     dispatch(rest.actions.userGenders.get({ userId })),
-  reportUser: reportDetails => {
-    dispatch(
-      rest.actions.reports.post({}, { body: JSON.stringify(reportDetails) }),
-    );
-  },
 });
 
 class ProfileUser extends React.Component {
@@ -245,8 +224,8 @@ class ProfileUser extends React.Component {
 
           <Modal
             visible={this.state.isReportVisible}
-            backdropColor="black"
-            backdropOpacity={1}
+            animationIn="slideInUp"
+            animationInTiming={200}
           >
             <View
               style={{
