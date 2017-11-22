@@ -28,20 +28,19 @@ const ImageContainer = styled.Image`
   right: 0;
   left: 0;
   ${'' /* without the -5, a space is below the image-->need further investigation */} bottom: -5;
-  justify-content: center;
-  align-items: center;
+  align-self: center;
 `;
 
 //style for the text of the button
 const ButtonText = styled.Text`
-  width: 230;
-  height: 27;
+  max-width: 82;
+  height: 14;
   font-family: 'NunitoSans-Regular';
-  font-size: 20;
+  font-size: 10;
   font-weight: bold;
   text-align: center;
   color: ${props => {
-    return props.titleColor ? props.titleColor : '#2d4359';
+    return props.titleColor ? props.titleColor : '#91999f';
   }};
   background-color: transparent;
 `;
@@ -180,7 +179,7 @@ export default class Personality extends React.Component {
    */
   render = () => {
     return (
-      <View style={{ display: 'flex' }}>
+      <View style={{ display: 'flex', paddingLeft: 7, paddingRight: 7 }}>
         <TouchableOpacity
           style={{ height: this.state.imageHeight + 10 }}
           onPress={this.props.onPress}
@@ -194,16 +193,9 @@ export default class Personality extends React.Component {
             resizeMode="contain"
           />
         </TouchableOpacity>
-        <Text
-          style={{
-            textAlign: 'center',
-            color: '#faf5f0',
-            fontSize: 15,
-            fontFamily: 'NunitoSans-SemiBold',
-          }}
-        >
+        <ButtonText>
           {this.applyLetterSpacing(this.props.title.toUpperCase())}
-        </Text>
+        </ButtonText>
       </View>
     );
   };

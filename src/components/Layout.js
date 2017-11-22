@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Dimensions } from 'react-native';
 
 const styles = StyleSheet.create({
   contentContainerStyle: {
@@ -61,6 +61,14 @@ export const IconImage = styled.Image`
   width: 20;
   height: 20;
   ${props => (props.tintColor ? `tintColor: ${props.tintColor}` : undefined)};
+`;
+
+export const DescriptionWrapper = styled.View`
+  background-color: #efebe9;
+  width: ${Dimensions.get('window').width};
+  display: flex;
+  align-items: center;
+  padding: 14px 48px;
 `;
 
 export const MessageCard = styled.View`

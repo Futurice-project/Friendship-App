@@ -11,7 +11,12 @@ import {
 } from 'react-native';
 //import { IconImage } from '../../components/Layout';
 import rest from '../../utils/rest';
-import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
+import {
+  ViewContainerTop,
+  Centered,
+  DescriptionWrapper,
+  FlexRow,
+} from '../../components/Layout';
 import { SmallHeader, Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
 import Modal from 'react-native-modal';
@@ -38,13 +43,6 @@ const mapDispatchToProps = dispatch => ({
 const ButtonOption = styled.View`
   align-items: center;
   margin-top: 5px;
-`;
-
-const DescriptionWrapper = styled.View`
-  background-color: #efebe9;
-  display: flex;
-  align-items: center;
-  padding: 14px 48px;
 `;
 
 class MyProfile extends React.Component {

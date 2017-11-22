@@ -20,12 +20,13 @@ import {
   ViewContainer,
   ViewContainerTop,
   Centered,
+  DescriptionWrapper,
   FlexRow,
 } from '../../components/Layout';
 import {
-  SmallHeader,
   Description,
-  Incommon,
+  Details,
+  CompatibilityText,
   FrienshipFont,
   YeahColor,
   NaahColor,
@@ -40,13 +41,7 @@ const ButtonOption = styled.View`
   align-items: center;
   margin-top: 5px;
 `;
-
-const DescriptionWrapper = styled.View`
-  background-color: #efebe9;
-  display: flex;
-  align-items: center;
-  padding: 14px 48px;
-`;
+const LocationText = styled.Text`font-family: 'NunitoSans-Bold';`;
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -175,7 +170,11 @@ class ProfileUser extends React.Component {
       },
     );
 
-    return <Centered>{personalities}</Centered>;
+    return (
+      <Centered style={{ flexDirection: 'row', paddingVertical: 10 }}>
+        {personalities}
+      </Centered>
+    );
   }
 
   render = () => {
@@ -234,7 +233,7 @@ class ProfileUser extends React.Component {
             <Text style={styles.username}>
               {this.props.userDetails.data.username}
             </Text>
-            <Incommon>
+            <CompatibilityText>
               <YeahColor>
                 {loveCommon}
                 <FrienshipFont> YEAH</FrienshipFont>
@@ -245,23 +244,25 @@ class ProfileUser extends React.Component {
                 <FrienshipFont> NAAH</FrienshipFont>
               </NaahColor>{' '}
               in common{' '}
-            </Incommon>
-            <Description>
-              {this.props.userDetails.data.location ? (
-                this.props.userDetails.data.location
-              ) : (
-                'Narnia'
-              )}
+            </CompatibilityText>
+            <Details>
+              <LocationText>
+                {this.props.userDetails.data.location ? (
+                  this.props.userDetails.data.location
+                ) : (
+                  'Narnia'
+                )}
+              </LocationText>
               {', ' + this.state.age + ', '}
               {this.state.genders}
-            </Description>
+            </Details>
             <DescriptionWrapper>
               <Description>
                 {this.props.userDetails.data.description}
               </Description>
             </DescriptionWrapper>
           </View>
-          <View style={styles.personalityPlaceholder}>
+          <View style={{ backgroundColor: '#faf5f0' }}>
             {this.renderPersonalities()}
           </View>
           <TabProfile hate={hate} love={love} />
@@ -356,15 +357,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 23,
     marginLeft: 0,
-  },
-  personalityPlaceholder: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    // height: 90,
-    // borderWidth: 1,
-    // borderColor: '#fff',
-    // marginBottom: 10,
-    // backgroundColor: 'transparent',
+    backgroundColor: '#faf5f0',
   },
   whiteCircle: {
     width: 64,
