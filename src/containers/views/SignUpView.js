@@ -11,11 +11,11 @@ import RoundTab from '../../components/RoundTab';
 import ProgressBar from '../../components/ProgressBar';
 import GenderBox from '../../components/GenderBox';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {
   TouchableOpacity,
   Text,
-  KeyboardAvoidingView,
   View,
   FlatList,
   Image,
@@ -118,7 +118,7 @@ class SignUpView extends React.Component {
     error: false,
     validationError: '',
   };
-
+  
   openImageGallery = async () => {
     let { image } = this.state;
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -200,7 +200,9 @@ class SignUpView extends React.Component {
     this.renderStatus();
     const image = { uri: this.state.image };
     return (
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAwareScrollView
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        >
         <ViewContainer>
           <HeaderWrapper>
             <ProgressBar color="#d8d8d8" steps="1" />
@@ -220,6 +222,8 @@ class SignUpView extends React.Component {
               <LabelView>
                 <LabelTextInput
                   autoCorrect={false}
+                  returnKeyType="next"
+                  blurOnSubmit={true}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="(NICK)NAME*"
@@ -241,6 +245,7 @@ class SignUpView extends React.Component {
                 <LabelTextInput
                   keyboardType="email-address"
                   autoCapitalize="none"
+                  blurOnSubmit={true}
                   returnKeyType="next"
                   autoCorrect={false}
                   underlineColorAndroid="transparent"
@@ -258,8 +263,9 @@ class SignUpView extends React.Component {
             <LabelContainer style={{ height: 55, marginBottom: 18 }}>
               <LabelView>
                 <LabelTextInput
-                  returnKeyType="go"
+                  returnKeyType="next"
                   secureTextEntry
+                  blurOnSubmit={true}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="PASSWORD*"
@@ -281,6 +287,8 @@ class SignUpView extends React.Component {
                   autoCorrect={false}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
+                  blurOnSubmit={true}
+                  returnKeyType="next"
                   placeholder="BIRTH YEAR*"
                   onChangeText={birthyear =>
                     this.setState({
@@ -372,7 +380,7 @@ class SignUpView extends React.Component {
           </SecondLabelWrapper>
         </ViewContainer>
         {this.renderLoadingIndicator()}
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     );
   }
 }

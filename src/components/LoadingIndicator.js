@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import styled from 'styled-components/native';
 
 export default class LoadingIndicator extends Component {
   render() {
     return (
       <LoadingView>
-        <ActivityIndicator color="blue" size="large" />
+        <View></View>
+        <ActivityIndicator color="darkblue" size="large" />
       </LoadingView>
     );
   }
@@ -21,5 +22,5 @@ const LoadingView = styled.View`
   opacity: 0.5;
   backgroundColor: black;
   alignItems: center;
-  justifyContent: center;
+  justifyContent: space-around;
 `;
