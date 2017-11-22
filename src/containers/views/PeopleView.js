@@ -15,9 +15,14 @@ import RoundTab from '../../components/RoundTab';
 
 const mapStateToProps = state => ({
   usersSearch: state.usersSearch,
+  usersByPage: state.usersByPage,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
+  fetchUsersByPage: number => {
+    dispatch(rest.actions.usersByPage({ number }));
+  },
   refreshUsersSearch: username => {
     /* .force() abort previous request if it performs and after that perform new request. This
     method combines abort and direct call action methods. it prevent a warning about unhandled
@@ -43,26 +48,27 @@ export class PeopleView extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(this.state.currentPage);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.usersByPage.data.data !== this.props.usersByPage.data.data) {
+      this.setState({
+        data: [...this.state.data, ...nextProps.usersByPage.data.data],
+      });
+    }
   }
 
   // fetch 10 users and add them to the state.data
-  fetchData = () => {
-    fetch('http://localhost:3888/users/page/' + this.state.currentPage)
-      .then(response => {
-        return response.json();
-      })
-      .then(response => {
-        this.setState({ currentPage: this.state.currentPage + 1 });
-        this.setState({ data: [...this.state.data, ...response] });
-      })
-      .catch(err => console.error(err + ' error fetchData in peopleView.js'));
+  fetchData = currentPage => {
+    this.props.fetchUsersByPage(currentPage);
+    this.setState({ currentPage: this.state.currentPage + 1 });
   };
 
   handleEnd = () => {
     if (!this.onEndReachedCalledDuringMomentum) {
       // fetch 10 more users from the db
-      this.fetchData();
+      this.fetchData(this.state.currentPage);
       this.onEndReachedCalledDuringMomentum = true;
     }
   };
@@ -74,7 +80,7 @@ export class PeopleView extends React.Component {
   }, 1000);
 
   renderPeople() {
-    if (this.props.usersSearch.loading) {
+    if (this.props.usersSearch.loading && this.props.usersByPage.loading) {
       return <ActivityIndicator />;
     }
     return (

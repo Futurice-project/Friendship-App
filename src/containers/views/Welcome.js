@@ -146,7 +146,7 @@ export class WelcomeView extends React.Component {
    * U can test this by dumping this.props.navigatorState
    */
   componentWillReceiveProps(nextProps) {
-    console.log(this.props.navigatorState);
+    // console.log(this.props.navigatorState);
   }
 
   componentDidMount() {
