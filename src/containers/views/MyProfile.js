@@ -154,6 +154,15 @@ class MyProfile extends React.Component {
               source={require('../../../assets//icon_profile_overlay.png')}
             />
           </TouchableOpacity>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Image
+              style={{ width: 300, height: 200 }}
+              source={{
+                uri:
+                  'data:image/png;base64,' + this.props.currentUser.data.image,
+              }}
+            />
+          </View>
           <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>
