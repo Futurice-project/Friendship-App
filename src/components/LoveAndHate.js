@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     lineHeight: 34.0,
+    color: '#ffffff',
   },
 });
 
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
  * @param {String} activity - name of the activity
  */
 export default class LoveAndHate extends React.Component {
-  state: {
+  state = {
     status: 0,
   };
 
@@ -75,8 +76,8 @@ export default class LoveAndHate extends React.Component {
   resetChoice() {
     console.log('Resetting choice ' + this.props.activity);
     /*if (this.state.status !== 0) {
-      console.log("Starting resetting...");
-    }*/
+     console.log("Starting resetting...");
+     }*/
   }
 
   render = () => (
