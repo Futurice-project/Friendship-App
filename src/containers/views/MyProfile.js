@@ -12,7 +12,14 @@ import {
 //import { IconImage } from '../../components/Layout';
 import rest from '../../utils/rest';
 import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
-import { SmallHeader, Description } from '../../components/Text';
+import {
+  SmallHeader,
+  Description,
+  Incommon,
+  FrienshipFont,
+  YeahColor,
+  NaahColor,
+} from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
 import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
@@ -144,25 +151,59 @@ class MyProfile extends React.Component {
       let hate = this.props.tagsForCurrentUser.data.filter(e => {
         return e.love === false;
       });
+      let totalLove = 0;
+      let totalHate = 0;
+
+      love.filter(e => {
+        totalLove++;
+      });
+
+      hate.filter(e => {
+        totalHate++;
+      });
+
       return (
         <ViewContainerTop style={styles.viewContent}>
-          <TouchableOpacity
-            onPress={this._showModal}
-            style={{ alignSelf: 'flex-end', marginRight: 15, marginTop: 32 }}
-          >
+          <View style={{ flex: 1, alignItems: 'center' }}>
             <Image
-              source={require('../../../assets//icon_profile_overlay.png')}
-            />
-          </TouchableOpacity>
+              style={{ width: 400, height: 200 }}
+              source={require('../../../assets//img/profile.png')}
+            >
+              <TouchableOpacity
+                onPress={this._showModal}
+                style={{
+                  alignSelf: 'flex-end',
+                  marginRight: 37,
+                  marginTop: 33,
+                }}
+              >
+                <Image
+                  source={require('../../../assets//icon_profile_overlay.png')}
+                />
+              </TouchableOpacity>
+              <View style={styles.whiteCircle}>
+                <Text style={styles.emoji}>
+                  {this.props.currentUser.data.emoji}
+                </Text>
+              </View>
+            </Image>
+          </View>
           <View style={styles.profileContainer}>
-            <View style={styles.whiteCircle}>
-              <Text style={styles.emoji}>
-                {this.props.currentUser.data.emoji}
-              </Text>
-            </View>
             <Text style={styles.username}>
               {this.props.currentUser.data.username}
             </Text>
+            <Incommon>
+              you have {' '}
+              <YeahColor>
+                {totalLove}
+                <FrienshipFont> YEAH</FrienshipFont>
+              </YeahColor>{' '}
+              &{' '}
+              <NaahColor>
+                {totalHate}
+                <FrienshipFont> NAAH </FrienshipFont>
+              </NaahColor>
+            </Incommon>
             <Description>
               {this.props.currentUser.data.location ? (
                 this.props.currentUser.data.location
@@ -177,6 +218,16 @@ class MyProfile extends React.Component {
                 {this.props.currentUser.data.description}
               </Description>
             </DescriptionWrapper>
+            <View
+              style={{
+                height: 80,
+                borderWidth: 1,
+                borderColor: '#fff',
+                marginBottom: 10,
+              }}
+            >
+              <Text> Personality Placeholder</Text>
+            </View>
           </View>
           <TabProfile hate={hate} love={love} myprofile={true} />
 
@@ -241,10 +292,15 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     alignItems: 'center',
-    height: 300,
+    height: 400,
     marginTop: 23,
   },
   whiteCircle: {
+    alignContent: 'flex-end',
+    alignSelf: 'flex-end',
+    alignItems: 'flex-end',
+    marginTop: 25,
+    marginRight: 40,
     width: 64,
     height: 64,
     borderRadius: 64,

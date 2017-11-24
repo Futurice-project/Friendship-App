@@ -22,7 +22,7 @@ export const Incommon = styled.Text`
   text-align: center;
   color: #4a4a4a;
   margin-bottom: 14px;
-  height: 19;
+  height: 22;
   letter-spacing: 0.4;
 `;
 
