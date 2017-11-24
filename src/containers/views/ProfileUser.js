@@ -20,7 +20,7 @@ import {
 } from '../../components/Text';
 import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
-import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
+import PopUpMenu from '../../components/PopUpMenu';
 
 const DescriptionWrapper = styled.View`
   background-color: #efebe9;
@@ -267,7 +267,7 @@ class ProfileUser extends React.Component {
             </View>
           </Modal>
           <HeaderButton>
-            <PopUpMenuUserProfile isReportVisible={this.showReport} />
+            <PopUpMenu isReportVisible={this.showReport} />
           </HeaderButton>
         </ViewContainerTop>
       );
