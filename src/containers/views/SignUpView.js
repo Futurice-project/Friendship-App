@@ -43,7 +43,7 @@ const mapDispatchToProps = dispatch => ({
 
     if (userData) {
       for (var key in userData) {
-        formdata.append(key, userData[key]);
+        if (userData[key]) formdata.append(key, userData[key]);
       }
     }
 
@@ -58,7 +58,6 @@ const mapDispatchToProps = dispatch => ({
         },
         (err, data) => {
           if (!err) {
-            console.log('Everything works?');
             dispatch(
               NavigationActions.navigate({
                 routeName: 'SignUpLocation',
@@ -76,12 +75,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       NavigationActions.navigate({
         routeName: 'SignUpLocation',
-      }),
-    ),
-  openSignIn: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SignIn',
       }),
     ),
   openWelcomeScreen: () =>
@@ -114,7 +107,6 @@ class SignUpView extends React.Component {
     password: '',
     username: '',
     birthyear: '',
-    emoji: '',
     genders: '',
     loading: false,
     error: false,
@@ -155,13 +147,25 @@ class SignUpView extends React.Component {
   }
 
   signUp() {
-    const { email, password, username, birthyear, genders, image } = this.state;
+    const {
+      email,
+      password,
+      username,
+      birthyear,
+      genders,
+      image,
+      emoji,
+    } = this.state;
     if (!email || !password || !username || !birthyear) {
       return this.setState({
         validationError: 'Please enter all required fields',
       });
     }
-    this.props.signUp({ email, password, username, birthyear }, genders, image);
+    this.props.signUp(
+      { email, password, username, birthyear, emoji },
+      genders,
+      image,
+    );
   }
 
   selectEmoji(emoji) {
@@ -225,8 +229,6 @@ class SignUpView extends React.Component {
   }
 
   render() {
-    console.log(this.props.auth);
-    console.log(this.state);
     this.renderStatus();
     const image = { uri: this.state.image };
     return (
