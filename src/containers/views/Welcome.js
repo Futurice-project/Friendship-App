@@ -155,10 +155,6 @@ export class WelcomeView extends React.Component {
     }
   }
 
-  static navigationOptions = {
-    header: () => null,
-  };
-
   render = () => (
     <LaunchingPageWrapper>
       <LaunchingMessage>
