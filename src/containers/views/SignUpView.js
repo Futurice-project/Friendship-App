@@ -230,7 +230,12 @@ class SignUpView extends React.Component {
     this.renderStatus();
     const image = { uri: this.state.image };
     return (
-      <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}>
+      <KeyboardAwareScrollView
+        extraHeight={250}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        enableOnAndroid={true}
+        enableAutoAutomaticScroll={true}
+      >
         <ViewContainer>
           <HeaderWrapper>
             <ProgressBar color="#d8d8d8" steps="1" />
@@ -252,6 +257,7 @@ class SignUpView extends React.Component {
                 <LabelTextInput
                   autoCorrect={false}
                   returnKeyType="next"
+                  keyboardType="email-address"
                   blurOnSubmit={true}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
@@ -272,6 +278,7 @@ class SignUpView extends React.Component {
             <LabelContainer>
               <LabelView>
                 <LabelTextInput
+                  autoCorrect={false}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   blurOnSubmit={true}
@@ -292,6 +299,7 @@ class SignUpView extends React.Component {
             <LabelContainer style={{ height: 55, marginBottom: 18 }}>
               <LabelView>
                 <LabelTextInput
+                  autoCorrect={false}
                   returnKeyType="next"
                   secureTextEntry
                   blurOnSubmit={true}
@@ -315,6 +323,7 @@ class SignUpView extends React.Component {
                 <LabelTextInput
                   autoCorrect={false}
                   underlineColorAndroid="transparent"
+                  keyboardType="numeric"
                   placeholderTextColor="#4a4a4a"
                   blurOnSubmit={true}
                   returnKeyType="next"
@@ -341,6 +350,7 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="GENDER*"
+                  value=""
                 />
               </View>
               <View style={{ width: 278 }}>
