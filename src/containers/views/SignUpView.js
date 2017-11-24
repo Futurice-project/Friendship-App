@@ -10,6 +10,7 @@ import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
 import ProgressBar from '../../components/ProgressBar';
 import GenderBox from '../../components/GenderBox';
+import SignUpEmoji from '../../components/SignUpEmoji';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -113,12 +114,13 @@ class SignUpView extends React.Component {
     password: '',
     username: '',
     birthyear: '',
+    emoji: '',
     genders: '',
     loading: false,
     error: false,
     validationError: '',
   };
-  
+
   openImageGallery = async () => {
     let { image } = this.state;
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -162,6 +164,10 @@ class SignUpView extends React.Component {
     this.props.signUp({ email, password, username, birthyear }, genders, image);
   }
 
+  selectEmoji(emoji) {
+    this.setState({ emoji });
+  }
+
   updateGenders(value) {
     if (this.state.genders.indexOf(value) > -1) {
       const genders = this.state.genders.slice();
@@ -174,18 +180,41 @@ class SignUpView extends React.Component {
     });
   }
 
-  // renderMoodImageContainer, remove later when getting emoji from db?
+  updateEmoji(emoji) {
+    if (emoji === this.state.emoji) {
+      return this.setState({ emoji: '', error: false });
+    }
+    return this.setState({ emoji, error: false });
+  }
+
   renderEmojis() {
-    const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    return array.map(num => (
-      <MoodImageContainer key={num}>
-        <MoodImage
-          source={{
-            uri:
-              'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
-          }}
-        />
-      </MoodImageContainer>
+    const emojis = [
+      '🥝',
+      '🍉',
+      '🍍',
+      '🍓',
+      '🥑',
+      '🌶️',
+      '🍷',
+      '🍺',
+      '🌮',
+      '🍪',
+      '🍔',
+      '🍕',
+      '🍭',
+      '🍦',
+      '🌵',
+      '🌳',
+      '🌻',
+      '🌎',
+    ];
+    return emojis.map(emoji => (
+      <SignUpEmoji
+        updateEmoji={() => this.updateEmoji(emoji)}
+        selectedEmoji={this.state.emoji}
+        key={emoji}
+        emoji={emoji}
+      />
     ));
   }
 
@@ -197,12 +226,11 @@ class SignUpView extends React.Component {
 
   render() {
     console.log(this.props.auth);
+    console.log(this.state);
     this.renderStatus();
     const image = { uri: this.state.image };
     return (
-      <KeyboardAwareScrollView
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        >
+      <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}>
         <ViewContainer>
           <HeaderWrapper>
             <ProgressBar color="#d8d8d8" steps="1" />
@@ -213,6 +241,7 @@ class SignUpView extends React.Component {
             {/* change to FlatList later on to render form database? */}
             <ScrollViewPhoto
               contentContainerStyle={styles.scrollViewMoodContainer}
+              showsHorizontalScrollIndicator={false}
               horizontal
               style={{ height: 70, marginTop: 22 }}
             >
@@ -464,21 +493,6 @@ const PhotoBox = styled.TouchableOpacity`
 
 const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
 
-const MoodImageContainer = styled.View`
-  height: 70;
-  width: 70;
-  background-color: #ffffff;
-  border-radius: 35;
-  justify-content: center;
-  align-items: center;
-  margin-right: 12;
-`;
-
-const MoodImage = styled.Image`
-  width: 48;
-  height: 48;
-`;
-
 const LabelContainer = styled.View`
   height: 77;
   align-items: center;
@@ -493,16 +507,6 @@ const GenderBoxContainer = styled.View`
   flex-direction: row;
   margin-top: 12;
 `;
-
-// const GenderBox = styled.View`
-//   height: 44;
-//   background-color: #ffffff;
-//   width: 36%;
-//   border-radius: 27;
-//   padding-left: 15;
-//   margin-right: 11;
-//   justify-content: center;
-// `;
 
 const RoundTabContainer = styled.View`margin-top: auto;`;
 
