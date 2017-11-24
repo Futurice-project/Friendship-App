@@ -115,13 +115,13 @@ class ProfileUser extends React.Component {
   };
 
   getAge = () => {
-    const birthDay = new Date(this.props.userDetails.data.birthday);
+    const birthYear = parseInt(this.props.userDetails.data.birthyear);
     const now = new Date();
-    let age = now.getFullYear() - birthDay.getFullYear();
-    const m = now.getMonth() - birthDay.getMonth();
-    if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
-      age--;
-    }
+    let age = now.getFullYear() - birthYear;
+    // const m = now.getMonth() - birthDay.getMonth();
+    // if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
+    //   age--;
+    // }
 
     const early = [0, 1, 2, 3];
     const mid = [4, 5, 6];
