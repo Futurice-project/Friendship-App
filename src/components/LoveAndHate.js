@@ -8,7 +8,16 @@ import { StyleSheet } from 'react-native';
 const LoveAndHateWrapper = styled.View`
   width: 100%;
   height: 90;
-  background-color: #dad5d2;
+  background-color: ${() => {
+    switch (this.state.wrapperColor) {
+      case -1:
+        return '#ff8a65';
+      case 1:
+        return '#99ccff';
+      default:
+        return '#dad5d2';
+    }
+  }};
   display: flex;
   flex-direction: row;
   margin-top: 10;
@@ -61,20 +70,27 @@ const styles = StyleSheet.create({
 export default class LoveAndHate extends React.Component {
   state = {
     status: 0,
+    yeahButton: true,
+    nahButton: true,
+    wrapperColor: 0,
   };
 
-  hideChoice(choiceEnabled, choiceDisabled) {}
-
   yeahActivity() {
-    console.log('Yeah-ing activity ' + this.props.activity);
+    console.log(
+      'Yeah-ing activity ' + this.props.activity + ' : Move title to the left',
+    );
   }
 
   nahActivity() {
-    console.log('Nah-ing activity ' + this.props.activity);
+    console.log(
+      'Nah-ing activity ' + this.props.activity + ' : Move title to the right',
+    );
   }
 
   resetChoice() {
-    console.log('Resetting choice ' + this.props.activity);
+    console.log(
+      'Resetting choice ' + this.props.activity + ' : Reset view as initial',
+    );
     /*if (this.state.status !== 0) {
      console.log("Starting resetting...");
      }*/
@@ -90,7 +106,7 @@ export default class LoveAndHate extends React.Component {
             this.yeahActivity();
           }}
         >
-          <YeahLogo />
+          {this.showYeahLogo(this.state.yeahButton)}
         </LoveAndHateButton>
       </LoveAndHatePart>
 
@@ -115,9 +131,17 @@ export default class LoveAndHate extends React.Component {
             this.nahActivity();
           }}
         >
-          <NahLogo />
+          {this.showNahLogo(this.state.nahButton)}
         </LoveAndHateButton>
       </LoveAndHatePart>
     </LoveAndHateWrapper>
   );
+
+  showYeahLogo(yeahButton) {
+    return yeahButton ? <YeahLogo /> : null;
+  }
+
+  showNahLogo(nahButton) {
+    return nahButton ? <NahLogo /> : null;
+  }
 }
