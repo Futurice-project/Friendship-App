@@ -43,12 +43,16 @@ class ChatView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: `${navigation.state.params.userEmoji} ${navigation.state.params
       .username}`,
+    headerRight: (
+      <PopUpMenu isReportVisible={navigation.state.params.showReport} chat />
+    ),
   });
 
   componentDidMount = () => {
     this.setState({
       chatroomId: this.props.navigation.state.params.chatroomId,
     });
+    this.props.navigation.setParams({ showReport: this.showReport });
     this.props.chatRoomMessages(this.props.navigation.state.params.chatroomId);
   };
 
@@ -82,7 +86,8 @@ class ChatView extends Component {
     this.setState({ isReportVisible: !isReportVisible });
   };
   sendReport = () => {
-    const { creator, receiver } = this.state.chatRoom.data;
+    const creator = this.props.chatRoom.creator;
+    const receiver = this.props.chatRoom.receiver;
     const userId =
       this.props.currentUserId == creator.id ? receiver.id : creator.id;
     const description = this.state.reportDescription;
@@ -213,9 +218,6 @@ class ChatView extends Component {
             </View>
           </View>
         </Modal>
-        <HeaderButton>
-          <PopUpMenu isReportVisible={this.showReport} chat />
-        </HeaderButton>
       </KeyboardAvoidingView>
     );
   }
