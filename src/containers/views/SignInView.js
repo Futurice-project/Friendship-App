@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
-import Button from '../../components/Button';
 import { Description, Bold } from '../../components/Text';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
@@ -86,6 +85,7 @@ class SignInView extends React.Component {
     password: '',
     error: false,
     validationError: '',
+    passwordSecure: true,
   };
 
   /**
@@ -214,11 +214,16 @@ class SignInView extends React.Component {
                   value={this.state.email}
                 />
                 <TextInput
-                  secure
+                  secure={this.state.passwordSecure}
+                  password
                   title="PASSWORD"
                   titleColor="#f9f7f6"
                   placeholder="*******"
                   backColor="#faf6f0"
+                  showPassword={() =>
+                    this.setState({
+                      passwordSecure: !this.state.passwordSecure,
+                    })}
                   onChangeText={password =>
                     this.setState({
                       password,

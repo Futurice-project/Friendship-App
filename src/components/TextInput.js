@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import { Text, Image } from 'react-native';
 
 //Contains that hold the input and the label
 const Container = styled.View`
@@ -59,6 +60,19 @@ const InputTitle = styled.Text`
   padding-left: 20px;
   width: 100%;
 `;
+
+//Input Container that containers input
+const InputContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+// The eye that allows user to show/ hide password
+const ShowPasswordButton = styled.TouchableOpacity`
+  position: absolute;
+  left: 250;
+`;
+
 /**
  * Styled TextInput component
  * @param {string} titleColor - Sets the color of the text(optional)
@@ -74,23 +88,44 @@ const InputTitle = styled.Text`
  * @param {enum} autoCapitalize - Determine if the input autoCapitalize certain characters
  */
 export default class TextInput extends React.Component {
+  renderShowPassword() {
+    if (this.props.password) {
+      return (
+        <ShowPasswordButton onPress={() => this.props.showPassword()}>
+          <Image
+            source={
+              this.props.secure ? (
+                require('../../assets/show_password.png')
+              ) : (
+                require('../../assets/hidden_password.png')
+              )
+            }
+          />
+        </ShowPasswordButton>
+      );
+    }
+  }
+
   render = () => (
     <Container>
       <InputTitle titleColor={this.props.titleColor}>
         {this.props.title}
       </InputTitle>
-      <Input
-        keyboardType={this.props.keyboardType}
-        autoCapitalize={this.props.autoCapitalize}
-        returnKeyType={this.props.returnKeyType}
-        //add the secure attribute to hide the text f.e password
-        secure={this.props.secure}
-        //specify the background color swith the backColor attribute
-        backColor={this.props.backColor}
-        placeholder={this.props.placeholder}
-        value={this.props.value}
-        onChangeText={this.props.onChangeText}
-      />
+      <InputContainer>
+        <Input
+          keyboardType={this.props.keyboardType}
+          autoCapitalize={this.props.autoCapitalize}
+          returnKeyType={this.props.returnKeyType}
+          //add the secure attribute to hide the text f.e password
+          secure={this.props.secure}
+          //specify the background color swith the backColor attribute
+          backColor={this.props.backColor}
+          placeholder={this.props.placeholder}
+          value={this.props.value}
+          onChangeText={this.props.onChangeText}
+        />
+        {this.renderShowPassword()}
+      </InputContainer>
       <HorizontalLine />
       <HintText>{this.props.hint}</HintText>
     </Container>
