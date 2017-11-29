@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
-// import { View, Text, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
 export default class GenderBox extends React.Component {
   state = { color: '#ffffff' };
 
-  // componentWillReceiveProps(newProps) {
-  //   console.log('receiving props??');
-  //   // this.setState({ color: newProps.color });
-  // }
-
   _handlePress() {
     this.props.updateGenders();
     if (this.state.color === '#ffffff') {
-      return this.setState({ color: 'lightblue' });
+      return this.setState({ color: '#ff8a65' });
     }
     return this.setState({ color: '#ffffff' });
   }
