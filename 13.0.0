@@ -1,0 +1,6 @@
+friendship@1.0.0 D:\React\Friendship-app\Friendship-App
++-- UNMET PEER DEPENDENCY eslint@4.7.2
++-- hapi@17.0.2 
++-- UNMET PEER DEPENDENCY react@16.0.0-alpha.12
+`-- UNMET PEER DEPENDENCY react-native-vector-icons@^4.2.0
+

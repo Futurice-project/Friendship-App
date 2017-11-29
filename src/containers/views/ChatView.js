@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Nes from 'nes';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import ReversedFlatList from 'react-native-reversed-flat-list';
@@ -36,6 +37,15 @@ const TextInputCard = styled.View`
   flex-direction: row;
 `;
 
+const client = new Nes.Client('ws://localhost:3888');
+
+client.connect().then(() => {
+  var handler = function(update, flags) {
+    console.log('Nes', update);
+  };
+
+  client.subscribe('/chatrooms/24', handler, function(err) {});
+});
 class ChatView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: `${navigation.state.params.userEmoji} ${navigation.state.params
