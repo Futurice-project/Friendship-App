@@ -146,20 +146,34 @@ class MyProfile extends React.Component {
       });
       return (
         <ViewContainerTop style={styles.viewContent}>
-          <TouchableOpacity
-            onPress={this._showModal}
-            style={{ alignSelf: 'flex-end', marginRight: 15, marginTop: 32 }}
-          >
+          <View style={{ flex: 1, alignItems: 'center' }}>
             <Image
-              source={require('../../../assets//icon_profile_overlay.png')}
-            />
-          </TouchableOpacity>
+              style={{ width: 400, height: 200 }}
+              source={{
+                uri:
+                  'data:image/png;base64,' + this.props.currentUser.data.image,
+              }}
+            >
+              <TouchableOpacity
+                onPress={this._showModal}
+                style={{
+                  alignSelf: 'flex-end',
+                  marginRight: 37,
+                  marginTop: 33,
+                }}
+              >
+                <Image
+                  source={require('../../../assets//icon_profile_overlay.png')}
+                />
+              </TouchableOpacity>
+              <View style={styles.whiteCircle}>
+                <Text style={styles.emoji}>
+                  {this.props.currentUser.data.emoji}
+                </Text>
+              </View>
+            </Image>
+          </View>
           <View style={styles.profileContainer}>
-            <View style={styles.whiteCircle}>
-              <Text style={styles.emoji}>
-                {this.props.currentUser.data.emoji}
-              </Text>
-            </View>
             <Text style={styles.username}>
               {this.props.currentUser.data.username}
             </Text>
@@ -245,6 +259,11 @@ const styles = StyleSheet.create({
     marginTop: 23,
   },
   whiteCircle: {
+    alignContent: 'flex-end',
+    alignSelf: 'flex-end',
+    alignItems: 'flex-end',
+    marginTop: 25,
+    marginRight: 40,
     width: 64,
     height: 64,
     borderRadius: 64,
