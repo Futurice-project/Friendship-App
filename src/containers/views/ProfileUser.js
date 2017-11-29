@@ -28,6 +28,7 @@ import {
   Details,
   CompatibilityText,
   FrienshipFont,
+  LocationText,
   YeahColor,
   NaahColor,
 } from '../../components/Text';
@@ -41,7 +42,6 @@ const ButtonOption = styled.View`
   align-items: center;
   margin-top: 5px;
 `;
-const LocationText = styled.Text`font-family: 'NunitoSans-Bold';`;
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -261,9 +261,9 @@ class ProfileUser extends React.Component {
                 {this.props.userDetails.data.description}
               </Description>
             </DescriptionWrapper>
-          </View>
-          <View style={{ backgroundColor: '#faf5f0' }}>
-            {this.renderPersonalities()}
+            <View style={{ backgroundColor: '#faf5f0' }}>
+              {this.renderPersonalities()}
+            </View>
           </View>
           <TabProfile hate={hate} love={love} />
           <Modal isVisible={this.state.isOptionsVisible}>
@@ -351,12 +351,10 @@ class ProfileUser extends React.Component {
 const styles = StyleSheet.create({
   viewContent: {
     backgroundColor: '#e8e9e8',
-    paddingVertical: 0,
   },
   profileContainer: {
     alignItems: 'center',
     marginTop: 23,
-    marginLeft: 0,
     backgroundColor: '#faf5f0',
   },
   whiteCircle: {

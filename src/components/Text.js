@@ -22,6 +22,7 @@ export const Details = styled.Text`
   font-weight: 300;
   text-align: center;
   color: #4a4a4a;
+  margin-bottom: 12px;
 `;
 
 export const CompatibilityText = styled.Text`
@@ -45,6 +46,8 @@ export const NaahColor = styled.Text`
   color: #99ccff;
   font-family: 'NunitoSans-Bold';
 `;
+
+export const LocationText = styled.Text`font-family: 'NunitoSans-Bold';`;
 
 export const FrienshipFont = styled.Text`font-family: 'Friendship_version_2';`;
 
