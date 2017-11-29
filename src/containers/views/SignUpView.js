@@ -10,14 +10,17 @@ import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
 import ProgressBar from '../../components/ProgressBar';
 import GenderBox from '../../components/GenderBox';
+import SignUpEmoji from '../../components/SignUpEmoji';
+import LoadingIndicator from '../../components/LoadingIndicator';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {
   TouchableOpacity,
   Text,
-  KeyboardAvoidingView,
   View,
   FlatList,
   Image,
+  Alert,
 } from 'react-native';
 
 const mapStateToProps = state => ({
@@ -40,7 +43,7 @@ const mapDispatchToProps = dispatch => ({
 
     if (userData) {
       for (var key in userData) {
-        formdata.append(key, userData[key]);
+        if (userData[key]) formdata.append(key, userData[key]);
       }
     }
 
@@ -55,7 +58,6 @@ const mapDispatchToProps = dispatch => ({
         },
         (err, data) => {
           if (!err) {
-            console.log('Everything works?');
             dispatch(
               NavigationActions.navigate({
                 routeName: 'SignUpLocation',
@@ -73,12 +75,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       NavigationActions.navigate({
         routeName: 'SignUpLocation',
-      }),
-    ),
-  openSignIn: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SignIn',
       }),
     ),
   openWelcomeScreen: () =>
@@ -112,6 +108,7 @@ class SignUpView extends React.Component {
     username: '',
     birthyear: '',
     genders: '',
+    loading: false,
     error: false,
     validationError: '',
   };
@@ -124,111 +121,103 @@ class SignUpView extends React.Component {
     });
 
     if (!result.cancelled) {
-      this.setState({ image: result.uri });
-
+      this.setState({ image: result.uri, error: false });
       // later
       // this.props.saveImage(this.state.image);
     }
-
-    // console.log('Opening gallery??');
-    // console.log(ImagePicker);
-    // this.setState({ disableSave: true });
-    // const options = {
-    //   title: 'Choose Profile Picture',
-    //   takePhotoButtonTitle: 'Take Photo',
-    //   chooseFromLibraryButtonTitle: 'Choose From Library',
-    //   cancelButtonTitle: 'Cancel',
-    //   mediaType: 'photo',
-    //   allowsEditing: true,
-    //   permissionDenied: {
-    //     title: 'Denied permission',
-    //     text: 'Cannot access gallery',
-    //     reTryTitle: 'Retry',
-    //     okTitle: 'OK now!!',
-    //   },
-    // };
-    // ImagePicker.showImagePicker(options, response => {
-    //   if (response.didCancel) {
-    //     console.log('User cancelled image picker');
-    //     // this.setState({ disableSave: false });
-    //   } else if (response.error) {
-    //     console.log('ImagePicker Error: ', response.error);
-    //     // this.setState({ disableSave: false });
-    //   } else {
-    //     ImageResizer.createResizedImage(response.uri, 512, 512, 'PNG', 100)
-    //       .then(resizedImage => {
-    //         // resizeImageUri is the URI of the new image that can now be displayed, uploaded...
-    //         this.setState({
-    //           // disableSave: false,
-    //           image: resizedImage.uri,
-    //         });
-    //       })
-    //       .catch(err => {
-    //         console.log(err);
-    //       });
-    //   }
-    // });
   };
 
   renderStatus() {
     if (this.state.validationError) {
-      return (
-        <Text style={styles.statusTextStyle}>{this.state.validationError}</Text>
+      return Alert.alert(
+        'Validation Error',
+        this.state.validationError,
+        [{ text: 'OK', onPress: () => console.log('OK') }],
+        { cancelable: false },
       );
     }
-    const { data, error, loading } = this.props.auth;
-    let status = '';
-    if (data.decoded) {
-      status = `Signed in as ${data.decoded.email}`;
+    if (this.state.error && this.props.auth.error) {
+      return Alert.alert(
+        'Error',
+        this.props.auth.error.message,
+        [{ text: 'OK', onPress: () => console.log('OK') }],
+        { cancelable: false },
+      );
     }
-    if (this.state.error && error) {
-      status = `Error ${error.statusCode}: ${error.message}`;
-    }
-    if (loading) {
-      status = `Loading ...`;
-    }
-
-    return <Text style={styles.statusTextStyle}>{status}</Text>;
   }
 
   signUp() {
-    const { email, password, username, birthyear, genders, image } = this.state;
-    if (!email || !password || !username) {
+    const {
+      email,
+      password,
+      username,
+      birthyear,
+      genders,
+      image,
+      emoji,
+    } = this.state;
+    if (!email || !password || !username || !birthyear) {
       return this.setState({
-        validationError: 'Please enter at least username, email & password!',
+        validationError: 'Please enter all required fields',
       });
     }
-    this.props.signUp({ email, password, username, birthyear }, genders, image);
+    this.props.signUp(
+      { email, password, username, birthyear, emoji },
+      genders,
+      image,
+    );
+  }
+
+  selectEmoji(emoji) {
+    this.setState({ emoji });
   }
 
   updateGenders(value) {
     if (this.state.genders.indexOf(value) > -1) {
       const genders = this.state.genders.slice();
       genders.splice(this.state.genders.indexOf(value), 1);
-      return this.setState({ genders });
+      return this.setState({ genders, error: false });
     }
-    return this.setState({ genders: [...this.state.genders, value] });
+    return this.setState({
+      genders: [...this.state.genders, value],
+      error: false,
+    });
   }
 
-  // renderMoodImageContainer, remove later when getting emoji from db?
+  updateEmoji(emoji) {
+    if (emoji === this.state.emoji) {
+      return this.setState({ emoji: '', error: false });
+    }
+    return this.setState({ emoji, error: false });
+  }
+
   renderEmojis() {
-    const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    return array.map(num => (
-      <MoodImageContainer key={num}>
-        <MoodImage
-          source={{
-            uri:
-              'https://www.emojibase.com/resources/img/emojis/apple/x1f422.png.pagespeed.ic.Kl0AHX0uMQ.png',
-          }}
-        />
-      </MoodImageContainer>
+    return emojis.map(emoji => (
+      <SignUpEmoji
+        updateEmoji={() => this.updateEmoji(emoji)}
+        selectedEmoji={this.state.emoji}
+        key={emoji}
+        emoji={emoji}
+      />
     ));
   }
 
+  renderLoadingIndicator() {
+    if (this.props.auth.loading) {
+      return <LoadingIndicator />;
+    }
+  }
+
   render() {
+    this.renderStatus();
     const image = { uri: this.state.image };
     return (
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAwareScrollView
+        extraHeight={250}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        enableOnAndroid={true}
+        enableAutoAutomaticScroll={true}
+      >
         <ViewContainer>
           <HeaderWrapper>
             <ProgressBar color="#d8d8d8" steps="1" />
@@ -239,6 +228,7 @@ class SignUpView extends React.Component {
             {/* change to FlatList later on to render form database? */}
             <ScrollViewPhoto
               contentContainerStyle={styles.scrollViewMoodContainer}
+              showsHorizontalScrollIndicator={false}
               horizontal
               style={{ height: 70, marginTop: 22 }}
             >
@@ -248,6 +238,9 @@ class SignUpView extends React.Component {
               <LabelView>
                 <LabelTextInput
                   autoCorrect={false}
+                  returnKeyType="next"
+                  keyboardType="email-address"
+                  blurOnSubmit={true}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="(NICK)NAME*"
@@ -267,8 +260,10 @@ class SignUpView extends React.Component {
             <LabelContainer>
               <LabelView>
                 <LabelTextInput
+                  autoCorrect={false}
                   keyboardType="email-address"
                   autoCapitalize="none"
+                  blurOnSubmit={true}
                   returnKeyType="next"
                   autoCorrect={false}
                   underlineColorAndroid="transparent"
@@ -286,8 +281,10 @@ class SignUpView extends React.Component {
             <LabelContainer style={{ height: 55, marginBottom: 18 }}>
               <LabelView>
                 <LabelTextInput
-                  returnKeyType="go"
+                  autoCorrect={false}
+                  returnKeyType="next"
                   secureTextEntry
+                  blurOnSubmit={true}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="PASSWORD*"
@@ -308,7 +305,10 @@ class SignUpView extends React.Component {
                 <LabelTextInput
                   autoCorrect={false}
                   underlineColorAndroid="transparent"
+                  keyboardType="numeric"
                   placeholderTextColor="#4a4a4a"
+                  blurOnSubmit={true}
+                  returnKeyType="next"
                   placeholder="BIRTH YEAR*"
                   onChangeText={birthyear =>
                     this.setState({
@@ -332,6 +332,7 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="GENDER*"
+                  value=""
                 />
               </View>
               <View style={{ width: 278 }}>
@@ -399,7 +400,8 @@ class SignUpView extends React.Component {
             </RoundTabContainer>
           </SecondLabelWrapper>
         </ViewContainer>
-      </KeyboardAvoidingView>
+        {this.renderLoadingIndicator()}
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -483,21 +485,6 @@ const PhotoBox = styled.TouchableOpacity`
 
 const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
 
-const MoodImageContainer = styled.View`
-  height: 70;
-  width: 70;
-  background-color: #ffffff;
-  border-radius: 35;
-  justify-content: center;
-  align-items: center;
-  margin-right: 12;
-`;
-
-const MoodImage = styled.Image`
-  width: 48;
-  height: 48;
-`;
-
 const LabelContainer = styled.View`
   height: 77;
   align-items: center;
@@ -512,16 +499,6 @@ const GenderBoxContainer = styled.View`
   flex-direction: row;
   margin-top: 12;
 `;
-
-// const GenderBox = styled.View`
-//   height: 44;
-//   background-color: #ffffff;
-//   width: 36%;
-//   border-radius: 27;
-//   padding-left: 15;
-//   margin-right: 11;
-//   justify-content: center;
-// `;
 
 const RoundTabContainer = styled.View`margin-top: auto;`;
 
@@ -570,5 +547,62 @@ const styles = {
     paddingLeft: 23,
   },
 };
+
+const emojis = [
+  '🥝',
+  '🍉',
+  '🍍',
+  '🍓',
+  '🥑',
+  '🌶️',
+  '🍷',
+  '🍺',
+  '🌮',
+  '🍪',
+  '🍔',
+  '🍕',
+  '🍭',
+  '🍦',
+  '🌵',
+  '🌳',
+  '🌻',
+  '🌎',
+  '⚡',
+  '✨',
+  '👽',
+  '👻',
+  '💩',
+  '👾',
+  '🔮',
+  '🕶️',
+  '👓',
+  '👑',
+  '🎲',
+  '🦀',
+  '🐙',
+  '🐠',
+  '🐼',
+  '🐢',
+  '🐨',
+  '🦁',
+  '🦊',
+  '🐵',
+  '😺',
+  '☺',
+  '️😀',
+  '😎',
+  '🙃',
+  '😒',
+  '🤔',
+  '🤕',
+  '🤓',
+  '🙄',
+  '🎧',
+  '🎸',
+  '⛺',
+  '🚲',
+  '🚘',
+  '💾',
+];
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpView);
