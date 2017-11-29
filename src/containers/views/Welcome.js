@@ -150,8 +150,8 @@ export class WelcomeView extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.auth.data.decoded) {
-      // this.props.openTabs();
+    if (this.props.auth && this.props.auth.data.decoded) {
+      this.props.openTabs();
     }
   }
 

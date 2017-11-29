@@ -52,7 +52,10 @@ export class PeopleView extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.usersByPage.data.data !== this.props.usersByPage.data.data) {
+    if (
+      nextProps.usersByPage.data.data &&
+      nextProps.usersByPage.data.data !== this.props.usersByPage.data.data
+    ) {
       this.setState({
         data: [...this.state.data, ...nextProps.usersByPage.data.data],
       });
