@@ -31,17 +31,21 @@ class Person extends React.Component {
   state = {
     age: '',
     genders: '',
+    locations: '',
   };
 
   componentDidMount() {
-    this.getGenders();
-    this.getAge();
+    if (this.props.data.username) {
+      this.getGenders();
+      this.getAge();
+      this.getLocations();
+    }
   }
 
   getGenders = () => {
     const genders = this.props.data.genderlist
-      .map(x => x.toLowerCase())
-      .join(',');
+      ? this.props.data.genderlist.map(x => x.toLowerCase()).join(',')
+      : '';
     this.setState({ genders: genders });
   };
 
@@ -55,12 +59,21 @@ class Person extends React.Component {
     const late = [7, 8, 9];
     let ageName = '';
     const lastDigit = age.toString().substr(age.toString().length - 1);
-    if (age) {
+    if (age && age < 20) {
+      ageName = age + ', ';
+    } else if (age) {
       ageName = age - parseInt(lastDigit) + 's, ';
     } else {
       ageName = '';
     }
     this.setState({ age: ageName });
+  };
+
+  getLocations = () => {
+    const locations = this.props.data.locations
+      ? this.props.data.locations.join(',')
+      : 'Narnia';
+    this.setState({ locations: locations });
   };
 
   renderBox = () => (
@@ -91,18 +104,18 @@ class Person extends React.Component {
         </View>
         <Text>
           {this.state.age}
-          {this.props.data.location ? this.props.data.location : 'Narnia'}
+          {this.state.locations}
           {', ' + this.state.genders}
         </Text>
         <Text style={{ fontSize: 12, marginTop: 5 }}>
           <CompatibilityText>
             <YeahColor>
-              {this.props.data.loveCommon}
+              {this.props.data.loveCommon ? this.props.data.loveCommon : 0}
               <FrienshipFont> YEAH</FrienshipFont>
             </YeahColor>{' '}
             &{' '}
             <NaahColor>
-              {this.props.data.hateCommon}
+              {this.props.data.hateCommon ? this.props.data.hateCommon : 0}
               <FrienshipFont> NAAH</FrienshipFont>
             </NaahColor>{' '}
             in common{' '}
