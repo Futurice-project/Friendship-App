@@ -170,20 +170,34 @@ class MyProfile extends React.Component {
       });
       return (
         <ViewContainerTop style={styles.viewContent}>
-          <TouchableOpacity
-            onPress={this._showModal}
-            style={{ alignSelf: 'flex-end', marginRight: 15, marginTop: 32 }}
-          >
+          <View style={{ flex: 1, alignItems: 'center' }}>
             <Image
-              source={require('../../../assets//icon_profile_overlay.png')}
-            />
-          </TouchableOpacity>
+              style={{ width: 400, height: 200 }}
+              source={{
+                uri:
+                  'data:image/png;base64,' + this.props.currentUser.data.image,
+              }}
+            >
+              <TouchableOpacity
+                onPress={this._showModal}
+                style={{
+                  alignSelf: 'flex-end',
+                  marginRight: 37,
+                  marginTop: 33,
+                }}
+              >
+                <Image
+                  source={require('../../../assets//icon_profile_overlay.png')}
+                />
+              </TouchableOpacity>
+              <View style={styles.whiteCircle}>
+                <Text style={styles.emoji}>
+                  {this.props.currentUser.data.emoji}
+                </Text>
+              </View>
+            </Image>
+          </View>
           <View style={styles.profileContainer}>
-            <View style={styles.whiteCircle}>
-              <Text style={styles.emoji}>
-                {this.props.currentUser.data.emoji}
-              </Text>
-            </View>
             <Text style={styles.username}>
               {this.props.currentUser.data.username}
             </Text>
@@ -210,7 +224,11 @@ class MyProfile extends React.Component {
 
           <TabProfile hate={hate} love={love} myprofile={true} />
 
-          <Modal isVisible={this.state.isModalVisible}>
+          <Modal
+            backdropColor="#2a343c"
+            backdropOpacity={0.96}
+            isVisible={this.state.isModalVisible}
+          >
             <View style={{ flex: 1 }}>
               <TouchableOpacity
                 onPress={this._hideModal}
@@ -224,31 +242,32 @@ class MyProfile extends React.Component {
               <ButtonOption>
                 <TouchableOpacity
                   onPress={this._onPressButton}
-                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
+                  style={styles.buttonStyle}
                 >
-                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
-                    Edit Profile
-                  </Text>
+                  <Text style={styles.buttonTextStyle}>Privacy Settings</Text>
                 </TouchableOpacity>
               </ButtonOption>
 
               <ButtonOption>
                 <TouchableOpacity
                   onPress={this._onPressButton}
-                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
+                  style={styles.buttonStyle}
                 >
-                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
-                    Manage Privacy
-                  </Text>
+                  <Text style={styles.buttonTextStyle}>Send Feedback</Text>
                 </TouchableOpacity>
               </ButtonOption>
 
               <ButtonOption>
                 <TouchableOpacity
                   onPress={() => this.props.signOut()}
-                  style={[styles.buttonStyle, { backgroundColor: '#2a343c' }]}
+                  style={styles.buttonStyle}
                 >
-                  <Text style={[styles.textButtonStyle, { color: '#faf5f0' }]}>
+                  <Text
+                    style={[
+                      styles.buttonTextStyle,
+                      { fontFamily: 'NunitoSans-Bold' },
+                    ]}
+                  >
                     Log Out
                   </Text>
                 </TouchableOpacity>
@@ -274,6 +293,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#faf5f0',
   },
   whiteCircle: {
+    alignContent: 'flex-end',
+    alignSelf: 'flex-end',
+    alignItems: 'flex-end',
+    marginTop: 25,
+    marginRight: 40,
     width: 64,
     height: 64,
     borderRadius: 64,
@@ -298,16 +322,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    width: 241,
-    height: 47,
-    borderRadius: 34,
-    backgroundColor: 'red',
+    // width: 241,
+    // height: 47,
+    // borderRadius: 34,
+    // backgroundColor: 'red',
     marginTop: 20,
   },
   buttonTextStyle: {
+    fontFamily: 'NunitoSans-Regular',
     alignSelf: 'center',
     fontSize: 20,
-    fontWeight: 'bold',
     color: '#faf6f0',
   },
 });

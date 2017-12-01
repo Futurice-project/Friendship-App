@@ -36,6 +36,12 @@ export const ViewContainerTop = styled.ScrollView.attrs({
   background-color: #ffffff;
 `;
 
+export const HeaderButton = styled.View`
+  position: absolute;
+  top: 0;
+  right: 44;
+`;
+
 export const Padding = styled.View`padding: 16px;`;
 
 export const Centered = styled.View`
@@ -83,6 +89,9 @@ export const MessageCard = styled.View`
 `;
 
 export const PopUpMenuCard = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
   align-self: flex-end;
   padding-top: 0px;
 `;

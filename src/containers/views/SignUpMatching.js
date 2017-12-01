@@ -56,10 +56,6 @@ const InfoText = styled.Text`
 `;
 
 class SignUpMatching extends React.Component {
-  static navigationOptions = {
-    title: 'Matching',
-    header: () => null,
-  };
   state = {
     enableMatching: false,
     description: '',

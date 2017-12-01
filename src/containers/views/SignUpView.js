@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ImagePicker } from 'expo';
 import { NavigationActions } from 'react-navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
 
 import rest from '../../utils/rest';
@@ -12,7 +13,7 @@ import ProgressBar from '../../components/ProgressBar';
 import GenderBox from '../../components/GenderBox';
 import SignUpEmoji from '../../components/SignUpEmoji';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { emojis } from '../../../assets/misc/emojis';
 
 import {
   TouchableOpacity,
@@ -547,62 +548,5 @@ const styles = {
     paddingLeft: 23,
   },
 };
-
-const emojis = [
-  '🥝',
-  '🍉',
-  '🍍',
-  '🍓',
-  '🥑',
-  '🌶️',
-  '🍷',
-  '🍺',
-  '🌮',
-  '🍪',
-  '🍔',
-  '🍕',
-  '🍭',
-  '🍦',
-  '🌵',
-  '🌳',
-  '🌻',
-  '🌎',
-  '⚡',
-  '✨',
-  '👽',
-  '👻',
-  '💩',
-  '👾',
-  '🔮',
-  '🕶️',
-  '👓',
-  '👑',
-  '🎲',
-  '🦀',
-  '🐙',
-  '🐠',
-  '🐼',
-  '🐢',
-  '🐨',
-  '🦁',
-  '🦊',
-  '🐵',
-  '😺',
-  '☺',
-  '️😀',
-  '😎',
-  '🙃',
-  '😒',
-  '🤔',
-  '🤕',
-  '🤓',
-  '🙄',
-  '🎧',
-  '🎸',
-  '⛺',
-  '🚲',
-  '🚘',
-  '💾',
-];
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpView);

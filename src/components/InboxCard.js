@@ -54,11 +54,11 @@ const styles = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  openChatView: (chatroomId, username, userEmoji) =>
+  openChatView: (chatroomId, id, username, userEmoji) =>
     dispatch(
       NavigationActions.navigate({
         routeName: 'ChatView',
-        params: { chatroomId, username, userEmoji },
+        params: { chatroomId, id, username, userEmoji },
       }),
     ),
 });
@@ -71,6 +71,8 @@ class InboxCard extends React.Component {
       lastMessage.text_message.length > 35
         ? lastMessage.text_message.slice(0, 35) + '...'
         : lastMessage.text_message;
+    const userId =
+      this.props.currentUserId == creator.id ? receiver.id : creator.id;
     const username =
       this.props.currentUserId == creator.id
         ? receiver.username
@@ -80,7 +82,7 @@ class InboxCard extends React.Component {
     return (
       <TouchableHighlight
         onPress={() =>
-          this.props.openChatView(this.props.data.id, username, emoji)}
+          this.props.openChatView(this.props.data.id, userId, username, emoji)}
         underlayColor={'#ddd'}
       >
         <View style={styles.inboxCard}>
