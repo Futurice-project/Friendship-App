@@ -2,9 +2,13 @@ node_modules/
 .expo/
 npm-debug.*
 .eslintrc.*
-.DS_Store
+
 # Ignore JetBrain files
 .idea
+
+# Ignore Mac DS_Store files
+.DS_Store
+**/.DS_Store
 
 Ignore Vscode jsconfig
 jsconfig.json
