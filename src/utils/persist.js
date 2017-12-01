@@ -13,6 +13,7 @@ const persistConfig = {
     'usersSearch',
     'userDetails',
     'tagsForUser',
+    'personalitiesForUser',
     'userGenders',
     'currentUser',
     'tagsForCurrentUser',
@@ -23,6 +24,10 @@ const persistConfig = {
     'chatRoomsWithUserId',
     'createChatRoom',
     'personalities',
+    'locations',
+    'createUserPersonality',
+    'createUserPersonalities',
+    'createUserLocations',
   ],
 };
 
