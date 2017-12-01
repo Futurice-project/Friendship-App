@@ -45,7 +45,6 @@ const mapStateToProps = state => ({
   auth: state.auth,
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
-  userGenders: state.userGenders,
   personalitiesForUser: state.personalitiesForUser,
   currentUser: state.currentUser,
   tagsForCurrentUser: state.tagsForCurrentUser,
@@ -55,8 +54,6 @@ const mapDispatchToProps = dispatch => ({
   refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForUser.get({ userId })),
-  refreshUserGenders: userId =>
-    dispatch(rest.actions.userGenders.get({ userId })),
   refreshPersonalitiesForUser: userId =>
     dispatch(rest.actions.personalitiesForUser.get({ userId })),
 });
@@ -92,13 +89,13 @@ class ProfileUser extends React.Component {
     const personId = this.props.navigation.state.params.personId;
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
-    this.props.refreshUserGenders(personId);
     this.props.refreshPersonalitiesForUser(personId);
   }
 
   getGenders = () => {
-    const gendersArr = this.props.userGenders.data.map(x => x.gender);
-    const genders = gendersArr.join(' and ');
+    const genders = this.props.userDetails.data.genderlist
+      ? this.props.userDetails.data.genderlist.join(' and ')
+      : '';
     this.setState({ genders: genders });
   };
 
