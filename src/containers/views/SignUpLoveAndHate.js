@@ -57,6 +57,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   //activities: state.activities,
+  activities: state.activities,
   navigatorState: state.navigatorState,
   activityState: state.activityState,
 });
@@ -66,45 +67,53 @@ export class SignUpLoveAndHate extends React.Component {
     header: () => null,
   };
 
-  state = {
-    activities: [
-      { id: 0, name: 'football' },
-      { id: 1, name: 'boxing' },
-      { id: 2, name: 'concerts' },
-      { id: 3, name: 'reading' },
-      { id: 4, name: 'skiing' },
-    ],
-  };
-
-  componentDidUpdate() {
-    //this.props.getActivities();
+  componentWillMount() {
+    this.props.getActivities();
   }
 
-  renderFiveLoveAndHate = () => {
+  renderFiveLoveAndHateActivities = () => {
     //    if (!this.props.personalities.data.data) {
     //      return <Text>Network failed</Text>;
     //    }
 
-    let activities = this.state.activities //this.props.activities.data.data
-      //      .slice(
-      //        this.props.activityState.startIndex,
-      //        this.props.activityState.endIndex,
-      //      )
+    let activities = this.props.activities.data.data //this.props.activities.data.data
       .map(activity => {
-        return <LoveAndHate key={activity.id} activity={activity.name} />;
+        //activities have a category equal to 1
+        if (activity.category == 1) {
+          return <LoveAndHate key={activity.id} activity={activity.name} />;
+        }
       });
 
     return <Activities>{activities}</Activities>;
     {
-      /*
-<LoveAndHate activity="Football"/>
-<LoveAndHate activity="Boxing"/>
-<LoveAndHate activity="Concerts"/>
-<LoveAndHate activity="Reading"/>
-<LoveAndHate activity="Skiing"/>
-*/
     }
   };
+
+  renderFiveLoveAndHateInterests = () => {
+    //    if (!this.props.personalities.data.data) {
+    //      return <Text>Network failed</Text>;
+    //    }
+
+    let activities = this.props.activities.data.data //this.props.activities.data.data
+      .map(activity => {
+        //interests have a category equal to 2
+        if (activity.category == 2) {
+          return <LoveAndHate key={activity.id} activity={activity.name} />;
+        }
+      });
+
+    return <Activities>{activities}</Activities>;
+    {
+    }
+  };
+
+  renderPage() {
+    if (this.state.page == 1) {
+      return this.renderFiveLoveAndHateActivities();
+    } else {
+      return this.renderFiveLoveAndHateInterests();
+    }
+  }
 
   handleClick = activityId => {
     let personalities = this.removeDuplicateFromChosenPersonalities(
@@ -126,23 +135,14 @@ export class SignUpLoveAndHate extends React.Component {
     }
   };
 
-  /*  renderProgress() {
-    if (!this.props.personalities.data.data) {
-      return;
+  renderTitle() {
+    if (this.state.page == 1) {
+      return '1/2 Activities';
+    } else {
+      return '2/2 Interests';
     }
-
-    return (
-      <Text
-        style={{
-          fontFamily: 'NunitoSans-Bold',
-          fontSize: 20,
-          color: '#efebe9',
-        }}
-      >
-        {this.props.personalityState.endIndex / 2}/{this.props.personalities.data.data.length / 2}{' '}
-      </Text>
-    );
-  }*/
+  }
+  state = { page: 1 };
 
   render() {
     console.log(this.props);
@@ -151,9 +151,12 @@ export class SignUpLoveAndHate extends React.Component {
         <ViewContainer>
           <ProgressBar color="#3a4853" steps="5" />
           <Padding>
-            <Title>YEAH & NAAH...</Title>
+            <View style={{ flexDirection: 'row' }}>
+              <Title style={{ color: '#ff8a65' }}>YEAH </Title>
+              <Title>&</Title>
+              <Title style={{ color: '#99ccff' }}> NAAH</Title>
+            </View>
             <SubTitle>
-              {/*this.renderProgress()*/}
               <Text
                 style={{
                   fontFamily: 'NunitoSans-Regular',
@@ -161,7 +164,7 @@ export class SignUpLoveAndHate extends React.Component {
                   color: '#efebe9',
                 }}
               >
-                1/2 Activities
+                {this.renderTitle()}
               </Text>
             </SubTitle>
           </Padding>
@@ -173,11 +176,14 @@ export class SignUpLoveAndHate extends React.Component {
               paddingRight: -16,
             }}
           >
-            <Centered>{this.renderFiveLoveAndHate()}</Centered>
+            <Centered>{this.renderPage()}</Centered>
           </Padding>
           <RoundTab
             title="NEXT"
             tint="#faf5f0" /*onPress={() => this.handleClick(activity.id)}*/
+            onPress={() => {
+              this.setState({ page: 2 });
+            }}
           />
         </ViewContainer>
       </View>
