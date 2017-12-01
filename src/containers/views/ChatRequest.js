@@ -29,6 +29,7 @@ const styles = {
     margin: 18,
   },
   inviteText: {
+    backgroundColor: 'transparent',
     position: 'absolute',
     top: 60,
     textAlign: 'center',

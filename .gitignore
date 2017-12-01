@@ -2,7 +2,7 @@ node_modules/
 .expo/
 npm-debug.*
 .eslintrc.*
-
+.DS_Store
 # Ignore JetBrain files
 .idea
 

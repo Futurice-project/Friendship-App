@@ -19,6 +19,7 @@ import {
 } from '../../components/Layout';
 import { Description, Details, LocationText } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
+import RoundTab from '../../components/RoundTab';
 import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
 import Personality from '../../components/Personality';
@@ -168,16 +169,17 @@ class MyProfile extends React.Component {
       let hate = this.props.tagsForCurrentUser.data.filter(e => {
         return e.love === false;
       });
+
+      // if there is no picture for the user we use a default image
+      const srcImage = this.props.currentUser.data.image
+        ? {
+            uri: 'data:image/png;base64,' + this.props.currentUser.data.image,
+          }
+        : require('../../../assets/img/placeholder/grone.jpg');
       return (
         <ViewContainerTop style={styles.viewContent}>
           <View style={{ flex: 1, alignItems: 'center' }}>
-            <Image
-              style={{ width: 400, height: 200 }}
-              source={{
-                uri:
-                  'data:image/png;base64,' + this.props.currentUser.data.image,
-              }}
-            >
+            <Image style={{ width: 400, height: 200 }} source={srcImage}>
               <TouchableOpacity
                 onPress={this._showModal}
                 style={{
@@ -187,7 +189,7 @@ class MyProfile extends React.Component {
                 }}
               >
                 <Image
-                  source={require('../../../assets//icon_profile_overlay.png')}
+                  source={require('../../../assets/icon_profile_overlay.png')}
                 />
               </TouchableOpacity>
               <View style={styles.whiteCircle}>
@@ -195,6 +197,7 @@ class MyProfile extends React.Component {
                   {this.props.currentUser.data.emoji}
                 </Text>
               </View>
+              <RoundTab />
             </Image>
           </View>
           <View style={styles.profileContainer}>
