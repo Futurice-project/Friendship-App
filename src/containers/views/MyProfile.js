@@ -194,7 +194,11 @@ class MyProfile extends React.Component {
           </View>
           <TabProfile hate={hate} love={love} myprofile={true} />
 
-          <Modal isVisible={this.state.isModalVisible}>
+          <Modal
+            backdropColor="#2a343c"
+            backdropOpacity={0.96}
+            isVisible={this.state.isModalVisible}
+          >
             <View style={{ flex: 1 }}>
               <TouchableOpacity
                 onPress={this._hideModal}
@@ -208,31 +212,32 @@ class MyProfile extends React.Component {
               <ButtonOption>
                 <TouchableOpacity
                   onPress={this._onPressButton}
-                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
+                  style={styles.buttonStyle}
                 >
-                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
-                    Edit Profile
-                  </Text>
+                  <Text style={styles.buttonTextStyle}>Privacy Settings</Text>
                 </TouchableOpacity>
               </ButtonOption>
 
               <ButtonOption>
                 <TouchableOpacity
                   onPress={this._onPressButton}
-                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
+                  style={styles.buttonStyle}
                 >
-                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
-                    Manage Privacy
-                  </Text>
+                  <Text style={styles.buttonTextStyle}>Send Feedback</Text>
                 </TouchableOpacity>
               </ButtonOption>
 
               <ButtonOption>
                 <TouchableOpacity
                   onPress={() => this.props.signOut()}
-                  style={[styles.buttonStyle, { backgroundColor: '#2a343c' }]}
+                  style={styles.buttonStyle}
                 >
-                  <Text style={[styles.textButtonStyle, { color: '#faf5f0' }]}>
+                  <Text
+                    style={[
+                      styles.buttonTextStyle,
+                      { fontFamily: 'NunitoSans-Bold' },
+                    ]}
+                  >
                     Log Out
                   </Text>
                 </TouchableOpacity>
@@ -288,16 +293,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    width: 241,
-    height: 47,
-    borderRadius: 34,
-    backgroundColor: 'red',
+    // width: 241,
+    // height: 47,
+    // borderRadius: 34,
+    // backgroundColor: 'red',
     marginTop: 20,
   },
   buttonTextStyle: {
+    fontFamily: 'NunitoSans-Regular',
     alignSelf: 'center',
     fontSize: 20,
-    fontWeight: 'bold',
     color: '#faf6f0',
   },
 });

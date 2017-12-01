@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Dimensions } from 'react-native';
 
 const styles = StyleSheet.create({
   contentContainerStyle: {
@@ -34,6 +34,12 @@ export const ViewContainerTop = styled.ScrollView.attrs({
   contentContainerStyle: styles.contentContainerStyleTop,
 })`
   background-color: #ffffff;
+`;
+
+export const HeaderButton = styled.View`
+  position: absolute;
+  top: 0;
+  right: 44;
 `;
 
 export const Padding = styled.View`padding: 16px;`;
@@ -75,6 +81,9 @@ export const MessageCard = styled.View`
 `;
 
 export const PopUpMenuCard = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
   align-self: flex-end;
   padding-top: 0px;
 `;

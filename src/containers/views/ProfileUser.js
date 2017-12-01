@@ -1,27 +1,17 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { connect } from 'react-redux';
-import { MenuContext } from 'react-native-popup-menu';
 import Modal from 'react-native-modal';
-
 import rest from '../../utils/rest';
+import styled from 'styled-components/native';
 
 import Button from '../../components/Button';
 import {
-  ViewContainer,
   ViewContainerTop,
   Centered,
-  FlexRow,
+  HeaderButton,
 } from '../../components/Layout';
 import {
-  SmallHeader,
   Description,
   Incommon,
   FrienshipFont,
@@ -30,13 +20,7 @@ import {
 } from '../../components/Text';
 import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
-import styled from 'styled-components/native';
-import PopUpMenuUserProfile from '../../components/PopUpMenuUserProfile';
-
-const ButtonOption = styled.View`
-  align-items: center;
-  margin-top: 5px;
-`;
+import PopUpMenu from '../../components/PopUpMenu';
 
 const DescriptionWrapper = styled.View`
   background-color: #efebe9;
@@ -60,11 +44,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.tagsForUser.get({ userId })),
   refreshUserGenders: userId =>
     dispatch(rest.actions.userGenders.get({ userId })),
-  reportUser: reportDetails => {
-    dispatch(
-      rest.actions.reports.post({}, { body: JSON.stringify(reportDetails) }),
-    );
-  },
 });
 
 class ProfileUser extends React.Component {
@@ -74,18 +53,13 @@ class ProfileUser extends React.Component {
     description: '',
     isOptionsVisible: false,
     isReportVisible: false,
-    reportDescription: 'Description',
+    reportDescription: '',
     //  loveCommon: 0,
     hateCommon: 0,
   };
 
   static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.personName,
-    headerRight: (
-      <MenuContext>
-        <PopUpMenuUserProfile />
-      </MenuContext>
-    ),
   });
 
   componentWillReceiveProps(nextProps) {
@@ -140,17 +114,25 @@ class ProfileUser extends React.Component {
     this.setState({ age: ageName });
   };
   // Modal functions
-  showOptions = () => this.setState({ isOptionsVisible: true });
-  hideOptions = () => this.setState({ isOptionsVisible: false });
   showReport = () => {
-    this.setState({ isReportVisible: true });
+    const { isReportVisible } = this.state;
+    this.setState({ isReportVisible: !isReportVisible });
   };
-  hideReport = () => this.setState({ isReportVisible: false });
   sendReport = () => {
     const userId = this.props.userDetails.data.id;
     const description = this.state.reportDescription;
     const reported_by = this.props.auth.data.decoded.id;
-    this.props.reportUser({ userId, description, reported_by });
+    fetch(`http://localhost:3888/reports`, {
+      method: 'post',
+      headers: {
+        Authorization: this.props.auth.data.token,
+      },
+      body: JSON.stringify({
+        userId: userId,
+        description: description,
+        reported_by: reported_by,
+      }),
+    });
     this.setState({ isReportVisible: false });
   };
 
@@ -193,14 +175,6 @@ class ProfileUser extends React.Component {
       let reportTitle = 'Report ' + this.props.userDetails.data.username;
       return (
         <ViewContainerTop style={styles.viewContent}>
-          <TouchableOpacity
-            onPress={this.showOptions}
-            style={{ alignSelf: 'flex-end', marginRight: 15, marginTop: 32 }}
-          >
-            <Image
-              source={require('../../../assets//icon_profile_overlay.png')}
-            />
-          </TouchableOpacity>
           <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>
@@ -239,8 +213,7 @@ class ProfileUser extends React.Component {
             <View
               style={{
                 height: 80,
-                borderWidth: 1,
-                borderColor: '#fff',
+                backgroundColor: '#fff',
                 marginBottom: 10,
               }}
             >
@@ -248,82 +221,54 @@ class ProfileUser extends React.Component {
             </View>
           </View>
           <TabProfile hate={hate} love={love} />
-          <Modal isVisible={this.state.isOptionsVisible}>
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity
-                onPress={this.hideOptions}
-                style={{ alignSelf: 'flex-end' }}
-              >
-                <Image
-                  source={require('../../../assets//icon_profile_overlay.png')}
-                />
-              </TouchableOpacity>
 
-              <ButtonOption>
-                <TouchableOpacity
+          <Modal
+            visible={this.state.isReportVisible}
+            animationIn="slideInUp"
+            animationInTiming={200}
+          >
+            <View
+              style={{
+                height: 200,
+                backgroundColor: '#eee',
+                borderRadius: 10,
+                paddingVertical: 10,
+              }}
+            >
+              <TextInput
+                autoCorrect={false}
+                autoCapitalize="none"
+                titleColor="#2d4359"
+                title={reportTitle}
+                placeholder="Description"
+                backColor="#faf6f0"
+                onChangeText={reportDescription =>
+                  this.setState({ reportDescription })}
+                value={this.state.reportDescription}
+              />
+              <View style={{ flexDirection: 'row' }}>
+                <Button
+                  title="Cancel"
+                  primary
+                  textColor="green"
+                  size="half"
+                  color="light"
                   onPress={this.showReport}
-                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
-                >
-                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
-                    Report
-                  </Text>
-                </TouchableOpacity>
-              </ButtonOption>
-
-              <ButtonOption>
-                <TouchableOpacity
-                  onPress={this._onPressButton}
-                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
-                >
-                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
-                    Manage Privacy
-                  </Text>
-                </TouchableOpacity>
-              </ButtonOption>
+                />
+                <Button
+                  title="Report"
+                  border
+                  textColor="black"
+                  size="half"
+                  color="dark"
+                  onPress={this.sendReport}
+                />
+              </View>
             </View>
-            <Modal visible={this.state.isReportVisible}>
-              <ViewContainer style={{ flex: 1 }}>
-                <View
-                  style={{
-                    height: 200,
-                    backgroundColor: '#eee',
-                    borderRadius: 5,
-                    paddingVertical: 10,
-                  }}
-                >
-                  <TextInput
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    titleColor="#2d4359"
-                    title={reportTitle}
-                    placeholder="DETAILS OF REPORT"
-                    backColor="#faf6f0"
-                    onChangeText={reportDescription =>
-                      this.setState({ reportDescription })}
-                    value={this.state.reportDescription}
-                  />
-                  <View style={{ flexDirection: 'row' }}>
-                    <Button
-                      title="Cancel"
-                      primary
-                      textColor="green"
-                      size="half"
-                      color="light"
-                      onPress={this.hideReport}
-                    />
-                    <Button
-                      title="Report"
-                      border
-                      textColor="black"
-                      size="half"
-                      color="dark"
-                      onPress={this.sendReport}
-                    />
-                  </View>
-                </View>
-              </ViewContainer>
-            </Modal>
           </Modal>
+          <HeaderButton>
+            <PopUpMenu isReportVisible={this.showReport} />
+          </HeaderButton>
         </ViewContainerTop>
       );
     }
