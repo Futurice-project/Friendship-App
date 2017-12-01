@@ -23,6 +23,7 @@ export const Details = styled.Text`
   text-align: center;
   color: #4a4a4a;
   margin-bottom: 12px;
+  background-color: transparent;
 `;
 
 export const CompatibilityText = styled.Text`
@@ -35,6 +36,18 @@ export const CompatibilityText = styled.Text`
   margin-bottom: 14px;
   height: 19;
   letter-spacing: 0.4;
+  background-color: transparent;
+`;
+
+export const UsernameText = styled.Text`
+  background-color: transparent;
+  height: 27;
+  font-family: 'NunitoSans-Bold';
+  font-size: 20;
+  font-weight: bold;
+  letter-spacing: 2.44;
+  text-align: center;
+  color: #60686d;
 `;
 
 export const YeahColor = styled.Text`
@@ -47,7 +60,10 @@ export const NaahColor = styled.Text`
   font-family: 'NunitoSans-Bold';
 `;
 
-export const LocationText = styled.Text`font-family: 'NunitoSans-Bold';`;
+export const LocationText = styled.Text`
+  font-family: 'NunitoSans-Bold';
+  background-color: transparent;
+`;
 
 export const FrienshipFont = styled.Text`font-family: 'Friendship_version_2';`;
 

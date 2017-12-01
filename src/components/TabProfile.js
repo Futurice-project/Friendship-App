@@ -79,6 +79,7 @@ export default class TabProfile extends PureComponent {
       <View>
         <ScrollableTabView
           onChangeTab={this.handleChangeTab}
+          tabBarTextStyle={styles.tabLabel}
           style={{ marginTop: 0, backgroundColor: this.state.backcolor }}
           initialPage={0}
           renderTabBar={() => <ScrollableTabBar />}
@@ -105,6 +106,7 @@ export default class TabProfile extends PureComponent {
                 .map(tag => <Tag key={tag.id} data={tag} dark />)}
             </View>
           </View>
+
           <View tabLabel="YEAH">
             <Text style={styles.tagCategoriesLove}>ACTIVITIES</Text>
             <View style={styles.tagList}>
@@ -145,6 +147,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   tagCategoriesLove: {
+    marginTop: 10,
     alignSelf: 'center',
     flexGrow: 1,
     textAlign: 'center',
@@ -152,6 +155,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   tagCategoriesHate: {
+    marginTop: 10,
     alignSelf: 'center',
     flexGrow: 1,
     textAlign: 'center',
@@ -165,5 +169,10 @@ const styles = StyleSheet.create({
     width: 241,
     height: 47,
     borderRadius: 34,
+  },
+  tabLabel: {
+    fontFamily: 'Friendship_version_2',
+    fontSize: 30,
+    letterSpacing: 3,
   },
 });
