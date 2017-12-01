@@ -73,6 +73,11 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
+  personalitiesForUser: {
+    url: `${apiRoot}/user_personality/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
   currentUserGenders: {
     url: `${apiRoot}/user_gender/:userId`,
     transformer: transformers.array,

@@ -69,6 +69,14 @@ export const IconImage = styled.Image`
   ${props => (props.tintColor ? `tintColor: ${props.tintColor}` : undefined)};
 `;
 
+export const DescriptionWrapper = styled.View`
+  background-color: #efebe9;
+  width: ${Dimensions.get('window').width};
+  display: flex;
+  align-items: center;
+  padding: 14px 48px;
+`;
+
 export const MessageCard = styled.View`
   flex-direction: row;
   margin-top: 10px;

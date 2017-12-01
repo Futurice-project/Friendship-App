@@ -11,17 +11,24 @@ import {
 } from 'react-native';
 //import { IconImage } from '../../components/Layout';
 import rest from '../../utils/rest';
-import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
-import { SmallHeader, Description } from '../../components/Text';
+import {
+  ViewContainerTop,
+  Centered,
+  DescriptionWrapper,
+  FlexRow,
+} from '../../components/Layout';
+import { Description, Details, LocationText } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
 import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
+import Personality from '../../components/Personality';
 
 const mapStateToProps = state => ({
   auth: state.auth,
   currentUser: state.currentUser,
   tagsForCurrentUser: state.tagsForCurrentUser,
   currentUserGenders: state.currentUserGenders,
+  personalitiesForUser: state.personalitiesForUser,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -30,6 +37,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.tagsForCurrentUser.get({ userId })),
   refreshUserGenders: userId =>
     dispatch(rest.actions.currentUserGenders.get({ userId })),
+  refreshPersonalitiesForUser: userId =>
+    dispatch(rest.actions.personalitiesForUser.get({ userId })),
   signOut: () => {
     dispatch({ type: 'SIGN_OUT' });
   },
@@ -40,18 +49,11 @@ const ButtonOption = styled.View`
   margin-top: 5px;
 `;
 
-const DescriptionWrapper = styled.View`
-  background-color: #efebe9;
-  display: flex;
-  align-items: center;
-  padding: 14px 48px;
-`;
-
 class MyProfile extends React.Component {
   state = {
     loaded: false,
     age: '',
-    description: '',
+
     profileTitle: 'Profile Page',
     isModalVisible: false,
   };
@@ -91,6 +93,7 @@ class MyProfile extends React.Component {
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
     this.props.refreshUserGenders(personId);
+    this.props.refreshPersonalitiesForUser(personId);
   }
 
   getGenders = () => {
@@ -126,6 +129,27 @@ class MyProfile extends React.Component {
     }
     this.setState({ age: ageName });
   };
+
+  renderPersonalities() {
+    var personalities = this.props.personalitiesForUser.data.map(
+      personality => {
+        return (
+          <Personality
+            key={personality.personalityId}
+            title={personality.name}
+            image={personality.name}
+            profile={true}
+          />
+        );
+      },
+    );
+
+    return (
+      <Centered style={{ flexDirection: 'row', paddingVertical: 10 }}>
+        {personalities}
+      </Centered>
+    );
+  }
 
   render = () => {
     if (!this.props.auth.data.decoded) {
@@ -177,21 +201,27 @@ class MyProfile extends React.Component {
             <Text style={styles.username}>
               {this.props.currentUser.data.username}
             </Text>
-            <Description>
-              {this.props.currentUser.data.location ? (
-                this.props.currentUser.data.location
-              ) : (
-                'Narnia'
-              )}
+            <Details>
+              <LocationText>
+                {this.props.currentUser.data.location ? (
+                  this.props.currentUser.data.location
+                ) : (
+                  'Narnia'
+                )}
+              </LocationText>
               {', ' + this.state.age + ', '}
               {this.state.genders}
-            </Description>
+            </Details>
             <DescriptionWrapper>
               <Description>
                 {this.props.currentUser.data.description}
               </Description>
             </DescriptionWrapper>
+            <View style={{ backgroundColor: '#faf5f0' }}>
+              {this.renderPersonalities()}
+            </View>
           </View>
+
           <TabProfile hate={hate} love={love} myprofile={true} />
 
           <Modal
@@ -256,12 +286,11 @@ const styles = StyleSheet.create({
   },
   viewContent: {
     backgroundColor: '#e8e9e8',
-    paddingVertical: 0,
   },
   profileContainer: {
     alignItems: 'center',
-    height: 300,
     marginTop: 23,
+    backgroundColor: '#faf5f0',
   },
   whiteCircle: {
     alignContent: 'flex-end',

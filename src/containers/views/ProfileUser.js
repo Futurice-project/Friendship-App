@@ -1,7 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  FlatList,
+  Image,
+} from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
+import resolveAssetSource from 'resolveAssetSource';
 import rest from '../../utils/rest';
 import styled from 'styled-components/native';
 
@@ -9,24 +18,27 @@ import Button from '../../components/Button';
 import {
   ViewContainerTop,
   Centered,
+  DescriptionWrapper,
+  FlexRow,
   HeaderButton,
 } from '../../components/Layout';
 import {
   Description,
-  Incommon,
+  Details,
+  CompatibilityText,
   FrienshipFont,
+  LocationText,
   YeahColor,
   NaahColor,
 } from '../../components/Text';
 import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
 import PopUpMenu from '../../components/PopUpMenu';
+import Personality from '../../components/Personality';
 
-const DescriptionWrapper = styled.View`
-  background-color: #efebe9;
-  display: flex;
+const ButtonOption = styled.View`
   align-items: center;
-  padding: 14px 48px;
+  margin-top: 5px;
 `;
 
 const mapStateToProps = state => ({
@@ -34,6 +46,7 @@ const mapStateToProps = state => ({
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
   userGenders: state.userGenders,
+  personalitiesForUser: state.personalitiesForUser,
   currentUser: state.currentUser,
   tagsForCurrentUser: state.tagsForCurrentUser,
 });
@@ -44,6 +57,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.tagsForUser.get({ userId })),
   refreshUserGenders: userId =>
     dispatch(rest.actions.userGenders.get({ userId })),
+  refreshPersonalitiesForUser: userId =>
+    dispatch(rest.actions.personalitiesForUser.get({ userId })),
 });
 
 class ProfileUser extends React.Component {
@@ -78,6 +93,7 @@ class ProfileUser extends React.Component {
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
     this.props.refreshUserGenders(personId);
+    this.props.refreshPersonalitiesForUser(personId);
   }
 
   getGenders = () => {
@@ -87,13 +103,13 @@ class ProfileUser extends React.Component {
   };
 
   getAge = () => {
-    const birthDay = new Date(this.props.userDetails.data.birthday);
+    const birthYear = parseInt(this.props.userDetails.data.birthyear);
     const now = new Date();
-    let age = now.getFullYear() - birthDay.getFullYear();
-    const m = now.getMonth() - birthDay.getMonth();
-    if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
-      age--;
-    }
+    let age = now.getFullYear() - birthYear;
+    // const m = now.getMonth() - birthDay.getMonth();
+    // if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
+    //   age--;
+    // }
 
     const early = [0, 1, 2, 3];
     const mid = [4, 5, 6];
@@ -135,6 +151,27 @@ class ProfileUser extends React.Component {
     });
     this.setState({ isReportVisible: false });
   };
+
+  renderPersonalities() {
+    var personalities = this.props.personalitiesForUser.data.map(
+      personality => {
+        return (
+          <Personality
+            key={personality.personalityId}
+            title={personality.name}
+            image={personality.name}
+            profile={true}
+          />
+        );
+      },
+    );
+
+    return (
+      <Centered style={{ flexDirection: 'row', paddingVertical: 10 }}>
+        {personalities}
+      </Centered>
+    );
+  }
 
   render = () => {
     if (!this.props.auth.data.decoded) {
@@ -184,7 +221,7 @@ class ProfileUser extends React.Component {
             <Text style={styles.username}>
               {this.props.userDetails.data.username}
             </Text>
-            <Incommon>
+            <CompatibilityText>
               <YeahColor>
                 {loveCommon}
                 <FrienshipFont> YEAH</FrienshipFont>
@@ -195,29 +232,25 @@ class ProfileUser extends React.Component {
                 <FrienshipFont> NAAH</FrienshipFont>
               </NaahColor>{' '}
               in common{' '}
-            </Incommon>
-            <Description>
-              {this.props.userDetails.data.location ? (
-                this.props.userDetails.data.location
-              ) : (
-                'Narnia'
-              )}
+            </CompatibilityText>
+            <Details>
+              <LocationText>
+                {this.props.userDetails.data.location ? (
+                  this.props.userDetails.data.location
+                ) : (
+                  'Narnia'
+                )}
+              </LocationText>
               {', ' + this.state.age + ', '}
               {this.state.genders}
-            </Description>
+            </Details>
             <DescriptionWrapper>
               <Description>
                 {this.props.userDetails.data.description}
               </Description>
             </DescriptionWrapper>
-            <View
-              style={{
-                height: 80,
-                backgroundColor: '#fff',
-                marginBottom: 10,
-              }}
-            >
-              <Text> Personality Placeholder</Text>
+            <View style={{ backgroundColor: '#faf5f0' }}>
+              {this.renderPersonalities()}
             </View>
           </View>
           <TabProfile hate={hate} love={love} />
@@ -278,11 +311,11 @@ class ProfileUser extends React.Component {
 const styles = StyleSheet.create({
   viewContent: {
     backgroundColor: '#e8e9e8',
-    paddingVertical: 0,
   },
   profileContainer: {
     alignItems: 'center',
     marginTop: 23,
+    backgroundColor: '#faf5f0',
   },
   whiteCircle: {
     width: 64,

@@ -85,11 +85,45 @@ export default class TabProfile extends PureComponent {
           tabBarActiveTextColor={this.state.colorActif}
           tabBarInactiveTextColor={this.state.colorInactif}
         >
-          <View tabLabel="NAAHS" style={styles.tagList}>
-            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} dark />)}
+          <View tabLabel="NAAHS">
+            <Text style={styles.tagCategoriesHate}>ACTIVITIES</Text>
+            <View style={styles.tagList}>
+              {this.props.hate
+                .filter(e => e.category === 1)
+                .map(tag => <Tag key={tag.id} data={tag} dark />)}
+            </View>
+            <Text style={styles.tagCategoriesHate}>INTERESTS</Text>
+            <View style={styles.tagList}>
+              {this.props.hate
+                .filter(e => e.category === 2)
+                .map(tag => <Tag key={tag.id} data={tag} dark />)}
+            </View>
+            <Text style={styles.tagCategoriesHate}>FRIENDSHIP</Text>
+            <View style={styles.tagList}>
+              {this.props.hate
+                .filter(e => e.category === 3)
+                .map(tag => <Tag key={tag.id} data={tag} dark />)}
+            </View>
           </View>
-          <View tabLabel="YEAH" style={styles.tagList}>
-            {this.props.love.map(tag => <Tag key={tag.id} data={tag} />)}
+          <View tabLabel="YEAH">
+            <Text style={styles.tagCategoriesLove}>ACTIVITIES</Text>
+            <View style={styles.tagList}>
+              {this.props.love
+                .filter(e => e.category === 1)
+                .map(tag => <Tag key={tag.id} data={tag} />)}
+            </View>
+            <Text style={styles.tagCategoriesLove}>INTERESTS</Text>
+            <View style={styles.tagList}>
+              {this.props.love
+                .filter(e => e.category === 2)
+                .map(tag => <Tag key={tag.id} data={tag} />)}
+            </View>
+            <Text style={styles.tagCategoriesLove}>FRIENDSHIP</Text>
+            <View style={styles.tagList}>
+              {this.props.love
+                .filter(e => e.category === 3)
+                .map(tag => <Tag key={tag.id} data={tag} />)}
+            </View>
           </View>
         </ScrollableTabView>
         {this.renderSendMsg()}
@@ -110,7 +144,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-
+  tagCategoriesLove: {
+    alignSelf: 'center',
+    flexGrow: 1,
+    textAlign: 'center',
+    color: '#ff8a65',
+    fontSize: 17,
+  },
+  tagCategoriesHate: {
+    alignSelf: 'center',
+    flexGrow: 1,
+    textAlign: 'center',
+    color: '#6eb1ea',
+    fontSize: 17,
+  },
   buttonStyle: {
     alignItems: 'center',
     alignSelf: 'center',
