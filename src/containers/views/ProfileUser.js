@@ -232,8 +232,8 @@ class ProfileUser extends React.Component {
             </CompatibilityText>
             <Details>
               <LocationText>
-                {this.props.userDetails.data.location ? (
-                  this.props.userDetails.data.location
+                {this.props.userDetails.data.locations ? (
+                  this.props.userDetails.data.locations.join(',')
                 ) : (
                   'Narnia'
                 )}
