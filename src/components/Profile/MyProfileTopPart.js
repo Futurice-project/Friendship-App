@@ -22,24 +22,30 @@ import resolveAssetSource from 'resolveAssetSource';
 const { width, height } = resolveAssetSource(waveShape);
 
 const MyProfileTopPart = ({
-  username,
-  emoji,
-  srcImage,
-  location,
   age,
+  emoji,
   genders,
-  numberOfYeah,
+  location,
+  navigateBack,
   numberOfNaah,
+  numberOfYeah,
+  srcImage,
   showModal,
+  username,
 }) => {
   return (
     <Image style={styles.imageUser} source={srcImage}>
-      <TouchableOpacity onPress={showModal} style={styles.settings}>
-        <Image
-          style={styles.settingsIcon}
-          source={require('../../../assets/settingsIcon.png')}
-        />
-      </TouchableOpacity>
+      <View style={styles.backAndSettingsView}>
+        <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
+          <Text style={{ fontSize: 22 }}> {'<'} </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={showModal} style={styles.settings}>
+          <Image
+            style={styles.settingsIcon}
+            source={require('../../../assets/settingsIcon.png')}
+          />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.emojiCircle}>
         <Text style={styles.emoji}>{emoji ? emoji : '✌️'}</Text>
@@ -56,9 +62,9 @@ const MyProfileTopPart = ({
           <UsernameText style={styles.username}>{username}</UsernameText>
           <CompatibilityText>
             you have
-            <YeahColor> 15 Yeah </YeahColor>
+            <YeahColor> {numberOfYeah} Yeah </YeahColor>
             &
-            <NaahColor> 30 Naah </NaahColor>
+            <NaahColor> {numberOfNaah} Naahs </NaahColor>
           </CompatibilityText>
         </Image>
         <View style={{ backgroundColor: '#F9F6F1' }}>
@@ -76,7 +82,6 @@ const MyProfileTopPart = ({
 const styles = StyleSheet.create({
   emojiCircle: {
     alignSelf: 'flex-end',
-    marginTop: 65,
     marginRight: 5,
     width: 64,
     height: 64,
@@ -101,10 +106,16 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: 250,
   },
-  settings: {
-    alignSelf: 'flex-end',
+  backAndSettingsView: {
+    marginTop: 5,
     marginRight: 5,
-    marginTop: 7,
+    marginLeft: 5,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  backButton: {
+    backgroundColor: 'transparent',
   },
   settingsIcon: {
     width: 24,

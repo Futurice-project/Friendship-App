@@ -75,6 +75,14 @@ export default class TabProfile extends PureComponent {
   }
 
   render = () => {
+    const naahsActivities = this.props.hate.filter(e => e.category === 1);
+    const naahsInterests = this.props.hate.filter(e => e.category === 2);
+    const naahsFriendship = this.props.hate.filter(e => e.category === 3);
+
+    const yeahActivities = this.props.love.filter(e => e.category === 1);
+    const yeahInterests = this.props.love.filter(e => e.category === 2);
+    const yeahFriendship = this.props.love.filter(e => e.category === 3);
+
     return (
       <View>
         <ScrollableTabView
@@ -87,45 +95,67 @@ export default class TabProfile extends PureComponent {
           tabBarInactiveTextColor={this.state.colorInactif}
         >
           <View tabLabel="NAAHS">
-            <Text style={styles.tagCategoriesHate}>ACTIVITIES</Text>
-            <View style={styles.tagList}>
-              {this.props.hate
-                .filter(e => e.category === 1)
-                .map(tag => <Tag key={tag.id} data={tag} dark />)}
-            </View>
-            <Text style={styles.tagCategoriesHate}>INTERESTS</Text>
-            <View style={styles.tagList}>
-              {this.props.hate
-                .filter(e => e.category === 2)
-                .map(tag => <Tag key={tag.id} data={tag} dark />)}
-            </View>
-            <Text style={styles.tagCategoriesHate}>FRIENDSHIP</Text>
-            <View style={styles.tagList}>
-              {this.props.hate
-                .filter(e => e.category === 3)
-                .map(tag => <Tag key={tag.id} data={tag} dark />)}
-            </View>
+            {naahsActivities.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesHate}>ACTIVITIES</Text>
+                <View style={styles.tagList}>
+                  {naahsActivities.map(tag => (
+                    <Tag key={tag.id} data={tag} dark />
+                  ))}
+                </View>
+              </View>
+            )}
+
+            {naahsInterests.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesHate}>INTERESTS</Text>
+                <View style={styles.tagList}>
+                  {naahsInterests.map(tag => (
+                    <Tag key={tag.id} data={tag} dark />
+                  ))}
+                </View>
+              </View>
+            )}
+
+            {naahsFriendship.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesHate}>FRIENDSHIP</Text>
+                <View style={styles.tagList}>
+                  {naahsFriendship.map(tag => (
+                    <Tag key={tag.id} data={tag} dark />
+                  ))}
+                </View>
+              </View>
+            )}
           </View>
 
           <View tabLabel="YEAH">
-            <Text style={styles.tagCategoriesLove}>ACTIVITIES</Text>
-            <View style={styles.tagList}>
-              {this.props.love
-                .filter(e => e.category === 1)
-                .map(tag => <Tag key={tag.id} data={tag} />)}
-            </View>
-            <Text style={styles.tagCategoriesLove}>INTERESTS</Text>
-            <View style={styles.tagList}>
-              {this.props.love
-                .filter(e => e.category === 2)
-                .map(tag => <Tag key={tag.id} data={tag} />)}
-            </View>
-            <Text style={styles.tagCategoriesLove}>FRIENDSHIP</Text>
-            <View style={styles.tagList}>
-              {this.props.love
-                .filter(e => e.category === 3)
-                .map(tag => <Tag key={tag.id} data={tag} />)}
-            </View>
+            {yeahActivities.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesLove}>ACTIVITIES</Text>
+                <View style={styles.tagList}>
+                  {yeahActivities.map(tag => <Tag key={tag.id} data={tag} />)}
+                </View>
+              </View>
+            )}
+
+            {yeahInterests.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesLove}>INTERESTS</Text>
+                <View style={styles.tagList}>
+                  {yeahInterests.map(tag => <Tag key={tag.id} data={tag} />)}
+                </View>
+              </View>
+            )}
+
+            {yeahFriendship.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesLove}>FRIENDSHIP</Text>
+                <View style={styles.tagList}>
+                  {yeahFriendship.map(tag => <Tag key={tag.id} data={tag} />)}
+                </View>
+              </View>
+            )}
           </View>
         </ScrollableTabView>
         {this.renderSendMsg()}
