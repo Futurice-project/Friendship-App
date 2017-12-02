@@ -22,8 +22,22 @@ const MyProfileModal = ({
       isVisible={isModalVisible}
     >
       <View style={{ flex: 1 }}>
-        <TouchableOpacity onPress={hideModal} style={{ alignSelf: 'flex-end' }}>
-          <Image source={require('../../../assets/icon_profile_overlay.png')} />
+        <TouchableOpacity
+          onPress={hideModal}
+          style={{
+            alignSelf: 'flex-end',
+            marginRight: -10,
+            marginTop: 7,
+          }}
+        >
+          <Image
+            source={require('../../../assets/settingsIcon.png')}
+            style={{
+              width: 24,
+              height: 24,
+              tintColor: '#4A4A4A',
+            }}
+          />
         </TouchableOpacity>
 
         <ButtonOption>

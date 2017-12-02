@@ -5,9 +5,7 @@ import {
   View,
   Dimensions,
   StyleSheet,
-  ActivityIndicator,
   TouchableOpacity,
-  ScrollView,
 } from 'react-native';
 
 import {
@@ -76,17 +74,6 @@ const MyProfileTopPart = ({
 };
 
 const styles = StyleSheet.create({
-  icon: {
-    width: 22,
-    height: 20,
-  },
-  viewContent: {
-    backgroundColor: '#e8e9e8',
-  },
-  profileContainer: {
-    alignItems: 'center',
-    backgroundColor: '#faf5f0',
-  },
   emojiCircle: {
     alignSelf: 'flex-end',
     marginTop: 65,
@@ -109,16 +96,6 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').width * height / width,
     width: Dimensions.get('window').width,
     tintColor: '#F9F6F1',
-  },
-  inCommon: {
-    backgroundColor: 'transparent',
-    textAlign: 'center',
-  },
-  yeahInCommon: {
-    color: 'red',
-  },
-  naahInCommon: {
-    color: 'blue',
   },
   imageUser: {
     width: Dimensions.get('window').width,

@@ -15,13 +15,9 @@ import { Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
 import RoundTab from '../../components/RoundTab';
 import MyProfileModal from '../../components/Profile/MyProfileModal';
-import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
 import Personality from '../../components/Personality';
 import MyProfileTopPart from '../../components/Profile/MyProfileTopPart';
-import waveShape from '../../../assets/img/roundTab/roundTab.png';
-import resolveAssetSource from 'resolveAssetSource';
-const { width, height } = resolveAssetSource(waveShape);
 
 const mapStateToProps = state => ({
   auth: state.auth,
