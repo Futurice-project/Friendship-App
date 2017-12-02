@@ -45,18 +45,13 @@ const mapStateToProps = state => ({
   auth: state.auth,
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
-  userGenders: state.userGenders,
   personalitiesForUser: state.personalitiesForUser,
-  currentUser: state.currentUser,
-  tagsForCurrentUser: state.tagsForCurrentUser,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshUser: userId => dispatch(rest.actions.userDetails.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForUser.get({ userId })),
-  refreshUserGenders: userId =>
-    dispatch(rest.actions.userGenders.get({ userId })),
   refreshPersonalitiesForUser: userId =>
     dispatch(rest.actions.personalitiesForUser.get({ userId })),
 });
@@ -69,8 +64,6 @@ class ProfileUser extends React.Component {
     isOptionsVisible: false,
     isReportVisible: false,
     reportDescription: '',
-    //  loveCommon: 0,
-    hateCommon: 0,
   };
 
   static navigationOptions = ({ navigation }) => ({
@@ -92,13 +85,13 @@ class ProfileUser extends React.Component {
     const personId = this.props.navigation.state.params.personId;
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
-    this.props.refreshUserGenders(personId);
     this.props.refreshPersonalitiesForUser(personId);
   }
 
   getGenders = () => {
-    const gendersArr = this.props.userGenders.data.map(x => x.gender);
-    const genders = gendersArr.join(' and ');
+    const genders = this.props.userDetails.data.genderlist
+      ? this.props.userDetails.data.genderlist.join(' and ')
+      : '';
     this.setState({ genders: genders });
   };
 
@@ -186,29 +179,14 @@ class ProfileUser extends React.Component {
     } else {
       let love = this.props.tagsForUser.data.filter(e => e.love === true);
       let hate = this.props.tagsForUser.data.filter(e => e.love === false);
-      let loveU = this.props.tagsForCurrentUser.data.filter(
-        e => e.love === true,
-      );
-      let hateU = this.props.tagsForCurrentUser.data.filter(
-        e => e.love === false,
-      );
-      let loveCommon = 0;
-      let hateCommon = 0;
 
-      loveU.filter(e =>
-        love.filter(y => {
-          if (e.name === y.name) {
-            loveCommon++;
-          }
-        }),
-      );
-      hateU.filter(e =>
-        hate.filter(y => {
-          if (e.name === y.name) {
-            hateCommon++;
-          }
-        }),
-      );
+      let loveCommon = this.props.userDetails.data.loveCommon
+        ? this.props.userDetails.data.loveCommon
+        : 0;
+      let hateCommon = this.props.userDetails.data.hateCommon
+        ? this.props.userDetails.data.hateCommon
+        : 0;
+
       let reportTitle = 'Report ' + this.props.userDetails.data.username;
       return (
         <ViewContainerTop style={styles.viewContent}>
@@ -235,8 +213,8 @@ class ProfileUser extends React.Component {
             </CompatibilityText>
             <Details>
               <LocationText>
-                {this.props.userDetails.data.location ? (
-                  this.props.userDetails.data.location
+                {this.props.userDetails.data.locations ? (
+                  this.props.userDetails.data.locations.join(',')
                 ) : (
                   'Narnia'
                 )}
