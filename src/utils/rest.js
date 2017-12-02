@@ -46,10 +46,6 @@ const rest = reduxApi({
     url: `${apiRoot}/locations`,
     crud: true,
   },
-  users: {
-    url: `${apiRoot}/users`,
-    crud: true,
-  },
   usersByPage: {
     url: `${apiRoot}/users/page/:number`,
     crud: true,
