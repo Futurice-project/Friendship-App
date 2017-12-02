@@ -1,28 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 import {
   Text,
   Image,
   View,
+  Dimensions,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-//import { IconImage } from '../../components/Layout';
 import rest from '../../utils/rest';
-import {
-  ViewContainerTop,
-  Centered,
-  DescriptionWrapper,
-  FlexRow,
-} from '../../components/Layout';
-import { Description, Details, LocationText } from '../../components/Text';
+import { Centered, DescriptionWrapper } from '../../components/Layout';
+import { Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
 import RoundTab from '../../components/RoundTab';
-import Modal from 'react-native-modal';
+import MyProfileModal from '../../components/Profile/MyProfileModal';
 import styled from 'styled-components/native';
 import Personality from '../../components/Personality';
+import MyProfileTopPart from '../../components/Profile/MyProfileTopPart';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -54,8 +49,6 @@ class MyProfile extends React.Component {
   state = {
     loaded: false,
     age: '',
-
-    profileTitle: 'Profile Page',
     isModalVisible: false,
   };
 
@@ -147,7 +140,11 @@ class MyProfile extends React.Component {
 
     return (
       <Centered style={{ flexDirection: 'row', paddingVertical: 10 }}>
-        {personalities}
+        {personalities.length > 0 ? (
+          personalities
+        ) : (
+          <Text>No selected personalities</Text>
+        )}
       </Centered>
     );
   }
@@ -176,166 +173,57 @@ class MyProfile extends React.Component {
             uri: 'data:image/png;base64,' + this.props.currentUser.data.image,
           }
         : require('../../../assets/img/placeholder/grone.jpg');
+
       return (
-        <ViewContainerTop style={styles.viewContent}>
-          <View style={{ flex: 1, alignItems: 'center' }}>
-            <Image style={{ width: 400, height: 200 }} source={srcImage}>
-              <TouchableOpacity
-                onPress={this._showModal}
-                style={{
-                  alignSelf: 'flex-end',
-                  marginRight: 37,
-                  marginTop: 33,
-                }}
-              >
-                <Image
-                  source={require('../../../assets/icon_profile_overlay.png')}
-                />
-              </TouchableOpacity>
-              <View style={styles.whiteCircle}>
-                <Text style={styles.emoji}>
-                  {this.props.currentUser.data.emoji}
-                </Text>
-              </View>
-              <RoundTab />
-            </Image>
-          </View>
-          <View style={styles.profileContainer}>
-            <Text style={styles.username}>
-              {this.props.currentUser.data.username}
-            </Text>
-            <Details>
-              <LocationText>
-                {this.props.currentUser.data.location ? (
-                  this.props.currentUser.data.location
-                ) : (
-                  'Narnia'
-                )}
-              </LocationText>
-              {', ' + this.state.age + ', '}
-              {this.state.genders}
-            </Details>
-            <DescriptionWrapper>
-              <Description>
-                {this.props.currentUser.data.description}
-              </Description>
-            </DescriptionWrapper>
-            <View style={{ backgroundColor: '#faf5f0' }}>
-              {this.renderPersonalities()}
-            </View>
+        <ScrollView style={styles.viewContainer}>
+          <MyProfileTopPart
+            username={this.props.currentUser.data.username}
+            srcImage={srcImage}
+            location={this.props.currentUser.data.location}
+            age={this.state.age}
+            genders={this.state.genders}
+            showModal={this._showModal}
+            emoji={this.props.currentUser.data.emoji}
+          />
+
+          <DescriptionWrapper>
+            <Description>
+              {this.props.currentUser.data.description ? (
+                this.props.currentUser.data.description
+              ) : (
+                'No description'
+              )}
+            </Description>
+          </DescriptionWrapper>
+
+          <View style={styles.personalitiesView}>
+            {this.renderPersonalities()}
           </View>
 
           <TabProfile hate={hate} love={love} myprofile={true} />
 
-          <Modal
-            backdropColor="#2a343c"
-            backdropOpacity={0.96}
-            isVisible={this.state.isModalVisible}
-          >
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity
-                onPress={this._hideModal}
-                style={{ alignSelf: 'flex-end' }}
-              >
-                <Image
-                  source={require('../../../assets//icon_profile_overlay.png')}
-                />
-              </TouchableOpacity>
-
-              <ButtonOption>
-                <TouchableOpacity
-                  onPress={this._onPressButton}
-                  style={styles.buttonStyle}
-                >
-                  <Text style={styles.buttonTextStyle}>Privacy Settings</Text>
-                </TouchableOpacity>
-              </ButtonOption>
-
-              <ButtonOption>
-                <TouchableOpacity
-                  onPress={this._onPressButton}
-                  style={styles.buttonStyle}
-                >
-                  <Text style={styles.buttonTextStyle}>Send Feedback</Text>
-                </TouchableOpacity>
-              </ButtonOption>
-
-              <ButtonOption>
-                <TouchableOpacity
-                  onPress={() => this.props.signOut()}
-                  style={styles.buttonStyle}
-                >
-                  <Text
-                    style={[
-                      styles.buttonTextStyle,
-                      { fontFamily: 'NunitoSans-Bold' },
-                    ]}
-                  >
-                    Log Out
-                  </Text>
-                </TouchableOpacity>
-              </ButtonOption>
-            </View>
-          </Modal>
-        </ViewContainerTop>
+          <MyProfileModal
+            hideModal={this._hideModal}
+            isModalVisible={this.state.isModalVisible}
+            onPressButton={this._onPressButton}
+            signOut={this.props.signOut}
+          />
+        </ScrollView>
       );
     }
   };
 }
 const styles = StyleSheet.create({
+  viewContainer: {
+    flex: 1,
+    paddingTop: 20,
+  },
+  personalitiesView: {
+    backgroundColor: '#faf5f0',
+  },
   icon: {
     width: 22,
     height: 20,
-  },
-  viewContent: {
-    backgroundColor: '#e8e9e8',
-  },
-  profileContainer: {
-    alignItems: 'center',
-    marginTop: 23,
-    backgroundColor: '#faf5f0',
-  },
-  whiteCircle: {
-    alignContent: 'flex-end',
-    alignSelf: 'flex-end',
-    alignItems: 'flex-end',
-    marginTop: 25,
-    marginRight: 40,
-    width: 64,
-    height: 64,
-    borderRadius: 64,
-    backgroundColor: '#ffffff',
-  },
-  emoji: {
-    backgroundColor: 'transparent',
-    alignSelf: 'center',
-    fontSize: 30,
-    paddingTop: 8,
-  },
-  username: {
-    height: 27,
-    fontSize: 20,
-    fontWeight: 'bold',
-    letterSpacing: 2.44,
-    textAlign: 'center',
-    color: '#60686d',
-    marginTop: 7,
-  },
-  buttonStyle: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    // width: 241,
-    // height: 47,
-    // borderRadius: 34,
-    // backgroundColor: 'red',
-    marginTop: 20,
-  },
-  buttonTextStyle: {
-    fontFamily: 'NunitoSans-Regular',
-    alignSelf: 'center',
-    fontSize: 20,
-    color: '#faf6f0',
   },
 });
 
