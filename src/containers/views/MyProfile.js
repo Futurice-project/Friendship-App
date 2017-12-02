@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
 import { Centered, DescriptionWrapper } from '../../components/Layout';
 import { Description } from '../../components/Text';
@@ -89,6 +90,11 @@ class MyProfile extends React.Component {
     this.props.refreshUserGenders(personId);
     this.props.refreshPersonalitiesForUser(personId);
   }
+
+  navigateBack = () => {
+    const backAction = NavigationActions.back();
+    this.props.navigation.dispatch(backAction);
+  };
 
   getGenders = () => {
     const gendersArr = this.props.currentUserGenders.data.map(x => x.gender);
@@ -184,6 +190,9 @@ class MyProfile extends React.Component {
             genders={this.state.genders}
             showModal={this._showModal}
             emoji={this.props.currentUser.data.emoji}
+            numberOfYeah={love.length}
+            numberOfNaah={hate.length}
+            navigateBack={this.navigateBack}
           />
 
           <DescriptionWrapper>
