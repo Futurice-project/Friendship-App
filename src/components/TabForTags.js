@@ -13,7 +13,7 @@ const ButtonOption = styled.View`
   marginTop: 20;
 `;
 
-export default class TabProfile extends PureComponent {
+export default class TabForTags extends PureComponent {
   state = {
     backcolor: '#faf6f0',
     colorActif: '#6eb1ea',

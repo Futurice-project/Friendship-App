@@ -5,7 +5,7 @@ import { ListItem } from 'react-native-elements';
 import rest from '../../utils/rest';
 import TabForTags from '../../components/TabForTags';
 import {
-  ViewContainerTop,
+  ViewContainerLight,
   Centered,
   FlexRow,
   FullscreenCentered,
@@ -70,12 +70,12 @@ class SearchList extends React.Component {
       return <ActivityIndicator />;
     } else {
       return (
-        <ViewContainerTop>
+        <ViewContainerLight style={{ backgroundColor: '#faf6f0' }}>
           <TabForTags
             usersHate={this.state.usersHate}
             usersLove={this.state.usersLove}
           />
-        </ViewContainerTop>
+        </ViewContainerLight>
       );
     }
   };
