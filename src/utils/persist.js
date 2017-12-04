@@ -17,6 +17,7 @@ const persistConfig = {
     'currentUser',
     'tagsForCurrentUser',
     'personalitiesForCurrentUser',
+    'userlistForTag',
     'chatRooms',
     'chatRoomMessages',
     'sendMessage',

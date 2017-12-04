@@ -1,7 +1,9 @@
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItem } from 'react-native-elements';
+import rest from '../../utils/rest';
+import TabForTags from '../../components/TabForTags';
 import {
   ViewContainerTop,
   Centered,
@@ -10,31 +12,47 @@ import {
 } from '../../components/Layout';
 import Person from '../../components/Person';
 
-const mapStateToProps = state => {
-  return { tagId: state.tagId };
-};
+const mapStateToProps = state => ({
+  userlistForTag: state.userlistForTag,
+});
+
+const mapDispatchToProps = dispatch => ({
+  refreshUserlistForTag: tagId =>
+    dispatch(rest.actions.userlistForTag.get({ tagId })),
+});
 
 class SearchList extends React.Component {
   static navigationOptions = {
     title: 'Search for users with tag ',
   };
 
-  state = { data: {}, tagId: this.props.navigation.state.params.tagId };
+  state = {
+    loaded: false,
+    tagId: this.props.navigation.state.params.tagId,
+  };
 
   keyExtractor = item => item.userId;
   renderItem = ({ item }) => <Person data={item} />;
 
-  componentDidMount() {
-    fetch('http://0.0.0.0:3888/tag_user/tag/' + this.state.tagId, {
-      method: 'get',
-      headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmb29AYmFyLmNvbSIsInNjb3BlIjoidXNlciIsImlhdCI6MTUwNDg2NDg0OH0.jk2cvlueBJTWuGB0VMjYnbUApoDua_8FrzogDXzz9iY',
-      },
-    })
-      .then(response => response.json())
-      .then(data => this.setState({ data }));
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.userlistForTag.loading) {
+      this.setState({
+        loaded: true,
+      });
+      this.setState({
+        usersLove: nextProps.userlistForTag.data.filter(e => e.love === true),
+        usersHate: nextProps.userlistForTag.data.filter(e => e.love === false),
+      });
+    }
   }
+
+  componentDidMount() {
+    const tagId = this.props.navigation.state.params
+      ? this.props.navigation.state.params.tagId
+      : null;
+    this.props.refreshUserlistForTag(tagId);
+  }
+
   renderSeparator = () => {
     return (
       <View
@@ -47,19 +65,20 @@ class SearchList extends React.Component {
     );
   };
 
-  render = () => (
-    <ViewContainerTop>
-      <FullscreenCentered>
-        <FlatList
-          data={this.state.data}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-          ItemSeparatorComponent={this.renderSeparator}
-        />
-        {/* {this.renderSpinner()} */}
-      </FullscreenCentered>
-    </ViewContainerTop>
-  );
+  render = () => {
+    if (!this.state.loaded) {
+      return <ActivityIndicator />;
+    } else {
+      return (
+        <ViewContainerTop>
+          <TabForTags
+            usersHate={this.state.usersHate}
+            usersLove={this.state.usersLove}
+          />
+        </ViewContainerTop>
+      );
+    }
+  };
 }
 
-export default connect(mapStateToProps)(SearchList);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchList);

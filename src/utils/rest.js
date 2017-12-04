@@ -83,6 +83,11 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
+  userlistForTag: {
+    url: `${apiRoot}/tag_user/tag/:tagId`,
+    transformer: transformers.array,
+    crud: true,
+  },
   chatRooms: {
     url: `${apiRoot}/chatrooms`,
     crud: true,
