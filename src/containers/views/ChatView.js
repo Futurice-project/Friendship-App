@@ -107,6 +107,7 @@ class ChatView extends Component {
   };
 
   keyExtractor = item => item.id;
+
   renderItem = ({ item }) => {
     const textAlign =
       item.user_id == this.props.currentUserId ? 'right' : 'left';
@@ -114,6 +115,89 @@ class ChatView extends Component {
       item.user_id == this.props.currentUserId
         ? styles.SendCard
         : styles.ReceiveCard;
+
+    let time = '';
+    const msgTime = new Date(item.chat_time);
+    if (msgTime) {
+      const msgDate = msgTime.getDate();
+      const msgMonth = msgTime.getMonth();
+      const msgYear = msgTime.getFullYear();
+      const now = new Date();
+      const diff =
+        Math.abs(now.getTime() - msgTime.getTime()) / (1000 * 60 * 60 * 24);
+
+      const days = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ];
+      const months = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ];
+      const timeArr = msgTime
+        .toTimeString()
+        .split(' ')[0]
+        .split(':');
+
+      if (now.getFullYear() !== msgYear) {
+        //not same year
+        time =
+          months[msgMonth] +
+          ' ' +
+          msgDate +
+          ' ' +
+          msgYear +
+          ' - ' +
+          timeArr[0] +
+          ':' +
+          timeArr[1];
+      } else if (now.getFullYear() === msgYear && diff > 7) {
+        //if not within a week
+        time =
+          months[msgMonth] +
+          ' ' +
+          msgDate +
+          ' - ' +
+          timeArr[0] +
+          ':' +
+          timeArr[1];
+      } else if (now.getFullYear() === msgYear && diff <= 7) {
+        //day of week
+        time = days[msgTime.getDay()] + ' - ' + timeArr[0] + ':' + timeArr[1];
+      } else if (
+        now.getFullYear() === msgYear &&
+        now.getMonth() === msgMonth &&
+        now.getDate() === msgDate
+      ) {
+        //today
+        time = timeArr[0] ? timeArr[0] + ':' + timeArr[1] : '';
+      } else if (now.getTime() - msgTime.getTime() < 0) {
+        time =
+          months[msgMonth] +
+          ' ' +
+          msgDate +
+          ' ' +
+          msgYear +
+          ' ' +
+          msgTime.toTimeString().split(' ')[0];
+      }
+    }
+
     return (
       <View style={messageCardStyle}>
         <Text
@@ -125,7 +209,7 @@ class ChatView extends Component {
             marginBottom: 10,
           }}
         >
-          Time
+          {time}
         </Text>
         <Text style={{ color: '#4a4a4a', textAlign: textAlign }}>
           {item.text_message}
