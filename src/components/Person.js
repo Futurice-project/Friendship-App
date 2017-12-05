@@ -136,9 +136,7 @@ class Person extends React.Component {
           style={styles.nameView}
           onPress={() => this.props.openProfile(this.props.data.userId)}
         >
-          <Text style={styles.listName}>
-            {this.props.data.username} {this.props.data.love ? '<3' : '</3'}
-          </Text>
+          <Text style={styles.listName}>{this.props.data.username}</Text>
         </TouchableOpacity>
       </View>
     </FlexRow>

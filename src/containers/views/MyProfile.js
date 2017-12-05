@@ -24,18 +24,15 @@ const mapStateToProps = state => ({
   auth: state.auth,
   currentUser: state.currentUser,
   tagsForCurrentUser: state.tagsForCurrentUser,
-  currentUserGenders: state.currentUserGenders,
-  personalitiesForUser: state.personalitiesForUser,
+  personalitiesForCurrentUser: state.personalitiesForCurrentUser,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshUser: userId => dispatch(rest.actions.currentUser.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForCurrentUser.get({ userId })),
-  refreshUserGenders: userId =>
-    dispatch(rest.actions.currentUserGenders.get({ userId })),
   refreshPersonalitiesForUser: userId =>
-    dispatch(rest.actions.personalitiesForUser.get({ userId })),
+    dispatch(rest.actions.personalitiesForCurrentUser.get({ userId })),
   signOut: () => {
     dispatch({ type: 'SIGN_OUT' });
   },
@@ -71,12 +68,12 @@ class MyProfile extends React.Component {
     if (
       !nextProps.currentUser.loading &&
       !nextProps.tagsForCurrentUser.loading &&
-      !nextProps.currentUserGenders.loading
+      !nextProps.personalitiesForCurrentUser.loading
     ) {
       this.setState({
         loaded: true,
       });
-      this.getAge();
+      this.getAge(nextProps.currentUser.data.birthyear);
       this.getGenders();
     }
   }
@@ -87,7 +84,6 @@ class MyProfile extends React.Component {
       : null;
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
-    this.props.refreshUserGenders(personId);
     this.props.refreshPersonalitiesForUser(personId);
   }
 
@@ -97,19 +93,16 @@ class MyProfile extends React.Component {
   };
 
   getGenders = () => {
-    const gendersArr = this.props.currentUserGenders.data.map(x => x.gender);
-    const genders = gendersArr.join(' and ');
+    const genders = this.props.currentUser.data.genderlist
+      ? this.props.currentUser.data.genderlist.join(' and ')
+      : '';
     this.setState({ genders: genders });
   };
 
-  getAge = () => {
-    const birthDay = new Date(this.props.currentUser.data.birthday);
+  getAge = birthyear => {
+    const birthYear = parseInt(birthyear);
     const now = new Date();
-    let age = now.getFullYear() - birthDay.getFullYear();
-    const m = now.getMonth() - birthDay.getMonth();
-    if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
-      age--;
-    }
+    let age = now.getFullYear() - birthYear;
 
     const early = [0, 1, 2, 3];
     const mid = [4, 5, 6];
@@ -131,7 +124,7 @@ class MyProfile extends React.Component {
   };
 
   renderPersonalities() {
-    var personalities = this.props.personalitiesForUser.data.map(
+    var personalities = this.props.personalitiesForCurrentUser.data.map(
       personality => {
         return (
           <Personality
@@ -185,9 +178,21 @@ class MyProfile extends React.Component {
           <MyProfileTopPart
             username={this.props.currentUser.data.username}
             srcImage={srcImage}
-            location={this.props.currentUser.data.location}
+            location={
+              this.props.currentUser.data.locations ? (
+                this.props.currentUser.data.locations.join(',')
+              ) : (
+                'Narnia'
+              )
+            }
             age={this.state.age}
-            genders={this.state.genders}
+            genders={
+              this.props.currentUser.data.genderlist ? (
+                this.props.currentUser.data.genderlist.join(' and ')
+              ) : (
+                ''
+              )
+            }
             showModal={this._showModal}
             emoji={this.props.currentUser.data.emoji}
             numberOfYeah={love.length}
