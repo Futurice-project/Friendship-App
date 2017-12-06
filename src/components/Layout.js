@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Dimensions } from 'react-native';
 
 const styles = StyleSheet.create({
   contentContainerStyle: {
@@ -36,6 +36,12 @@ export const ViewContainerTop = styled.ScrollView.attrs({
   background-color: #ffffff;
 `;
 
+export const HeaderButton = styled.View`
+  position: absolute;
+  top: 0;
+  right: 44;
+`;
+
 export const Padding = styled.View`padding: 16px;`;
 
 export const Centered = styled.View`
@@ -63,6 +69,14 @@ export const IconImage = styled.Image`
   ${props => (props.tintColor ? `tintColor: ${props.tintColor}` : undefined)};
 `;
 
+export const DescriptionWrapper = styled.View`
+  background-color: #efebe9;
+  width: ${Dimensions.get('window').width};
+  display: flex;
+  align-items: center;
+  padding: 14px 48px;
+`;
+
 export const MessageCard = styled.View`
   flex-direction: row;
   margin-top: 10px;
@@ -75,6 +89,9 @@ export const MessageCard = styled.View`
 `;
 
 export const PopUpMenuCard = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
   align-self: flex-end;
   padding-top: 0px;
 `;

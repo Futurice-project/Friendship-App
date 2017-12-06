@@ -24,7 +24,7 @@ let apiRoot;
 if (process.env.NODE_ENV === 'development') {
   apiRoot = 'http://localhost:3888';
 } else {
-  apiRoot = 'https://my-app.herokuapp.com';
+  apiRoot = 'https://friendshipapp-backend.herokuapp.com';
 }
 
 authTransformer = (data = {}) => {
@@ -46,10 +46,6 @@ const rest = reduxApi({
     url: `${apiRoot}/locations`,
     crud: true,
   },
-  users: {
-    url: `${apiRoot}/users`,
-    crud: true,
-  },
   usersByPage: {
     url: `${apiRoot}/users/page/:number`,
     crud: true,
@@ -68,13 +64,8 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
-  userGenders: {
-    url: `${apiRoot}/user_gender/:userId`,
-    transformer: transformers.array,
-    crud: true,
-  },
-  currentUserGenders: {
-    url: `${apiRoot}/user_gender/:userId`,
+  personalitiesForUser: {
+    url: `${apiRoot}/user_personality/:userId`,
     transformer: transformers.array,
     crud: true,
   },
@@ -87,8 +78,14 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
-  reports: {
-    url: `${apiRoot}/reports`,
+  personalitiesForCurrentUser: {
+    url: `${apiRoot}/user_personality/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  userlistForTag: {
+    url: `${apiRoot}/tag_user/tag/:tagId`,
+    transformer: transformers.array,
     crud: true,
   },
   chatRooms: {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Nes from 'nes';
 import { connect } from 'react-redux';
 import { NavigationActions, HeaderBackButton } from 'react-navigation';
+import Modal from 'react-native-modal';
 import ReversedFlatList from 'react-native-reversed-flat-list';
 import styled from 'styled-components/native';
 import {
@@ -17,9 +18,11 @@ import {
   Text,
   View,
 } from 'react-native';
-
-import PopUpMenu from '../../components/PopUpMenu';
 import rest from '../../utils/rest';
+
+import Button from '../../components/Button';
+import { HeaderButton } from '../../components/Layout';
+import PopUpMenu from '../../components/PopUpMenu';
 
 const { UIManager } = NativeModules;
 
@@ -43,6 +46,9 @@ class ChatView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: `${navigation.state.params.userEmoji} ${navigation.state.params
       .username}`,
+    headerRight: (
+      <PopUpMenu isReportVisible={navigation.state.params.showReport} chat />
+    ),
   });
 
   componentDidMount = () => {
@@ -61,6 +67,10 @@ class ChatView extends Component {
   };
 
   updateMessages = () => {
+    this.setState({
+      chatroomId: this.props.navigation.state.params.chatroomId,
+    });
+    this.props.navigation.setParams({ showReport: this.showReport });
     this.props.chatRoomMessages(this.props.navigation.state.params.chatroomId);
   };
 
@@ -71,8 +81,12 @@ class ChatView extends Component {
   };
 
   state = {
+    chatroomId: '',
     text: '',
     messages: [],
+    description: '',
+    isOptionsVisible: false,
+    isReportVisible: false,
   };
 
   sendMessage = () => {
@@ -85,7 +99,34 @@ class ChatView extends Component {
     this.setState({ text: '' });
   };
 
+  // Modal functions
+  showReport = () => {
+    const { isReportVisible } = this.state;
+    this.setState({ isReportVisible: !isReportVisible });
+  };
+  sendReport = () => {
+    const creator = this.props.chatRoom.creator;
+    const receiver = this.props.chatRoom.receiver;
+    const userId =
+      this.props.currentUserId == creator.id ? receiver.id : creator.id;
+    const description = this.state.reportDescription;
+    const reported_by = this.props.currentUserId;
+    fetch(`http://localhost:3888/reports`, {
+      method: 'post',
+      headers: {
+        Authorization: this.props.auth.data.token,
+      },
+      body: JSON.stringify({
+        userId: userId,
+        description: description,
+        reported_by: reported_by,
+      }),
+    });
+    this.setState({ isReportVisible: false });
+  };
+
   keyExtractor = item => item.id;
+
   renderItem = ({ item }) => {
     const textAlign =
       item.user_id == this.props.currentUserId ? 'right' : 'left';
@@ -93,6 +134,89 @@ class ChatView extends Component {
       item.user_id == this.props.currentUserId
         ? styles.SendCard
         : styles.ReceiveCard;
+
+    let time = '';
+    const msgTime = new Date(item.chat_time);
+    if (msgTime) {
+      const msgDate = msgTime.getDate();
+      const msgMonth = msgTime.getMonth();
+      const msgYear = msgTime.getFullYear();
+      const now = new Date();
+      const diff =
+        Math.abs(now.getTime() - msgTime.getTime()) / (1000 * 60 * 60 * 24);
+
+      const days = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ];
+      const months = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ];
+      const timeArr = msgTime
+        .toTimeString()
+        .split(' ')[0]
+        .split(':');
+
+      if (now.getFullYear() !== msgYear) {
+        //not same year
+        time =
+          months[msgMonth] +
+          ' ' +
+          msgDate +
+          ' ' +
+          msgYear +
+          ' - ' +
+          timeArr[0] +
+          ':' +
+          timeArr[1];
+      } else if (now.getFullYear() === msgYear && diff > 7) {
+        //if not within a week
+        time =
+          months[msgMonth] +
+          ' ' +
+          msgDate +
+          ' - ' +
+          timeArr[0] +
+          ':' +
+          timeArr[1];
+      } else if (now.getFullYear() === msgYear && diff <= 7) {
+        //day of week
+        time = days[msgTime.getDay()] + ' - ' + timeArr[0] + ':' + timeArr[1];
+      } else if (
+        now.getFullYear() === msgYear &&
+        now.getMonth() === msgMonth &&
+        now.getDate() === msgDate
+      ) {
+        //today
+        time = timeArr[0] ? timeArr[0] + ':' + timeArr[1] : '';
+      } else if (now.getTime() - msgTime.getTime() < 0) {
+        time =
+          months[msgMonth] +
+          ' ' +
+          msgDate +
+          ' ' +
+          msgYear +
+          ' ' +
+          msgTime.toTimeString().split(' ')[0];
+      }
+    }
+
     return (
       <View style={messageCardStyle}>
         <Text
@@ -104,7 +228,7 @@ class ChatView extends Component {
             marginBottom: 10,
           }}
         >
-          Time
+          {time}
         </Text>
         <Text style={{ color: '#4a4a4a', textAlign: textAlign }}>
           {item.text_message}
@@ -114,6 +238,7 @@ class ChatView extends Component {
   };
 
   render() {
+    let reportTitle = 'Report ';
     return (
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -152,6 +277,50 @@ class ChatView extends Component {
             </TouchableOpacity>
           </ChatInputButtonCard>
         </TextInputCard>
+        <Modal
+          visible={this.state.isReportVisible}
+          animationIn="slideInUp"
+          animationInTiming={200}
+        >
+          <View
+            style={{
+              height: 200,
+              backgroundColor: '#eee',
+              borderRadius: 10,
+              paddingVertical: 10,
+            }}
+          >
+            <TextInput
+              autoCorrect={false}
+              autoCapitalize="none"
+              titleColor="#2d4359"
+              title={reportTitle}
+              placeholder="Description"
+              backColor="#faf6f0"
+              onChangeText={reportDescription =>
+                this.setState({ reportDescription })}
+              value={this.state.reportDescription}
+            />
+            <View style={{ flexDirection: 'row' }}>
+              <Button
+                title="Cancel"
+                primary
+                textColor="green"
+                size="half"
+                color="light"
+                onPress={this.showReport}
+              />
+              <Button
+                title="Report"
+                border
+                textColor="black"
+                size="half"
+                color="dark"
+                onPress={this.sendReport}
+              />
+            </View>
+          </View>
+        </Modal>
       </KeyboardAvoidingView>
     );
   }
@@ -202,6 +371,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
   chatRoom: state.chatRoomMessages.data,
   sentMessage: state.sendMessage,

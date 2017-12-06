@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, KeyboardAvoidingView } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 import styled from 'styled-components/native';
 import { ViewContainer, Padding, Centered } from '../../components/Layout';
 import Label from '../../components/Label';
 import RoundTab from '../../components/RoundTab';
-import { connect } from 'react-redux';
 
 const Row = styled.View`
   flex-direction: row;
@@ -21,11 +21,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export class LookingFor extends React.Component {
-  static navigationOptions = {
-    title: 'LookingFor',
-    header: () => null,
-  };
-
   state = {
     Hieman: false,
     Tunnollinen: false,

@@ -34,10 +34,25 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
-    Welcome: { screen: WelcomeView },
-    SignUpLocation: { screen: SignUpLocation },
-    LookingFor: { screen: LookingFor },
-    SignUpMatching: { screen: SignUpMatching },
+    Welcome: {
+      screen: WelcomeView,
+      navigationOptions: { header: () => null },
+    },
+    SignUpLocation: {
+      screen: SignUpLocation,
+      title: 'SignUpLocation',
+      navigationOptions: { header: () => null },
+    },
+    LookingFor: {
+      screen: LookingFor,
+      title: 'LookingFor',
+      navigationOptions: { header: () => null },
+    },
+    SignUpMatching: {
+      screen: SignUpMatching,
+      title: 'Matching',
+      navigationOptions: { header: () => null },
+    },
     Tabs: {
       screen: Tabs,
       navigationOptions: { header: () => null },
@@ -52,7 +67,7 @@ export default StackNavigator(
     },
     SearchList: {
       screen: SearchList,
-      navigationOptions: { title: 'Search page' },
+      navigationOptions: { title: '' },
     },
     Settings: {
       screen: SettingsView,

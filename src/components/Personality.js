@@ -6,13 +6,21 @@ import resolveAssetSource from 'resolveAssetSource';
 // Import personality images
 import placeholder from '../../assets/img/personalities/personalityPlaceholder.png';
 import freeThinker from '../../assets/img/personalities/1_freethinker_128.png';
+import freeThinkerSmall from '../../assets/img/personalities/1_freethinker_60.png';
 import religion from '../../assets/img/personalities/1_religion_128.png';
+import religionSmall from '../../assets/img/personalities/1_religion_60.png';
 import openMinded from '../../assets/img/personalities/2_openminded_128.png';
+import openMindedSmall from '../../assets/img/personalities/2_openminded_60.png';
 import traditional from '../../assets/img/personalities/2_traditional_128.png';
+import traditionalSmall from '../../assets/img/personalities/2_traditional_60.png';
 import ambitious from '../../assets/img/personalities/3_ambitious_128.png';
+import ambitiousSmall from '../../assets/img/personalities/3_ambitious_60.png';
 import relaxed from '../../assets/img/personalities/3_relaxed_128.png';
+import relaxedSmall from '../../assets/img/personalities/3_relaxed_60.png';
 import chillOut from '../../assets/img/personalities/4_chillout_128.png';
+import chillOutSmall from '../../assets/img/personalities/4_chillout_60.png';
 import goingOut from '../../assets/img/personalities/4_goingout_128.png';
+import goingOutSmall from '../../assets/img/personalities/4_goingout_60.png';
 
 //style for the image
 const ImageContainer = styled.Image`
@@ -20,20 +28,19 @@ const ImageContainer = styled.Image`
   right: 0;
   left: 0;
   ${'' /* without the -5, a space is below the image-->need further investigation */} bottom: -5;
-  justify-content: center;
-  align-items: center;
+  align-self: center;
 `;
 
 //style for the text of the button
 const ButtonText = styled.Text`
-  width: 230;
-  height: 27;
+  max-width: 82;
+  height: 14;
   font-family: 'NunitoSans-Regular';
-  font-size: 20;
+  font-size: 10;
   font-weight: bold;
   text-align: center;
   color: ${props => {
-    return props.titleColor ? props.titleColor : '#2d4359';
+    return props.titleColor ? props.titleColor : '#91999f';
   }};
   background-color: transparent;
 `;
@@ -57,7 +64,9 @@ export default class Personality extends React.Component {
   componentDidMount() {
     switch (this.props.image) {
       case 'relaxed': {
-        const { width, height } = resolveAssetSource(relaxed);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? relaxedSmall : relaxed,
+        );
         this.setState({
           imageObject: relaxed,
           imageHeight: height,
@@ -66,7 +75,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'ambitious': {
-        const { width, height } = resolveAssetSource(ambitious);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? ambitiousSmall : ambitious,
+        );
         this.setState({
           imageObject: ambitious,
           imageHeight: height,
@@ -75,7 +86,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'traditional': {
-        const { width, height } = resolveAssetSource(traditional);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? traditionalSmall : traditional,
+        );
         this.setState({
           imageObject: traditional,
           imageHeight: height,
@@ -84,7 +97,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'open-minded': {
-        const { width, height } = resolveAssetSource(openMinded);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? openMindedSmall : openMinded,
+        );
         this.setState({
           imageObject: openMinded,
           imageHeight: height,
@@ -93,7 +108,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'religion': {
-        const { width, height } = resolveAssetSource(religion);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? religionSmall : religion,
+        );
         this.setState({
           imageObject: religion,
           imageHeight: height,
@@ -102,7 +119,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'free thinker': {
-        const { width, height } = resolveAssetSource(freeThinker);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? freeThinkerSmall : freeThinker,
+        );
         this.setState({
           imageObject: freeThinker,
           imageHeight: height,
@@ -111,7 +130,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'going out': {
-        const { width, height } = resolveAssetSource(goingOut);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? goingOutSmall : goingOut,
+        );
         this.setState({
           imageObject: goingOut,
           imageHeight: height,
@@ -120,7 +141,9 @@ export default class Personality extends React.Component {
         break;
       }
       case 'chilling out': {
-        const { width, height } = resolveAssetSource(chillOut);
+        const { width, height } = resolveAssetSource(
+          this.props.profile ? chillOutSmall : chillOut,
+        );
         this.setState({
           imageObject: chillOut,
           imageHeight: height,
@@ -156,7 +179,7 @@ export default class Personality extends React.Component {
    */
   render = () => {
     return (
-      <View style={{ display: 'flex' }}>
+      <View style={{ display: 'flex', paddingLeft: 7, paddingRight: 7 }}>
         <TouchableOpacity
           style={{ height: this.state.imageHeight + 10 }}
           onPress={this.props.onPress}
@@ -170,16 +193,9 @@ export default class Personality extends React.Component {
             resizeMode="contain"
           />
         </TouchableOpacity>
-        <Text
-          style={{
-            textAlign: 'center',
-            color: '#faf5f0',
-            fontSize: 15,
-            fontFamily: 'NunitoSans-SemiBold',
-          }}
-        >
+        <ButtonText>
           {this.applyLetterSpacing(this.props.title.toUpperCase())}
-        </Text>
+        </ButtonText>
       </View>
     );
   };

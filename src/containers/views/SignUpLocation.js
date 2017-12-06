@@ -107,11 +107,6 @@ export class SignUpLocation extends React.Component {
       </SignUpWrapper>
     );
   }
-
-  static navigationOptions = {
-    title: 'SignUpLocation',
-    header: () => null,
-  };
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -119,9 +114,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.locations());
   },
   postUserLocations: locations => {
-    newLocations = locations.map(location => {
-      return { locationId: location };
-    });
+    newLocations = locations.map(location => ({ locationId: location }));
     const locationsObject = {
       locations: newLocations,
     };

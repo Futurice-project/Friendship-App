@@ -1,35 +1,38 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 import {
   Text,
   Image,
   View,
+  Dimensions,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-//import { IconImage } from '../../components/Layout';
+import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
-import { ViewContainerTop, Centered, FlexRow } from '../../components/Layout';
-import { SmallHeader, Description } from '../../components/Text';
+import { Centered, DescriptionWrapper } from '../../components/Layout';
+import { Description } from '../../components/Text';
 import TabProfile from '../../components/TabProfile';
-import Modal from 'react-native-modal';
+import RoundTab from '../../components/RoundTab';
+import MyProfileModal from '../../components/Profile/MyProfileModal';
 import styled from 'styled-components/native';
+import Personality from '../../components/Personality';
+import MyProfileTopPart from '../../components/Profile/MyProfileTopPart';
 
 const mapStateToProps = state => ({
   auth: state.auth,
   currentUser: state.currentUser,
   tagsForCurrentUser: state.tagsForCurrentUser,
-  currentUserGenders: state.currentUserGenders,
+  personalitiesForCurrentUser: state.personalitiesForCurrentUser,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshUser: userId => dispatch(rest.actions.currentUser.get({ userId })),
   refreshTagsForUser: userId =>
     dispatch(rest.actions.tagsForCurrentUser.get({ userId })),
-  refreshUserGenders: userId =>
-    dispatch(rest.actions.currentUserGenders.get({ userId })),
+  refreshPersonalitiesForUser: userId =>
+    dispatch(rest.actions.personalitiesForCurrentUser.get({ userId })),
   signOut: () => {
     dispatch({ type: 'SIGN_OUT' });
   },
@@ -40,19 +43,10 @@ const ButtonOption = styled.View`
   margin-top: 5px;
 `;
 
-const DescriptionWrapper = styled.View`
-  background-color: #efebe9;
-  display: flex;
-  align-items: center;
-  padding: 14px 48px;
-`;
-
 class MyProfile extends React.Component {
   state = {
     loaded: false,
     age: '',
-    description: '',
-    profileTitle: 'Profile Page',
     isModalVisible: false,
   };
 
@@ -74,12 +68,12 @@ class MyProfile extends React.Component {
     if (
       !nextProps.currentUser.loading &&
       !nextProps.tagsForCurrentUser.loading &&
-      !nextProps.currentUserGenders.loading
+      !nextProps.personalitiesForCurrentUser.loading
     ) {
       this.setState({
         loaded: true,
       });
-      this.getAge();
+      this.getAge(nextProps.currentUser.data.birthyear);
       this.getGenders();
     }
   }
@@ -90,23 +84,25 @@ class MyProfile extends React.Component {
       : null;
     this.props.refreshUser(personId);
     this.props.refreshTagsForUser(personId);
-    this.props.refreshUserGenders(personId);
+    this.props.refreshPersonalitiesForUser(personId);
   }
 
+  navigateBack = () => {
+    const backAction = NavigationActions.back();
+    this.props.navigation.dispatch(backAction);
+  };
+
   getGenders = () => {
-    const gendersArr = this.props.currentUserGenders.data.map(x => x.gender);
-    const genders = gendersArr.join(' and ');
+    const genders = this.props.currentUser.data.genderlist
+      ? this.props.currentUser.data.genderlist.join(' and ')
+      : '';
     this.setState({ genders: genders });
   };
 
-  getAge = () => {
-    const birthDay = new Date(this.props.currentUser.data.birthday);
+  getAge = birthyear => {
+    const birthYear = parseInt(birthyear);
     const now = new Date();
-    let age = now.getFullYear() - birthDay.getFullYear();
-    const m = now.getMonth() - birthDay.getMonth();
-    if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
-      age--;
-    }
+    let age = now.getFullYear() - birthYear;
 
     const early = [0, 1, 2, 3];
     const mid = [4, 5, 6];
@@ -124,9 +120,33 @@ class MyProfile extends React.Component {
     } else {
       ageName = "It's a mystery";
     }
-    console.log(age);
     this.setState({ age: ageName });
   };
+
+  renderPersonalities() {
+    var personalities = this.props.personalitiesForCurrentUser.data.map(
+      personality => {
+        return (
+          <Personality
+            key={personality.personalityId}
+            title={personality.name}
+            image={personality.name}
+            profile={true}
+          />
+        );
+      },
+    );
+
+    return (
+      <Centered style={{ flexDirection: 'row', paddingVertical: 10 }}>
+        {personalities.length > 0 ? (
+          personalities
+        ) : (
+          <Text>No selected personalities</Text>
+        )}
+      </Centered>
+    );
+  }
 
   render = () => {
     if (!this.props.auth.data.decoded) {
@@ -145,142 +165,79 @@ class MyProfile extends React.Component {
       let hate = this.props.tagsForCurrentUser.data.filter(e => {
         return e.love === false;
       });
+
+      // if there is no picture for the user we use a default image
+      const srcImage = this.props.currentUser.data.image
+        ? {
+            uri: 'data:image/png;base64,' + this.props.currentUser.data.image,
+          }
+        : require('../../../assets/img/placeholder/grone.jpg');
+
       return (
-        <ViewContainerTop style={styles.viewContent}>
-          <TouchableOpacity
-            onPress={this._showModal}
-            style={{ alignSelf: 'flex-end', marginRight: 15, marginTop: 32 }}
-          >
-            <Image
-              source={require('../../../assets//icon_profile_overlay.png')}
-            />
-          </TouchableOpacity>
-          <View style={styles.profileContainer}>
-            <View style={styles.whiteCircle}>
-              <Text style={styles.emoji}>
-                {this.props.currentUser.data.emoji}
-              </Text>
-            </View>
-            <Text style={styles.username}>
-              {this.props.currentUser.data.username}
-            </Text>
-            <Description>
-              {this.props.currentUser.data.location ? (
-                this.props.currentUser.data.location
+        <ScrollView style={styles.viewContainer}>
+          <MyProfileTopPart
+            username={this.props.currentUser.data.username}
+            srcImage={srcImage}
+            location={
+              this.props.currentUser.data.locations ? (
+                this.props.currentUser.data.locations.join(',')
               ) : (
                 'Narnia'
+              )
+            }
+            age={this.state.age}
+            genders={
+              this.props.currentUser.data.genderlist ? (
+                this.props.currentUser.data.genderlist.join(' and ')
+              ) : (
+                ''
+              )
+            }
+            showModal={this._showModal}
+            emoji={this.props.currentUser.data.emoji}
+            numberOfYeah={love.length}
+            numberOfNaah={hate.length}
+            navigateBack={this.navigateBack}
+          />
+
+          <DescriptionWrapper>
+            <Description>
+              {this.props.currentUser.data.description ? (
+                this.props.currentUser.data.description
+              ) : (
+                'No description'
               )}
-              {', ' + this.state.age + ', '}
-              {this.state.genders}
             </Description>
-            <DescriptionWrapper>
-              <Description>
-                {this.props.currentUser.data.description}
-              </Description>
-            </DescriptionWrapper>
+          </DescriptionWrapper>
+
+          <View style={styles.personalitiesView}>
+            {this.renderPersonalities()}
           </View>
+
           <TabProfile hate={hate} love={love} myprofile={true} />
 
-          <Modal isVisible={this.state.isModalVisible}>
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity
-                onPress={this._hideModal}
-                style={{ alignSelf: 'flex-end' }}
-              >
-                <Image
-                  source={require('../../../assets//icon_profile_overlay.png')}
-                />
-              </TouchableOpacity>
-
-              <ButtonOption>
-                <TouchableOpacity
-                  onPress={this._onPressButton}
-                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
-                >
-                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
-                    Edit Profile
-                  </Text>
-                </TouchableOpacity>
-              </ButtonOption>
-
-              <ButtonOption>
-                <TouchableOpacity
-                  onPress={this._onPressButton}
-                  style={[styles.buttonStyle, { backgroundColor: '#faf5f0' }]}
-                >
-                  <Text style={[styles.textButtonStyle, { color: '#2a343c' }]}>
-                    Manage Privacy
-                  </Text>
-                </TouchableOpacity>
-              </ButtonOption>
-
-              <ButtonOption>
-                <TouchableOpacity
-                  onPress={() => this.props.signOut()}
-                  style={[styles.buttonStyle, { backgroundColor: '#2a343c' }]}
-                >
-                  <Text style={[styles.textButtonStyle, { color: '#faf5f0' }]}>
-                    Log Out
-                  </Text>
-                </TouchableOpacity>
-              </ButtonOption>
-            </View>
-          </Modal>
-        </ViewContainerTop>
+          <MyProfileModal
+            hideModal={this._hideModal}
+            isModalVisible={this.state.isModalVisible}
+            onPressButton={this._onPressButton}
+            signOut={this.props.signOut}
+          />
+        </ScrollView>
       );
     }
   };
 }
 const styles = StyleSheet.create({
+  viewContainer: {
+    flex: 1,
+    paddingTop: 20,
+  },
+  personalitiesView: {
+    backgroundColor: '#faf5f0',
+  },
   icon: {
     width: 22,
     height: 20,
-  },
-  viewContent: {
-    backgroundColor: '#e8e9e8',
-    paddingVertical: 0,
-  },
-  profileContainer: {
-    alignItems: 'center',
-    height: 300,
-    marginTop: 23,
-  },
-  whiteCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 64,
-    backgroundColor: '#ffffff',
-  },
-  emoji: {
-    backgroundColor: 'transparent',
-    alignSelf: 'center',
-    fontSize: 30,
-    paddingTop: 8,
-  },
-  username: {
-    height: 27,
-    fontSize: 20,
-    fontWeight: 'bold',
-    letterSpacing: 2.44,
-    textAlign: 'center',
-    color: '#60686d',
-    marginTop: 7,
-  },
-  buttonStyle: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    width: 241,
-    height: 47,
-    borderRadius: 34,
-    backgroundColor: 'red',
-    marginTop: 20,
-  },
-  buttonTextStyle: {
-    alignSelf: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#faf6f0',
   },
 });
 

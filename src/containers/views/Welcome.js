@@ -146,18 +146,14 @@ export class WelcomeView extends React.Component {
    * U can test this by dumping this.props.navigatorState
    */
   componentWillReceiveProps(nextProps) {
-    console.log(this.props.navigatorState);
+    // console.log(this.props.navigatorState);
   }
 
   componentDidMount() {
-    if (this.props.auth.data.decoded) {
-      // this.props.openTabs();
+    if (this.props.auth && this.props.auth.data.decoded) {
+      this.props.openTabs();
     }
   }
-
-  static navigationOptions = {
-    header: () => null,
-  };
 
   render = () => (
     <LaunchingPageWrapper>

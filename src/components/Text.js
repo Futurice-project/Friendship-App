@@ -6,24 +6,48 @@ export const Bold = Text.extend`font-weight: bold;`;
 export const CenteredText = Bold.extend`text-align: center;`;
 
 export const Description = styled.Text`
+  font-family: 'NunitoSans-Light';
+  font-size: 14px;
+  line-height: 18;
+  letter-spacing: 0.4;
+  font-weight: 300;
+  text-align: center;
+  color: #4a4a4a;
+`;
+
+export const Details = styled.Text`
+  font-family: 'NunitoSans-Regular';
   font-size: 16px;
   line-height: 24;
   font-weight: 300;
   text-align: center;
   color: #4a4a4a;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
+  background-color: transparent;
 `;
 
-export const Incommon = styled.Text`
-  font-family: 'NunitoSans-Regular';
+export const CompatibilityText = styled.Text`
+  font-family: 'NunitoSans-Light';
   font-size: 14px;
   line-height: 24;
   font-weight: 300;
   text-align: center;
   color: #4a4a4a;
   margin-bottom: 14px;
-  height: 19;
+  height: 24;
   letter-spacing: 0.4;
+  background-color: transparent;
+`;
+
+export const UsernameText = styled.Text`
+  background-color: transparent;
+  height: 27;
+  font-family: 'NunitoSans-Bold';
+  font-size: 20;
+  font-weight: bold;
+  letter-spacing: 2.44;
+  text-align: center;
+  color: #60686d;
 `;
 
 export const YeahColor = styled.Text`
@@ -34,6 +58,11 @@ export const YeahColor = styled.Text`
 export const NaahColor = styled.Text`
   color: #99ccff;
   font-family: 'NunitoSans-Bold';
+`;
+
+export const LocationText = styled.Text`
+  font-family: 'NunitoSans-Bold';
+  background-color: transparent;
 `;
 
 export const FrienshipFont = styled.Text`font-family: 'Friendship_version_2';`;
@@ -58,12 +87,4 @@ export const SenderName = styled.Text`
   font-size: 18;
   font-weight: bold;
   color: #666;
-`;
-
-export const SmallHeader = styled.Text`
-  font-size: 13px;
-  letter-spacing: 1.59px;
-  text-align: center;
-  color: #3b3b3d;
-  margin-bottom: 14px;
 `;

@@ -94,21 +94,87 @@ class TabProfile extends PureComponent {
   }
 
   render = () => {
+    const naahsActivities = this.props.hate.filter(e => e.category === 1);
+    const naahsInterests = this.props.hate.filter(e => e.category === 2);
+    const naahsFriendship = this.props.hate.filter(e => e.category === 3);
+
+    const yeahActivities = this.props.love.filter(e => e.category === 1);
+    const yeahInterests = this.props.love.filter(e => e.category === 2);
+    const yeahFriendship = this.props.love.filter(e => e.category === 3);
+
     return (
       <View>
         <ScrollableTabView
           onChangeTab={this.handleChangeTab}
+          tabBarTextStyle={styles.tabLabel}
           style={{ marginTop: 0, backgroundColor: this.state.backcolor }}
           initialPage={0}
           renderTabBar={() => <ScrollableTabBar />}
           tabBarActiveTextColor={this.state.colorActif}
           tabBarInactiveTextColor={this.state.colorInactif}
         >
-          <View tabLabel="NAAHS" style={styles.tagList}>
-            {this.props.hate.map(tag => <Tag key={tag.id} data={tag} dark />)}
+          <View tabLabel="NAAHS">
+            {naahsActivities.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesHate}>ACTIVITIES</Text>
+                <View style={styles.tagList}>
+                  {naahsActivities.map(tag => (
+                    <Tag key={tag.id} data={tag} dark />
+                  ))}
+                </View>
+              </View>
+            )}
+
+            {naahsInterests.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesHate}>INTERESTS</Text>
+                <View style={styles.tagList}>
+                  {naahsInterests.map(tag => (
+                    <Tag key={tag.id} data={tag} dark />
+                  ))}
+                </View>
+              </View>
+            )}
+
+            {naahsFriendship.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesHate}>FRIENDSHIP</Text>
+                <View style={styles.tagList}>
+                  {naahsFriendship.map(tag => (
+                    <Tag key={tag.id} data={tag} dark />
+                  ))}
+                </View>
+              </View>
+            )}
           </View>
-          <View tabLabel="YEAH" style={styles.tagList}>
-            {this.props.love.map(tag => <Tag key={tag.id} data={tag} />)}
+
+          <View tabLabel="YEAH">
+            {yeahActivities.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesLove}>ACTIVITIES</Text>
+                <View style={styles.tagList}>
+                  {yeahActivities.map(tag => <Tag key={tag.id} data={tag} />)}
+                </View>
+              </View>
+            )}
+
+            {yeahInterests.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesLove}>INTERESTS</Text>
+                <View style={styles.tagList}>
+                  {yeahInterests.map(tag => <Tag key={tag.id} data={tag} />)}
+                </View>
+              </View>
+            )}
+
+            {yeahFriendship.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesLove}>FRIENDSHIP</Text>
+                <View style={styles.tagList}>
+                  {yeahFriendship.map(tag => <Tag key={tag.id} data={tag} />)}
+                </View>
+              </View>
+            )}
           </View>
         </ScrollableTabView>
         {this.renderSendMsg()}
@@ -129,7 +195,22 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-
+  tagCategoriesLove: {
+    marginTop: 10,
+    alignSelf: 'center',
+    flexGrow: 1,
+    textAlign: 'center',
+    color: '#ff8a65',
+    fontSize: 17,
+  },
+  tagCategoriesHate: {
+    marginTop: 10,
+    alignSelf: 'center',
+    flexGrow: 1,
+    textAlign: 'center',
+    color: '#6eb1ea',
+    fontSize: 17,
+  },
   buttonStyle: {
     alignItems: 'center',
     alignSelf: 'center',
@@ -137,6 +218,11 @@ const styles = StyleSheet.create({
     width: 241,
     height: 47,
     borderRadius: 34,
+  },
+  tabLabel: {
+    fontFamily: 'Friendship_version_2',
+    fontSize: 30,
+    letterSpacing: 3,
   },
 });
 

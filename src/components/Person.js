@@ -1,11 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import NavigationBackgroundAsset from '../../assets/drawable-mdpi/combined_shape_copy_2.png';
 
 import { FlexRow } from './Layout';
-import { Description } from './Text';
+import {
+  Description,
+  Details,
+  CompatibilityText,
+  FrienshipFont,
+  LocationText,
+  YeahColor,
+  NaahColor,
+} from './Text';
 import styled from 'styled-components/native';
 
 const mapStateToProps = state => ({});
@@ -20,6 +35,54 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Person extends React.Component {
+  state = {
+    age: '',
+    genders: '',
+    locations: '',
+  };
+
+  componentDidMount() {
+    if (this.props.data.username) {
+      this.getGenders();
+      this.getAge();
+      this.getLocations();
+    }
+  }
+
+  getGenders = () => {
+    const genders = this.props.data.genderlist
+      ? this.props.data.genderlist.map(x => x && x.toLowerCase()).join(',')
+      : '';
+    this.setState({ genders: genders });
+  };
+
+  getAge = () => {
+    const birthYear = parseInt(this.props.data.birthyear);
+    const now = new Date();
+    let age = now.getFullYear() - birthYear;
+
+    const early = [0, 1, 2, 3];
+    const mid = [4, 5, 6];
+    const late = [7, 8, 9];
+    let ageName = '';
+    const lastDigit = age.toString().substr(age.toString().length - 1);
+    if (age && age < 20) {
+      ageName = age + ', ';
+    } else if (age) {
+      ageName = age - parseInt(lastDigit) + 's, ';
+    } else {
+      ageName = '';
+    }
+    this.setState({ age: ageName });
+  };
+
+  getLocations = () => {
+    const locations = this.props.data.locations
+      ? this.props.data.locations.join(',')
+      : 'Narnia';
+    this.setState({ locations: locations });
+  };
+
   renderBox = () => (
     <View style={styles.topPart}>
       <View style={{ flex: 70 }}>
@@ -46,14 +109,24 @@ class Person extends React.Component {
             <Text style={styles.textName}>{this.props.data.username}</Text>
           </TouchableOpacity>
         </View>
-
+        <Text>
+          {this.state.age}
+          {this.state.locations}
+          {', ' + this.state.genders}
+        </Text>
         <Text style={{ fontSize: 12, marginTop: 5 }}>
-          {' '}
-          Compatible?
-          <Text style={{ fontWeight: 'bold' }}>
-            {' '}
-            {this.props.data.compatibility}
-          </Text>
+          <CompatibilityText>
+            <YeahColor>
+              {this.props.data.loveCommon ? this.props.data.loveCommon : 0}
+              <FrienshipFont> YEAH</FrienshipFont>
+            </YeahColor>{' '}
+            &{' '}
+            <NaahColor>
+              {this.props.data.hateCommon ? this.props.data.hateCommon : 0}
+              <FrienshipFont> NAAH</FrienshipFont>
+            </NaahColor>{' '}
+            in common{' '}
+          </CompatibilityText>
         </Text>
       </FlexRow>
     </View>
@@ -70,9 +143,7 @@ class Person extends React.Component {
           style={styles.nameView}
           onPress={() => this.props.openProfile(this.props.data.userId)}
         >
-          <Text style={styles.listName}>
-            {this.props.data.username} {this.props.data.love ? '<3' : '</3'}
-          </Text>
+          <Text style={styles.listName}>{this.props.data.username}</Text>
         </TouchableOpacity>
       </View>
     </FlexRow>
@@ -115,7 +186,7 @@ const styles = StyleSheet.create({
     width: 200,
     padding: 10,
     backgroundColor: '#E8E9E8',
-    flex: 30,
+    flex: 40,
     alignSelf: 'flex-end',
     flexDirection: 'column',
     borderBottomLeftRadius: 3,
@@ -132,8 +203,8 @@ const styles = StyleSheet.create({
   },
   emoji: {
     backgroundColor: 'transparent',
-    marginTop: 5,
-    fontSize: 47,
+    marginTop: 7,
+    fontSize: Platform.OS === 'android' ? 35 : 45,
   },
   listItem: {
     // alignItems: 'center',
@@ -152,7 +223,7 @@ const styles = StyleSheet.create({
     margin: 5,
     marginHorizontal: 10,
     alignSelf: 'center',
-    fontSize: 47,
+    fontSize: Platform.OS === 'android' ? 35 : 45,
     alignItems: 'center',
   },
 });
