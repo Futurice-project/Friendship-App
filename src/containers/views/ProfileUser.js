@@ -231,7 +231,11 @@ class ProfileUser extends React.Component {
               {this.renderPersonalities()}
             </View>
           </View>
-          <TabProfile hate={hate} love={love} />
+          <TabProfile
+            hate={hate}
+            love={love}
+            user={this.props.userDetails.data}
+          />
 
           <Modal
             visible={this.state.isReportVisible}

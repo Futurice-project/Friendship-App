@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import Nes from 'nes';
 import { connect } from 'react-redux';
+import { NavigationActions, HeaderBackButton } from 'react-navigation';
 import Modal from 'react-native-modal';
-import { NavigationActions } from 'react-navigation';
 import ReversedFlatList from 'react-native-reversed-flat-list';
 import styled from 'styled-components/native';
 import {
@@ -39,6 +40,8 @@ const TextInputCard = styled.View`
   flex-direction: row;
 `;
 
+const client = new Nes.Client('ws://localhost:3888');
+
 class ChatView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: `${navigation.state.params.userEmoji} ${navigation.state.params
@@ -49,6 +52,21 @@ class ChatView extends Component {
   });
 
   componentDidMount = () => {
+    this.updateMessages();
+    client.connect().then(() => {
+      const handler = (update, flags) => {
+        this.updateMessages();
+      };
+
+      client.subscribe(
+        `/chatrooms/${this.props.navigation.state.params.chatroomId}`,
+        handler,
+        function(err) {},
+      );
+    });
+  };
+
+  updateMessages = () => {
     this.setState({
       chatroomId: this.props.navigation.state.params.chatroomId,
     });
@@ -65,6 +83,7 @@ class ChatView extends Component {
   state = {
     chatroomId: '',
     text: '',
+    messages: [],
     description: '',
     isOptionsVisible: false,
     isReportVisible: false,
