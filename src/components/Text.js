@@ -34,7 +34,7 @@ export const CompatibilityText = styled.Text`
   text-align: center;
   color: #4a4a4a;
   margin-bottom: 14px;
-  height: 19;
+  height: 24;
   letter-spacing: 0.4;
   background-color: transparent;
 `;

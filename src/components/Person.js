@@ -1,7 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import NavigationBackgroundAsset from '../../assets/drawable-mdpi/combined_shape_copy_2.png';
 
 import { FlexRow } from './Layout';
@@ -196,8 +203,8 @@ const styles = StyleSheet.create({
   },
   emoji: {
     backgroundColor: 'transparent',
-    marginTop: 5,
-    fontSize: 47,
+    marginTop: 7,
+    fontSize: Platform.OS === 'android' ? 35 : 45,
   },
   listItem: {
     // alignItems: 'center',
@@ -216,7 +223,7 @@ const styles = StyleSheet.create({
     margin: 5,
     marginHorizontal: 10,
     alignSelf: 'center',
-    fontSize: 47,
+    fontSize: Platform.OS === 'android' ? 35 : 45,
     alignItems: 'center',
   },
 });

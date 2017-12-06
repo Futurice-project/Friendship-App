@@ -6,6 +6,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 
 import {
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
   emoji: {
     backgroundColor: 'transparent',
     alignSelf: 'center',
-    fontSize: 40,
+    fontSize: Platform.OS === 'android' ? 30 : 40,
     paddingTop: 8,
   },
   username: {
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   },
   imageUser: {
     width: Dimensions.get('window').width,
-    height: 250,
+    height: Platform.OS === 'android' ? 330 : 250,
   },
   backAndSettingsView: {
     marginTop: 5,

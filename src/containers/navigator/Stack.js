@@ -67,7 +67,7 @@ export default StackNavigator(
     },
     SearchList: {
       screen: SearchList,
-      navigationOptions: { title: 'Search page' },
+      navigationOptions: { title: '' },
     },
     Settings: {
       screen: SettingsView,
