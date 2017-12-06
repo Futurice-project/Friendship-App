@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
 import styled from 'styled-components/native';
 import Tag from './Tags';
+import rest from '../utils/rest';
 
 const ButtonOption = styled.View`
   flex: 1;
@@ -13,7 +16,7 @@ const ButtonOption = styled.View`
   marginTop: 20;
 `;
 
-export default class TabProfile extends PureComponent {
+class TabProfile extends PureComponent {
   state = {
     backcolor: '#faf6f0',
     colorActif: '#6eb1ea',
@@ -47,13 +50,29 @@ export default class TabProfile extends PureComponent {
     }
   };
 
+  createChatRoom = () => {
+    this.props.createChatRoom(
+      this.currentUserId,
+      this.props.user.id,
+      this.openChatView,
+    );
+  };
+
+  openChatView = chatroomId => {
+    this.props.openChatView(
+      chatroomId,
+      this.props.user.username,
+      this.props.user.emoji,
+    );
+  };
+
   renderSendMsg() {
     if (!this.props.myprofile) {
       return (
         <View style={{ backgroundColor: this.state.backcolor }}>
           <ButtonOption>
             <TouchableOpacity
-              onPress={this._onPressButton}
+              onPress={() => this.createChatRoom()}
               style={[
                 styles.buttonStyle,
                 { backgroundColor: this.state.colorBackButton },
@@ -120,3 +139,30 @@ const styles = StyleSheet.create({
     borderRadius: 34,
   },
 });
+
+const mapDispatchToProps = dispatch => ({
+  createChatRoom: (userCreatorId, userReceiverId, callback) => {
+    dispatch(
+      rest.actions.createChatRoom(
+        {},
+        {
+          body: JSON.stringify({ userCreatorId, userReceiverId }),
+        },
+        (err, data) => callback(data.id),
+      ),
+    );
+  },
+  openChatView: (chatroomId, username, userEmoji) =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'ChatView',
+        params: { chatroomId, username, userEmoji },
+      }),
+    ),
+});
+
+const mapStateToProps = state => ({
+  currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabProfile);

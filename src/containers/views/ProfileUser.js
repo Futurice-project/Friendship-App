@@ -247,7 +247,11 @@ class ProfileUser extends React.Component {
               <Text> Personality Placeholder</Text>
             </View>
           </View>
-          <TabProfile hate={hate} love={love} />
+          <TabProfile
+            hate={hate}
+            love={love}
+            user={this.props.userDetails.data}
+          />
           <Modal isVisible={this.state.isOptionsVisible}>
             <View style={{ flex: 1 }}>
               <TouchableOpacity
