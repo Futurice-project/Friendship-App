@@ -62,8 +62,8 @@ const MyProfileTopPart = ({
       >
         <Image source={waveShape} style={styles.waveShape}>
           <UsernameText style={styles.username}>{username}</UsernameText>
-          <CompatibilityText>
-            You have
+          <CompatibilityText style={{ textAlign: 'center' }}>
+            you have
             <YeahColor>
               {' '}
               {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>{' '}
@@ -119,13 +119,12 @@ export const ProfileTop = ({
       >
         <Image source={waveShape} style={styles.waveShape}>
           <UsernameText style={styles.username}>{username}</UsernameText>
-          <CompatibilityText>
-            You have
+          <CompatibilityText style={{ textAlign: 'center' }}>
             <YeahColor>
               {' '}
               {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>{' '}
             </YeahColor>
-            in common &
+            &
             <NaahColor>
               {' '}
               {numberOfNaah} <FrienshipFont> NAAHS </FrienshipFont>{' '}
