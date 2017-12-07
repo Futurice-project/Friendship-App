@@ -9,7 +9,6 @@ import ProgressBar from '../../components/ProgressBar';
 import RoundTab from '../../components/RoundTab';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import * as activities from '../../state/activities';
 
 const SubTitle = styled.View`
   margin-top: 10;
@@ -31,35 +30,20 @@ const Activities = styled.View`
 `;
 
 const mapDispatchToProps = dispatch => ({
-  getActivities: credentials => {
-    dispatch(rest.actions.activities()).catch(err => console.log(err));
+  getTags: credentials => {
+    dispatch(rest.actions.tags()).catch(err => console.log(err));
   },
   incrementView: (length, endIndex) => {
-    dispatch(activities.increment(length, endIndex));
+    dispatch(tags.increment(length, endIndex));
   },
-  addUserActivities: credentials => {
-    dispatch(
-      rest.actions.createUserActivities(
-        {},
-        { body: JSON.stringify(credentials) },
-      ),
-    )
-      .then(() => {
-        dispatch(
-          NavigationActions.navigate({
-            routeName: 'Tabs',
-          }),
-        );
-      })
-      .catch(err => console.log(err));
+  addUserTags: credentials => {
+    console.log('aaa');
   },
 });
 
 const mapStateToProps = state => ({
-  //activities: state.activities,
-  activities: state.activities,
+  tags: state.tags,
   navigatorState: state.navigatorState,
-  activityState: state.activityState,
 });
 
 export class SignUpLoveAndHate extends React.Component {
@@ -68,15 +52,11 @@ export class SignUpLoveAndHate extends React.Component {
   };
 
   componentWillMount() {
-    this.props.getActivities();
+    this.props.getTags();
   }
 
   renderFiveLoveAndHateActivities = () => {
-    //    if (!this.props.personalities.data.data) {
-    //      return <Text>Network failed</Text>;
-    //    }
-
-    let activities = this.props.activities.data.data //this.props.activities.data.data
+    let activities = this.props.tags.data.data //this.props.tags.data.data
       .map(activity => {
         //activities have a category equal to 1
         if (activity.category == 1) {
@@ -85,16 +65,10 @@ export class SignUpLoveAndHate extends React.Component {
       });
 
     return <Activities>{activities}</Activities>;
-    {
-    }
   };
 
   renderFiveLoveAndHateInterests = () => {
-    //    if (!this.props.personalities.data.data) {
-    //      return <Text>Network failed</Text>;
-    //    }
-
-    let activities = this.props.activities.data.data //this.props.activities.data.data
+    let activities = this.props.tags.data.data //this.props.tags.data.data
       .map(activity => {
         //interests have a category equal to 2
         if (activity.category == 2) {
@@ -103,8 +77,6 @@ export class SignUpLoveAndHate extends React.Component {
       });
 
     return <Activities>{activities}</Activities>;
-    {
-    }
   };
 
   renderPage() {
@@ -114,26 +86,6 @@ export class SignUpLoveAndHate extends React.Component {
       return this.renderFiveLoveAndHateInterests();
     }
   }
-
-  handleClick = activityId => {
-    let personalities = this.removeDuplicateFromChosenPersonalities(
-      personalityId,
-    );
-    personalities.push({ personalityId: personalityId, level: 5 });
-    if (
-      this.props.personalities.data.data.length ===
-      this.props.personalityState.endIndex
-    ) {
-      this.props.addUserPersonalities({
-        personalities: this.props.personalityState.chosenPersonalities,
-      });
-    } else {
-      this.props.incrementView(
-        this.props.personalities.data.data.length,
-        this.props.personalityState.endIndex,
-      );
-    }
-  };
 
   renderTitle() {
     if (this.state.page == 1) {
@@ -145,7 +97,6 @@ export class SignUpLoveAndHate extends React.Component {
   state = { page: 1 };
 
   render() {
-    console.log(this.props);
     return (
       <View>
         <ViewContainer>
