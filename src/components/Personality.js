@@ -33,14 +33,11 @@ const ImageContainer = styled.Image`
 
 //style for the text of the button
 const ButtonText = styled.Text`
-  max-width: 82;
-  height: 14;
-  font-family: 'NunitoSans-Regular';
-  font-size: 10;
-  font-weight: bold;
+  font-family: 'NunitoSans-Bold';
+  font-size: 14;
   text-align: center;
   color: ${props => {
-    return props.titleColor ? props.titleColor : '#91999f';
+    return props.titleColor ? props.titleColor : '#efebe9';
   }};
   background-color: transparent;
 `;
