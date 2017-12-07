@@ -60,7 +60,13 @@ export class SignUpLoveAndHate extends React.Component {
       .map(activity => {
         //activities have a category equal to 1
         if (activity.category == 1) {
-          return <LoveAndHate key={activity.id} activity={activity.name} />;
+          return (
+            <LoveAndHate
+              key={activity.id}
+              activityName={activity.name}
+              activityId={activity.id}
+            />
+          );
         }
       });
 
@@ -72,7 +78,13 @@ export class SignUpLoveAndHate extends React.Component {
       .map(activity => {
         //interests have a category equal to 2
         if (activity.category == 2) {
-          return <LoveAndHate key={activity.id} activity={activity.name} />;
+          return (
+            <LoveAndHate
+              key={activity.id}
+              activityName={activity.name}
+              activityId={activity.id}
+            />
+          );
         }
       });
 

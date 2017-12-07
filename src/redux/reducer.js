@@ -4,6 +4,7 @@ import { reducers as restReducers } from '../utils/rest';
 // ## Reducer Imports ##
 import NavigatorStateReducer from '../state/navigator';
 import PersonalityStateReducer from '../state/personalities';
+import TagStateReducer from '../state/tags';
 import KeyboardStateReducer from '../state/keyboard';
 
 const reducers = {
@@ -13,6 +14,7 @@ const reducers = {
   navigatorState: NavigatorStateReducer,
   personalityState: PersonalityStateReducer,
   keyboardState: KeyboardStateReducer,
+  tagState: TagStateReducer,
 
   //
   ...restReducers,
