@@ -37,7 +37,7 @@ const ButtonText = styled.Text`
   font-size: 14;
   text-align: center;
   color: ${props => {
-    return props.titleColor ? props.titleColor : '#efebe9';
+    return props.titleColor ? props.titleColor : '#91999f';
   }};
   background-color: transparent;
 `;
