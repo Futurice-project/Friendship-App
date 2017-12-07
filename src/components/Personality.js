@@ -33,7 +33,7 @@ const ImageContainer = styled.Image`
 
 //style for the text of the button
 const ButtonText = styled.Text`
-  font-family: 'NunitoSans-Bold';
+  font-family: 'NunitoSans-SemiBold';
   font-size: 14;
   text-align: center;
   color: ${props => {

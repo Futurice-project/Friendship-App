@@ -186,18 +186,26 @@ class SignUpPersonality extends React.Component {
       return <Text>Network failed</Text>;
     }
 
-    var personalities = this.props.personalities
-      .slice(this.props.index, this.props.index + 2)
-      .map(personality => {
-        return (
-          <Personality
-            key={personality.id}
-            title={personality.name}
-            image={personality.name}
-            onPress={() => this.handleClick(personality.id)}
-          />
-        );
-      });
+    var personalities = this.props.personalities;
+
+    return (
+      <Centered>
+        <Personality
+          key={personalities[this.props.index].id}
+          title={personalities[this.props.index].name}
+          image={personalities[this.props.index].name}
+          onPress={() => this.handleClick(personalities[this.props.index].id)}
+        />
+        <PersonalityText>or</PersonalityText>
+        <Personality
+          key={personalities[this.props.index + 1].id}
+          title={personalities[this.props.index + 1].name}
+          image={personalities[this.props.index + 1].name}
+          onPress={() =>
+            this.handleClick(personalities[this.props.index + 1].id)}
+        />
+      </Centered>
+    );
 
     return <Personalities>{personalities}</Personalities>;
   }
@@ -258,7 +266,7 @@ class SignUpPersonality extends React.Component {
             >
               Are you more..
             </Text>
-            <Centered>{this.renderTwoPersonalities()}</Centered>
+            {this.renderTwoPersonalities()}
           </Padding>
         </ViewContainer>
       </View>
@@ -286,10 +294,18 @@ const Error = styled.Text`
   color: red;
 `;
 
+const PersonalityText = styled.Text`
+  margin-top: 15;
+  margin-bottom: 15;
+  font-size: 16;
+  color: #efebe9;
+  font-family: 'NunitoSans-Light';
+`;
+
 const Title = styled.Text`
   margin-top: 50;
   font-size: 40;
-  fontFamily: 'Friendship_version_2';
+  font-family: 'Friendship_version_2';
   color: #faf5f0;
 `;
 
