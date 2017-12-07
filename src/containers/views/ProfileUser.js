@@ -22,19 +22,12 @@ import {
   FlexRow,
   HeaderButton,
 } from '../../components/Layout';
-import {
-  Description,
-  Details,
-  CompatibilityText,
-  FrienshipFont,
-  LocationText,
-  YeahColor,
-  NaahColor,
-} from '../../components/Text';
+import { Description, Details } from '../../components/Text';
 import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/TabProfile';
 import PopUpMenu from '../../components/PopUpMenu';
 import Personality from '../../components/Personality';
+import { ProfileTop } from '../../components/Profile/MyProfileTopPart';
 
 const ButtonOption = styled.View`
   align-items: center;
@@ -187,10 +180,17 @@ class ProfileUser extends React.Component {
         ? this.props.userDetails.data.hateCommon
         : 0;
 
+      // if there is no picture for the user we use a default image
+      const srcImage = this.props.userDetails.data.image
+        ? {
+            uri: 'data:image/png;base64,' + this.props.userDetails.data.image,
+          }
+        : require('../../../assets/img/placeholder/grone.jpg');
+
       let reportTitle = 'Report ' + this.props.userDetails.data.username;
       return (
         <ViewContainerTop style={styles.viewContent}>
-          <View style={styles.profileContainer}>
+          {/* <View style={styles.profileContainer}>
             <View style={styles.whiteCircle}>
               <Text style={styles.emoji}>
                 {this.props.userDetails.data.emoji}
@@ -222,14 +222,36 @@ class ProfileUser extends React.Component {
               {', ' + this.state.age + ', '}
               {this.state.genders}
             </Details>
-            <DescriptionWrapper>
-              <Description>
-                {this.props.userDetails.data.description}
-              </Description>
-            </DescriptionWrapper>
-            <View style={{ backgroundColor: '#faf5f0' }}>
-              {this.renderPersonalities()}
-            </View>
+          </View> */}
+          <ProfileTop
+            username={this.props.userDetails.data.username}
+            srcImage={srcImage}
+            location={
+              this.props.userDetails.data.locations ? (
+                this.props.userDetails.data.locations.join(',')
+              ) : (
+                'Narnia'
+              )
+            }
+            age={this.state.age}
+            genders={
+              this.props.userDetails.data.genderlist ? (
+                this.props.userDetails.data.genderlist.join(' and ')
+              ) : (
+                ''
+              )
+            }
+            emoji={this.props.userDetails.data.emoji}
+            numberOfYeah={loveCommon}
+            numberOfNaah={hateCommon}
+            navigateBack={this.navigateBack}
+          />
+
+          <DescriptionWrapper>
+            <Description>{this.props.userDetails.data.description}</Description>
+          </DescriptionWrapper>
+          <View style={{ backgroundColor: '#faf5f0' }}>
+            {this.renderPersonalities()}
           </View>
           <TabProfile hate={hate} love={love} />
 

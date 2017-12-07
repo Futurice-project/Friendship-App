@@ -12,6 +12,7 @@ import {
 import {
   Details,
   CompatibilityText,
+  FrienshipFont,
   LocationText,
   YeahColor,
   NaahColor,
@@ -62,10 +63,74 @@ const MyProfileTopPart = ({
         <Image source={waveShape} style={styles.waveShape}>
           <UsernameText style={styles.username}>{username}</UsernameText>
           <CompatibilityText>
-            you have
-            <YeahColor> {numberOfYeah} Yeah </YeahColor>
+            You have
+            <YeahColor>
+              {' '}
+              {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>{' '}
+            </YeahColor>
             &
-            <NaahColor> {numberOfNaah} Naahs </NaahColor>
+            <NaahColor>
+              {' '}
+              {numberOfNaah} <FrienshipFont> NAAHS </FrienshipFont>{' '}
+            </NaahColor>
+          </CompatibilityText>
+        </Image>
+        <View style={{ backgroundColor: '#F9F6F1' }}>
+          <Details>
+            <LocationText>{location ? location : 'Narnia'}</LocationText>
+            {', ' + age + ', '}
+            {genders}
+          </Details>
+        </View>
+      </View>
+    </Image>
+  );
+};
+
+export const ProfileTop = ({
+  age,
+  emoji,
+  genders,
+  location,
+  navigateBack,
+  numberOfNaah,
+  numberOfYeah,
+  srcImage,
+  username,
+}) => {
+  return (
+    <Image style={styles.imageUser} source={srcImage}>
+      <View style={styles.backAndSettingsView}>
+        <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
+          <Text style={{ fontSize: 22 }}> {'<'} </Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.emojiCircle}>
+        <Text style={styles.emoji}>{emoji ? emoji : '✌️'}</Text>
+      </View>
+
+      <View
+        style={{
+          backgroundColor: 'transparent',
+          justifyContent: 'flex-end',
+          flex: 1,
+        }}
+      >
+        <Image source={waveShape} style={styles.waveShape}>
+          <UsernameText style={styles.username}>{username}</UsernameText>
+          <CompatibilityText>
+            You have
+            <YeahColor>
+              {' '}
+              {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>{' '}
+            </YeahColor>
+            in common &
+            <NaahColor>
+              {' '}
+              {numberOfNaah} <FrienshipFont> NAAHS </FrienshipFont>{' '}
+            </NaahColor>{' '}
+            in common
           </CompatibilityText>
         </Image>
         <View style={{ backgroundColor: '#F9F6F1' }}>
