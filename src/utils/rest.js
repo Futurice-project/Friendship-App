@@ -38,6 +38,10 @@ authTransformer = (data = {}) => {
 };
 
 const rest = reduxApi({
+  activities: {
+    url: `${apiRoot}/tags`,
+    crud: true,
+  },
   personalities: {
     url: `${apiRoot}/personalities`,
     crud: true,
