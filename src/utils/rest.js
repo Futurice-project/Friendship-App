@@ -96,16 +96,22 @@ const rest = reduxApi({
     url: `${apiRoot}/chatrooms`,
     crud: true,
   },
+  chatRoomsWithUserId: {
+    url: `${apiRoot}/chatrooms/userid/:id`,
+    crud: true,
+  },
   createChatRoom: {
     url: `${apiRoot}/chatrooms`,
     crud: true,
     options: {
       method: 'POST',
     },
-  },
-  chatRoomsWithUserId: {
-    url: `${apiRoot}/chatrooms/userid/:id`,
-    crud: true,
+    postfetch: [
+      function({ dispatch, actions, data }) {
+        const id = data.user_creator_id;
+        dispatch(actions.chatRoomsWithUserId({ id }));
+      },
+    ],
   },
   chatRoomMessages: {
     url: `${apiRoot}/chatrooms/:id`,
