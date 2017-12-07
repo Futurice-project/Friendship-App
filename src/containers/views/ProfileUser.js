@@ -83,7 +83,9 @@ class ProfileUser extends React.Component {
 
   getGenders = () => {
     const genders = this.props.userDetails.data.genderlist
-      ? this.props.userDetails.data.genderlist.join(' and ')
+      ? this.props.userDetails.data.genderlist
+          .map(x => x && x.toLowerCase())
+          .join(' and ')
       : '';
     this.setState({ genders: genders });
   };

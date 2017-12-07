@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import {
   Image,
+  Dimensions,
   View,
   Text,
   StyleSheet,
@@ -13,7 +14,7 @@ import NavigationBackgroundAsset from '../../assets/drawable-mdpi/combined_shape
 
 import { FlexRow } from './Layout';
 import {
-  Description,
+  BoldDescription,
   Details,
   CompatibilityText,
   FrienshipFont,
@@ -39,6 +40,7 @@ class Person extends React.Component {
     age: '',
     genders: '',
     locations: '',
+    shortUser: '',
   };
 
   componentDidMount() {
@@ -46,12 +48,13 @@ class Person extends React.Component {
       this.getGenders();
       this.getAge();
       this.getLocations();
+      this.cutNames();
     }
   }
 
   getGenders = () => {
     const genders = this.props.data.genderlist
-      ? this.props.data.genderlist.map(x => x && x.toLowerCase()).join(',')
+      ? this.props.data.genderlist.map(x => x && x.toLowerCase()).join(', ')
       : '';
     this.setState({ genders: genders });
   };
@@ -82,70 +85,95 @@ class Person extends React.Component {
       : 'Narnia';
     this.setState({ locations: locations });
   };
-
-  renderBox = () => (
-    <View style={styles.topPart}>
-      <View style={{ flex: 70 }}>
-        <Description style={styles.topText}>
-          {this.props.data.description}
-        </Description>
-      </View>
-      <FlexRow style={styles.bottomPart}>
-        {/* with flex:1 long username don't go exceed the bottom part  */}
-
-        <View style={styles.viewBottom}>
-          <View style={styles.whiteCircle}>
-            <Text style={styles.emoji}>{this.props.data.emoji}</Text>
-          </View>
-
-          <TouchableOpacity
-            style={styles.nameView}
-            onPress={() =>
-              this.props.openProfile(
-                this.props.data.id,
-                this.props.data.username,
-              )}
-          >
-            <Text style={styles.textName}>{this.props.data.username}</Text>
-          </TouchableOpacity>
+  cutNames = () => {
+    const shortUser =
+      this.props.data.username.length > 8
+        ? this.props.data.username.substring(0, 8)
+        : this.props.data.username;
+    this.setState({ shortUser: shortUser });
+  };
+  renderBox = () => {
+    const srcImage = this.props.data.image
+      ? {
+          uri: 'data:image/png;base64,' + this.props.currentUser.data.image,
+        }
+      : require('../../assets/img/placeholder/grone.jpg');
+    return (
+      <Image style={styles.topPart} source={srcImage}>
+        <View style={{ flex: 70, backgroundColor: 'rgba(96, 104, 109, 0.55)' }}>
+          <BoldDescription style={styles.topText}>
+            {this.props.data.description}
+          </BoldDescription>
+          <LocationText style={{ textAlign: 'center', paddingTop: 20 }}>
+            {this.state.locations}
+          </LocationText>
         </View>
-        <Text>
-          {this.state.age}
-          {this.state.locations}
-          {', ' + this.state.genders}
-        </Text>
-        <Text style={{ fontSize: 12, marginTop: 5 }}>
-          <CompatibilityText>
-            <YeahColor>
-              {this.props.data.loveCommon ? this.props.data.loveCommon : 0}
-              <FrienshipFont> YEAH</FrienshipFont>
-            </YeahColor>{' '}
-            &{' '}
-            <NaahColor>
-              {this.props.data.hateCommon ? this.props.data.hateCommon : 0}
-              <FrienshipFont> NAAH</FrienshipFont>
-            </NaahColor>{' '}
-            in common{' '}
-          </CompatibilityText>
-        </Text>
-      </FlexRow>
-    </View>
-  );
+        <FlexRow style={styles.bottomPart}>
+          {/* with flex:1 long username don't go exceed the bottom part  */}
 
+          <View style={styles.flexRow}>
+            <View style={styles.whiteCircle}>
+              <Text style={styles.emoji}>{this.props.data.emoji}</Text>
+            </View>
+            <View style={styles.viewBottom}>
+              <TouchableOpacity
+                style={styles.nameView}
+                onPress={() =>
+                  this.props.openProfile(
+                    this.props.data.id,
+                    this.props.data.username,
+                  )}
+              >
+                <Text style={styles.textName}>{this.state.shortUser}</Text>
+              </TouchableOpacity>
+              <Text style={styles.textDetails}>
+                {this.state.age}
+                {this.state.genders}
+              </Text>
+              <CompatibilityText>
+                <YeahColor>
+                  {this.props.data.loveCommon ? this.props.data.loveCommon : 0}
+                  <FrienshipFont> YEAH</FrienshipFont>
+                </YeahColor>{' '}
+                &{' '}
+                <NaahColor>
+                  {this.props.data.hateCommon ? this.props.data.hateCommon : 0}
+                  <FrienshipFont> NAAH</FrienshipFont>
+                </NaahColor>{' '}
+                <Text style={{ flexWrap: 'wrap', fontSize: 12 }}>
+                  in common
+                </Text>
+              </CompatibilityText>
+            </View>
+          </View>
+        </FlexRow>
+      </Image>
+    );
+  };
+
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: '100%',
+          backgroundColor: '#CED0CE',
+        }}
+      />
+    );
+  };
   renderLine = () => (
     <FlexRow style={styles.listItem}>
-      <View style={styles.viewBottom}>
-        <View>
-          <Text style={styles.listEmoji}>{this.props.data.emoji}</Text>
-        </View>
-
-        <TouchableOpacity
-          style={styles.nameView}
-          onPress={() => this.props.openProfile(this.props.data.userId)}
-        >
-          <Text style={styles.listName}>{this.props.data.username}</Text>
-        </TouchableOpacity>
+      <View>
+        <Text style={styles.listEmoji}>{this.props.data.emoji}</Text>
       </View>
+
+      <TouchableOpacity
+        style={styles.nameView}
+        onPress={() => this.props.openProfile(this.props.data.userId)}
+      >
+        <Text style={styles.listName}>{this.props.data.username}</Text>
+      </TouchableOpacity>
     </FlexRow>
   );
 
@@ -154,39 +182,49 @@ class Person extends React.Component {
 
 const styles = StyleSheet.create({
   viewBottom: {
+    justifyContent: 'flex-start',
+    width: 121,
+    flexDirection: 'column',
+  },
+  flexRow: {
+    alignSelf: 'flex-end',
     flexDirection: 'row',
   },
   nameView: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    flex: 60,
+    // alignItems: 'center',
+    // alignSelf: 'center',
+    // justifyContent: 'center',
+    // flex: 60,
   },
   textName: {
-    fontSize: 20,
-    /*    fontFamily: 'NunitoSans-Light', */
+    color: '#4a4a4a',
+    fontFamily: 'NunitoSans-Bold',
+    fontSize: 25,
+  },
+  textDetails: {
+    color: '#60686D',
+    fontSize: 12,
   },
   topPart: {
-    height: 300,
-    width: 200,
+    height: 333,
+    width: 220,
     marginLeft: 20,
-    backgroundColor: '#939795',
+    backgroundColor: 'transparent',
     borderRadius: 3,
   },
   topText: {
     color: 'white',
-    maxHeight: 130,
-    marginVertical: 30,
+    maxHeight: 140,
+    marginTop: 23,
     marginHorizontal: 20,
-    lineHeight: 21,
-    fontSize: 18,
-    /*    fontFamily: 'Avenir', */
   },
+
   bottomPart: {
-    width: 200,
+    width: 220,
     padding: 10,
+    paddingVertical: 13,
     backgroundColor: '#E8E9E8',
-    flex: 40,
+    flex: 26,
     alignSelf: 'flex-end',
     flexDirection: 'column',
     borderBottomLeftRadius: 3,
@@ -199,7 +237,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     marginRight: 10,
-    flex: 40,
+    marginTop: 8,
+    justifyContent: 'flex-start',
   },
   emoji: {
     backgroundColor: 'transparent',
@@ -212,6 +251,9 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     margin: 0,
     height: 70,
+    backgroundColor: '#efebe9',
+    width: Dimensions.get('window').width - 50,
+    marginBottom: 5,
   },
   listName: {
     justifyContent: 'flex-start',

@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     margin: 22,
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   textButtonStyle: {
     alignSelf: 'center',
