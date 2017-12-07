@@ -168,6 +168,7 @@ export default class LoveAndHate extends React.Component {
           <LoveAndHateButton
             onPress={() => {
               console.log('NAH Button pressed');
+              this.props.onPress.call(this); // Passes onPress from view implementation this component
               this.nahActivity();
             }}
           >
@@ -186,6 +187,7 @@ export default class LoveAndHate extends React.Component {
         <LoveAndHateButton
           onPress={() => {
             console.log('RESET Button pressed');
+            this.props.onPress.call(this); // Passes onPress from view implementation this component
             this.resetChoice();
           }}
           style={{
