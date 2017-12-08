@@ -1,5 +1,5 @@
-export const UPDATE = 'UPDATE';
-export const RESET = 'RESET';
+export const UPDATE_TAGS = 'UPDATE_TAGS';
+export const RESET_TAGS = 'RESET_TAGS';
 import React from 'react';
 
 /**
@@ -7,23 +7,23 @@ import React from 'react';
  * @returns {{type: string}}
  */
 export function reset() {
-  return { type: RESET };
+  return { type: RESET_TAGS };
 }
 
 export function update(tags) {
   return {
-    type: UPDATE,
+    type: UPDATE_TAGS,
     chosenTags: tags,
   };
 }
 
 export default function(state = null, action) {
   switch (action.type) {
-    case RESET:
+    case RESET_TAGS:
       return {
         chosenTags: [],
       };
-    case UPDATE:
+    case UPDATE_TAGS:
       return {
         chosenTags: action.chosenTags,
       };
@@ -32,6 +32,4 @@ export default function(state = null, action) {
         chosenTags: state ? state.chosenTags : [],
       };
   }
-
-  return state;
 }

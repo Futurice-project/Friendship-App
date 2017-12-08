@@ -1,5 +1,5 @@
-export const UPDATE = 'UPDATE';
-export const RESET = 'RESET';
+export const UPDATE_PERSONALITIES = 'UPDATE_PERSONALITIES';
+export const RESET_PERSONALITIES = 'RESET_PERSONALITIES';
 import React from 'react';
 
 /**
@@ -7,23 +7,23 @@ import React from 'react';
  * @returns {{type: string}}
  */
 export function reset() {
-  return { type: RESET };
+  return { type: RESET_PERSONALITIES };
 }
 
 export function add(personalities) {
   return {
-    type: UPDATE,
+    type: UPDATE_PERSONALITIES,
     chosenPersonalities: personalities,
   };
 }
 
 export default function(state = null, action) {
   switch (action.type) {
-    case RESET:
+    case RESET_PERSONALITIES:
       return {
         chosenPersonalities: [],
       };
-    case UPDATE:
+    case UPDATE_PERSONALITIES:
       return {
         chosenPersonalities: action.chosenPersonalities,
       };
@@ -32,6 +32,4 @@ export default function(state = null, action) {
         chosenPersonalities: state ? state.chosenPersonalities : [],
       };
   }
-
-  return state;
 }

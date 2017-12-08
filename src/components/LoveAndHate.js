@@ -128,8 +128,11 @@ class LoveAndHate extends React.Component {
    * @param {boolean} love
    */
   addTag(tagId, love) {
-    tagList = this.props.tagState.chosenTags;
-    tagList.push({ tagId: tagId, love: love });
+    console.log(this.props);
+    const tagList = [
+      ...this.props.tagState.chosenTags,
+      { tagId: tagId, love: love },
+    ];
     this.props.updateTags(tagList);
   }
 
@@ -138,7 +141,7 @@ class LoveAndHate extends React.Component {
    * @param {integer} tagId
    */
   removeTag(tagId) {
-    tagList = this.props.tagState.chosenTags;
+    const tagList = [...this.props.tagState.chosenTags];
     for (let i = 0; i < tagList.length; i++) {
       if (tagList[i].tagId == tagId) {
         tagList.splice(i, 1);
