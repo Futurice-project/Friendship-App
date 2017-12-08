@@ -13,6 +13,7 @@ import Modal from 'react-native-modal';
 import resolveAssetSource from 'resolveAssetSource';
 import rest from '../../utils/rest';
 import styled from 'styled-components/native';
+import { NavigationActions } from 'react-navigation';
 
 import Button from '../../components/Button';
 import {
@@ -88,6 +89,10 @@ class ProfileUser extends React.Component {
           .join(' and ')
       : '';
     this.setState({ genders: genders });
+  };
+  navigateBack = () => {
+    const backAction = NavigationActions.back();
+    this.props.navigation.dispatch(backAction);
   };
 
   getAge = () => {
