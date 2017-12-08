@@ -96,7 +96,7 @@ const mapDispatchToProps = dispatch => ({
    * @param dispatch
    */
   updateTags: tagList => {
-    dispatch(tags.upate(tagList));
+    dispatch(tags.update(tagList));
   },
 });
 
@@ -122,6 +122,31 @@ class LoveAndHate extends React.Component {
     wrapperColor: 0,
   };
 
+  /**
+   * Add tag
+   * @param {integer} tagId
+   * @param {boolean} love
+   */
+  addTag(tagId, love) {
+    tagList = this.props.tagState.chosenTags;
+    tagList.push({ tagId: tagId, love: love });
+    this.props.updateTags(tagList);
+  }
+
+  /**
+   * Remove tag from list
+   * @param {integer} tagId
+   */
+  removeTag(tagId) {
+    tagList = this.props.tagState.chosenTags;
+    for (let i = 0; i < tagList.length; i++) {
+      if (tagList[i].tagId == tagId) {
+        tagList.splice(i, 1);
+      }
+    }
+    this.props.updateTags(tagList);
+  }
+
   yeahActivity() {
     console.log(
       'Yeah-ing activity ' +
@@ -134,11 +159,7 @@ class LoveAndHate extends React.Component {
       nahButton: false,
     });
 
-    // tagList = this.props.tagState.chosenTags;
-    // tagList.push(this.props.activityId);
-    // this.props.updateTags(tagList);
-    // @todo props tags are empty, should be []
-    console.log(this.props);
+    this.addTag(this.props.activityId, true);
     LayoutAnimation.configureNext(CustomLayoutSpring);
   }
 
@@ -153,6 +174,8 @@ class LoveAndHate extends React.Component {
       yeahButton: false,
       nahButton: false,
     });
+
+    this.addTag(this.props.activityId, false);
     LayoutAnimation.configureNext(CustomLayoutSpring);
   }
 
@@ -165,11 +188,9 @@ class LoveAndHate extends React.Component {
       yeahButton: true,
       nahButton: true,
     });
-    LayoutAnimation.configureNext(CustomLayoutSpring);
 
-    /*if (this.state.status !== 0) {
-     console.log("Starting resetting...");
-     }*/
+    this.removeTag(this.props.activityId);
+    LayoutAnimation.configureNext(CustomLayoutSpring);
   }
   renderYeah() {
     if (this.state.yeahButton) {
@@ -203,32 +224,31 @@ class LoveAndHate extends React.Component {
       );
     }
   }
-  render = () =>
-    console.log(this.props) || (
-      <LoveAndHateWrapper wrapperColor={this.state.wrapperColor}>
-        {/* Left part of the component. Contain the button to Yeah the activity */}
-        {this.renderYeah()}
-        {/* Middle part of the component. Contain the button to Reset the choice Yeah or Nah */}
-        <LoveAndHatePart textAligment={this.state.wrapperColor}>
-          <LoveAndHateButton
-            onPress={() => {
-              console.log('RESET Button pressed');
-              this.resetChoice();
-            }}
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            position={this.state.wrapperColor}
-          >
-            <Text style={styles.activity}>{this.props.activityName}</Text>
-          </LoveAndHateButton>
-        </LoveAndHatePart>
+  render = () => (
+    <LoveAndHateWrapper wrapperColor={this.state.wrapperColor}>
+      {/* Left part of the component. Contain the button to Yeah the activity */}
+      {this.renderYeah()}
+      {/* Middle part of the component. Contain the button to Reset the choice Yeah or Nah */}
+      <LoveAndHatePart textAligment={this.state.wrapperColor}>
+        <LoveAndHateButton
+          onPress={() => {
+            console.log('RESET Button pressed');
+            this.resetChoice();
+          }}
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          position={this.state.wrapperColor}
+        >
+          <Text style={styles.activity}>{this.props.activityName}</Text>
+        </LoveAndHateButton>
+      </LoveAndHatePart>
 
-        {/* Right part of the component. Contain the button to Nah the activity */}
-        {this.renderNah()}
-      </LoveAndHateWrapper>
-    );
+      {/* Right part of the component. Contain the button to Nah the activity */}
+      {this.renderNah()}
+    </LoveAndHateWrapper>
+  );
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoveAndHate);
