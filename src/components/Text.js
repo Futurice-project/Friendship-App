@@ -7,7 +7,7 @@ export const CenteredText = Bold.extend`text-align: center;`;
 
 export const Description = styled.Text`
   font-family: 'NunitoSans-Light';
-  font-size: 14px;
+  font-size: 12px;
   line-height: 18;
   letter-spacing: 0.4;
   font-weight: 300;
@@ -41,7 +41,6 @@ export const CompatibilityText = styled.Text`
   ${'' /* line-height: 24; */} font-weight: 300;
   color: #4a4a4a;
   margin-bottom: 14px;
-  height: 24;
   letter-spacing: 0.4;
   background-color: transparent;
 `;

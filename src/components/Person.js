@@ -130,7 +130,7 @@ class Person extends React.Component {
                 {this.state.age}
                 {this.state.genders}
               </Text>
-              <CompatibilityText>
+              <CompatibilityText style={{ marginBottom: 0, marginTop: 3 }}>
                 <YeahColor>
                   {this.props.data.loveCommon ? this.props.data.loveCommon : 0}
                   <FrienshipFont> YEAH</FrienshipFont>
@@ -140,10 +140,17 @@ class Person extends React.Component {
                   {this.props.data.hateCommon ? this.props.data.hateCommon : 0}
                   <FrienshipFont> NAAH</FrienshipFont>
                 </NaahColor>{' '}
-                <Text style={{ flexWrap: 'wrap', fontSize: 12 }}>
-                  in common
-                </Text>
               </CompatibilityText>
+              <Text
+                style={{
+                  flexWrap: 'wrap',
+                  fontSize: 12,
+                  color: '#4a4a4a',
+                  marginTop: -3,
+                }}
+              >
+                in common
+              </Text>
             </View>
           </View>
         </FlexRow>
@@ -190,14 +197,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     flexDirection: 'row',
   },
-  nameView: {
-    // alignItems: 'center',
-    // alignSelf: 'center',
-    // justifyContent: 'center',
-    // flex: 60,
-  },
+
   textName: {
-    color: '#4a4a4a',
+    color: '#60686D',
     fontFamily: 'NunitoSans-Bold',
     fontSize: 25,
   },
@@ -223,7 +225,7 @@ const styles = StyleSheet.create({
     width: 220,
     padding: 10,
     paddingVertical: 13,
-    backgroundColor: '#E8E9E8',
+    backgroundColor: '#f1f1f3',
     flex: 26,
     alignSelf: 'flex-end',
     flexDirection: 'column',

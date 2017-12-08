@@ -34,7 +34,7 @@ const ImageContainer = styled.Image`
 //style for the text of the button
 const ButtonText = styled.Text`
   font-family: 'NunitoSans-SemiBold';
-  font-size: 14;
+  font-size: 10;
   text-align: center;
   color: ${props => {
     return props.titleColor ? props.titleColor : '#91999f';
