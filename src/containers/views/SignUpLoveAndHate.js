@@ -42,20 +42,20 @@ const mapDispatchToProps = dispatch => ({
   changeView: index => {
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SignUpLoveAndHate',
-        params: { page: index },
+        routeName: 'LoveAndHate',
+        params: { index: index },
       }),
     );
   },
 });
 
-const mapStateToProps = (state, ownProps) => ({
-  tags: state.tags,
-  index: ownProps.navigation.state.params
-    ? ownProps.navigation.state.params.index
-    : 0,
-  navigatorState: state.navigatorState,
-});
+const mapStateToProps = (state, ownProps) =>
+  console.log(ownProps) || {
+    tags: state.tags,
+    index: ownProps.navigation.state.params
+      ? ownProps.navigation.state.params.index
+      : 1,
+  };
 
 export class SignUpLoveAndHate extends React.Component {
   static navigationOptions = {
@@ -103,7 +103,7 @@ export class SignUpLoveAndHate extends React.Component {
   };
 
   renderPage() {
-    if (this.props.page == 1) {
+    if (this.props.index == 1) {
       return this.renderFiveLoveAndHateActivities();
     } else {
       return this.renderFiveLoveAndHateInterests();
@@ -111,7 +111,7 @@ export class SignUpLoveAndHate extends React.Component {
   }
 
   renderTitle() {
-    if (this.props.page == 1) {
+    if (this.props.index == 1) {
       return '1/2 Activities';
     } else {
       return '2/2 Interests';
@@ -155,7 +155,11 @@ export class SignUpLoveAndHate extends React.Component {
             title="NEXT"
             tint="#faf5f0" /*onPress={() => this.handleClick(activity.id)}*/
             onPress={() => {
-              this.props.changeView(1);
+              if (this.props.index == 1) {
+                this.props.changeView(2);
+              } else {
+                // @todo continue to next views (tabs?)
+              }
             }}
           />
         </ViewContainer>
