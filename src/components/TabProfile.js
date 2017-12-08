@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
@@ -20,7 +21,7 @@ class TabProfile extends PureComponent {
   state = {
     backcolor: '#faf6f0',
     colorActif: '#6eb1ea',
-    colorInactif: '#b3abab',
+    colorInactif: '#2d4359',
     colorTextButton: '#faf6f0',
     colorBackButton: '#2d4359',
     tabIndex: 0,
@@ -33,7 +34,7 @@ class TabProfile extends PureComponent {
       // NAAHS
       this.setState({
         backcolor: '#faf6f0',
-        colorInactif: '#b3abab',
+        colorInactif: '#2d4359',
         colorActif: '#6eb1ea',
         colorTextButton: '#faf6f0',
         colorBackButton: '#2d4359',
@@ -41,21 +42,42 @@ class TabProfile extends PureComponent {
     } else {
       // YEAH
       this.setState({
-        backcolor: '#2a343c',
+        backcolor: '#2d4359',
         colorActif: '#ff8a65',
-        colorInactif: '#b3abab',
+        colorInactif: '#faf6f0',
         colorTextButton: '#6eb1ea',
         colorBackButton: '#faf6f0',
       });
     }
   };
 
+  componentDidMount() {
+    this.props.chatRoomsWithUserId(this.props.currentUserId);
+  }
+
   createChatRoom = () => {
-    this.props.createChatRoom(
-      this.currentUserId,
-      this.props.user.id,
-      this.openChatView,
-    );
+    let chatExist = null;
+    const friendUserId = this.props.user.id;
+    if (!this.props.chatrooms.loading) {
+      chatExist = _.find(this.props.chatrooms.data.data, function(chatroom) {
+        if (
+          chatroom.creator.id === friendUserId ||
+          chatroom.receiver.id === friendUserId
+        ) {
+          return chatroom.id;
+        }
+      });
+
+      if (chatExist) {
+        this.openChatView(chatExist.id);
+      } else {
+        this.props.createChatRoom(
+          this.props.currentUserId,
+          this.props.user.id,
+          this.openChatView,
+        );
+      }
+    }
   };
 
   openChatView = chatroomId => {
@@ -185,8 +207,7 @@ class TabProfile extends PureComponent {
 
 const styles = StyleSheet.create({
   tagList: {
-    marginVertical: 15,
-    marginHorizontal: 22,
+    margin: 22,
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     flexDirection: 'row',
@@ -197,20 +218,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   tagCategoriesLove: {
-    marginTop: 45,
+    marginTop: 10,
     alignSelf: 'center',
     flexGrow: 1,
     textAlign: 'center',
     color: '#ff8a65',
-    fontSize: 13,
+    fontSize: 17,
   },
   tagCategoriesHate: {
-    marginTop: 45,
+    marginTop: 10,
     alignSelf: 'center',
     flexGrow: 1,
     textAlign: 'center',
     color: '#6eb1ea',
-    fontSize: 13,
+    fontSize: 17,
   },
   buttonStyle: {
     alignItems: 'center',
@@ -246,10 +267,14 @@ const mapDispatchToProps = dispatch => ({
         params: { chatroomId, username, userEmoji },
       }),
     ),
+  chatRoomsWithUserId: id => {
+    dispatch(rest.actions.chatRoomsWithUserId({ id }));
+  },
 });
 
 const mapStateToProps = state => ({
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
+  chatrooms: state.chatRoomsWithUserId,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TabProfile);
