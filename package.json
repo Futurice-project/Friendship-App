@@ -44,6 +44,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.26.0",
     "expo": "^19.0.0",
     "jwt-decode": "^2.2.0",
