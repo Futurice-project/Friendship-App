@@ -76,6 +76,10 @@ export class SignUpLoveAndHate extends React.Component {
   }
 
   renderFiveLoveAndHateActivities = () => {
+    console.log(this.props.tags);
+    if (!this.props.tags.data.data) {
+      return;
+    }
     let activities = this.props.tags.data.data //this.props.tags.data.data
       .map(activity => {
         //activities have a category equal to 1
@@ -94,6 +98,11 @@ export class SignUpLoveAndHate extends React.Component {
   };
 
   renderFiveLoveAndHateInterests = () => {
+    console.log(this.props.tags);
+
+    if (!this.props.tags.data.data) {
+      return;
+    }
     let activities = this.props.tags.data.data //this.props.tags.data.data
       .map(activity => {
         //interests have a category equal to 2
