@@ -17,7 +17,7 @@ export default class TabProfile extends PureComponent {
   state = {
     backcolor: '#faf6f0',
     colorActif: '#6eb1ea',
-    colorInactif: '#2d4359',
+    colorInactif: '#b3abab',
     colorTextButton: '#faf6f0',
     colorBackButton: '#2d4359',
     tabIndex: 0,
@@ -30,7 +30,7 @@ export default class TabProfile extends PureComponent {
       // NAAHS
       this.setState({
         backcolor: '#faf6f0',
-        colorInactif: '#2d4359',
+        colorInactif: '#b3abab',
         colorActif: '#6eb1ea',
         colorTextButton: '#faf6f0',
         colorBackButton: '#2d4359',
@@ -38,9 +38,9 @@ export default class TabProfile extends PureComponent {
     } else {
       // YEAH
       this.setState({
-        backcolor: '#2d4359',
+        backcolor: '#2a343c',
         colorActif: '#ff8a65',
-        colorInactif: '#faf6f0',
+        colorInactif: '#b3abab',
         colorTextButton: '#6eb1ea',
         colorBackButton: '#faf6f0',
       });
@@ -166,7 +166,8 @@ export default class TabProfile extends PureComponent {
 
 const styles = StyleSheet.create({
   tagList: {
-    margin: 22,
+    marginVertical: 15,
+    marginHorizontal: 22,
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     flexDirection: 'row',
@@ -177,20 +178,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   tagCategoriesLove: {
-    marginTop: 10,
+    marginTop: 45,
     alignSelf: 'center',
     flexGrow: 1,
     textAlign: 'center',
     color: '#ff8a65',
-    fontSize: 17,
+    fontSize: 13,
   },
   tagCategoriesHate: {
-    marginTop: 10,
+    marginTop: 45,
     alignSelf: 'center',
     flexGrow: 1,
     textAlign: 'center',
     color: '#6eb1ea',
-    fontSize: 17,
+    fontSize: 13,
   },
   buttonStyle: {
     alignItems: 'center',
