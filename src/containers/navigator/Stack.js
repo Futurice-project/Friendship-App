@@ -20,6 +20,7 @@ import SignUpLocation from '../views/SignUpLocation';
 import SignUpPersonality from '../views/SignUpPersonality';
 import ChatView from './../views/ChatView';
 import ChatRequest from './../views/ChatRequest';
+import SignUpLoveAndHate from '../views/SignUpLoveAndHate';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -53,6 +54,7 @@ export default StackNavigator(
       title: 'Matching',
       navigationOptions: { header: () => null },
     },
+    LoveAndHate: { screen: SignUpLoveAndHate },
     Tabs: {
       screen: Tabs,
       navigationOptions: { header: () => null },
@@ -67,7 +69,7 @@ export default StackNavigator(
     },
     SearchList: {
       screen: SearchList,
-      navigationOptions: { title: '' },
+      navigationOptions: { title: 'Search page' },
     },
     Settings: {
       screen: SettingsView,
