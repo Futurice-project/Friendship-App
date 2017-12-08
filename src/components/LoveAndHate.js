@@ -1,9 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components/native';
 import { Text, View } from 'react-native';
 import YeahButtonAsset from '../../assets/img/loveAndHate/yeah_200.png';
 import NahButtonAsset from '../../assets/img/loveAndHate/naah_200.png';
 import { StyleSheet, LayoutAnimation, UIManager, Platform } from 'react-native';
+import * as tags from '../state/tags';
 
 const LoveAndHateWrapper = styled.View`
   width: 100%;
@@ -87,10 +89,24 @@ var CustomLayoutSpring = {
     springDamping: 0.7,
   },
 };
+
+const mapDispatchToProps = dispatch => ({
+  /**
+   * Change state
+   * @param dispatch
+   */
+  updateTags: tagList => {
+    dispatch(tags.upate(tagList));
+  },
+});
+
+const mapStateToProps = (state, ownProps) => ({
+  tagState: state.tagState,
+});
 /**
  * @param {String} activity - name of the activity
  */
-export default class LoveAndHate extends React.Component {
+class LoveAndHate extends React.Component {
   constructor() {
     super();
     //The following code must be set to use LayoutAnimation
@@ -107,20 +123,31 @@ export default class LoveAndHate extends React.Component {
   };
 
   yeahActivity() {
+    console.log(this.props);
     console.log(
-      'Yeah-ing activity ' + this.props.activity + ' : Move title to the left',
+      'Yeah-ing activity ' +
+        this.props.activityId +
+        ' : Move title to the left',
     );
     this.setState({
       wrapperColor: -1,
       yeahButton: false,
       nahButton: false,
     });
+
+    // tagList = this.props.tagState.chosenTags;
+    // tagList.push(this.props.activityId);
+    // this.props.updateTags(tagList);
+    // @todo props tags are empty, should be []
+    console.log(this.props);
     LayoutAnimation.configureNext(CustomLayoutSpring);
   }
 
   nahActivity() {
     console.log(
-      'Nah-ing activity ' + this.props.activity + ' : Move title to the right',
+      'Nah-ing activity ' +
+        this.props.activityId +
+        ' : Move title to the right',
     );
     this.setState({
       wrapperColor: 1,
@@ -132,7 +159,7 @@ export default class LoveAndHate extends React.Component {
 
   resetChoice() {
     console.log(
-      'Resetting choice ' + this.props.activity + ' : Reset view as initial',
+      'Resetting choice ' + this.props.activityId + ' : Reset view as initial',
     );
     this.setState({
       wrapperColor: 0,
@@ -168,7 +195,6 @@ export default class LoveAndHate extends React.Component {
           <LoveAndHateButton
             onPress={() => {
               console.log('NAH Button pressed');
-              this.props.onPress.call(this); // Passes onPress from view implementation this component
               this.nahActivity();
             }}
           >
@@ -187,7 +213,6 @@ export default class LoveAndHate extends React.Component {
         <LoveAndHateButton
           onPress={() => {
             console.log('RESET Button pressed');
-            this.props.onPress.call(this); // Passes onPress from view implementation this component
             this.resetChoice();
           }}
           style={{
@@ -197,7 +222,7 @@ export default class LoveAndHate extends React.Component {
           }}
           position={this.state.wrapperColor}
         >
-          <Text style={styles.activity}>{this.props.activity}</Text>
+          <Text style={styles.activity}>{this.props.activityName}</Text>
         </LoveAndHateButton>
       </LoveAndHatePart>
 
@@ -206,3 +231,4 @@ export default class LoveAndHate extends React.Component {
     </LoveAndHateWrapper>
   );
 }
+export default connect(mapDispatchToProps, mapStateToProps)(LoveAndHate);

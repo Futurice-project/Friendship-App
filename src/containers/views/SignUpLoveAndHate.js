@@ -39,10 +39,21 @@ const mapDispatchToProps = dispatch => ({
   addUserTags: credentials => {
     console.log('aaa');
   },
+  changeView: index => {
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SignUpLoveAndHate',
+        params: { page: index },
+      }),
+    );
+  },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   tags: state.tags,
+  index: ownProps.navigation.state.params
+    ? ownProps.navigation.state.params.index
+    : 0,
   navigatorState: state.navigatorState,
 });
 
@@ -92,7 +103,7 @@ export class SignUpLoveAndHate extends React.Component {
   };
 
   renderPage() {
-    if (this.state.page == 1) {
+    if (this.props.page == 1) {
       return this.renderFiveLoveAndHateActivities();
     } else {
       return this.renderFiveLoveAndHateInterests();
@@ -100,13 +111,12 @@ export class SignUpLoveAndHate extends React.Component {
   }
 
   renderTitle() {
-    if (this.state.page == 1) {
+    if (this.props.page == 1) {
       return '1/2 Activities';
     } else {
       return '2/2 Interests';
     }
   }
-  state = { page: 1 };
 
   render() {
     return (
@@ -145,7 +155,7 @@ export class SignUpLoveAndHate extends React.Component {
             title="NEXT"
             tint="#faf5f0" /*onPress={() => this.handleClick(activity.id)}*/
             onPress={() => {
-              this.setState({ page: 2 });
+              this.props.changeView(1);
             }}
           />
         </ViewContainer>
