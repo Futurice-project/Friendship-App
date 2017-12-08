@@ -123,7 +123,6 @@ class LoveAndHate extends React.Component {
   };
 
   yeahActivity() {
-    console.log(this.props);
     console.log(
       'Yeah-ing activity ' +
         this.props.activityId +
@@ -204,31 +203,32 @@ class LoveAndHate extends React.Component {
       );
     }
   }
-  render = () => (
-    <LoveAndHateWrapper wrapperColor={this.state.wrapperColor}>
-      {/* Left part of the component. Contain the button to Yeah the activity */}
-      {this.renderYeah()}
-      {/* Middle part of the component. Contain the button to Reset the choice Yeah or Nah */}
-      <LoveAndHatePart textAligment={this.state.wrapperColor}>
-        <LoveAndHateButton
-          onPress={() => {
-            console.log('RESET Button pressed');
-            this.resetChoice();
-          }}
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          position={this.state.wrapperColor}
-        >
-          <Text style={styles.activity}>{this.props.activityName}</Text>
-        </LoveAndHateButton>
-      </LoveAndHatePart>
+  render = () =>
+    console.log(this.props) || (
+      <LoveAndHateWrapper wrapperColor={this.state.wrapperColor}>
+        {/* Left part of the component. Contain the button to Yeah the activity */}
+        {this.renderYeah()}
+        {/* Middle part of the component. Contain the button to Reset the choice Yeah or Nah */}
+        <LoveAndHatePart textAligment={this.state.wrapperColor}>
+          <LoveAndHateButton
+            onPress={() => {
+              console.log('RESET Button pressed');
+              this.resetChoice();
+            }}
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            position={this.state.wrapperColor}
+          >
+            <Text style={styles.activity}>{this.props.activityName}</Text>
+          </LoveAndHateButton>
+        </LoveAndHatePart>
 
-      {/* Right part of the component. Contain the button to Nah the activity */}
-      {this.renderNah()}
-    </LoveAndHateWrapper>
-  );
+        {/* Right part of the component. Contain the button to Nah the activity */}
+        {this.renderNah()}
+      </LoveAndHateWrapper>
+    );
 }
-export default connect(mapDispatchToProps, mapStateToProps)(LoveAndHate);
+export default connect(mapStateToProps, mapDispatchToProps)(LoveAndHate);
