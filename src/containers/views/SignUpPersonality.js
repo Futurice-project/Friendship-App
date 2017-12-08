@@ -68,12 +68,7 @@ const mapDispatchToProps = dispatch => ({
       ),
     )
       .then(() => {
-        dispatch(
-          NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
-          }),
-        );
+        dispatch(NavigationActions.navigate({ routeName: 'LoveAndHate' }));
       })
       .catch(err => console.log(err));
   },

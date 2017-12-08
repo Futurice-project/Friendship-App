@@ -37,13 +37,33 @@ const mapDispatchToProps = dispatch => ({
     dispatch(tags.increment(length, endIndex));
   },
   addUserTags: credentials => {
-    console.log('aaa');
+    dispatch(rest.actions.userTags({}, { body: JSON.stringify(credentials) }))
+      .then(() => {
+        dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
+          }),
+        );
+      })
+      .catch(err => console.log(err));
+  },
+  changeView: index => {
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'LoveAndHate',
+        params: { index: index },
+      }),
+    );
   },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   tags: state.tags,
-  navigatorState: state.navigatorState,
+  index: ownProps.navigation.state.params
+    ? ownProps.navigation.state.params.index
+    : 1,
+  tagState: state.tagState,
 });
 
 export class SignUpLoveAndHate extends React.Component {
@@ -56,11 +76,21 @@ export class SignUpLoveAndHate extends React.Component {
   }
 
   renderFiveLoveAndHateActivities = () => {
+    console.log(this.props.tags);
+    if (!this.props.tags.data.data) {
+      return;
+    }
     let activities = this.props.tags.data.data //this.props.tags.data.data
       .map(activity => {
         //activities have a category equal to 1
         if (activity.category == 1) {
-          return <LoveAndHate key={activity.id} activity={activity.name} />;
+          return (
+            <LoveAndHate
+              key={activity.id}
+              activityName={activity.name}
+              activityId={activity.id}
+            />
+          );
         }
       });
 
@@ -68,11 +98,22 @@ export class SignUpLoveAndHate extends React.Component {
   };
 
   renderFiveLoveAndHateInterests = () => {
+    console.log(this.props.tags);
+
+    if (!this.props.tags.data.data) {
+      return;
+    }
     let activities = this.props.tags.data.data //this.props.tags.data.data
       .map(activity => {
         //interests have a category equal to 2
         if (activity.category == 2) {
-          return <LoveAndHate key={activity.id} activity={activity.name} />;
+          return (
+            <LoveAndHate
+              key={activity.id}
+              activityName={activity.name}
+              activityId={activity.id}
+            />
+          );
         }
       });
 
@@ -80,7 +121,7 @@ export class SignUpLoveAndHate extends React.Component {
   };
 
   renderPage() {
-    if (this.state.page == 1) {
+    if (this.props.index == 1) {
       return this.renderFiveLoveAndHateActivities();
     } else {
       return this.renderFiveLoveAndHateInterests();
@@ -88,13 +129,12 @@ export class SignUpLoveAndHate extends React.Component {
   }
 
   renderTitle() {
-    if (this.state.page == 1) {
+    if (this.props.index == 1) {
       return '1/2 Activities';
     } else {
       return '2/2 Interests';
     }
   }
-  state = { page: 1 };
 
   render() {
     return (
@@ -133,7 +173,14 @@ export class SignUpLoveAndHate extends React.Component {
             title="NEXT"
             tint="#faf5f0" /*onPress={() => this.handleClick(activity.id)}*/
             onPress={() => {
-              this.setState({ page: 2 });
+              if (this.props.index == 1) {
+                this.props.changeView(2);
+              } else {
+                // @todo continue to next views (tabs?)
+                this.props.addUserTags({
+                  tags: this.props.tagState.chosenTags,
+                });
+              }
             }}
           />
         </ViewContainer>
