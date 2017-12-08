@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
@@ -51,33 +50,12 @@ class TabProfile extends PureComponent {
     }
   };
 
-  componentDidMount() {
-    this.props.chatRoomsWithUserId(this.props.currentUserId);
-  }
-
   createChatRoom = () => {
-    let chatExist = null;
-    const friendUserId = this.props.user.id;
-    if (!this.props.chatrooms.loading) {
-      chatExist = _.find(this.props.chatrooms.data.data, function(chatroom) {
-        if (
-          chatroom.creator.id === friendUserId ||
-          chatroom.receiver.id === friendUserId
-        ) {
-          return chatroom.id;
-        }
-      });
-
-      if (chatExist) {
-        this.openChatView(chatExist.id);
-      } else {
-        this.props.createChatRoom(
-          this.props.currentUserId,
-          this.props.user.id,
-          this.openChatView,
-        );
-      }
-    }
+    this.props.createChatRoom(
+      this.currentUserId,
+      this.props.user.id,
+      this.openChatView,
+    );
   };
 
   openChatView = chatroomId => {
@@ -267,14 +245,10 @@ const mapDispatchToProps = dispatch => ({
         params: { chatroomId, username, userEmoji },
       }),
     ),
-  chatRoomsWithUserId: id => {
-    dispatch(rest.actions.chatRoomsWithUserId({ id }));
-  },
 });
 
 const mapStateToProps = state => ({
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
-  chatrooms: state.chatRoomsWithUserId,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TabProfile);
