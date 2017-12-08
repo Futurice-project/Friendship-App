@@ -123,6 +123,7 @@ export default class TextInput extends React.Component {
           placeholder={this.props.placeholder}
           value={this.props.value}
           onChangeText={this.props.onChangeText}
+          editable={this.props.editable}
         />
         {this.renderShowPassword()}
       </InputContainer>

@@ -2,13 +2,10 @@ import { TabNavigator, TabBarBottom } from 'react-navigation';
 
 // ## View Imports ##
 
-import LookingFor from '../views/LookingFor';
 import PeopleView from '../views/PeopleView';
 import FollowingView from '../views/Following';
 import InboxView from '../views/Inbox';
 import MyProfile from '../views/MyProfile';
-
-import SignUpMatching from '../views/SignUpMatching';
 
 const TabNavigatorConfig = {
   tabBarOptions: {
@@ -34,8 +31,6 @@ export default TabNavigator(
     Following: { screen: FollowingView },
     Inbox: { screen: InboxView },
     MyProfile: { screen: MyProfile },
-    // LookingFor: { screen: LookingFor },
-    // SignUpMatching: { screen: SignUpMatching },
 
     // ## End TabNavigator Views ##
   },
