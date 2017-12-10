@@ -8,6 +8,7 @@ import ProgressBar from '../../components/ProgressBar';
 import RoundTab from '../../components/RoundTab';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
+import { NavigationActions } from 'react-navigation';
 
 const Title = styled.Text`
   font-family: 'Friendship_version_2';
@@ -103,7 +104,7 @@ class SignUpMatching extends React.Component {
                 this.state.enableMatching,
                 this.props.auth.data.decoded.id,
               );
-              this.props.SignUpPersonality();
+              this.props.openSignUpPersonality();
             }}
           />
         </ViewContainer>

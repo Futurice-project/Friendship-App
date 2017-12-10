@@ -101,7 +101,7 @@ export class SignUpLocation extends React.Component {
           title="NEXT"
           onPress={() => {
             this.props.postUserLocations(this.state.selectedItems);
-            this.props.openSignUpPersonality();
+            this.props.openSignUpMatching();
           }}
         />
       </SignUpWrapper>
@@ -125,10 +125,10 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
-  openSignUpPersonality: () =>
+  openSignUpMatching: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SignUpPersonality',
+        routeName: 'SignUpMatching',
       }),
     ),
 });

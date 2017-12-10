@@ -334,6 +334,7 @@ class SignUpView extends React.Component {
                   placeholderTextColor="#4a4a4a"
                   placeholder="GENDER*"
                   value=""
+                  editable={false}
                 />
               </View>
               <View style={{ width: 278 }}>

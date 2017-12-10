@@ -10,19 +10,31 @@ import {
 export const ToggleSwitch = styled.View`
   width: 20;
   height: 20;
-  background-color: #3b3b3d;
+  background-color: ${props => (props.value ? '#ffffff' : '#3b3b3d')};
   border-radius: 40;
   left: ${props => (props.value ? 33 : 5)};
 `;
 
-export const ToggleText = styled.Text`
+export const ToggleRightText = styled.Text`
   font-family: 'NunitoSans-Regular';
   font-size: 13;
-  font-weight: 600;
+  font-weight: ${props => (props.value ? 'normal' : '900')};
   margin-top: 50;
   letter-spacing: 1.5;
   text-align: left;
-  text-align: ${props => (props.right ? 'right' : 'left')}};
+  text-align: right;
+  padding: 5px;
+  color: ${props => props.tint || '#4a4a4a'};
+  text-align-vertical: center;
+`;
+export const ToggleLeftText = styled.Text`
+  font-family: 'NunitoSans-Regular';
+  font-size: 13;
+  font-weight: ${props => (props.value ? '900' : 'normal')};
+  margin-top: 50;
+  letter-spacing: 1.5;
+  text-align: left;
+  text-align: left;
   padding: 5px;
   color: ${props => props.tint || '#4a4a4a'};
   text-align-vertical: center;
@@ -35,7 +47,7 @@ export const ContainerView = styled.View`
 `;
 
 export const ToggleView = styled.View`
-  background-color: #ffffff;
+  background-color: ${props => (props.value ? '#3b3b3d' : '#ffffff')};
   width: 58;
   height: 30;
   border-width: 0.5;
@@ -88,7 +100,9 @@ export default class Toggle extends React.Component {
   render = () => (
     <ContainerView style={{ marginBottom: 28 }}>
       <TextWrapper>
-        <ToggleText right>{this.props.leftText}</ToggleText>
+        <ToggleRightText value={this.props.value}>
+          {this.props.leftText}
+        </ToggleRightText>
       </TextWrapper>
       <TouchableWithoutFeedback
         style={{ flex: 1 }}
@@ -97,12 +111,14 @@ export default class Toggle extends React.Component {
           this.props.onPress();
         }}
       >
-        <ToggleView>
+        <ToggleView value={this.props.value}>
           <ToggleSwitch value={this.props.value} />
         </ToggleView>
       </TouchableWithoutFeedback>
       <TextWrapper>
-        <ToggleText>{this.props.rightText}</ToggleText>
+        <ToggleLeftText value={this.props.value}>
+          {this.props.rightText}
+        </ToggleLeftText>
       </TextWrapper>
     </ContainerView>
   );
