@@ -14,7 +14,7 @@ Connect database from Android
 
 1. Install and run friendship-backend and database
 2. Install Android Platform tools
-  * On mac osx `brew install android-platform-tools`
+  * On mac osx `brew cask install android-platform-tools`
 3. Allow developer mode in your Android phone
 4. Allow USB debugging in developer options of your phone
 5. Connect your phone with USB to your development machine
