@@ -1,22 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
-import { Description, Bold } from '../../components/Text';
-import { ViewContainer, Padding, Centered } from '../../components/Layout';
+import { Centered, Padding, ViewContainer } from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import RoundTab from '../../components/RoundTab';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
-import { TouchableWithoutFeedback } from 'react-native';
-
 import {
-  TouchableOpacity,
-  Text,
-  KeyboardAvoidingView,
   Keyboard,
+  KeyboardAvoidingView,
+  Text,
+  TouchableWithoutFeedback,
   View,
-  Platform,
-  Dimensions,
 } from 'react-native';
 
 /**

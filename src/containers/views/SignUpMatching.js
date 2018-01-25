@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, KeyboardAvoidingView, LayoutAnimation } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
 import styled from 'styled-components/native';
-import { ViewContainer, Padding } from '../../components/Layout';
+import { Padding, ViewContainer } from '../../components/Layout';
 import DescriptionBubble from '../../components/DescriptionBubble';
 import Toggle from '../../components/Toggle';
 import ProgressBar from '../../components/ProgressBar';

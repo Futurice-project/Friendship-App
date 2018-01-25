@@ -2,21 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
 import * as personalities from '../../state/personalities';
-import { ViewContainer, Padding, Centered } from '../../components/Layout';
+import { Centered, Padding, ViewContainer } from '../../components/Layout';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
 import Personality from '../../components/Personality';
 import ProgressBar from '../../components/ProgressBar';
 
-import {
-  TouchableOpacity,
-  Text,
-  KeyboardAvoidingView,
-  Keyboard,
-  View,
-  Platform,
-  Dimensions,
-} from 'react-native';
+import { Text, View } from 'react-native';
 
 /**
  * Map states from redux-api to this components props
