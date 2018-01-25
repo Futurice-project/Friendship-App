@@ -37,16 +37,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(tags.increment(length, endIndex));
   },
   addUserTags: credentials => {
-    dispatch(rest.actions.userTags({}, { body: JSON.stringify(credentials) }))
-      .then(() => {
-        dispatch(
-          NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
-          }),
-        );
-      })
-      .catch(err => console.log(err));
+    dispatch(
+      rest.actions.userTags({}, { body: JSON.stringify(credentials) }),
+    ).catch(err => console.log(err));
   },
   changeView: index => {
     dispatch(
@@ -56,6 +49,12 @@ const mapDispatchToProps = dispatch => ({
       }),
     );
   },
+  openSignUpPersonality: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SignUpMatching',
+      }),
+    ),
 });
 
 const mapStateToProps = (state, ownProps) => ({
@@ -176,10 +175,10 @@ export class SignUpLoveAndHate extends React.Component {
               if (this.props.index == 1) {
                 this.props.changeView(2);
               } else {
-                // @todo continue to next views (tabs?)
                 this.props.addUserTags({
                   tags: this.props.tagState.chosenTags,
                 });
+                this.props.openSignUpPersonality();
               }
             }}
           />

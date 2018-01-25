@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import rest from '../../utils/rest';
-import { SignUpViewWrapper, SignUpWrapper } from '../../components/Layout';
-import { Image, View } from 'react-native';
 import styled from 'styled-components/native';
-import RoundTab from '../../components/RoundTab';
 import { NavigationActions } from 'react-navigation';
+
 import MultiSelect from '../../utils/react-native-multiple-select/lib/react-native-multi-select';
+import { SignUpWrapper } from '../../components/Layout';
+import RoundTab from '../../components/RoundTab';
+import SignUpPersonality from './SignUpPersonality';
 
 const SignUpDivWrapper = styled.View`
   display: flex;
@@ -101,7 +102,7 @@ export class SignUpLocation extends React.Component {
           title="NEXT"
           onPress={() => {
             this.props.postUserLocations(this.state.selectedItems);
-            this.props.openSignUpMatching();
+            this.props.openSignUpPersonality();
           }}
         />
       </SignUpWrapper>
@@ -125,10 +126,10 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
-  openSignUpMatching: () =>
+  openSignUpPersonality: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SignUpMatching',
+        routeName: 'SignUpPersonality',
       }),
     ),
 });

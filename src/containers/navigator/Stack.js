@@ -1,8 +1,6 @@
 import React from 'react';
-import { Platform, StatusBar } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Header from './Header';
-
 // ## View Imports ##
 import Tabs from './Tabs';
 import SettingsView from '../views/Settings';

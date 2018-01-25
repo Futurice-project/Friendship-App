@@ -4,10 +4,8 @@ import { NavigationActions } from 'react-navigation';
 import styled from 'styled-components/native';
 import LaunchingPageLogoAsset from '../../../assets/drawable-mdpi/friendship_logo_light.png';
 import PreviewLogoAsset from '../../../assets/drawable-mdpi/icon_preview.png';
-import NavigationBackgroundAsset from '../../../assets/drawable-mdpi/combined_shape_copy_2.png';
 import Button from '../../components/Button';
 import RoundTab from '../../components/RoundTab';
-import { Image, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 const mapStateToProps = state => ({
@@ -166,11 +164,6 @@ export class WelcomeView extends React.Component {
         <RoundTab title="Preview" onPress={this.props.openSettings}>
           <PreviewLogo />
         </RoundTab>
-        {/* <Preview onPress={this.props.openSettings}>
-						<PreviewLogo />
-						<Text style={styles.preview}> Preview</Text>
-					</Preview>
-					 */}
         <Connection>
           <ConnectionOption>
             <Button

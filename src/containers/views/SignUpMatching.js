@@ -104,7 +104,6 @@ class SignUpMatching extends React.Component {
                 this.state.enableMatching,
                 this.props.auth.data.decoded.id,
               );
-              this.props.openSignUpPersonality();
             }}
           />
         </ViewContainer>
@@ -112,6 +111,7 @@ class SignUpMatching extends React.Component {
     );
   };
 }
+
 const mapDispatchToProps = dispatch => ({
   patchUser: (description, enableMatching, userId) => {
     const details = {
@@ -124,14 +124,15 @@ const mapDispatchToProps = dispatch => ({
         { userId },
         { body: JSON.stringify(details) },
       ),
-    );
+    ).then(() => {
+      dispatch(
+        NavigationActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
+        }),
+      );
+    });
   },
-  openSignUpPersonality: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SignUpPersonality',
-      }),
-    ),
 });
 const mapStateToProps = state => ({
   auth: state.auth,

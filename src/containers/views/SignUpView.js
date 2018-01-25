@@ -6,8 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styled from 'styled-components/native';
 
 import rest from '../../utils/rest';
-import { ViewContainer, Padding, Centered } from '../../components/Layout';
-import TextInput from '../../components/TextInput';
+import { ViewContainer } from '../../components/Layout';
 import RoundTab from '../../components/RoundTab';
 import ProgressBar from '../../components/ProgressBar';
 import GenderBox from '../../components/GenderBox';
@@ -15,14 +14,7 @@ import SignUpEmoji from '../../components/SignUpEmoji';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { emojis } from '../../../assets/misc/emojis';
 
-import {
-  TouchableOpacity,
-  Text,
-  View,
-  FlatList,
-  Image,
-  Alert,
-} from 'react-native';
+import { Alert, Image, View } from 'react-native';
 
 const mapStateToProps = state => ({
   auth: state.auth,
