@@ -14,6 +14,7 @@ import SignUpPersonality from '../views/SignUp/SignUpPersonality';
 import ChatView from '../views/Chat/ChatView';
 import ChatRequest from '../views/Chat/ChatRequest';
 import SignUpLoveAndHate from '../views/SignUp/SignUpYeahAndNaah';
+import SearchList from '../views/UsersForTagView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -46,6 +47,10 @@ export default StackNavigator(
     Tabs: {
       screen: Tabs,
       navigationOptions: { header: () => null },
+    },
+    SearchList: {
+      screen: SearchList,
+      navigationOptions: { title: 'Search page' },
     },
     People: {
       screen: PeopleView,
