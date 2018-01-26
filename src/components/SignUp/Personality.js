@@ -1,26 +1,25 @@
 import styled from 'styled-components/native';
 import React from 'react';
-import { Image, Dimensions, TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import resolveAssetSource from 'resolveAssetSource';
-
 // Import personality images
-import placeholder from '../../assets/img/personalities/personalityPlaceholder.png';
-import freeThinker from '../../assets/img/personalities/1_freethinker_128.png';
-import freeThinkerSmall from '../../assets/img/personalities/1_freethinker_60.png';
-import religion from '../../assets/img/personalities/1_religion_128.png';
-import religionSmall from '../../assets/img/personalities/1_religion_60.png';
-import openMinded from '../../assets/img/personalities/2_openminded_128.png';
-import openMindedSmall from '../../assets/img/personalities/2_openminded_60.png';
-import traditional from '../../assets/img/personalities/2_traditional_128.png';
-import traditionalSmall from '../../assets/img/personalities/2_traditional_60.png';
-import ambitious from '../../assets/img/personalities/3_ambitious_128.png';
-import ambitiousSmall from '../../assets/img/personalities/3_ambitious_60.png';
-import relaxed from '../../assets/img/personalities/3_relaxed_128.png';
-import relaxedSmall from '../../assets/img/personalities/3_relaxed_60.png';
-import chillOut from '../../assets/img/personalities/4_chillout_128.png';
-import chillOutSmall from '../../assets/img/personalities/4_chillout_60.png';
-import goingOut from '../../assets/img/personalities/4_goingout_128.png';
-import goingOutSmall from '../../assets/img/personalities/4_goingout_60.png';
+import placeholder from '../../../assets/img/personalities/personalityPlaceholder.png';
+import freeThinker from '../../../assets/img/personalities/1_freethinker_128.png';
+import freeThinkerSmall from '../../../assets/img/personalities/1_freethinker_60.png';
+import religion from '../../../assets/img/personalities/1_religion_128.png';
+import religionSmall from '../../../assets/img/personalities/1_religion_60.png';
+import openMinded from '../../../assets/img/personalities/2_openminded_128.png';
+import openMindedSmall from '../../../assets/img/personalities/2_openminded_60.png';
+import traditional from '../../../assets/img/personalities/2_traditional_128.png';
+import traditionalSmall from '../../../assets/img/personalities/2_traditional_60.png';
+import ambitious from '../../../assets/img/personalities/3_ambitious_128.png';
+import ambitiousSmall from '../../../assets/img/personalities/3_ambitious_60.png';
+import relaxed from '../../../assets/img/personalities/3_relaxed_128.png';
+import relaxedSmall from '../../../assets/img/personalities/3_relaxed_60.png';
+import chillOut from '../../../assets/img/personalities/4_chillout_128.png';
+import chillOutSmall from '../../../assets/img/personalities/4_chillout_60.png';
+import goingOut from '../../../assets/img/personalities/4_goingout_128.png';
+import goingOutSmall from '../../../assets/img/personalities/4_goingout_60.png';
 
 //style for the image
 const ImageContainer = styled.Image`

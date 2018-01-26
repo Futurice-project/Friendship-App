@@ -1,17 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import Modal from 'react-native-modal';
-import {
-  View,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-  TouchableHighlight,
-  Icon,
-} from 'react-native';
+import { FlatList, Icon, Text, TouchableOpacity, View } from 'react-native';
 
 import rest from '../utils/rest';
 

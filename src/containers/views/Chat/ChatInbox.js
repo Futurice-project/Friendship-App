@@ -1,20 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Modal from 'react-native-modal';
-import {
-  View,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-} from 'react-native';
-import { IconImage } from '../../components/Layout';
+import { FlatList, Text, View } from 'react-native';
+import { IconImage } from '../../../components/Layout/Layout';
 
-import rest from '../../utils/rest';
-import RoundTab from '../../components/RoundTab';
-import InboxCard from '../../components/InboxCard';
-import SuggestionList from '../../components/SuggestionList';
+import rest from '../../../utils/rest';
+import RoundTab from '../../../components/RoundTab';
+import InboxCard from '../../../components/InboxCard';
+import SuggestionList from '../../../components/SuggestionList';
 
 export class Inbox extends React.Component {
   static navigationOptions = {
@@ -24,7 +16,7 @@ export class Inbox extends React.Component {
     },
     tabBarIcon: ({ tintColor }) => (
       <IconImage
-        source={require('../../../assets/inbox.png')}
+        source={require('../../../../assets/inbox.png')}
         tintColor={tintColor}
       />
     ),

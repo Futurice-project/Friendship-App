@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationActions, addNavigationHelpers } from 'react-navigation';
+import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import RootNavigator from './Stack';

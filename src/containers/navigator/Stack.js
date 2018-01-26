@@ -3,22 +3,17 @@ import { StackNavigator } from 'react-navigation';
 import Header from './Header';
 // ## View Imports ##
 import Tabs from './Tabs';
-import SettingsView from '../views/Settings';
-import WelcomeView from '../views/Welcome';
-import PeopleView from './../views/PeopleView';
-import SignInView from '../views/SignInView';
-import SignUpView from '../views/SignUpView';
-import SignOutView from '../views/SignOutView';
-import ProfileUser from './../views/ProfileUser';
-import SearchList from './../views/Search';
-import EmojiPickerView from './../views/EmojiPicker';
-import LookingFor from './../views/LookingFor';
-import SignUpMatching from './../views/SignUpMatching';
-import SignUpLocation from '../views/SignUpLocation';
-import SignUpPersonality from '../views/SignUpPersonality';
-import ChatView from './../views/ChatView';
-import ChatRequest from './../views/ChatRequest';
-import SignUpLoveAndHate from '../views/SignUpLoveAndHate';
+import WelcomeView from '../views/WelcomeView';
+import PeopleView from '../views/SearchView';
+import SignInView from '../views/SignIn/SignInView';
+import SignUpView from '../views/SignUp/SignUpView';
+import ProfileUser from '../views/PeopleProfileView';
+import SignUpMatching from '../views/SignUp/SignUpMatching';
+import SignUpLocation from '../views/SignUp/SignUpLocation';
+import SignUpPersonality from '../views/SignUp/SignUpPersonality';
+import ChatView from '../views/Chat/ChatView';
+import ChatRequest from '../views/Chat/ChatRequest';
+import SignUpLoveAndHate from '../views/SignUp/SignUpYeahAndNaah';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -42,11 +37,6 @@ export default StackNavigator(
       title: 'SignUpLocation',
       navigationOptions: { header: () => null },
     },
-    LookingFor: {
-      screen: LookingFor,
-      title: 'LookingFor',
-      navigationOptions: { header: () => null },
-    },
     SignUpMatching: {
       screen: SignUpMatching,
       title: 'Matching',
@@ -57,21 +47,9 @@ export default StackNavigator(
       screen: Tabs,
       navigationOptions: { header: () => null },
     },
-    EmojiPicker: {
-      screen: EmojiPickerView,
-      navigationOptins: { title: 'Emoji Picker' },
-    },
     People: {
       screen: PeopleView,
       navigationOptions: { title: 'People page' },
-    },
-    SearchList: {
-      screen: SearchList,
-      navigationOptions: { title: 'Search page' },
-    },
-    Settings: {
-      screen: SettingsView,
-      navigationOptions: { title: 'Setting page' },
     },
     SignIn: {
       screen: SignInView,
@@ -88,10 +66,6 @@ export default StackNavigator(
     SignUpPersonality: {
       screen: SignUpPersonality,
       navigationOptions: { title: 'SignUpLocation Page' },
-    },
-    SignOut: {
-      screen: SignOutView,
-      navigationOptions: { title: 'SignOut Page' },
     },
     ProfileUser: {
       screen: ProfileUser,

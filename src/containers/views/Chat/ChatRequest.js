@@ -1,24 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Modal from 'react-native-modal';
 import {
-  View,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  TextInput,
-  Alert,
   Keyboard,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-import { IconImage } from '../../components/Layout';
 
-import rest from '../../utils/rest';
-import RoundTab from '../../components/RoundTab';
-import InboxCard from '../../components/InboxCard';
-import SuggestionList from '../../components/SuggestionList';
+import rest from '../../../utils/rest';
+import RoundTab from '../../../components/RoundTab';
 
 const styles = {
   cancelButton: {

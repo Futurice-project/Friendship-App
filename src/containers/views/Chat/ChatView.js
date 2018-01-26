@@ -5,23 +5,18 @@ import { NavigationActions } from 'react-navigation';
 import ReversedFlatList from 'react-native-reversed-flat-list';
 import styled from 'styled-components/native';
 import {
-  TextInput,
-  Image,
-  FlatList,
-  TouchableOpacity,
   KeyboardAvoidingView,
-  Platform,
-  LayoutAnimation,
   NativeModules,
-  Keyboard,
+  Platform,
   Text,
+  TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import rest from '../../utils/rest';
+import rest from '../../../utils/rest';
 
-import Button from '../../components/Button';
-import { HeaderButton } from '../../components/Layout';
-import PopUpMenu from '../../components/PopUpMenu';
+import Button from '../../../components/Button';
+import PopUpMenu from '../../../components/PopUpMenu';
 
 const { UIManager } = NativeModules;
 

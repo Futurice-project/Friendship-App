@@ -1,11 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components/native';
-import { Text, View } from 'react-native';
-import YeahButtonAsset from '../../assets/img/loveAndHate/yeah_200.png';
-import NahButtonAsset from '../../assets/img/loveAndHate/naah_200.png';
-import { StyleSheet, LayoutAnimation, UIManager, Platform } from 'react-native';
-import * as tags from '../state/tags';
+import {
+  LayoutAnimation,
+  Platform,
+  StyleSheet,
+  Text,
+  UIManager,
+} from 'react-native';
+import YeahButtonAsset from '../../../assets/img/loveAndHate/yeah_200.png';
+import NahButtonAsset from '../../../assets/img/loveAndHate/naah_200.png';
+import * as tags from '../../state/tags';
 
 const LoveAndHateWrapper = styled.View`
   width: 100%;

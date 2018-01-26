@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import rest from '../../utils/rest';
+import rest from '../../../utils/rest';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
 
-import MultiSelect from '../../utils/react-native-multiple-select/lib/react-native-multi-select';
-import { SignUpWrapper } from '../../components/Layout';
-import RoundTab from '../../components/RoundTab';
+import MultiSelect from '../../../utils/react-native-multiple-select/lib/react-native-multi-select';
+import { SignUpWrapper } from '../../../components/Layout/Layout';
+import RoundTab from '../../../components/RoundTab';
 import SignUpPersonality from './SignUpPersonality';
 
 const SignUpDivWrapper = styled.View`

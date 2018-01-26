@@ -1,12 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import rest from '../../utils/rest';
-import * as personalities from '../../state/personalities';
-import { Centered, Padding, ViewContainer } from '../../components/Layout';
+import rest from '../../../utils/rest';
+import * as personalities from '../../../state/personalities';
+import {
+  Centered,
+  Padding,
+  ViewContainer,
+} from '../../../components/Layout/Layout';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
-import Personality from '../../components/Personality';
-import ProgressBar from '../../components/ProgressBar';
+import Personality from '../../../components/SignUp/Personality';
+import ProgressBar from '../../../components/SignUp/ProgressBar';
 
 import { Text, View } from 'react-native';
 

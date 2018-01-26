@@ -1,26 +1,26 @@
 import React from 'react';
 import {
-  Text,
-  Image,
-  View,
   Dimensions,
-  StyleSheet,
-  TouchableOpacity,
+  Image,
   Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 import {
-  Details,
   CompatibilityText,
+  Details,
   FrienshipFont,
   LocationText,
-  YeahColor,
   NaahColor,
   UsernameText,
-} from '../Text';
-import Modal from 'react-native-modal';
+  YeahColor,
+} from '../Layout/TextLayout';
 import waveShape from '../../../assets/img/roundTab/roundTab.png';
 import resolveAssetSource from 'resolveAssetSource';
+
 const { width, height } = resolveAssetSource(waveShape);
 
 const MyProfileTopPart = ({

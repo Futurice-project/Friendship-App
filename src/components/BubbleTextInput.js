@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import React from 'react';
-import { Dimensions } from 'react-native';
 
 export const Bubble = styled.View`
   background-color: #fff;
@@ -46,7 +45,7 @@ const Input = styled.TextInput.attrs({
  * Styled DescriptionBubble component
  * @param {string} text - Changes the text title of the
  * @param {string} placeholder - Sets the placeholder text of the button
-  * @param {string} value - holds the value of the input
+ * @param {string} value - holds the value of the input
  * @param {function} onChangeText - Sets the function of the input
   */
 export default class DescriptionBubble extends React.Component {

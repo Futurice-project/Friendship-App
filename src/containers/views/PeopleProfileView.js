@@ -1,33 +1,23 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  TouchableOpacity,
-  FlatList,
-  Image,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import resolveAssetSource from 'resolveAssetSource';
 import rest from '../../utils/rest';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
 
 import Button from '../../components/Button';
 import {
-  ViewContainerTop,
   Centered,
   DescriptionWrapper,
-  FlexRow,
   HeaderButton,
-} from '../../components/Layout';
-import { Description, Details } from '../../components/Text';
+  ViewContainerTop,
+} from '../../components/Layout/Layout';
+import { Description } from '../../components/Layout/TextLayout';
 import TextInput from '../../components/TextInput';
-import TabProfile from '../../components/TabProfile';
+import TabProfile from '../../components/Profile/TabProfile';
 import PopUpMenu from '../../components/PopUpMenu';
-import Personality from '../../components/Personality';
+import Personality from '../../components/SignUp/Personality';
 import { ProfileTop } from '../../components/Profile/MyProfileTopPart';
 
 const ButtonOption = styled.View`

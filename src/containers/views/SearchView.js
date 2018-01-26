@@ -1,16 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, FlatList, ActivityIndicator } from 'react-native';
-import { NavigationActions } from 'react-navigation';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import rest from '../../utils/rest';
 import { SearchBar } from 'react-native-elements';
 import throttle from 'lodash/throttle';
 
-import { Title, Header, SmallHeader, Description } from '../../components/Text';
+import { SmallHeader } from '../../components/Layout/TextLayout';
 
-import { ViewContainerTop, Centered, IconImage } from '../../components/Layout';
+import {
+  Centered,
+  IconImage,
+  ViewContainerTop,
+} from '../../components/Layout/Layout';
 import Person from '../../components/Person';
-import Tag from '../../components/Tags';
 import RoundTab from '../../components/RoundTab';
 
 const mapStateToProps = state => ({

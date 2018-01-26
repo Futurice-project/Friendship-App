@@ -19,7 +19,7 @@ import {
   Centered,
   FullscreenCentered,
   AppContainer,
-} from './src/components/Layout';
+} from './src/components/Layout/Layout';
 import { Font } from 'expo';
 
 export default class App extends React.Component {

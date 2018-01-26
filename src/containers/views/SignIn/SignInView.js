@@ -1,9 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import rest from '../../utils/rest';
-import { Centered, Padding, ViewContainer } from '../../components/Layout';
-import TextInput from '../../components/TextInput';
-import RoundTab from '../../components/RoundTab';
+import rest from '../../../utils/rest';
+import {
+  Centered,
+  Padding,
+  ViewContainer,
+} from '../../../components/Layout/Layout';
+import TextInput from '../../../components/TextInput';
+import RoundTab from '../../../components/RoundTab';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
 import {

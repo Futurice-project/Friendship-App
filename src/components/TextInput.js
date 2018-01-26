@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Text, Image } from 'react-native';
+import { Image } from 'react-native';
 
 //Contains that hold the input and the label
 const Container = styled.View`

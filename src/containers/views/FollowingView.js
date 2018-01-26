@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
-import { Text, Image, View, StyleSheet } from 'react-native';
-import { IconImage, ViewContainerTop } from '../../components/Layout';
+import { Text } from 'react-native';
+import { IconImage, ViewContainerTop } from '../../components/Layout/Layout';
 
 export class FollowingView extends React.Component {
   static navigationOptions = {
@@ -16,7 +15,7 @@ export class FollowingView extends React.Component {
   };
   render = () => (
     <ViewContainerTop>
-      <Text>Welcome to Following Pagesssssss</Text>
+      <Text>Welcome to Following Pages</Text>
     </ViewContainerTop>
   );
 }

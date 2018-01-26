@@ -1,13 +1,13 @@
 import React from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import styled from 'styled-components/native';
-import { Padding, ViewContainer } from '../../components/Layout';
-import DescriptionBubble from '../../components/DescriptionBubble';
-import Toggle from '../../components/Toggle';
-import ProgressBar from '../../components/ProgressBar';
-import RoundTab from '../../components/RoundTab';
+import { Padding, ViewContainer } from '../../../components/Layout/Layout';
+import DescriptionBubble from '../../../components/BubbleTextInput';
+import Toggle from '../../../components/Toggle';
+import ProgressBar from '../../../components/SignUp/ProgressBar';
+import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
-import rest from '../../utils/rest';
+import rest from '../../../utils/rest';
 import { NavigationActions } from 'react-navigation';
 
 const Title = styled.Text`

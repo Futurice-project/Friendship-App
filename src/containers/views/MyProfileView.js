@@ -1,23 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  Text,
-  Image,
-  View,
-  Dimensions,
-  StyleSheet,
   ActivityIndicator,
+  Image,
   ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
-import { Centered, DescriptionWrapper } from '../../components/Layout';
-import { Description } from '../../components/Text';
-import TabProfile from '../../components/TabProfile';
-import RoundTab from '../../components/RoundTab';
+import { Centered, DescriptionWrapper } from '../../components/Layout/Layout';
+import { Description } from '../../components/Layout/TextLayout';
+import TabProfile from '../../components/Profile/TabProfile';
 import MyProfileModal from '../../components/Profile/MyProfileModal';
 import styled from 'styled-components/native';
-import Personality from '../../components/Personality';
+import Personality from '../../components/SignUp/Personality';
 import MyProfileTopPart from '../../components/Profile/MyProfileTopPart';
 
 const mapStateToProps = state => ({

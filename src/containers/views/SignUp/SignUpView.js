@@ -5,14 +5,14 @@ import { NavigationActions } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
 
-import rest from '../../utils/rest';
-import { ViewContainer } from '../../components/Layout';
-import RoundTab from '../../components/RoundTab';
-import ProgressBar from '../../components/ProgressBar';
-import GenderBox from '../../components/GenderBox';
-import SignUpEmoji from '../../components/SignUpEmoji';
-import LoadingIndicator from '../../components/LoadingIndicator';
-import { emojis } from '../../../assets/misc/emojis';
+import rest from '../../../utils/rest';
+import { ViewContainer } from '../../../components/Layout/Layout';
+import RoundTab from '../../../components/RoundTab';
+import ProgressBar from '../../../components/SignUp/ProgressBar';
+import GenderBox from '../../../components/SignUp/GenderBox';
+import SignUpEmoji from '../../../components/SignUp/SignUpEmoji';
+import LoadingIndicator from '../../../components/LoadingIndicator';
+import { emojis } from '../../../../assets/misc/emojis';
 
 import { Alert, Image, View } from 'react-native';
 

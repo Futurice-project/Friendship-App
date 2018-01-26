@@ -1,12 +1,16 @@
 import React from 'react';
-import rest from '../../utils/rest';
-import { Text } from '../../components/Text';
-import { Centered, Padding, ViewContainer } from '../../components/Layout';
-import LoveAndHate from '../../components/LoveAndHate';
+import rest from '../../../utils/rest';
+import { Text } from '../../../components/Layout/TextLayout';
+import {
+  Centered,
+  Padding,
+  ViewContainer,
+} from '../../../components/Layout/Layout';
+import LoveAndHate from '../../../components/SignUp/YeahAndNaah';
 import styled from 'styled-components/native';
 import { View } from 'react-native';
-import ProgressBar from '../../components/ProgressBar';
-import RoundTab from '../../components/RoundTab';
+import ProgressBar from '../../../components/SignUp/ProgressBar';
+import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 

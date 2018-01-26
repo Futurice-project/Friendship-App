@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
 import styled from 'styled-components/native';
-import Tag from './Tags';
+import Tag from '../Tags';
 
 const ButtonOption = styled.View`
   flex: 1;

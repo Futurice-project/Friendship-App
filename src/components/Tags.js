@@ -1,10 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-
-import { FlexRow } from './Layout';
-import styled from 'styled-components/native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({

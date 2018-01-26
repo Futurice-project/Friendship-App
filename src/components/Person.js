@@ -2,27 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import {
-  Image,
   Dimensions,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
+  Image,
   Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import NavigationBackgroundAsset from '../../assets/drawable-mdpi/combined_shape_copy_2.png';
 
-import { FlexRow } from './Layout';
+import { FlexRow } from './Layout/Layout';
 import {
   BoldDescription,
-  Details,
   CompatibilityText,
   FrienshipFont,
   LocationText,
-  YeahColor,
   NaahColor,
-} from './Text';
-import styled from 'styled-components/native';
+  YeahColor,
+} from './Layout/TextLayout';
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({
