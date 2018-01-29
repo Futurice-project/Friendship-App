@@ -7,7 +7,6 @@ import { NavigationActions } from 'react-navigation';
 import MultiSelect from '../../../utils/react-native-multiple-select/lib/react-native-multi-select';
 import { SignUpWrapper } from '../../../components/Layout/Layout';
 import RoundTab from '../../../components/RoundTab';
-import SignUpPersonality from './SignUpPersonality';
 
 const SignUpDivWrapper = styled.View`
   display: flex;
@@ -39,13 +38,13 @@ const SignUpWelcomeText = styled.Text`
 `;
 
 export class SignUpLocation extends React.Component {
-  componentWillMount() {
-    this.props.getLocations();
-  }
-
   state = {
     selectedItems: [],
   };
+
+  componentWillMount() {
+    this.props.getLocations();
+  }
 
   onSelectedItemsChange = selectedItems => {
     this.setState({ selectedItems });
@@ -115,7 +114,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.locations());
   },
   postUserLocations: locations => {
-    newLocations = locations.map(location => ({ locationId: location }));
+    let newLocations = locations.map(location => ({ locationId: location }));
     const locationsObject = {
       locations: newLocations,
     };

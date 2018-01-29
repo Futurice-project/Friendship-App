@@ -25,8 +25,12 @@ class SearchList extends React.Component {
     tagId: this.props.navigation.state.params.tagId,
   };
 
-  keyExtractor = item => item.userId;
-  renderItem = ({ item }) => <Person data={item} />;
+  componentDidMount() {
+    const tagId = this.props.navigation.state.params
+      ? this.props.navigation.state.params.tagId
+      : null;
+    this.props.refreshUserlistForTag(tagId);
+  }
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.userlistForTag.loading) {
@@ -40,12 +44,8 @@ class SearchList extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const tagId = this.props.navigation.state.params
-      ? this.props.navigation.state.params.tagId
-      : null;
-    this.props.refreshUserlistForTag(tagId);
-  }
+  renderItem = ({ item }) => <Person data={item} />;
+  keyExtractor = item => item.userId;
 
   renderSeparator = () => {
     return (

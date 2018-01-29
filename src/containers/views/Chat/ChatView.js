@@ -6,7 +6,6 @@ import ReversedFlatList from 'react-native-reversed-flat-list';
 import styled from 'styled-components/native';
 import {
   KeyboardAvoidingView,
-  NativeModules,
   Platform,
   Text,
   TextInput,
@@ -17,8 +16,6 @@ import rest from '../../../utils/rest';
 
 import Button from '../../../components/Button';
 import PopUpMenu from '../../../components/PopUpMenu';
-
-const { UIManager } = NativeModules;
 
 console.ignoredYellowBox = ['Setting a timer'];
 
@@ -43,6 +40,14 @@ class ChatView extends Component {
     ),
   });
 
+  state = {
+    chatroomId: '',
+    text: '',
+    description: '',
+    isOptionsVisible: false,
+    isReportVisible: false,
+  };
+
   componentDidMount = () => {
     this.setState({
       chatroomId: this.props.navigation.state.params.chatroomId,
@@ -55,14 +60,6 @@ class ChatView extends Component {
     if (this.props.chatroom) {
       this.props.navigation.setParams({ chatroom: this.props.chatroom });
     }
-  };
-
-  state = {
-    chatroomId: '',
-    text: '',
-    description: '',
-    isOptionsVisible: false,
-    isReportVisible: false,
   };
 
   sendMessage = () => {
@@ -93,9 +90,9 @@ class ChatView extends Component {
         Authorization: this.props.auth.data.token,
       },
       body: JSON.stringify({
-        userId: userId,
-        description: description,
-        reported_by: reported_by,
+        userId,
+        description,
+        reported_by,
       }),
     });
     this.setState({ isReportVisible: false });
@@ -198,7 +195,7 @@ class ChatView extends Component {
         <Text
           style={{
             color: '#4a4a4a',
-            textAlign: textAlign,
+            textAlign,
             fontSize: 10,
             color: '#60686d',
             marginBottom: 10,
@@ -206,9 +203,7 @@ class ChatView extends Component {
         >
           {time}
         </Text>
-        <Text style={{ color: '#4a4a4a', textAlign: textAlign }}>
-          {item.text_message}
-        </Text>
+        <Text style={{ color: '#4a4a4a', textAlign }}>{item.text_message}</Text>
       </View>
     );
   };

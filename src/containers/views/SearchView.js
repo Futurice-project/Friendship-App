@@ -5,8 +5,6 @@ import rest from '../../utils/rest';
 import { SearchBar } from 'react-native-elements';
 import throttle from 'lodash/throttle';
 
-import { SmallHeader } from '../../components/Layout/TextLayout';
-
 import {
   Centered,
   IconImage,

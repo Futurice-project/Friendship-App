@@ -1,5 +1,9 @@
 import React from 'react';
+import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import styled from 'styled-components/native';
+import { NavigationActions } from 'react-navigation';
+
 import rest from '../../../utils/rest';
 import * as personalities from '../../../state/personalities';
 import {
@@ -7,12 +11,8 @@ import {
   Padding,
   ViewContainer,
 } from '../../../components/Layout/Layout';
-import styled from 'styled-components/native';
-import { NavigationActions } from 'react-navigation';
 import Personality from '../../../components/SignUp/Personality';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
-
-import { Text, View } from 'react-native';
 
 /**
  * Map states from redux-api to this components props
@@ -38,7 +38,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       NavigationActions.navigate({
         routeName: 'SignUpPersonality',
-        params: { index: index },
+        params: { index },
       }),
     );
   },
@@ -49,7 +49,7 @@ const mapDispatchToProps = dispatch => ({
    * Retrieve personalities
    * @param credentials
    */
-  getPersonalities: credentials => {
+  getPersonalities: () => {
     dispatch(rest.actions.personalities()).catch(err => console.log(err));
   },
   /**
@@ -83,6 +83,15 @@ class SignUpPersonality extends React.Component {
     personalityId: '',
     level: '',
   };
+
+  /**
+   * Retrieve all the personalities when loading the component
+   * for the first time
+   */
+  componentDidMount() {
+    // console.log('Testing token here!!!', this.props.auth);
+    this.props.getPersonalities();
+  }
 
   /**
    * Check's if the personalityId (the combination of the two oppositise personalites)
@@ -144,12 +153,12 @@ class SignUpPersonality extends React.Component {
     var personalities = this.removeDuplicateFromChosenPersonalities(
       personalityId,
     );
-    personalities.push({ personalityId: personalityId, level: 5 });
+    personalities.push({ personalityId, level: 5 });
 
     if (this.props.index + 2 >= this.props.personalities.length) {
       // We are at the end of the list
       this.props.addUserPersonalities({
-        personalities: personalities,
+        personalities,
       });
     } else {
       // Change the view and increment the index
@@ -157,15 +166,6 @@ class SignUpPersonality extends React.Component {
       this.props.changeView(this.props.index + 2);
     }
   };
-
-  /**
-   * Retrieve all the personalities when loading the component
-   * for the first time
-   */
-  componentDidMount() {
-    // console.log('Testing token here!!!', this.props.auth);
-    this.props.getPersonalities();
-  }
 
   /**
    * Renders personalities with personality component according to
@@ -269,20 +269,6 @@ const Personalities = styled.View`
   margin-top: 50;
   align-items: center;
   justify-content: center;
-`;
-
-const Header = styled.View`
-  margin-top: 13;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 50;
-`;
-
-const Error = styled.Text`
-  font-size: 11;
-  color: #faf5f0;
-  color: red;
 `;
 
 const PersonalityText = styled.Text`

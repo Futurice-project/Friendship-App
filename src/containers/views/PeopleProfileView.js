@@ -2,10 +2,9 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import rest from '../../utils/rest';
-import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
 
+import rest from '../../utils/rest';
 import Button from '../../components/Button';
 import {
   Centered,
@@ -19,11 +18,6 @@ import TabProfile from '../../components/Profile/TabProfile';
 import PopUpMenu from '../../components/PopUpMenu';
 import Personality from '../../components/SignUp/Personality';
 import { ProfileTop } from '../../components/Profile/MyProfileTopPart';
-
-const ButtonOption = styled.View`
-  align-items: center;
-  margin-top: 5px;
-`;
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -41,6 +35,10 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class ProfileUser extends React.Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.state.params.personName,
+  });
+
   state = {
     loaded: false,
     age: '',
@@ -50,9 +48,12 @@ class ProfileUser extends React.Component {
     reportDescription: '',
   };
 
-  static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.personName,
-  });
+  componentDidMount() {
+    const personId = this.props.navigation.state.params.personId;
+    this.props.refreshUser(personId);
+    this.props.refreshTagsForUser(personId);
+    this.props.refreshPersonalitiesForUser(personId);
+  }
 
   componentWillReceiveProps(nextProps) {
     // render the profile user when we have the data.
@@ -65,20 +66,13 @@ class ProfileUser extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const personId = this.props.navigation.state.params.personId;
-    this.props.refreshUser(personId);
-    this.props.refreshTagsForUser(personId);
-    this.props.refreshPersonalitiesForUser(personId);
-  }
-
   getGenders = () => {
     const genders = this.props.userDetails.data.genderlist
       ? this.props.userDetails.data.genderlist
           .map(x => x && x.toLowerCase())
           .join(' and ')
       : '';
-    this.setState({ genders: genders });
+    this.setState({ genders });
   };
   navigateBack = () => {
     const backAction = NavigationActions.back();
@@ -121,15 +115,15 @@ class ProfileUser extends React.Component {
     const userId = this.props.userDetails.data.id;
     const description = this.state.reportDescription;
     const reported_by = this.props.auth.data.decoded.id;
-    fetch(`http://localhost:3888/reports`, {
+    fetch('http://localhost:3888/reports', {
       method: 'post',
       headers: {
         Authorization: this.props.auth.data.token,
       },
       body: JSON.stringify({
-        userId: userId,
-        description: description,
-        reported_by: reported_by,
+        userId,
+        description,
+        reported_by,
       }),
     });
     this.setState({ isReportVisible: false });

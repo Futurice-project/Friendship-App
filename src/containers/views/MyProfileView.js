@@ -9,12 +9,12 @@ import {
   View,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+
 import rest from '../../utils/rest';
 import { Centered, DescriptionWrapper } from '../../components/Layout/Layout';
 import { Description } from '../../components/Layout/TextLayout';
 import TabProfile from '../../components/Profile/TabProfile';
 import MyProfileModal from '../../components/Profile/MyProfileModal';
-import styled from 'styled-components/native';
 import Personality from '../../components/SignUp/Personality';
 import MyProfileTopPart from '../../components/Profile/MyProfileTopPart';
 
@@ -36,30 +36,30 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-const ButtonOption = styled.View`
-  align-items: center;
-  margin-top: 5px;
-`;
-
 class MyProfile extends React.Component {
+  static navigationOptions = () => ({
+    tabBarIcon: ({ tintColor }) => (
+      <Image
+        source={require('../../../assets/profile.png')}
+        style={[styles.icon, { tintColor }]}
+      />
+    ),
+  });
+
   state = {
     loaded: false,
     age: '',
     isModalVisible: false,
   };
 
-  _showModal = () => this.setState({ isModalVisible: true });
-
-  _hideModal = () => this.setState({ isModalVisible: false });
-
-  static navigationOptions = ({ navigation }) => ({
-    tabBarIcon: ({ tintColor }) => (
-      <Image
-        source={require('../../../assets/profile.png')}
-        style={[styles.icon, { tintColor: tintColor }]}
-      />
-    ),
-  });
+  componentDidMount() {
+    const personId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
+    this.props.refreshUser(personId);
+    this.props.refreshTagsForUser(personId);
+    this.props.refreshPersonalitiesForUser(personId);
+  }
 
   componentWillReceiveProps(nextProps) {
     // render the profile user when we have the data.
@@ -76,14 +76,9 @@ class MyProfile extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const personId = this.props.auth.data.decoded
-      ? this.props.auth.data.decoded.id
-      : null;
-    this.props.refreshUser(personId);
-    this.props.refreshTagsForUser(personId);
-    this.props.refreshPersonalitiesForUser(personId);
-  }
+  _showModal = () => this.setState({ isModalVisible: true });
+
+  _hideModal = () => this.setState({ isModalVisible: false });
 
   navigateBack = () => {
     const backAction = NavigationActions.back();
@@ -96,7 +91,7 @@ class MyProfile extends React.Component {
           .map(x => x && x.toLowerCase())
           .join(' and ')
       : '';
-    this.setState({ genders: genders });
+    this.setState({ genders });
   };
 
   getAge = birthyear => {

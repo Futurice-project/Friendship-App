@@ -34,11 +34,8 @@ const Activities = styled.View`
 `;
 
 const mapDispatchToProps = dispatch => ({
-  getTags: credentials => {
+  getTags: () => {
     dispatch(rest.actions.tags()).catch(err => console.log(err));
-  },
-  incrementView: (length, endIndex) => {
-    dispatch(tags.increment(length, endIndex));
   },
   addUserTags: credentials => {
     dispatch(
@@ -49,7 +46,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       NavigationActions.navigate({
         routeName: 'LoveAndHate',
-        params: { index: index },
+        params: { index },
       }),
     );
   },
@@ -79,7 +76,6 @@ export class SignUpLoveAndHate extends React.Component {
   }
 
   renderFiveLoveAndHateActivities = () => {
-    console.log(this.props.tags);
     if (!this.props.tags.data.data) {
       return;
     }
@@ -101,8 +97,6 @@ export class SignUpLoveAndHate extends React.Component {
   };
 
   renderFiveLoveAndHateInterests = () => {
-    console.log(this.props.tags);
-
     if (!this.props.tags.data.data) {
       return;
     }
