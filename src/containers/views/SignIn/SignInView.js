@@ -1,5 +1,15 @@
 import React from 'react';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { connect } from 'react-redux';
+import styled from 'styled-components/native';
+import { NavigationActions } from 'react-navigation';
+
 import rest from '../../../utils/rest';
 import {
   Centered,
@@ -8,15 +18,6 @@ import {
 } from '../../../components/Layout/Layout';
 import TextInput from '../../../components/TextInput';
 import RoundTab from '../../../components/RoundTab';
-import styled from 'styled-components/native';
-import { NavigationActions } from 'react-navigation';
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
 
 /**
  * Maps the auth state from to the props of this component
@@ -87,6 +88,10 @@ class SignInView extends React.Component {
     passwordSecure: true,
   };
 
+  componentWillReceiveProps() {
+    this.setState({ error: true });
+  }
+
   /**
    * After we try logging in trough or redux-api call
    * We want to render errors from the back-end accordingly
@@ -139,10 +144,6 @@ class SignInView extends React.Component {
         <RoundTab title="Sign In" onPress={() => this.signIn()} />
       </View>
     );
-  }
-
-  componentWillReceiveProps() {
-    this.setState({ error: true });
   }
 
   /**

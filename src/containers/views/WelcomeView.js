@@ -133,20 +133,10 @@ const styles = StyleSheet.create({
 
 /** Styled View for the launching page
  *  This view contains the different options a user can choose to navigate in the app.
- *  Depending on the user's choice, the app will go to either the navigationScreen, the LoginScreen or the SignupScreen
+ *  Depending on the user's choice, the app will go to either the navigationScreen, 
+ *  the LoginScreen or the SignupScreen
  */
 export class WelcomeView extends React.Component {
-  /**
-   * This function will redirect the page if the user is logged in
-   * Even if the user changed in navigation (back-button, or hard navigation change)
-   * I mapped the navigatorState to the props
-   * Now this function is called on every navigation change
-   * U can test this by dumping this.props.navigatorState
-   */
-  componentWillReceiveProps(nextProps) {
-    // console.log(this.props.navigatorState);
-  }
-
   componentDidMount() {
     if (this.props.auth && this.props.auth.data.decoded) {
       this.props.openTabs();
