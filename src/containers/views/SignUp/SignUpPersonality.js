@@ -105,7 +105,7 @@ class SignUpPersonality extends React.Component {
     // This occurs for the second personality we want to check the previous chosen one as well
     var searchBackwards = false;
     var searchForwards = false;
-    if (personalityId % 2 == 0) {
+    if (personalityId % 2 === 0) {
       searchBackwards = true;
     } else {
       searchForwards = true;
@@ -120,8 +120,8 @@ class SignUpPersonality extends React.Component {
     for (var i = 0; i < personalities.length; i++) {
       if (searchBackwards) {
         if (
-          personalities[i] == personalityId - 1 ||
-          personalities[i] == personalityId
+          personalities[i] === personalityId - 1 ||
+          personalities[i] === personalityId
         ) {
           personalities.splice(i, 1);
         }
@@ -129,11 +129,11 @@ class SignUpPersonality extends React.Component {
     }
 
     // Search forward for duplicates
-    for (var i = 0; i < personalities.length; i++) {
+    for (i = 0; i < personalities.length; i++) {
       if (searchForwards) {
         if (
-          personalities[i] == personalityId + 1 ||
-          personalities[i] == personalityId
+          personalities[i] === personalityId + 1 ||
+          personalities[i] === personalityId
         ) {
           personalities.splice(i, 1);
         }
@@ -177,7 +177,7 @@ class SignUpPersonality extends React.Component {
       return <Text>Network failed</Text>;
     }
 
-    var personalities = this.props.personalities;
+    let personalities = this.props.personalities;
 
     return (
       <Centered>
@@ -197,8 +197,6 @@ class SignUpPersonality extends React.Component {
         />
       </Centered>
     );
-
-    return <Personalities>{personalities}</Personalities>;
   }
 
   /**

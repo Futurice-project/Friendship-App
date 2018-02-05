@@ -109,7 +109,7 @@ class SignInView extends React.Component {
       status = `Signed in as ${data.decoded.email}`;
     }
     if (this.state.error && error) {
-      if (this.state.email == '' || this.state.password == '') {
+      if (this.state.email === '' || this.state.password === '') {
         status = 'Please enter an e-mail and password';
       } else {
         status = `${error.message}`;

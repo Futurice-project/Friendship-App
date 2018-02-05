@@ -57,7 +57,7 @@ export default class Personality extends React.Component {
    * When the component is mounting we switch images based on the set text name
    * in this.props.image
    */
-  componentDidMount() {
+  componentWillMount() {
     switch (this.props.image) {
       case 'relaxed': {
         const { width, height } = resolveAssetSource(

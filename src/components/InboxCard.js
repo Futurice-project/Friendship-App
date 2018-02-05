@@ -101,13 +101,13 @@ class InboxCard extends React.Component {
         ? lastMessage.text_message.slice(0, 35) + '...'
         : lastMessage.text_message;
     const userId =
-      this.props.currentUserId == creator.id ? receiver.id : creator.id;
+      this.props.currentUserId === creator.id ? receiver.id : creator.id;
     const username =
-      this.props.currentUserId == creator.id
+      this.props.currentUserId === creator.id
         ? receiver.username
         : creator.username;
     const emoji =
-      this.props.currentUserId == creator.id ? receiver.emoji : creator.emoji;
+      this.props.currentUserId === creator.id ? receiver.emoji : creator.emoji;
     return (
       <TouchableHighlight
         onPress={() =>
