@@ -23,87 +23,74 @@ import resolveAssetSource from 'resolveAssetSource';
 
 const { width, height } = resolveAssetSource(waveShape);
 
-const MyProfileTopPart = ({
-  age,
-  emoji,
-  genders,
-  location,
-  navigateBack,
-  numberOfNaah,
-  numberOfYeah,
-  srcImage,
-  showModal,
-  username,
-}) => {
-  return (
-    <Image style={styles.imageUser} source={srcImage}>
-      <View style={styles.backAndSettingsView}>
-        <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
-          <Text style={{ fontSize: 22 }}> {'<'} </Text>
-        </TouchableOpacity>
+const ProfileTopPart = props => {
+  const {
+    birthyear,
+    emoji,
+    genders,
+    location,
+    navigateBack,
+    numberOfNaah,
+    numberOfYeah,
+    srcImage,
+    showModal,
+    username,
+    myProfile,
+    genderList,
+  } = props;
+
+  const getAge = () => {
+    const parsedBirthYear = parseInt(birthyear);
+    const now = new Date();
+    let age = now.getFullYear() - parsedBirthYear;
+
+    const early = [0, 1, 2, 3];
+    const mid = [4, 5, 6];
+    const late = [7, 8, 9];
+    let ageName = '';
+    const lastDigit = age.toString().substr(age.toString().length - 1);
+    if (age < 20) {
+      ageName = age + ' years old';
+    } else if (early.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'early ' + (age - parseInt(lastDigit)) + "'s";
+    } else if (mid.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'mid ' + (age - parseInt(lastDigit)) + "'s";
+    } else if (late.indexOf(parseInt(lastDigit)) > -1) {
+      ageName = 'late ' + (age - parseInt(lastDigit)) + "'s";
+    } else {
+      ageName = "It's a mystery";
+    }
+    return ageName;
+  };
+
+  const getGenders = () => {
+    return genderList
+      ? genderList.map(gender => gender && gender.toLowerCase()).join(' and ')
+      : 'no gender';
+  };
+
+  const displaySettingsButton = () => {
+    if (myProfile) {
+      return (
         <TouchableOpacity onPress={showModal} style={styles.settings}>
           <Image
             style={styles.settingsIcon}
             source={require('../../../assets/settingsIcon.png')}
           />
         </TouchableOpacity>
-      </View>
+      );
+    }
 
-      <View style={styles.emojiCircle}>
-        <Text style={styles.emoji}>{emoji ? emoji : '✌️'}</Text>
-      </View>
+    return null;
+  };
 
-      <View
-        style={{
-          backgroundColor: 'transparent',
-          justifyContent: 'flex-end',
-          flex: 1,
-        }}
-      >
-        <Image source={waveShape} style={styles.waveShape}>
-          <UsernameText style={styles.username}>{username}</UsernameText>
-          <CompatibilityText style={{ textAlign: 'center' }}>
-            you have
-            <YeahColor>
-              {' '}
-              {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>{' '}
-            </YeahColor>
-            &
-            <NaahColor>
-              {' '}
-              {numberOfNaah} <FrienshipFont> NAAHS </FrienshipFont>{' '}
-            </NaahColor>
-          </CompatibilityText>
-        </Image>
-        <View style={{ backgroundColor: '#F9F6F1' }}>
-          <Details>
-            <LocationText>{location ? location : 'Narnia'}</LocationText>
-            {', ' + age + ', '}
-            {genders}
-          </Details>
-        </View>
-      </View>
-    </Image>
-  );
-};
-
-export const ProfileTop = ({
-  age,
-  emoji,
-  genders,
-  location,
-  navigateBack,
-  numberOfNaah,
-  numberOfYeah,
-  srcImage,
-  username,
-}) => {
   return (
     <Image style={styles.imageUser} source={srcImage}>
       <View style={styles.backAndSettingsView}>
         <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
           <Text style={{ fontSize: 22 }}> {'<'} </Text>
         </TouchableOpacity>
+        {displaySettingsButton()}
       </View>
 
       <View style={styles.emojiCircle}>
@@ -120,23 +107,22 @@ export const ProfileTop = ({
         <Image source={waveShape} style={styles.waveShape}>
           <UsernameText style={styles.username}>{username}</UsernameText>
           <CompatibilityText style={{ textAlign: 'center' }}>
+            {myProfile ? 'You have ' : null}
             <YeahColor>
-              {' '}
-              {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>{' '}
+              {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>
             </YeahColor>
             &
             <NaahColor>
-              {' '}
-              {numberOfNaah} <FrienshipFont> NAAHS </FrienshipFont>{' '}
-            </NaahColor>{' '}
-            in common
+              {' ' + numberOfNaah} <FrienshipFont> NAAHS </FrienshipFont>
+            </NaahColor>
+            {myProfile ? null : ' in common'}
           </CompatibilityText>
         </Image>
         <View style={{ backgroundColor: '#F9F6F1' }}>
           <Details>
             <LocationText>{location ? location : 'Narnia'}</LocationText>
-            {', ' + age + ', '}
-            {genders}
+            {', ' + getAge() + ', '}
+            {getGenders()}
           </Details>
         </View>
       </View>
@@ -189,4 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyProfileTopPart;
+export default ProfileTopPart;
