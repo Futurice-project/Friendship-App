@@ -11,12 +11,16 @@ import {
 import { NavigationActions } from 'react-navigation';
 
 import rest from '../../utils/rest';
-import { Centered, DescriptionWrapper } from '../../components/Layout/Layout';
+import {
+  Centered,
+  DescriptionWrapper,
+  ProfileContainer,
+} from '../../components/Layout/Layout';
 import { Description } from '../../components/Layout/TextLayout';
 import TabProfile from '../../components/Profile/TabProfile';
 import MyProfileModal from '../../components/Profile/MyProfileModal';
 import Personality from '../../components/SignUp/Personality';
-import MyProfileTopPart from '../../components/Profile/MyProfileTopPart';
+import ProfileTopPart from '../../components/Profile/ProfileTopPart';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -71,8 +75,6 @@ class MyProfile extends React.Component {
       this.setState({
         loaded: true,
       });
-      this.getAge(nextProps.currentUser.data.birthyear);
-      this.getGenders();
     }
   }
 
@@ -83,39 +85,6 @@ class MyProfile extends React.Component {
   navigateBack = () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
-  };
-
-  getGenders = () => {
-    const genders = this.props.currentUser.data.genderlist
-      ? this.props.currentUser.data.genderlist
-          .map(x => x && x.toLowerCase())
-          .join(' and ')
-      : '';
-    this.setState({ genders });
-  };
-
-  getAge = birthyear => {
-    const birthYear = parseInt(birthyear);
-    const now = new Date();
-    let age = now.getFullYear() - birthYear;
-
-    const early = [0, 1, 2, 3];
-    const mid = [4, 5, 6];
-    const late = [7, 8, 9];
-    let ageName = '';
-    const lastDigit = age.toString().substr(age.toString().length - 1);
-    if (age < 20) {
-      ageName = age + ' years old';
-    } else if (early.indexOf(parseInt(lastDigit)) > -1) {
-      ageName = 'early ' + (age - parseInt(lastDigit)) + "'s";
-    } else if (mid.indexOf(parseInt(lastDigit)) > -1) {
-      ageName = 'mid ' + (age - parseInt(lastDigit)) + "'s";
-    } else if (late.indexOf(parseInt(lastDigit)) > -1) {
-      ageName = 'late ' + (age - parseInt(lastDigit)) + "'s";
-    } else {
-      ageName = "It's a mystery";
-    }
-    this.setState({ age: ageName });
   };
 
   renderPersonalities() {
@@ -169,8 +138,8 @@ class MyProfile extends React.Component {
         : require('../../../assets/img/placeholder/grone.jpg');
 
       return (
-        <ScrollView style={styles.viewContainer}>
-          <MyProfileTopPart
+        <ProfileContainer>
+          <ProfileTopPart
             username={this.props.currentUser.data.username}
             srcImage={srcImage}
             location={
@@ -193,6 +162,9 @@ class MyProfile extends React.Component {
             numberOfYeah={love.length}
             numberOfNaah={hate.length}
             navigateBack={this.navigateBack}
+            myProfile
+            birthyear={this.props.currentUser.data.birthyear}
+            genderList={this.props.currentUser.data.genderlist}
           />
 
           <DescriptionWrapper>
@@ -217,16 +189,12 @@ class MyProfile extends React.Component {
             onPressButton={this._onPressButton}
             signOut={this.props.signOut}
           />
-        </ScrollView>
+        </ProfileContainer>
       );
     }
   };
 }
 const styles = StyleSheet.create({
-  viewContainer: {
-    flex: 1,
-    paddingTop: 20,
-  },
   personalitiesView: {
     backgroundColor: '#faf5f0',
   },

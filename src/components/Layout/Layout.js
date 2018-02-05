@@ -38,7 +38,7 @@ export const ViewContainerTop = styled.ScrollView.attrs({
 export const HeaderButton = styled.View`
   position: absolute;
   top: 3;
-  right: 15;
+  right: 30;
 `;
 
 export const Padding = styled.View`padding: 16px;`;
@@ -104,6 +104,11 @@ export const TouchableHighlightButton = styled.View`
 export const ProfileIconCard = styled.View`
   flex: 1;
   height: 50px;
+`;
+
+export const ProfileContainer = styled.ScrollView`
+  flex: 1;
+  margin-top: 20;
 `;
 
 export const MessageContent = styled.View`flex: 4;`;

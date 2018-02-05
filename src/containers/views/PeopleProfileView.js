@@ -10,14 +10,15 @@ import {
   Centered,
   DescriptionWrapper,
   HeaderButton,
-  ViewContainerTop,
+  ProfileContainer,
 } from '../../components/Layout/Layout';
 import { Description } from '../../components/Layout/TextLayout';
 import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/Profile/TabProfile';
 import PopUpMenu from '../../components/PopUpMenu';
 import Personality from '../../components/SignUp/Personality';
-import { ProfileTop } from '../../components/Profile/MyProfileTopPart';
+import ProfileTopPart from '../../components/Profile/ProfileTopPart';
+import PeopleProfileModal from '../../components/Profile/PeopleProfileModal';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -42,8 +43,6 @@ class ProfileUser extends React.Component {
   state = {
     loaded: false,
     age: '',
-    description: '',
-    isOptionsVisible: false,
     isReportVisible: false,
     reportDescription: '',
   };
@@ -61,56 +60,24 @@ class ProfileUser extends React.Component {
       this.setState({
         loaded: true,
       });
-      this.getAge();
-      this.getGenders();
     }
   }
 
-  getGenders = () => {
-    const genders = this.props.userDetails.data.genderlist
-      ? this.props.userDetails.data.genderlist
-          .map(x => x && x.toLowerCase())
-          .join(' and ')
-      : '';
-    this.setState({ genders });
-  };
+  _showModal = () => this.setState({ isModalVisible: true });
+
+  _hideModal = () => this.setState({ isModalVisible: false });
+
   navigateBack = () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
   };
 
-  getAge = () => {
-    const birthYear = parseInt(this.props.userDetails.data.birthyear);
-    const now = new Date();
-    let age = now.getFullYear() - birthYear;
-    // const m = now.getMonth() - birthDay.getMonth();
-    // if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
-    //   age--;
-    // }
-
-    const early = [0, 1, 2, 3];
-    const mid = [4, 5, 6];
-    const late = [7, 8, 9];
-    let ageName = '';
-    const lastDigit = age.toString().substr(age.toString().length - 1);
-    if (age < 20) {
-      ageName = age + ' years old';
-    } else if (early.indexOf(parseInt(lastDigit)) > -1) {
-      ageName = 'early ' + (age - parseInt(lastDigit)) + "'s";
-    } else if (mid.indexOf(parseInt(lastDigit)) > -1) {
-      ageName = 'mid ' + (age - parseInt(lastDigit)) + "'s";
-    } else if (late.indexOf(parseInt(lastDigit)) > -1) {
-      ageName = 'late ' + (age - parseInt(lastDigit)) + "'s";
-    } else {
-      ageName = "It's a mystery";
-    }
-    this.setState({ age: ageName });
-  };
   // Modal functions
   showReport = () => {
     const { isReportVisible } = this.state;
     this.setState({ isReportVisible: !isReportVisible });
   };
+
   sendReport = () => {
     const userId = this.props.userDetails.data.id;
     const description = this.state.reportDescription;
@@ -145,7 +112,11 @@ class ProfileUser extends React.Component {
 
     return (
       <Centered style={{ flexDirection: 'row', paddingVertical: 10 }}>
-        {personalities}
+        {personalities.length > 0 ? (
+          personalities
+        ) : (
+          <Text>No selected personalities</Text>
+        )}
       </Centered>
     );
   }
@@ -180,41 +151,8 @@ class ProfileUser extends React.Component {
 
       let reportTitle = 'Report ' + this.props.userDetails.data.username;
       return (
-        <ViewContainerTop style={styles.viewContent}>
-          {/* <View style={styles.profileContainer}>
-            <View style={styles.whiteCircle}>
-              <Text style={styles.emoji}>
-                {this.props.userDetails.data.emoji}
-              </Text>
-            </View>
-            <Text style={styles.username}>
-              {this.props.userDetails.data.username}
-            </Text>
-            <CompatibilityText>
-              <YeahColor>
-                {loveCommon}
-                <FrienshipFont> YEAH</FrienshipFont>
-              </YeahColor>{' '}
-              &{' '}
-              <NaahColor>
-                {hateCommon}
-                <FrienshipFont> NAAH</FrienshipFont>
-              </NaahColor>{' '}
-              in common{' '}
-            </CompatibilityText>
-            <Details>
-              <LocationText>
-                {this.props.userDetails.data.locations ? (
-                  this.props.userDetails.data.locations.join(',')
-                ) : (
-                  'Narnia'
-                )}
-              </LocationText>
-              {', ' + this.state.age + ', '}
-              {this.state.genders}
-            </Details>
-          </View> */}
-          <ProfileTop
+        <ProfileContainer style={styles.viewContent}>
+          <ProfileTopPart
             username={this.props.userDetails.data.username}
             srcImage={srcImage}
             location={
@@ -228,14 +166,15 @@ class ProfileUser extends React.Component {
             genders={
               this.props.userDetails.data.genderlist ? (
                 this.props.userDetails.data.genderlist.join(' and ')
-              ) : (
-                ''
-              )
+              ) : null
             }
             emoji={this.props.userDetails.data.emoji}
             numberOfYeah={loveCommon}
             numberOfNaah={hateCommon}
             navigateBack={this.navigateBack}
+            birthyear={this.props.userDetails.data.birthyear}
+            genderList={this.props.userDetails.data.genderlist}
+            showModal={this._showModal}
           />
 
           <DescriptionWrapper>
@@ -246,54 +185,18 @@ class ProfileUser extends React.Component {
           </View>
           <TabProfile hate={hate} love={love} />
 
-          <Modal
-            visible={this.state.isReportVisible}
-            animationIn="slideInUp"
-            animationInTiming={200}
-          >
-            <View
-              style={{
-                height: 200,
-                backgroundColor: '#eee',
-                borderRadius: 10,
-                paddingVertical: 10,
-              }}
-            >
-              <TextInput
-                autoCorrect={false}
-                autoCapitalize="none"
-                titleColor="#2d4359"
-                title={reportTitle}
-                placeholder="Description"
-                backColor="#faf6f0"
-                onChangeText={reportDescription =>
-                  this.setState({ reportDescription })}
-                value={this.state.reportDescription}
-              />
-              <View style={{ flexDirection: 'row' }}>
-                <Button
-                  title="Cancel"
-                  primary
-                  textColor="green"
-                  size="half"
-                  color="light"
-                  onPress={this.showReport}
-                />
-                <Button
-                  title="Report"
-                  border
-                  textColor="black"
-                  size="half"
-                  color="dark"
-                  onPress={this.sendReport}
-                />
-              </View>
-            </View>
-          </Modal>
-          <HeaderButton>
-            <PopUpMenu isReportVisible={this.showReport} />
-          </HeaderButton>
-        </ViewContainerTop>
+          <PeopleProfileModal
+            fn_reportDescription={reportDescription =>
+              this.setState({ reportDescription })}
+            reportDescription={this.state.reportDescription}
+            reportTitle={reportTitle}
+            isReportVisible={this.state.isReportVisible}
+            showReport={this.showReport}
+            sendReport={this.sendReport}
+            hideModal={this._hideModal}
+          />
+          <PopUpMenu isReportVisible={this.showReport} />
+        </ProfileContainer>
       );
     }
   };
