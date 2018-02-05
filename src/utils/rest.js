@@ -4,6 +4,7 @@ import jwtDecode from 'jwt-decode';
 
 // import { showError } from '../modules/ErrorSnackbar';
 
+// don't delete this
 let store;
 
 export const injectStore = _store => {
@@ -27,7 +28,7 @@ if (process.env.NODE_ENV === 'development') {
   apiRoot = 'https://friendshipapp-backend.herokuapp.com';
 }
 
-authTransformer = (data = {}) => {
+const authTransformer = (data = {}) => {
   if (data.token) {
     return {
       ...data,

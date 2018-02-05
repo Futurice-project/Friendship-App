@@ -6,7 +6,7 @@ export default class GenderBox extends React.Component {
   state = { selected: false };
 
   componentWillReceiveProps(nextProps) {
-    const { emoji, selectedEmoji, updateEmoji } = nextProps;
+    const { emoji, selectedEmoji } = nextProps;
     if (emoji === selectedEmoji) {
       return this.setState({ selected: true });
     }

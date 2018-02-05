@@ -194,7 +194,6 @@ class ChatView extends Component {
       <View style={messageCardStyle}>
         <Text
           style={{
-            color: '#4a4a4a',
             textAlign,
             fontSize: 10,
             color: '#60686d',

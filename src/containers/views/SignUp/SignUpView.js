@@ -80,16 +80,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class SignUpView extends React.Component {
-  componentWillMount() {
-    // if (this.props.auth.data.decoded) {
-    //   this.props.openSignUpLocation();
-    // }
-  }
-
-  componentWillReceiveProps() {
-    this.setState({ error: true });
-  }
-
   static navigationOptions = {
     title: 'Sign up',
     header: () => null,
@@ -106,8 +96,11 @@ class SignUpView extends React.Component {
     validationError: '',
   };
 
+  componentWillReceiveProps() {
+    this.setState({ error: true });
+  }
+
   openImageGallery = async () => {
-    let { image } = this.state;
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],

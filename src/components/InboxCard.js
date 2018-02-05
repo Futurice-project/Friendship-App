@@ -89,7 +89,7 @@ class InboxCard extends React.Component {
           ' ' +
           msgTime.toTimeString().split(' ')[0];
       }
-      this.setState({ time: time });
+      this.setState({ time });
     }
   };
 

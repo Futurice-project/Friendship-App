@@ -105,7 +105,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   tagState: state.tagState,
 });
 /**
@@ -134,10 +134,7 @@ class LoveAndHate extends React.Component {
    */
   addTag(tagId, love) {
     console.log(this.props);
-    const tagList = [
-      ...this.props.tagState.chosenTags,
-      { tagId: tagId, love: love },
-    ];
+    const tagList = [...this.props.tagState.chosenTags, { tagId, love }];
     this.props.updateTags(tagList);
   }
 
@@ -148,7 +145,7 @@ class LoveAndHate extends React.Component {
   removeTag(tagId) {
     const tagList = [...this.props.tagState.chosenTags];
     for (let i = 0; i < tagList.length; i++) {
-      if (tagList[i].tagId == tagId) {
+      if (tagList[i].tagId === tagId) {
         tagList.splice(i, 1);
       }
     }

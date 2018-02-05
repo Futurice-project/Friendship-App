@@ -2,21 +2,17 @@ import React from 'react';
 import {
   BackHandler,
   ActivityIndicator,
-  StatusBar,
-  View,
   Keyboard,
   Platform,
 } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './src/redux/store';
-import { connect } from 'react-redux';
 import persistStore from './src/utils/persist';
 import * as keyboard from './src/state/keyboard';
 import Navigator, {
   handleBackButton,
 } from './src/containers/navigator/Navigator';
 import {
-  Centered,
   FullscreenCentered,
   AppContainer,
 } from './src/components/Layout/Layout';
@@ -26,22 +22,6 @@ export default class App extends React.Component {
   state = {
     rehydrated: false,
     fontLoaded: false,
-  };
-
-  /**
-   * When show hide of react's keyboard is fired, this function is called
-   * it will call the redux reducer to handle state changes in the keyboard
-   */
-  keyboardHideListener = () => {
-    store.dispatch(keyboard.hide());
-  };
-
-  /**
-   * When show event of react's keyboard is fired, this function is called
-   * it will call the redux reducer to handle state changes in the keyboard
-   */
-  keyboardDidShowListener = () => {
-    store.dispatch(keyboard.show());
   };
 
   componentDidMount = async () => {
@@ -73,6 +53,31 @@ export default class App extends React.Component {
     );
   };
 
+  /**
+   * After unmounting the view
+   * we remove the keyboard listeners
+   */
+  componentWillUnmount() {
+    this.keyboardHideListener.remove();
+    this.keyboardDidShowListener.remove();
+  }
+
+  /**
+   * When show hide of react's keyboard is fired, this function is called
+   * it will call the redux reducer to handle state changes in the keyboard
+   */
+  keyboardHideListener = () => {
+    store.dispatch(keyboard.hide());
+  };
+
+  /**
+   * When show event of react's keyboard is fired, this function is called
+   * it will call the redux reducer to handle state changes in the keyboard
+   */
+  keyboardDidShowListener = () => {
+    store.dispatch(keyboard.show());
+  };
+
   renderActivityIndicator = () =>
     this.state.rehydrated && this.state.fontLoaded ? null : (
       <FullscreenCentered>
@@ -93,13 +98,4 @@ export default class App extends React.Component {
       {this.renderApp()}
     </AppContainer>
   );
-
-  /**
-   * After unmounting the view
-   * we remove the keyboard listeners
-   */
-  componentWillUnmount() {
-    this.keyboardHideListener.remove();
-    this.keyboardDidShowListener.remove();
-  }
 }

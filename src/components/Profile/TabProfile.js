@@ -26,7 +26,7 @@ export default class TabProfile extends PureComponent {
   //allow when we change the tab to have the good colors
   handleChangeTab = ({ i }) => {
     // **Update ** save current page index
-    if (i == 0) {
+    if (i === 0) {
       // NAAHS
       this.setState({
         backcolor: '#faf6f0',

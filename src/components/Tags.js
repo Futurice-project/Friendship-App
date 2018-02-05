@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-const mapStateToProps = state => ({});
+const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => ({
   openSearchTag: tagId =>
     dispatch(
