@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, View, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 
 const HorizontalLine = styled.View`
@@ -29,11 +29,12 @@ export default class ProgessBar extends React.Component {
     return <View style={styles.containerStyle}>{this.renderProgess()}</View>;
   };
 }
-styles = {
+
+const styles = StyleSheet.create({
   containerStyle: {
     flexDirection: 'row',
     width: Dimensions.get('window').width,
     height: 10,
     justifyContent: 'flex-start',
   },
-};
+});

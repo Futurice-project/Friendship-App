@@ -81,7 +81,7 @@ class ChatView extends Component {
     const creator = this.props.chatRoom.creator;
     const receiver = this.props.chatRoom.receiver;
     const userId =
-      this.props.currentUserId == creator.id ? receiver.id : creator.id;
+      this.props.currentUserId === creator.id ? receiver.id : creator.id;
     const description = this.state.reportDescription;
     const reported_by = this.props.currentUserId;
     fetch(`http://localhost:3888/reports`, {
@@ -102,9 +102,9 @@ class ChatView extends Component {
 
   renderItem = ({ item }) => {
     const textAlign =
-      item.user_id == this.props.currentUserId ? 'right' : 'left';
+      item.user_id === this.props.currentUserId ? 'right' : 'left';
     const messageCardStyle =
-      item.user_id == this.props.currentUserId
+      item.user_id === this.props.currentUserId
         ? styles.SendCard
         : styles.ReceiveCard;
 
@@ -194,7 +194,6 @@ class ChatView extends Component {
       <View style={messageCardStyle}>
         <Text
           style={{
-            color: '#4a4a4a',
             textAlign,
             fontSize: 10,
             color: '#60686d',

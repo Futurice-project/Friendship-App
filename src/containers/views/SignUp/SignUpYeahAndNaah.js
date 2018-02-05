@@ -82,7 +82,7 @@ export class SignUpLoveAndHate extends React.Component {
     let activities = this.props.tags.data.data //this.props.tags.data.data
       .map(activity => {
         //activities have a category equal to 1
-        if (activity.category == 1) {
+        if (activity.category === 1) {
           return (
             <LoveAndHate
               key={activity.id}
@@ -103,7 +103,7 @@ export class SignUpLoveAndHate extends React.Component {
     let activities = this.props.tags.data.data //this.props.tags.data.data
       .map(activity => {
         //interests have a category equal to 2
-        if (activity.category == 2) {
+        if (activity.category === 2) {
           return (
             <LoveAndHate
               key={activity.id}
@@ -118,7 +118,7 @@ export class SignUpLoveAndHate extends React.Component {
   };
 
   renderPage() {
-    if (this.props.index == 1) {
+    if (this.props.index === 1) {
       return this.renderFiveLoveAndHateActivities();
     } else {
       return this.renderFiveLoveAndHateInterests();
@@ -126,7 +126,7 @@ export class SignUpLoveAndHate extends React.Component {
   }
 
   renderTitle() {
-    if (this.props.index == 1) {
+    if (this.props.index === 1) {
       return '1/2 Activities';
     } else {
       return '2/2 Interests';
@@ -170,7 +170,7 @@ export class SignUpLoveAndHate extends React.Component {
             title="NEXT"
             tint="#faf5f0" /*onPress={() => this.handleClick(activity.id)}*/
             onPress={() => {
-              if (this.props.index == 1) {
+              if (this.props.index === 1) {
                 this.props.changeView(2);
               } else {
                 this.props.addUserTags({

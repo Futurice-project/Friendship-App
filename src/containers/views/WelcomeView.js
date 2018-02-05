@@ -6,7 +6,6 @@ import LaunchingPageLogoAsset from '../../../assets/drawable-mdpi/friendship_log
 import PreviewLogoAsset from '../../../assets/drawable-mdpi/icon_preview.png';
 import Button from '../../components/Button';
 import RoundTab from '../../components/RoundTab';
-import { StyleSheet } from 'react-native';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -66,12 +65,6 @@ const LaunchingNavigationOptions = styled.View`
   margin-top: 23px;
 `;
 
-/* Container for the option to continue without authenticating */
-const Preview = styled.TouchableOpacity`
-  flex: 1;
-  align-items: center;
-`;
-
 /* Container with connection options : Log In (account already exists) or Sign up (first time) */
 const Connection = styled.View`
   flex: 1;
@@ -115,21 +108,6 @@ const PreviewLogo = styled.Image.attrs({
   width: 50px;
   height: 24.6px;
 `;
-
-/* Style for Preview text */
-const styles = StyleSheet.create({
-  preview: {
-    width: 109,
-    height: 44,
-    fontFamily: 'NunitoSans-Bold',
-    fontSize: 16,
-    fontWeight: 'bold',
-    letterSpacing: 2.0,
-    textAlign: 'center',
-    color: '#faf6f0',
-    backgroundColor: 'transparent',
-  },
-});
 
 /** Styled View for the launching page
  *  This view contains the different options a user can choose to navigate in the app.

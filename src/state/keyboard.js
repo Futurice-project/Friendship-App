@@ -1,6 +1,5 @@
 export const HIDE = 'HIDE';
 export const SHOW = 'SHOW';
-import React from 'react';
 
 /**
  * Creates a new key every time there is a change on the keyboard
@@ -35,6 +34,4 @@ export default function(state = null, action) {
         keyboardOpen: false,
       };
   }
-
-  return state;
 }

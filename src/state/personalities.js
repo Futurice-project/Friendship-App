@@ -1,6 +1,5 @@
 export const UPDATE_PERSONALITIES = 'UPDATE_PERSONALITIES';
 export const RESET_PERSONALITIES = 'RESET_PERSONALITIES';
-import React from 'react';
 
 /**
  * Reset personality state to initial values

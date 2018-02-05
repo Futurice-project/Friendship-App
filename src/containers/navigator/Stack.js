@@ -64,10 +64,6 @@ export default StackNavigator(
       screen: SignUpView,
       navigationOptions: { title: 'SignUp Page' },
     },
-    SignUpLocation: {
-      screen: SignUpLocation,
-      navigationOptions: { title: 'SignUpLocation Page' },
-    },
     SignUpPersonality: {
       screen: SignUpPersonality,
       navigationOptions: { title: 'SignUpLocation Page' },
