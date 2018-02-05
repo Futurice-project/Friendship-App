@@ -13,12 +13,11 @@ import {
   ProfileContainer,
 } from '../../components/Layout/Layout';
 import { Description } from '../../components/Layout/TextLayout';
-import TextInput from '../../components/TextInput';
 import TabProfile from '../../components/Profile/TabProfile';
 import PopUpMenu from '../../components/PopUpMenu';
 import Personality from '../../components/SignUp/Personality';
 import ProfileTopPart from '../../components/Profile/ProfileTopPart';
-import PeopleProfileModal from '../../components/Profile/PeopleProfileModal';
+import PeopleProfileReportModal from '../../components/Profile/PeopleProfileReportModal';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -185,7 +184,7 @@ class ProfileUser extends React.Component {
           </View>
           <TabProfile hate={hate} love={love} />
 
-          <PeopleProfileModal
+          <PeopleProfileReportModal
             fn_reportDescription={reportDescription =>
               this.setState({ reportDescription })}
             reportDescription={this.state.reportDescription}

@@ -4,7 +4,7 @@ import TextInput from '../../components/TextInput';
 import Button from '../../components/Button';
 import Modal from 'react-native-modal';
 
-const PeopleProfileModal = ({
+const PeopleProfileReportModal = ({
   fn_reportDescription,
   reportDescription,
   reportTitle,
@@ -59,4 +59,4 @@ const PeopleProfileModal = ({
   );
 };
 
-export default PeopleProfileModal;
+export default PeopleProfileReportModal;
