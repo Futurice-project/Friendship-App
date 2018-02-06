@@ -74,26 +74,17 @@ export class SignUpLocation extends React.Component {
           style={{ flex: 8, justifyContent: 'center', marginTop: 50 }}
         >
           <MultiSelect
-            style={{ borderRadius: 27, backgroundColor: '#faf5f0' }}
             hideTags
             items={this.props.locations.data.data}
             uniqueKey="id"
-            ref={component => {
-              multiSelect = component;
-            }}
             hideSubmitButton={true}
             fixedHeight={true}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={selectedItems}
             selectText="REGION*"
             searchInputPlaceholderText="Search municipalities..."
-            tagRemoveIconColor="#CCC"
-            tagBorderColor="#CCC"
-            tagTextColor="#fff"
             selectedItemTextColor="#ff8a65"
             selectedItemIconColor="#ff8a65"
-            itemTextColor="#000"
-            searchInputStyle={{ color: '#000' }}
             title="YOUR LOCATION"
           />
         </SignUpDivWrapper>

@@ -200,7 +200,7 @@ class SignInView extends React.Component {
                   Cancel
                 </Text>
                 <Text style={styles.headerText} onPress={this.props.openSignUp}>
-                  Sign Up
+                  Join
                 </Text>
               </HeaderWrapper>
               <Centered style={{ flex: 2 }}>
