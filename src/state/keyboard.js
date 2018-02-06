@@ -1,5 +1,5 @@
-export const HIDE = 'HIDE';
-export const SHOW = 'SHOW';
+export const HIDE = 'HIDE_KEYBOARD';
+export const SHOW = 'SHOW_KEYBOARD';
 
 /**
  * Creates a new key every time there is a change on the keyboard
