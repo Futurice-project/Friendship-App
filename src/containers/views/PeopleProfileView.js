@@ -150,7 +150,7 @@ class ProfileUser extends React.Component {
 
       let reportTitle = 'Report ' + this.props.userDetails.data.username;
       return (
-        <ProfileContainer style={styles.viewContent}>
+        <ProfileContainer>
           <ProfileTopPart
             username={this.props.userDetails.data.username}
             srcImage={srcImage}

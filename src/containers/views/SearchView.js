@@ -31,7 +31,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export class PeopleView extends React.Component {
+export class SearchView extends React.Component {
   static navigationOptions = {
     tabBarIcon: ({ tintColor }) => (
       <IconImage
@@ -137,4 +137,4 @@ export class PeopleView extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PeopleView);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchView);

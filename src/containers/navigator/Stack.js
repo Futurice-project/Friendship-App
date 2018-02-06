@@ -4,7 +4,7 @@ import Header from './Header';
 // ## View Imports ##
 import Tabs from './Tabs';
 import WelcomeView from '../views/WelcomeView';
-import PeopleView from '../views/SearchView';
+import SearchView from '../views/SearchView';
 import SignInView from '../views/SignIn/SignInView';
 import SignUpView from '../views/SignUp/SignUpView';
 import ProfileUser from '../views/PeopleProfileView';
@@ -53,7 +53,7 @@ export default StackNavigator(
       navigationOptions: { title: 'Search page' },
     },
     People: {
-      screen: PeopleView,
+      screen: SearchView,
       navigationOptions: { title: 'People page' },
     },
     SignIn: {
