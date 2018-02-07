@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Linking, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Linking,
+  Platform,
+  StyleSheet,
+} from 'react-native';
+import moment from 'moment';
 
 import CardSection from './CardSection';
 import Card from './Card';
@@ -15,14 +23,15 @@ class EventsDetail extends Component {
 
   render = () => {
     const { description, location, date } = this.props;
+
     return (
       <Card>
         <CardSection>
-          <Text>{date}</Text>
+          <Text>{moment(new Date(date)).format('dddd, Do MMM')}</Text>
         </CardSection>
 
         <CardSection>
-          <Text>{description}</Text>
+          <Text style={styles.descriptionTextStyle}>{description}</Text>
         </CardSection>
 
         <CardSection>
@@ -34,5 +43,12 @@ class EventsDetail extends Component {
     );
   };
 }
+
+const styles = StyleSheet.create({
+  descriptionTextStyle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+});
 
 export default EventsDetail;
