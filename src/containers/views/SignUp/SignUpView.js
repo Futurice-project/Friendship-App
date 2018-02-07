@@ -199,7 +199,7 @@ class SignUpView extends React.Component {
     return (
       <KeyboardAwareScrollView
         extraHeight={30}
-        resetScrollToCoords={{ x: 0, y: 0 }}
+        enableResetScrollToCoords={false}
         enableOnAndroid={true}
         enableAutoAutomaticScroll={true}
       >
