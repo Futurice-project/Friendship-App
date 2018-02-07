@@ -427,7 +427,11 @@ export default class MultiSelect extends Component {
                     name="md-arrow-dropdown"
                     style={[
                       styles.indicator,
-                      { paddingLeft: 15, paddingRight: 15 },
+                      {
+                        paddingLeft: 15,
+                        paddingRight: 15,
+                        backgroundColor: 'transparent',
+                      },
                     ]}
                   />
                 </TouchableOpacity>

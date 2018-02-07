@@ -1,11 +1,10 @@
-import { TabNavigator, TabBarBottom } from 'react-navigation';
+import { TabBarBottom, TabNavigator } from 'react-navigation';
+import SearchView from '../views/SearchView';
+import FollowingView from '../views/FollowingView';
+import InboxView from '../views/Chat/ChatInbox';
+import MyProfile from '../views/MyProfileView';
 
 // ## View Imports ##
-
-import PeopleView from '../views/PeopleView';
-import FollowingView from '../views/Following';
-import InboxView from '../views/Inbox';
-import MyProfile from '../views/MyProfile';
 
 const TabNavigatorConfig = {
   tabBarOptions: {
@@ -27,7 +26,7 @@ const TabNavigatorConfig = {
 
 export default TabNavigator(
   {
-    Search: { screen: PeopleView },
+    Search: { screen: SearchView },
     Following: { screen: FollowingView },
     Inbox: { screen: InboxView },
     MyProfile: { screen: MyProfile },
