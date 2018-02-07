@@ -154,6 +154,11 @@ const rest = reduxApi({
     url: `${apiRoot}/user_locations`,
     options: { method: 'POST' },
   },
+  events: {
+    url: `${apiRoot}/events`,
+    transformer: transformers.array,
+    crud: true,
+  },
 })
   .use('options', (url, params, getState) => {
     const { auth: { data: { token } } } = getState();

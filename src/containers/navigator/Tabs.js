@@ -3,6 +3,7 @@ import SearchView from '../views/SearchView';
 import FollowingView from '../views/FollowingView';
 import InboxView from '../views/Chat/ChatInbox';
 import MyProfile from '../views/MyProfileView';
+import EventsView from '../views/EventsView';
 
 // ## View Imports ##
 
@@ -27,6 +28,7 @@ const TabNavigatorConfig = {
 export default TabNavigator(
   {
     Search: { screen: SearchView },
+    Events: { screen: EventsView },
     Following: { screen: FollowingView },
     Inbox: { screen: InboxView },
     MyProfile: { screen: MyProfile },
