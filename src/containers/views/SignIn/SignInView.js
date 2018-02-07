@@ -56,7 +56,7 @@ const mapDispatchToProps = dispatch => ({
   openSignUp: () =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SignUpLocation',
+        routeName: 'SignUp',
       }),
     ),
   /**
@@ -200,20 +200,25 @@ class SignInView extends React.Component {
                   Cancel
                 </Text>
                 <Text style={styles.headerText} onPress={this.props.openSignUp}>
-                  Sign Up
+                  Join
                 </Text>
               </HeaderWrapper>
               <Centered style={{ flex: 2 }}>
                 <TextInput
                   titleColor="#f9f7f6"
                   title="EMAIL"
+                  returnKeyType={'next'}
                   placeholder="HELLO@FRIENDSHIP.COM"
                   backColor="#faf6f0"
+                  onSubmitEditing={() => {
+                    this._passwordInput.focus();
+                  }}
                   onChangeText={email =>
                     this.setState({ email, validationError: '', error: false })}
                   value={this.state.email}
                 />
                 <TextInput
+                  ref={component => (this._passwordInput = component)}
                   secure={this.state.passwordSecure}
                   password
                   title="PASSWORD"
@@ -231,6 +236,10 @@ class SignInView extends React.Component {
                       error: false,
                     })}
                   value={this.state.password}
+                  returnKeyType={'done'}
+                  onSubmitEditing={() => {
+                    this.signIn();
+                  }}
                 />
                 {this.renderStatus()}
                 <Text style={styles.textStyle}>

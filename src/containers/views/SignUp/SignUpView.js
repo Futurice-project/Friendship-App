@@ -1,4 +1,5 @@
 import React from 'react';
+import { Alert, Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { ImagePicker } from 'expo';
 import { NavigationActions } from 'react-navigation';
@@ -13,8 +14,6 @@ import GenderBox from '../../../components/SignUp/GenderBox';
 import SignUpEmoji from '../../../components/SignUp/SignUpEmoji';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { emojis } from '../../../../assets/misc/emojis';
-
-import { Alert, Image, View } from 'react-native';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -199,8 +198,8 @@ class SignUpView extends React.Component {
     const image = { uri: this.state.image };
     return (
       <KeyboardAwareScrollView
-        extraHeight={250}
-        resetScrollToCoords={{ x: 0, y: 0 }}
+        extraHeight={30}
+        enableResetScrollToCoords={false}
         enableOnAndroid={true}
         enableAutoAutomaticScroll={true}
       >
@@ -222,11 +221,10 @@ class SignUpView extends React.Component {
             </ScrollViewPhoto>
             <LabelContainer>
               <LabelView>
-                <LabelTextInput
+                <TextInput
                   autoCorrect={false}
                   returnKeyType="next"
                   keyboardType="email-address"
-                  blurOnSubmit={true}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="(NICK)NAME*"
@@ -237,6 +235,9 @@ class SignUpView extends React.Component {
                       error: false,
                     })}
                   value={this.state.username}
+                  onSubmitEditing={() => {
+                    this._emailInput.focus();
+                  }}
                 />
               </LabelView>
               <View style={{ width: 278 }}>
@@ -245,11 +246,14 @@ class SignUpView extends React.Component {
             </LabelContainer>
             <LabelContainer>
               <LabelView>
-                <LabelTextInput
+                <TextInput
                   autoCorrect={false}
+                  ref={component => (this._emailInput = component)}
+                  onSubmitEditing={() => {
+                    this._passwordInput.focus();
+                  }}
                   keyboardType="email-address"
                   autoCapitalize="none"
-                  blurOnSubmit={true}
                   returnKeyType="next"
                   autoCorrect={false}
                   underlineColorAndroid="transparent"
@@ -266,11 +270,15 @@ class SignUpView extends React.Component {
             </LabelContainer>
             <LabelContainer style={{ height: 55, marginBottom: 18 }}>
               <LabelView>
-                <LabelTextInput
+                <TextInput
                   autoCorrect={false}
+                  ref={component => (this._passwordInput = component)}
+                  onSubmitEditing={() => {
+                    this._birthYear.focus();
+                  }}
+                  blurOnSubmit={true}
                   returnKeyType="next"
                   secureTextEntry
-                  blurOnSubmit={true}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="PASSWORD*"
@@ -288,8 +296,9 @@ class SignUpView extends React.Component {
           <FirstLabelWrapper>
             <LabelContainer style={{ marginTop: 19 }}>
               <LabelView>
-                <LabelTextInput
+                <TextInput
                   autoCorrect={false}
+                  ref={component => (this._birthYear = component)}
                   underlineColorAndroid="transparent"
                   keyboardType="numeric"
                   placeholderTextColor="#4a4a4a"
@@ -313,7 +322,7 @@ class SignUpView extends React.Component {
             </LabelContainer>
             <LabelContainer>
               <View style={{ width: 278 }}>
-                <LabelTextInput
+                <TextInput
                   autoCorrect={false}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
@@ -443,8 +452,6 @@ const LabelText = styled.Text`
   color: #4a4a4a;
   text-align: left;
 `;
-
-const LabelTextInput = styled.TextInput``;
 
 const LabelTextHelper = styled.Text`
   font-family: 'NunitoSans-SemiBold';

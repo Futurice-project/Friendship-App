@@ -35,6 +35,7 @@ const SignUpWelcomeText = styled.Text`
   color: #2d4359;
   text-align: justify;
   padding-top: 15;
+  background-color: transparent;
 `;
 
 export class SignUpLocation extends React.Component {
@@ -61,7 +62,7 @@ export class SignUpLocation extends React.Component {
             paddingLeft: 30,
             paddingRight: 30,
             backgroundColor: 'transparent',
-            flex: 2,
+            flex: 3,
           }}
         >
           <SignUpTitle>HEY!</SignUpTitle>
@@ -71,29 +72,20 @@ export class SignUpLocation extends React.Component {
         </SignUpDivWrapper>
 
         <SignUpDivWrapper
-          style={{ flex: 8, justifyContent: 'center', marginTop: 50 }}
+          style={{ flex: 8, justifyContent: 'center', marginTop: 20 }}
         >
           <MultiSelect
-            style={{ borderRadius: 27, backgroundColor: '#faf5f0' }}
             hideTags
             items={this.props.locations.data.data}
             uniqueKey="id"
-            ref={component => {
-              multiSelect = component;
-            }}
             hideSubmitButton={true}
             fixedHeight={true}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={selectedItems}
             selectText="REGION*"
             searchInputPlaceholderText="Search municipalities..."
-            tagRemoveIconColor="#CCC"
-            tagBorderColor="#CCC"
-            tagTextColor="#fff"
             selectedItemTextColor="#ff8a65"
             selectedItemIconColor="#ff8a65"
-            itemTextColor="#000"
-            searchInputStyle={{ color: '#000' }}
             title="YOUR LOCATION"
           />
         </SignUpDivWrapper>

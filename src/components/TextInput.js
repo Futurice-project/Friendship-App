@@ -106,6 +106,10 @@ export default class TextInput extends React.Component {
     }
   }
 
+  focus() {
+    this._input.root.focus();
+  }
+
   render = () => (
     <Container>
       <InputTitle titleColor={this.props.titleColor}>
@@ -124,6 +128,8 @@ export default class TextInput extends React.Component {
           value={this.props.value}
           onChangeText={this.props.onChangeText}
           editable={this.props.editable}
+          ref={component => (this._input = component)}
+          {...this.props}
         />
         {this.renderShowPassword()}
       </InputContainer>
