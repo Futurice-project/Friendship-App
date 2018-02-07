@@ -46,7 +46,7 @@ class EventsDetail extends Component {
 
 const styles = StyleSheet.create({
   descriptionTextStyle: {
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });
