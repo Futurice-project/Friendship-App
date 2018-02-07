@@ -198,7 +198,7 @@ class SignUpView extends React.Component {
     const image = { uri: this.state.image };
     return (
       <KeyboardAwareScrollView
-        extraHeight={10}
+        extraHeight={30}
         resetScrollToCoords={{ x: 0, y: 0 }}
         enableOnAndroid={true}
         enableAutoAutomaticScroll={true}
