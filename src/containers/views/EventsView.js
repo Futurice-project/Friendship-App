@@ -19,7 +19,7 @@ class EventsView extends Component {
       return <ActivityIndicator />;
     }
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <EventsHeader headerText="Events" />
         <EventsList events={events} />
       </View>
