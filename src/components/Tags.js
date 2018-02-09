@@ -8,7 +8,7 @@ const mapDispatchToProps = dispatch => ({
   openSearchTag: tagId =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SearchList',
+        routeName: 'UsersForTag',
         params: { tagId },
       }),
     ),

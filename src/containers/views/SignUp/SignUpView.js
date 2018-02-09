@@ -81,7 +81,6 @@ const mapDispatchToProps = dispatch => ({
 class SignUpView extends React.Component {
   static navigationOptions = {
     title: 'Sign up',
-    header: () => null,
   };
 
   state = {

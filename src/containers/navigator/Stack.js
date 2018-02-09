@@ -13,8 +13,8 @@ import SignUpLocation from '../views/SignUp/SignUpLocation';
 import SignUpPersonality from '../views/SignUp/SignUpPersonality';
 import ChatView from '../views/Chat/ChatView';
 import ChatRequest from '../views/Chat/ChatRequest';
-import SignUpLoveAndHate from '../views/SignUp/SignUpYeahAndNaah';
-import SearchList from '../views/UsersForTagView';
+import SignUpYeahAndNaah from '../views/SignUp/SignUpYeahAndNaah';
+import UsersForTagView from '../views/UsersForTagView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -43,13 +43,18 @@ export default StackNavigator(
       title: 'Matching',
       navigationOptions: { header: () => null },
     },
-    LoveAndHate: { screen: SignUpLoveAndHate },
+    YeahAndNaah: {
+      screen: SignUpYeahAndNaah,
+      navigationOptions: {
+        header: () => null,
+      },
+    },
     Tabs: {
       screen: Tabs,
       navigationOptions: { header: () => null },
     },
-    SearchList: {
-      screen: SearchList,
+    UsersForTag: {
+      screen: UsersForTagView,
       navigationOptions: { title: 'Search page' },
     },
     People: {
@@ -58,15 +63,15 @@ export default StackNavigator(
     },
     SignIn: {
       screen: SignInView,
-      navigationOptions: { title: 'SignIn Page' },
+      navigationOptions: { header: () => null },
     },
     SignUp: {
       screen: SignUpView,
-      navigationOptions: { title: 'SignUp Page' },
+      navigationOptions: { header: () => null },
     },
     SignUpPersonality: {
       screen: SignUpPersonality,
-      navigationOptions: { title: 'SignUpLocation Page' },
+      navigationOptions: { header: () => null },
     },
     ProfileUser: {
       screen: ProfileUser,

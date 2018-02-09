@@ -6,7 +6,7 @@ import {
   Padding,
   ViewContainer,
 } from '../../../components/Layout/Layout';
-import LoveAndHate from '../../../components/SignUp/YeahAndNaah';
+import YeahAndNaah from '../../../components/SignUp/YeahAndNaah';
 import styled from 'styled-components/native';
 import { View } from 'react-native';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
@@ -14,24 +14,13 @@ import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
-const SubTitle = styled.View`
-  margin-top: 10;
-  margin-bottom: 10;
-  display: flex;
-  flex-direction: row;
-`;
-
-const Title = styled.Text`
-  margin-top: 50;
-  font-size: 40;
-  fontFamily: 'Friendship_version_2';
-  color: #faf5f0;
-`;
-
-const Activities = styled.View`
-  align-items: center;
-  justify-content: center;
-`;
+const mapStateToProps = (state, ownProps) => ({
+  tags: state.tags,
+  index: ownProps.navigation.state.params
+    ? ownProps.navigation.state.params.index
+    : 1,
+  tagState: state.tagState,
+});
 
 const mapDispatchToProps = dispatch => ({
   getTags: () => {
@@ -45,7 +34,7 @@ const mapDispatchToProps = dispatch => ({
   changeView: index => {
     dispatch(
       NavigationActions.navigate({
-        routeName: 'LoveAndHate',
+        routeName: 'YeahAndNaah',
         params: { index },
       }),
     );
@@ -58,19 +47,7 @@ const mapDispatchToProps = dispatch => ({
     ),
 });
 
-const mapStateToProps = (state, ownProps) => ({
-  tags: state.tags,
-  index: ownProps.navigation.state.params
-    ? ownProps.navigation.state.params.index
-    : 1,
-  tagState: state.tagState,
-});
-
 export class SignUpLoveAndHate extends React.Component {
-  static navigationOptions = {
-    header: () => null,
-  };
-
   componentWillMount() {
     this.props.getTags();
   }
@@ -79,19 +56,18 @@ export class SignUpLoveAndHate extends React.Component {
     if (!this.props.tags.data.data) {
       return;
     }
-    let activities = this.props.tags.data.data //this.props.tags.data.data
-      .map(activity => {
-        //activities have a category equal to 1
-        if (activity.category === 1) {
-          return (
-            <LoveAndHate
-              key={activity.id}
-              activityName={activity.name}
-              activityId={activity.id}
-            />
-          );
-        }
-      });
+    let activities = this.props.tags.data.data.map(activity => {
+      //activities have a category equal to 1
+      if (activity.category === 1) {
+        return (
+          <YeahAndNaah
+            key={activity.id}
+            activityName={activity.name}
+            activityId={activity.id}
+          />
+        );
+      }
+    });
 
     return <Activities>{activities}</Activities>;
   };
@@ -100,19 +76,18 @@ export class SignUpLoveAndHate extends React.Component {
     if (!this.props.tags.data.data) {
       return;
     }
-    let activities = this.props.tags.data.data //this.props.tags.data.data
-      .map(activity => {
-        //interests have a category equal to 2
-        if (activity.category === 2) {
-          return (
-            <LoveAndHate
-              key={activity.id}
-              activityName={activity.name}
-              activityId={activity.id}
-            />
-          );
-        }
-      });
+    let activities = this.props.tags.data.data.map(activity => {
+      //interests have a category equal to 2
+      if (activity.category === 2) {
+        return (
+          <YeahAndNaah
+            key={activity.id}
+            activityName={activity.name}
+            activityId={activity.id}
+          />
+        );
+      }
+    });
 
     return <Activities>{activities}</Activities>;
   };
@@ -168,7 +143,7 @@ export class SignUpLoveAndHate extends React.Component {
           </Padding>
           <RoundTab
             title="NEXT"
-            tint="#faf5f0" /*onPress={() => this.handleClick(activity.id)}*/
+            tint="#faf5f0"
             onPress={() => {
               if (this.props.index === 1) {
                 this.props.changeView(2);
@@ -185,5 +160,24 @@ export class SignUpLoveAndHate extends React.Component {
     );
   }
 }
+
+const SubTitle = styled.View`
+  margin-top: 10;
+  margin-bottom: 10;
+  display: flex;
+  flex-direction: row;
+`;
+
+const Title = styled.Text`
+  margin-top: 50;
+  font-size: 40;
+  fontFamily: 'Friendship_version_2';
+  color: #faf5f0;
+`;
+
+const Activities = styled.View`
+  align-items: center;
+  justify-content: center;
+`;
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpLoveAndHate);

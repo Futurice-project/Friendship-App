@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import styled from 'styled-components/native';
+
 import LaunchingPageLogoAsset from '../../../assets/drawable-mdpi/friendship_logo_light.png';
 import PreviewLogoAsset from '../../../assets/drawable-mdpi/icon_preview.png';
 import Button from '../../components/Button';
@@ -13,7 +14,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  openSettings: () =>
+  openPreview: () =>
     dispatch(
       NavigationActions.navigate({
         routeName: 'Tabs',
@@ -38,13 +39,58 @@ const mapDispatchToProps = dispatch => ({
         routeName: 'SignIn',
       }),
     ),
-  openPreview: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'Preview',
-      }),
-    ),
 });
+
+/** Styled View for the launching page
+ *  This view contains the different options a user can choose to navigate in the app.
+ *  Depending on the user's choice, the app will go to either the navigationScreen, 
+ *  the LoginScreen or the SignupScreen
+ */
+export class WelcomeView extends React.Component {
+  componentDidMount() {
+    if (this.props.auth && this.props.auth.data.decoded) {
+      this.props.openTabs();
+    }
+  }
+
+  render = () => (
+    <LaunchingPageWrapper>
+      <LaunchingMessage>
+        <LaunchingPageLogo />
+        <LaunchingPageMessage> YEAH! & NAAAH</LaunchingPageMessage>
+      </LaunchingMessage>
+
+      <LaunchingNavigationOptions>
+        <RoundTab title="Preview" onPress={this.props.openPreview}>
+          <PreviewLogo />
+        </RoundTab>
+        <Connection>
+          <ConnectionOption>
+            <Button
+              title="Join"
+              primary
+              border
+              textColor="green"
+              size="half"
+              color="light"
+              onPress={this.props.openSignUp}
+            />
+          </ConnectionOption>
+          <ConnectionOption>
+            <Button
+              title="Log In"
+              border
+              textColor="white"
+              color="light"
+              size="half"
+              onPress={this.props.openSignIn}
+            />
+          </ConnectionOption>
+        </Connection>
+      </LaunchingNavigationOptions>
+    </LaunchingPageWrapper>
+  );
+}
 
 /* Container for the page */
 const LaunchingPageWrapper = styled.View`
@@ -108,56 +154,5 @@ const PreviewLogo = styled.Image.attrs({
   width: 50px;
   height: 24.6px;
 `;
-
-/** Styled View for the launching page
- *  This view contains the different options a user can choose to navigate in the app.
- *  Depending on the user's choice, the app will go to either the navigationScreen, 
- *  the LoginScreen or the SignupScreen
- */
-export class WelcomeView extends React.Component {
-  componentDidMount() {
-    if (this.props.auth && this.props.auth.data.decoded) {
-      this.props.openTabs();
-    }
-  }
-
-  render = () => (
-    <LaunchingPageWrapper>
-      <LaunchingMessage>
-        <LaunchingPageLogo />
-        <LaunchingPageMessage> YEAH! & NAAAH</LaunchingPageMessage>
-      </LaunchingMessage>
-
-      <LaunchingNavigationOptions>
-        <RoundTab title="Preview" onPress={this.props.openSettings}>
-          <PreviewLogo />
-        </RoundTab>
-        <Connection>
-          <ConnectionOption>
-            <Button
-              title="Join"
-              primary
-              border
-              textColor="green"
-              size="half"
-              color="light"
-              onPress={this.props.openSignUp}
-            />
-          </ConnectionOption>
-          <ConnectionOption>
-            <Button
-              title="Log In"
-              border
-              textColor="white"
-              color="light"
-              size="half"
-              onPress={this.props.openSignIn}
-            />
-          </ConnectionOption>
-        </Connection>
-      </LaunchingNavigationOptions>
-    </LaunchingPageWrapper>
-  );
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(WelcomeView);

@@ -77,7 +77,6 @@ class SignInView extends React.Component {
    */
   static navigationOptions = {
     title: 'Sign up',
-    header: () => null,
   };
 
   state = {
@@ -261,8 +260,6 @@ const HeaderWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
 `;
-
-export const ContentWrapper = styled.View`flex: 1;`;
 
 const styles = {
   headerText: {

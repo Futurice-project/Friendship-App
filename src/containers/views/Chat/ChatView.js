@@ -12,24 +12,42 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import rest from '../../../utils/rest';
 
+import rest from '../../../utils/rest';
 import Button from '../../../components/Button';
 import PopUpMenu from '../../../components/PopUpMenu';
 
-console.ignoredYellowBox = ['Setting a timer'];
+// console.ignoredYellowBox = ['Setting a timer'];
 
-const ChatInputButtonCard = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
+const mapDispatchToProps = dispatch => ({
+  onViewProfile: profileId =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'ProfileUser',
+        params: { profileId },
+      }),
+    ),
+  chatRoomMessages: id => {
+    dispatch(rest.actions.chatRoomMessages({ id }));
+  },
+  sendMessage: (id, textMessage, userId) => {
+    dispatch(
+      rest.actions.sendMessage(
+        { id },
+        {
+          body: JSON.stringify({ textMessage, userId }),
+        },
+      ),
+    );
+  },
+});
 
-const TextInputCard = styled.View`
-  height: 44px;
-  background-color: #e8e9e8;
-  flex-direction: row;
-`;
+const mapStateToProps = state => ({
+  auth: state.auth,
+  currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
+  chatRoom: state.chatRoomMessages.data,
+  sentMessage: state.sendMessage,
+});
 
 class ChatView extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -77,6 +95,7 @@ class ChatView extends Component {
     const { isReportVisible } = this.state;
     this.setState({ isReportVisible: !isReportVisible });
   };
+
   sendReport = () => {
     const creator = this.props.chatRoom.creator;
     const receiver = this.props.chatRoom.receiver;
@@ -214,7 +233,7 @@ class ChatView extends Component {
         style={{ flex: 1 }}
         behavior="padding"
         keyboardVerticalOffset={Platform.select({
-          ios: () => 0,
+          ios: () => 65,
           android: () => 80,
         })()}
       >
@@ -227,6 +246,7 @@ class ChatView extends Component {
         <TextInputCard>
           <TextInput
             style={{ flex: 5, paddingLeft: 20 }}
+            returnKeyType="send"
             placeholder={'Message '}
             onChangeText={text => this.setState({ text })}
             value={this.state.text}
@@ -296,6 +316,18 @@ class ChatView extends Component {
   }
 }
 
+const ChatInputButtonCard = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TextInputCard = styled.View`
+  height: 44px;
+  background-color: #e8e9e8;
+  flex-direction: row;
+`;
+
 const styles = {
   SendCard: {
     flex: 1,
@@ -316,35 +348,5 @@ const styles = {
     marginLeft: 20,
   },
 };
-
-const mapDispatchToProps = dispatch => ({
-  onViewProfile: profileId =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'ProfileUser',
-        params: { profileId },
-      }),
-    ),
-  chatRoomMessages: id => {
-    dispatch(rest.actions.chatRoomMessages({ id }));
-  },
-  sendMessage: (id, textMessage, userId) => {
-    dispatch(
-      rest.actions.sendMessage(
-        { id },
-        {
-          body: JSON.stringify({ textMessage, userId }),
-        },
-      ),
-    );
-  },
-});
-
-const mapStateToProps = state => ({
-  auth: state.auth,
-  currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
-  chatRoom: state.chatRoomMessages.data,
-  sentMessage: state.sendMessage,
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatView);

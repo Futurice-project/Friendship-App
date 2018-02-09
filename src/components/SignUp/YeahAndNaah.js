@@ -111,7 +111,7 @@ const mapStateToProps = state => ({
 /**
  * @param {String} activity - name of the activity
  */
-class LoveAndHate extends React.Component {
+class YeahAndNaah extends React.Component {
   constructor() {
     super();
     //The following code must be set to use LayoutAnimation
@@ -256,4 +256,4 @@ class LoveAndHate extends React.Component {
     </LoveAndHateWrapper>
   );
 }
-export default connect(mapStateToProps, mapDispatchToProps)(LoveAndHate);
+export default connect(mapStateToProps, mapDispatchToProps)(YeahAndNaah);
