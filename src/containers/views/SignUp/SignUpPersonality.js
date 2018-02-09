@@ -64,21 +64,13 @@ const mapDispatchToProps = dispatch => ({
       ),
     )
       .then(() => {
-        dispatch(NavigationActions.navigate({ routeName: 'LoveAndHate' }));
+        dispatch(NavigationActions.navigate({ routeName: 'YeahAndNaah' }));
       })
       .catch(err => console.log(err));
   },
 });
 
 class SignUpPersonality extends React.Component {
-  /**
-   * Disable header
-   * @type {{header: (()=>null)}}
-   */
-  static navigationOptions = {
-    header: () => null,
-  };
-
   state = {
     personalityId: '',
     level: '',
@@ -89,7 +81,6 @@ class SignUpPersonality extends React.Component {
    * for the first time
    */
   componentDidMount() {
-    // console.log('Testing token here!!!', this.props.auth);
     this.props.getPersonalities();
   }
 
@@ -110,8 +101,6 @@ class SignUpPersonality extends React.Component {
     } else {
       searchForwards = true;
     }
-
-    console.log(personalityId);
 
     // Remove duplicates from array
     var personalities = this.props.personalityState.chosenPersonalities;

@@ -10,51 +10,32 @@ import { connect } from 'react-redux';
 import rest from '../../../utils/rest';
 import { NavigationActions } from 'react-navigation';
 
-const Title = styled.Text`
-  font-family: 'Friendship_version_2';
-  font-size: 40;
-  line-height: 36;
-  text-align: left;
-  align-self: center;
-  margin-top: 30;
-  margin-left: 5%;
-  color: #839297;
-`;
-const P = styled.Text`
-  font-family: 'NunitoSans-Regular';
-  font-size: 16;
-  font-weight: 300;
-  line-height: 24;
-  text-align: left;
-  color: #4a4a4a;
-  margin-left: 30;
-  margin-right: 30;
-  margin-bottom: 13;
-  margin-top: 10;
-`;
-const SubTitle = styled.Text`
-  font-family: 'NunitoSans-Regular';
-  font-size: 13;
-  font-weight: 600;
-  letter-spacing: 1.5;
-  text-align: left;
-  margin-left: 30;
-  margin-right: 30;
-  margin-bottom: 30;
-  color: #4a4a4a;
-`;
-const InfoText = styled.Text`
-  font-family: 'NunitoSans-Regular';
-  font-size: 13;
-  line-height: 16;
-  letter-spacing: 1.59;
-  text-align: left;
-  align-self: center;
-  color: #9b9b9b;
-  margin-left: 30;
-  margin-right: 30;
-  margin-bottom: 50;
-`;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+const mapDispatchToProps = dispatch => ({
+  patchUser: (description, enableMatching, userId) => {
+    const details = {
+      description,
+      enableMatching,
+    };
+
+    dispatch(
+      rest.actions.userDetails.patch(
+        { userId },
+        { body: JSON.stringify(details) },
+      ),
+    ).then(() => {
+      dispatch(
+        NavigationActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
+        }),
+      );
+    });
+  },
+});
 
 class SignUpMatching extends React.Component {
   state = {
@@ -112,30 +93,50 @@ class SignUpMatching extends React.Component {
   };
 }
 
-const mapDispatchToProps = dispatch => ({
-  patchUser: (description, enableMatching, userId) => {
-    const details = {
-      description,
-      enableMatching,
-    };
-
-    dispatch(
-      rest.actions.userDetails.patch(
-        { userId },
-        { body: JSON.stringify(details) },
-      ),
-    ).then(() => {
-      dispatch(
-        NavigationActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
-        }),
-      );
-    });
-  },
-});
-const mapStateToProps = state => ({
-  auth: state.auth,
-});
+const Title = styled.Text`
+  font-family: 'Friendship_version_2';
+  font-size: 40;
+  line-height: 36;
+  text-align: left;
+  align-self: center;
+  margin-top: 30;
+  margin-left: 5%;
+  color: #839297;
+`;
+const P = styled.Text`
+  font-family: 'NunitoSans-Regular';
+  font-size: 16;
+  font-weight: 300;
+  line-height: 24;
+  text-align: left;
+  color: #4a4a4a;
+  margin-left: 30;
+  margin-right: 30;
+  margin-bottom: 13;
+  margin-top: 10;
+`;
+const SubTitle = styled.Text`
+  font-family: 'NunitoSans-Regular';
+  font-size: 13;
+  font-weight: 600;
+  letter-spacing: 1.5;
+  text-align: left;
+  margin-left: 30;
+  margin-right: 30;
+  margin-bottom: 30;
+  color: #4a4a4a;
+`;
+const InfoText = styled.Text`
+  font-family: 'NunitoSans-Regular';
+  font-size: 13;
+  line-height: 16;
+  letter-spacing: 1.59;
+  text-align: left;
+  align-self: center;
+  color: #9b9b9b;
+  margin-left: 30;
+  margin-right: 30;
+  margin-bottom: 50;
+`;
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpMatching);

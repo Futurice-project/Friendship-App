@@ -8,12 +8,20 @@ import RoundTab from '../../../components/RoundTab';
 import InboxCard from '../../../components/InboxCard';
 import SuggestionList from '../../../components/SuggestionList';
 
-export class Inbox extends React.Component {
+const mapStateToProps = state => ({
+  currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
+  chatrooms: state.chatRoomsWithUserId.data.data,
+});
+
+const mapDispatchToProps = dispatch => ({
+  chatRoomsWithUserId: id => {
+    dispatch(rest.actions.chatRoomsWithUserId({ id }));
+  },
+});
+
+export class ChatInbox extends React.Component {
   static navigationOptions = {
     title: 'Inbox',
-    header: {
-      visible: false,
-    },
     tabBarIcon: ({ tintColor }) => (
       <IconImage
         source={require('../../../../assets/inbox.png')}
@@ -22,13 +30,12 @@ export class Inbox extends React.Component {
     ),
   };
 
-  state = {};
-
   componentDidMount() {
     this.props.chatRoomsWithUserId(this.props.currentUserId);
   }
 
   keyExtractor = item => item.id;
+
   renderItem = ({ item }) => {
     return <InboxCard data={item} />;
   };
@@ -60,15 +67,4 @@ export class Inbox extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
-  chatrooms: state.chatRoomsWithUserId.data.data,
-});
-
-const mapDispatchToProps = dispatch => ({
-  chatRoomsWithUserId: id => {
-    dispatch(rest.actions.chatRoomsWithUserId({ id }));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Inbox);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatInbox);

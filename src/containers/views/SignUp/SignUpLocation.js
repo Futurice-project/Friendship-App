@@ -8,35 +8,33 @@ import MultiSelect from '../../../utils/react-native-multiple-select/lib/react-n
 import { SignUpWrapper } from '../../../components/Layout/Layout';
 import RoundTab from '../../../components/RoundTab';
 
-const SignUpDivWrapper = styled.View`
-  display: flex;
-  background-color: #efebe9;
-  width: 100%;
-`;
+const mapStateToProps = state => ({
+  locations: state.locations,
+});
 
-/* Wrapper for the text */
-const SignUpTitle = styled.Text`
-  width: 121;
-  height: 45;
-  font-family: 'Friendship_version_2';
-  font-size: 40;
-  line-height: 45;
-  text-align: justify;
-  color: #2d4359;
-`;
-
-const SignUpWelcomeText = styled.Text`
-  width: 300;
-  height: 90;
-  font-family: 'NunitoSans-Regular';
-  font-size: 15;
-  font-weight: 300;
-  line-height: 25;
-  color: #2d4359;
-  text-align: justify;
-  padding-top: 15;
-  background-color: transparent;
-`;
+const mapDispatchToProps = dispatch => ({
+  getLocations: () => {
+    dispatch(rest.actions.locations());
+  },
+  postUserLocations: locations => {
+    let newLocations = locations.map(location => ({ locationId: location }));
+    const locationsObject = {
+      locations: newLocations,
+    };
+    dispatch(
+      rest.actions.createUserLocations(
+        {},
+        { body: JSON.stringify(locationsObject) },
+      ),
+    );
+  },
+  openSignUpPersonality: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SignUpPersonality',
+      }),
+    ),
+});
 
 export class SignUpLocation extends React.Component {
   state = {
@@ -101,31 +99,33 @@ export class SignUpLocation extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  getLocations: () => {
-    dispatch(rest.actions.locations());
-  },
-  postUserLocations: locations => {
-    let newLocations = locations.map(location => ({ locationId: location }));
-    const locationsObject = {
-      locations: newLocations,
-    };
-    dispatch(
-      rest.actions.createUserLocations(
-        {},
-        { body: JSON.stringify(locationsObject) },
-      ),
-    );
-  },
-  openSignUpPersonality: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SignUpPersonality',
-      }),
-    ),
-});
-const mapStateToProps = state => ({
-  locations: state.locations,
-});
+const SignUpDivWrapper = styled.View`
+  display: flex;
+  background-color: #efebe9;
+  width: 100%;
+`;
+
+const SignUpTitle = styled.Text`
+  width: 121;
+  height: 45;
+  font-family: 'Friendship_version_2';
+  font-size: 40;
+  line-height: 45;
+  text-align: justify;
+  color: #2d4359;
+`;
+
+const SignUpWelcomeText = styled.Text`
+  width: 300;
+  height: 90;
+  font-family: 'NunitoSans-Regular';
+  font-size: 15;
+  font-weight: 300;
+  line-height: 25;
+  color: #2d4359;
+  text-align: justify;
+  padding-top: 15;
+  background-color: transparent;
+`;
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpLocation);

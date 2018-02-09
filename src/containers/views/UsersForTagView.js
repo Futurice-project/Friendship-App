@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.userlistForTag.get({ tagId })),
 });
 
-class SearchList extends React.Component {
+class UsersForTagViw extends React.Component {
   static navigationOptions = {
     title: 'Search for users with tag ',
   };
@@ -75,4 +75,4 @@ class SearchList extends React.Component {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchList);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersForTagViw);
