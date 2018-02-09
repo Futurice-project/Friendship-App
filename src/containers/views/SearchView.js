@@ -83,9 +83,6 @@ export class SearchView extends React.Component {
   }, 1000);
 
   renderPeople() {
-    if (this.props.usersSearch.loading && this.props.usersByPage.loading) {
-      return <ActivityIndicator />;
-    }
     return (
       <View>
         <RoundTab tint="#ffffff" title="PEOPLE" />
@@ -131,7 +128,11 @@ export class SearchView extends React.Component {
           placeholder="Search People"
           clearIcon
         />
-        {this.renderPeople()}
+        {!this.props.usersByPage.data.data ? (
+          <ActivityIndicator />
+        ) : (
+          this.renderPeople()
+        )}
       </ViewContainerTop>
     );
   }
