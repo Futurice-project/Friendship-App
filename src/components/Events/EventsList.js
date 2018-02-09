@@ -1,24 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { FlatList, View } from 'react-native';
 
 import EventsDetail from './EventsDetail';
 
-// const EventsList = ({ events }) => {
-//   const renderEvents = () => {
-//     return events.map(event => (
-//       <EventsDetail
-//         description={event.description}
-//         location={event.location}
-//         date={event.eventDate}
-//       />
-//     ));
-//   };
-//
-//   return <FlatList>{renderEvents()}</FlatList>;
-// };
-//
-class EventsList extends Component {
-  _renderItem = ({ item }) => (
+const EventsList = ({ events }) => {
+  const renderItem = ({ item }) => (
     <EventsDetail
       description={item.description}
       location={item.location}
@@ -26,21 +12,15 @@ class EventsList extends Component {
     />
   );
 
-  _keyExtractor = (item, index) => item.id;
+  const keyExtractor = event => event.id;
 
-  // render = () => <ScrollView>{this.renderEvents()}</ScrollView>;
-
-  render = () => {
-    const { events } = this.props;
-
-    return (
-      <FlatList
-        data={events.data}
-        keyExtractor={this._keyExtractor}
-        renderItem={this._renderItem}
-      />
-    );
-  };
-}
+  return (
+    <FlatList
+      data={events.data}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
+    />
+  );
+};
 
 export default EventsList;

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -12,8 +12,8 @@ import moment from 'moment';
 import CardSection from './CardSection';
 import Card from './Card';
 
-class EventsDetail extends Component {
-  openMap = location => {
+const EventsDetail = ({ description, location, date }) => {
+  const openMap = location => {
     if (Platform.OS === 'ios') {
       Linking.openURL(`http://maps.apple.com/maps?address=${location}`);
     } else if (Platform.OS === 'android') {
@@ -21,28 +21,26 @@ class EventsDetail extends Component {
     }
   };
 
-  render = () => {
-    const { description, location, date } = this.props;
+  const { descriptionTextStyle } = styles;
 
-    return (
-      <Card>
-        <CardSection>
-          <Text>{moment(new Date(date)).format('dddd, Do MMM')}</Text>
-        </CardSection>
+  return (
+    <Card>
+      <CardSection>
+        <Text>{moment(new Date(date)).format('dddd, Do MMM')}</Text>
+      </CardSection>
 
-        <CardSection>
-          <Text style={styles.descriptionTextStyle}>{description}</Text>
-        </CardSection>
+      <CardSection>
+        <Text style={descriptionTextStyle}>{description}</Text>
+      </CardSection>
 
-        <CardSection>
-          <TouchableOpacity onPress={() => this.openMap(location)}>
-            <Text>{location}</Text>
-          </TouchableOpacity>
-        </CardSection>
-      </Card>
-    );
-  };
-}
+      <CardSection>
+        <TouchableOpacity onPress={() => openMap(location)}>
+          <Text>{location}</Text>
+        </TouchableOpacity>
+      </CardSection>
+    </Card>
+  );
+};
 
 const styles = StyleSheet.create({
   descriptionTextStyle: {

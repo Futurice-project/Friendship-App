@@ -19,12 +19,12 @@ class EventsView extends Component {
       />
     ),
   };
+
   componentDidMount = () => {
     this.props.fetchEvents();
   };
 
   render = () => {
-    //console.log(this.props.events);
     const { events } = this.props;
 
     if (events.loading) {
