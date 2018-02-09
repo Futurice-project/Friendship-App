@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 import {
   View,
   Text,
@@ -12,8 +14,18 @@ import moment from 'moment';
 import CardSection from './CardSection';
 import Card from './Card';
 
-const EventsDetail = ({ description, location, date }) => {
-  const openMap = location => {
+const mapDispatchToProps = dispatch => ({
+  openEvent: eventId =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'EventDetailView',
+        params: { eventId },
+      }),
+    ),
+});
+
+class EventsDetail extends Component {
+  openMap = location => {
     if (Platform.OS === 'ios') {
       Linking.openURL(`http://maps.apple.com/maps?address=${location}`);
     } else if (Platform.OS === 'android') {
@@ -21,26 +33,30 @@ const EventsDetail = ({ description, location, date }) => {
     }
   };
 
-  const { descriptionTextStyle } = styles;
+  render = () => {
+    const { description, location, date, id } = this.props;
+    const { descriptionTextStyle } = styles;
+    return (
+      <Card>
+        <CardSection>
+          <Text>{moment(new Date(date)).format('dddd, Do MMM')}</Text>
+        </CardSection>
 
-  return (
-    <Card>
-      <CardSection>
-        <Text>{moment(new Date(date)).format('dddd, Do MMM')}</Text>
-      </CardSection>
+        <CardSection>
+          <TouchableOpacity onPress={() => this.props.openEvent(id)}>
+            <Text style={descriptionTextStyle}>{description}</Text>
+          </TouchableOpacity>
+        </CardSection>
 
-      <CardSection>
-        <Text style={descriptionTextStyle}>{description}</Text>
-      </CardSection>
-
-      <CardSection>
-        <TouchableOpacity onPress={() => openMap(location)}>
-          <Text>{location}</Text>
-        </TouchableOpacity>
-      </CardSection>
-    </Card>
-  );
-};
+        <CardSection>
+          <TouchableOpacity onPress={() => this.openMap(location)}>
+            <Text>{location}</Text>
+          </TouchableOpacity>
+        </CardSection>
+      </Card>
+    );
+  };
+}
 
 const styles = StyleSheet.create({
   descriptionTextStyle: {
@@ -49,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EventsDetail;
+export default connect(null, mapDispatchToProps)(EventsDetail);

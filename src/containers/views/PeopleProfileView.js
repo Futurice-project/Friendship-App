@@ -121,6 +121,7 @@ class ProfileUser extends React.Component {
   }
 
   render = () => {
+    console.log(this.props.userDetails);
     if (!this.props.auth.data.decoded) {
       return (
         <View style={{ marginTop: 30 }}>

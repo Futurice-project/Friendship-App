@@ -28,6 +28,7 @@ const persistConfig = {
     'createUserPersonalities',
     'createUserLocations',
     'events',
+    'eventDetails',
   ],
 };
 

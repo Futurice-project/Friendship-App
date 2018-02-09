@@ -9,6 +9,7 @@ const EventsList = ({ events }) => {
       description={item.description}
       location={item.location}
       date={item.eventDate}
+      id={item.id}
     />
   );
 

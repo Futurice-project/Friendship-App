@@ -15,6 +15,7 @@ import ChatView from '../views/Chat/ChatView';
 import ChatRequest from '../views/Chat/ChatRequest';
 import SignUpLoveAndHate from '../views/SignUp/SignUpYeahAndNaah';
 import SearchList from '../views/UsersForTagView';
+import EventDetailView from '../views/EventDetailView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -77,6 +78,10 @@ export default StackNavigator(
     },
     ChatRequest: {
       screen: ChatRequest,
+      navigationOptions: { header: () => null },
+    },
+    EventDetailView: {
+      screen: EventDetailView,
       navigationOptions: { header: () => null },
     },
     // ## End StackNavigator Views ##
