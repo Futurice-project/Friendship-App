@@ -6,7 +6,7 @@ import EventsDetail from './EventsDetail';
 const EventsList = ({ events }) => {
   const renderItem = ({ item }) => (
     <EventsDetail
-      description={item.description}
+      title={item.title}
       location={item.location}
       date={item.eventDate}
       id={item.id}

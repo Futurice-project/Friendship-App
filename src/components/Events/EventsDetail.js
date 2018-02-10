@@ -34,8 +34,8 @@ class EventsDetail extends Component {
   };
 
   render = () => {
-    const { description, location, date, id } = this.props;
-    const { descriptionTextStyle } = styles;
+    const { title, location, date, id } = this.props;
+    const { titleTextStyle } = styles;
     return (
       <Card>
         <CardSection>
@@ -44,7 +44,7 @@ class EventsDetail extends Component {
 
         <CardSection>
           <TouchableOpacity onPress={() => this.props.openEvent(id)}>
-            <Text style={descriptionTextStyle}>{description}</Text>
+            <Text style={titleTextStyle}>{title}</Text>
           </TouchableOpacity>
         </CardSection>
 
@@ -59,7 +59,7 @@ class EventsDetail extends Component {
 }
 
 const styles = StyleSheet.create({
-  descriptionTextStyle: {
+  titleTextStyle: {
     fontSize: 18,
     fontWeight: 'bold',
   },
