@@ -10,7 +10,6 @@ import RoundTab from '../../components/RoundTab';
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  navigatorState: state.navigatorState,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -48,10 +47,14 @@ const mapDispatchToProps = dispatch => ({
  */
 export class WelcomeView extends React.Component {
   componentDidMount() {
+    this.userAlreadyLoggedIn();
+  }
+
+  userAlreadyLoggedIn = () => {
     if (this.props.auth && this.props.auth.data.decoded) {
       this.props.openTabs();
     }
-  }
+  };
 
   render = () => (
     <LaunchingPageWrapper>
