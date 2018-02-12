@@ -1,13 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  ActivityIndicator,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 import rest from '../../utils/rest';
@@ -52,17 +45,11 @@ class MyProfile extends React.Component {
 
   state = {
     loaded: false,
-    age: '',
     isModalVisible: false,
   };
 
   componentDidMount() {
-    const personId = this.props.auth.data.decoded
-      ? this.props.auth.data.decoded.id
-      : null;
-    this.props.refreshUser(personId);
-    this.props.refreshTagsForUser(personId);
-    this.props.refreshPersonalitiesForUser(personId);
+    this.fetchCurrentUserInfo();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -77,6 +64,16 @@ class MyProfile extends React.Component {
       });
     }
   }
+
+  fetchCurrentUserInfo = () => {
+    if (this.props.auth.data.decoded) {
+      const personId = this.props.auth.data.decoded.id;
+
+      this.props.refreshUser(personId);
+      this.props.refreshTagsForUser(personId);
+      this.props.refreshPersonalitiesForUser(personId);
+    }
+  };
 
   _showModal = () => this.setState({ isModalVisible: true });
 
@@ -112,86 +109,88 @@ class MyProfile extends React.Component {
     );
   }
 
+  renderCurrentUserDescription = () => {
+    const description = this.props.currentUser.data.description
+      ? this.props.currentUser.data.description
+      : 'No description';
+
+    return description;
+  };
+
+  renderNotLoggedIn = () => {
+    return (
+      <View style={{ marginTop: 30 }}>
+        <Text style={{ alignSelf: 'center' }}>You need to sign in!</Text>
+      </View>
+    );
+  };
+
   render = () => {
-    if (!this.props.auth.data.decoded) {
-      return (
-        <View style={{ marginTop: 30 }}>
-          <Text style={{ alignSelf: 'center' }}>You need to sign in!</Text>
-        </View>
-      );
+    const userLoggedIn = this.props.auth.data.decoded;
+
+    let love = this.props.tagsForCurrentUser.data.filter(tag => {
+      return tag.love === true;
+    });
+    let hate = this.props.tagsForCurrentUser.data.filter(tag => {
+      return tag.love === false;
+    });
+
+    // if there is no picture for the user we use a default image
+    const srcImage = this.props.currentUser.data.image
+      ? { uri: 'data:image/png;base64,' + this.props.currentUser.data.image }
+      : require('../../../assets/img/placeholder/grone.jpg');
+
+    const location = this.props.currentUser.data.locations
+      ? this.props.currentUser.data.locations.join(',')
+      : 'Narnia';
+
+    const genders = this.props.currentUser.data.genderlist
+      ? this.props.currentUser.data.genderlist.join(' and ')
+      : '';
+
+    if (!userLoggedIn) {
+      return this.renderNotLoggedIn();
     }
+
     if (!this.state.loaded) {
       return <ActivityIndicator />;
-    } else {
-      let love = this.props.tagsForCurrentUser.data.filter(e => {
-        return e.love === true;
-      });
-      let hate = this.props.tagsForCurrentUser.data.filter(e => {
-        return e.love === false;
-      });
-
-      // if there is no picture for the user we use a default image
-      const srcImage = this.props.currentUser.data.image
-        ? {
-            uri: 'data:image/png;base64,' + this.props.currentUser.data.image,
-          }
-        : require('../../../assets/img/placeholder/grone.jpg');
-
-      return (
-        <ProfileContainer>
-          <ProfileTopPart
-            username={this.props.currentUser.data.username}
-            srcImage={srcImage}
-            location={
-              this.props.currentUser.data.locations ? (
-                this.props.currentUser.data.locations.join(',')
-              ) : (
-                'Narnia'
-              )
-            }
-            age={this.state.age}
-            genders={
-              this.props.currentUser.data.genderlist ? (
-                this.props.currentUser.data.genderlist.join(' and ')
-              ) : (
-                ''
-              )
-            }
-            showModal={this._showModal}
-            emoji={this.props.currentUser.data.emoji}
-            numberOfYeah={love.length}
-            numberOfNaah={hate.length}
-            navigateBack={this.navigateBack}
-            myProfile
-            birthyear={this.props.currentUser.data.birthyear}
-            genderList={this.props.currentUser.data.genderlist}
-          />
-
-          <DescriptionWrapper>
-            <Description>
-              {this.props.currentUser.data.description ? (
-                this.props.currentUser.data.description
-              ) : (
-                'No description'
-              )}
-            </Description>
-          </DescriptionWrapper>
-
-          <View style={styles.personalitiesView}>
-            {this.renderPersonalities()}
-          </View>
-
-          <TabProfile hate={hate} love={love} myprofile={true} />
-
-          <MyProfileModal
-            hideModal={this._hideModal}
-            isModalVisible={this.state.isModalVisible}
-            onPressButton={this._onPressButton}
-            signOut={this.props.signOut}
-          />
-        </ProfileContainer>
-      );
     }
+
+    return (
+      <ProfileContainer>
+        <ProfileTopPart
+          username={this.props.currentUser.data.username}
+          srcImage={srcImage}
+          location={location}
+          genders={genders}
+          showModal={this._showModal}
+          emoji={this.props.currentUser.data.emoji}
+          numberOfYeah={love.length}
+          numberOfNaah={hate.length}
+          navigateBack={this.navigateBack}
+          myProfile
+          birthyear={this.props.currentUser.data.birthyear}
+          genderList={this.props.currentUser.data.genderlist}
+        />
+
+        <DescriptionWrapper>
+          <Description>{this.renderCurrentUserDescription()}</Description>
+        </DescriptionWrapper>
+
+        <View style={styles.personalitiesView}>
+          {this.renderPersonalities()}
+        </View>
+
+        <TabProfile hate={hate} love={love} myprofile={true} />
+
+        <MyProfileModal
+          hideModal={this._hideModal}
+          isModalVisible={this.state.isModalVisible}
+          onPressButton={this._onPressButton}
+          signOut={this.props.signOut}
+        />
+      </ProfileContainer>
+    );
   };
 }
 const styles = StyleSheet.create({
