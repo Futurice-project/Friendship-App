@@ -1,5 +1,6 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
 import Header from './Header';
 // ## View Imports ##
 import Tabs from './Tabs';
@@ -25,6 +26,20 @@ const StackNavigatorConfig = {
     },
     headerTintColor: '#ff8a65',
   },
+  transitionConfig: () => ({
+    screenInterpolator: screenProps => {
+      // Disable the transition animation when resetting to the welcome screen.
+      if (
+        screenProps.index === 0 &&
+        screenProps.scene.route.routeName !== 'Welcome' &&
+        screenProps.scenes.length > 2
+      ) {
+        return null;
+      }
+      // Otherwise, use the usual horizontal animation.
+      return CardStackStyleInterpolator.forHorizontal(screenProps);
+    },
+  }),
 };
 
 export default StackNavigator(
