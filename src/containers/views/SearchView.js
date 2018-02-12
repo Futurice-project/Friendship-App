@@ -6,11 +6,7 @@ import rest from '../../utils/rest';
 import { SearchBar } from 'react-native-elements';
 import throttle from 'lodash/throttle';
 
-import {
-  Centered,
-  IconImage,
-  ViewContainerTop,
-} from '../../components/Layout/Layout';
+import { Centered, ViewContainerTop } from '../../components/Layout/Layout';
 import Person from '../../components/Person';
 import RoundTab from '../../components/RoundTab';
 
@@ -40,15 +36,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export class SearchView extends React.Component {
-  static navigationOptions = {
-    tabBarIcon: ({ tintColor }) => (
-      <IconImage
-        source={require('../../../assets/search0.png')}
-        tintColor={tintColor}
-      />
-    ),
-  };
-
   state = {
     userData: [],
     searchedUsername: '',

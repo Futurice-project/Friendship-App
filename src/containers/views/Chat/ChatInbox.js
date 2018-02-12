@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FlatList, Text, View } from 'react-native';
-import { IconImage } from '../../../components/Layout/Layout';
 
 import rest from '../../../utils/rest';
 import RoundTab from '../../../components/RoundTab';
@@ -20,16 +19,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export class ChatInbox extends React.Component {
-  static navigationOptions = {
-    title: 'Inbox',
-    tabBarIcon: ({ tintColor }) => (
-      <IconImage
-        source={require('../../../../assets/inbox.png')}
-        tintColor={tintColor}
-      />
-    ),
-  };
-
   componentDidMount() {
     this.props.chatRoomsWithUserId(this.props.currentUserId);
   }

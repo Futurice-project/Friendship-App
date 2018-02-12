@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View, StyleSheet } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 import rest from '../../utils/rest';
@@ -34,15 +34,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class MyProfile extends React.Component {
-  static navigationOptions = () => ({
-    tabBarIcon: ({ tintColor }) => (
-      <Image
-        source={require('../../../assets/profile.png')}
-        style={[styles.icon, { tintColor }]}
-      />
-    ),
-  });
-
   state = {
     loaded: false,
     isModalVisible: false,
