@@ -1,6 +1,7 @@
 import reduxApi, { transformers } from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
 import jwtDecode from 'jwt-decode';
+import { NavigationActions } from 'react-navigation';
 
 // import { showError } from '../modules/ErrorSnackbar';
 
@@ -142,6 +143,11 @@ const rest = reduxApi({
     transformer: authTransformer,
     reducerName: 'auth',
     options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(NavigationActions.navigate({ routeName: 'SignUpLocation' }));
+      },
+    ],
   },
   auth: {
     url: `${apiRoot}/users/authenticate`,

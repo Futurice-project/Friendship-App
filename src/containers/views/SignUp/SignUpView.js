@@ -2,7 +2,6 @@ import React from 'react';
 import { Alert, Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { ImagePicker } from 'expo';
-import { NavigationActions } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
 
@@ -20,69 +19,17 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  signUp: (userData, genders, imageUri) => {
-    let formdata = new FormData();
-    if (imageUri) {
-      formdata.append('image', {
-        uri: imageUri,
-        name: 'image.png',
-        type: 'multipart/form-data',
-      });
-    }
-    if (genders) {
-      formdata.append('genders', JSON.stringify(genders));
-    }
-
-    if (userData) {
-      for (var key in userData) {
-        if (userData[key]) formdata.append(key, userData[key]);
-      }
-    }
-
+  signUp: formData => {
     dispatch(
       rest.actions.register(
         {},
-        {
-          body: formdata,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-        (err, data) => {
-          if (!err) {
-            dispatch(
-              NavigationActions.navigate({
-                routeName: 'SignUpLocation',
-              }),
-            );
-          } else {
-            console.log('Error ', err);
-            console.log('Data: ', data);
-          }
-        },
+        { body: formData, headers: { 'Content-Type': 'multipart/form-data' } },
       ),
     );
   },
-  openSignUpLocation: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SignUpLocation',
-      }),
-    ),
-  openWelcomeScreen: () =>
-    dispatch(
-      NavigationActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
-      }),
-    ),
 });
 
 class SignUpView extends React.Component {
-  static navigationOptions = {
-    title: 'Sign up',
-  };
-
   state = {
     email: '',
     password: '',
@@ -106,8 +53,6 @@ class SignUpView extends React.Component {
 
     if (!result.cancelled) {
       this.setState({ image: result.uri, error: false });
-      // later
-      // this.props.saveImage(this.state.image);
     }
   };
 
@@ -116,7 +61,7 @@ class SignUpView extends React.Component {
       return Alert.alert(
         'Validation Error',
         this.state.validationError,
-        [{ text: 'OK', onPress: () => console.log('OK') }],
+        [{ text: 'OK', onPress: () => null }],
         { cancelable: false },
       );
     }
@@ -124,7 +69,7 @@ class SignUpView extends React.Component {
       return Alert.alert(
         'Error',
         this.props.auth.error.message,
-        [{ text: 'OK', onPress: () => console.log('OK') }],
+        [{ text: 'OK', onPress: () => null }],
         { cancelable: false },
       );
     }
@@ -140,16 +85,43 @@ class SignUpView extends React.Component {
       image,
       emoji,
     } = this.state;
+    let userData = { email, password, username, birthyear, emoji };
+
     if (!email || !password || !username || !birthyear) {
       return this.setState({
         validationError: 'Please enter all required fields',
       });
     }
-    this.props.signUp(
-      { email, password, username, birthyear, emoji },
-      genders,
-      image,
-    );
+
+    let formdata = this.createFormData(userData, image, genders);
+
+    this.props.signUp(formdata);
+  }
+
+  createFormData(userData, image, genders) {
+    let tempFormData = new FormData();
+
+    if (image) {
+      tempFormData.append('image', {
+        uri: image,
+        name: 'image.png',
+        type: 'multipart/form-data',
+      });
+    }
+
+    if (genders) {
+      tempFormData.append('genders', JSON.stringify(genders));
+    }
+
+    if (userData) {
+      for (var key in userData) {
+        if (userData[key]) {
+          tempFormData.append(key, userData[key]);
+        }
+      }
+    }
+
+    return tempFormData;
   }
 
   selectEmoji(emoji) {
