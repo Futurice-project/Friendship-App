@@ -92,18 +92,16 @@ export class SearchView extends React.Component {
   }, 1000);
 
   renderPeopleList() {
+    const data =
+      this.state.searchedUsername.length > 0
+        ? this.props.usersSearch.data
+        : this.state.userData;
     return (
       <View>
         <RoundTab tint="#ffffff" title="PEOPLE" />
         <Centered style={{ paddingBottom: 45, backgroundColor: '#fff' }}>
           <FlatList
-            data={
-              this.state.searchedUsername.length > 0 ? (
-                this.props.usersSearch.data
-              ) : (
-                this.state.userData
-              )
-            }
+            data={data}
             keyExtractor={item => item.id}
             renderItem={({ item }) => <Person box data={item} />}
             onEndReached={this.handleEnd}

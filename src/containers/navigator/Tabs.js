@@ -1,10 +1,11 @@
+import React from 'react';
 import { TabNavigator } from 'react-navigation';
+import { IconImage } from '../../components/Layout/Layout';
+
 import SearchView from '../views/SearchView';
 import FollowingView from '../views/FollowingView';
 import InboxView from '../views/Chat/ChatInbox';
 import MyProfile from '../views/MyProfileView';
-import { IconImage } from '../../components/Layout/Layout';
-import React from 'react';
 
 const tabNavigationOptions = title => {
   switch (title) {
