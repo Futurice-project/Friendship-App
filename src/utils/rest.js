@@ -54,6 +54,8 @@ const rest = reduxApi({
   },
   locations: {
     url: `${apiRoot}/locations`,
+    transformer: transformers.array,
+
     crud: true,
   },
   usersByPage: {

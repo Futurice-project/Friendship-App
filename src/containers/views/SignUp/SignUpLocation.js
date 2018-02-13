@@ -16,11 +16,8 @@ const mapDispatchToProps = dispatch => ({
   getLocations: () => {
     dispatch(rest.actions.locations());
   },
-  postUserLocations: locations => {
-    let newLocations = locations.map(location => ({ locationId: location }));
-    const locationsObject = {
-      locations: newLocations,
-    };
+
+  postUserLocations: locationsObject => {
     dispatch(
       rest.actions.createUserLocations(
         {},
@@ -28,29 +25,39 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
-  openSignUpPersonality: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SignUpPersonality',
-      }),
-    ),
+
+  openSignUpPersonality: () => {
+    dispatch(NavigationActions.navigate({ routeName: 'SignUpPersonality' }));
+  },
 });
 
 export class SignUpLocation extends React.Component {
   state = {
-    selectedItems: [],
+    selectedLocations: [],
   };
 
   componentWillMount() {
     this.props.getLocations();
   }
 
-  onSelectedItemsChange = selectedItems => {
-    this.setState({ selectedItems });
+  onSelectedItemsChange = selectedLocations => {
+    this.setState({ selectedLocations });
   };
 
+  onPressNext() {
+    let { selectedLocations } = this.state;
+    let tempLocations = selectedLocations.map(location => ({
+      locationId: location,
+    }));
+
+    const locationsObject = { locations: tempLocations };
+
+    this.props.postUserLocations(locationsObject);
+    this.props.openSignUpPersonality();
+  }
+
   render() {
-    const { selectedItems } = this.state;
+    const { selectedLocations } = this.state;
 
     return (
       <SignUpWrapper>
@@ -74,12 +81,12 @@ export class SignUpLocation extends React.Component {
         >
           <MultiSelect
             hideTags
-            items={this.props.locations.data.data}
+            items={this.props.locations.data}
             uniqueKey="id"
             hideSubmitButton={true}
             fixedHeight={true}
             onSelectedItemsChange={this.onSelectedItemsChange}
-            selectedItems={selectedItems}
+            selectedItems={selectedLocations}
             selectText="REGION*"
             searchInputPlaceholderText="Search municipalities..."
             selectedItemTextColor="#ff8a65"
@@ -87,13 +94,7 @@ export class SignUpLocation extends React.Component {
             title="YOUR LOCATION"
           />
         </SignUpDivWrapper>
-        <RoundTab
-          title="NEXT"
-          onPress={() => {
-            this.props.postUserLocations(this.state.selectedItems);
-            this.props.openSignUpPersonality();
-          }}
-        />
+        <RoundTab title="NEXT" onPress={() => this.onPressNext()} />
       </SignUpWrapper>
     );
   }
