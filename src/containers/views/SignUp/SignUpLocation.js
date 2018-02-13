@@ -27,7 +27,12 @@ const mapDispatchToProps = dispatch => ({
   },
 
   openSignUpPersonality: () => {
-    dispatch(NavigationActions.navigate({ routeName: 'SignUpPersonality' }));
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'SignUpPersonality',
+        params: { index: 0 },
+      }),
+    );
   },
 });
 

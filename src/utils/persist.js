@@ -27,6 +27,7 @@ const persistConfig = {
     'createUserPersonality',
     'createUserPersonalities',
     'createUserLocations',
+    'personalityState',
   ],
 };
 

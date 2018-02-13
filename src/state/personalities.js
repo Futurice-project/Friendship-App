@@ -1,34 +1,30 @@
-export const UPDATE_PERSONALITIES = 'UPDATE_PERSONALITIES';
 export const RESET_PERSONALITIES = 'RESET_PERSONALITIES';
+export const ADD_PERSONALITY = 'ADD_PERSONALITY';
 
-/**
- * Reset personality state to initial values
- * @returns {{type: string}}
- */
 export function reset() {
   return { type: RESET_PERSONALITIES };
 }
 
-export function add(personalities) {
+export function addPersonality(payload) {
   return {
-    type: UPDATE_PERSONALITIES,
-    chosenPersonalities: personalities,
+    type: ADD_PERSONALITY,
+    payload,
   };
 }
 
-export default function(state = null, action) {
+const initialState = { chosenPersonalities: [] };
+
+export default function(state = initialState, action) {
   switch (action.type) {
+    case ADD_PERSONALITY:
+      return {
+        chosenPersonalities: [...state.chosenPersonalities, action.payload],
+      };
     case RESET_PERSONALITIES:
       return {
         chosenPersonalities: [],
       };
-    case UPDATE_PERSONALITIES:
-      return {
-        chosenPersonalities: action.chosenPersonalities,
-      };
     default:
-      return {
-        chosenPersonalities: state ? state.chosenPersonalities : [],
-      };
+      return state;
   }
 }

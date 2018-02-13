@@ -25,6 +25,10 @@ const mapDispatchToProps = dispatch => ({
       NavigationActions.navigate({
         routeName: 'SignUp',
       }),
+      // NavigationActions.navigate({
+      //   routeName: 'SignUpPersonality',
+      //   params: { index: 0 },
+      // })
     ),
   openTabs: () =>
     dispatch(

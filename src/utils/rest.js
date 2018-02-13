@@ -50,12 +50,12 @@ const rest = reduxApi({
   },
   personalities: {
     url: `${apiRoot}/personalities`,
+    transformer: transformers.array,
     crud: true,
   },
   locations: {
     url: `${apiRoot}/locations`,
     transformer: transformers.array,
-
     crud: true,
   },
   usersByPage: {
@@ -139,6 +139,11 @@ const rest = reduxApi({
   createUserPersonalities: {
     url: `${apiRoot}/user_personalities`,
     options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(NavigationActions.navigate({ routeName: 'YeahAndNaah' }));
+      },
+    ],
   },
   register: {
     url: `${apiRoot}/users`,
