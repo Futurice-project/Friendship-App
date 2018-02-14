@@ -13,11 +13,12 @@ import {
 } from '../../../components/Layout/Layout';
 import Personality from '../../../components/SignUp/Personality';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
-import { PERSONALITIES } from '../../../components/SignUp/Constants';
+import { decrementProgress, incrementProgress } from '../../../state/signup';
 
 const mapStateToProps = state => ({
   personalities: state.personalities,
   personalityState: state.personalityState,
+  signup: state.signup,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -43,6 +44,8 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
+  incProgress: () => dispatch(incrementProgress()),
+  decProgress: () => dispatch(decrementProgress()),
 });
 
 class SignUpPersonality extends React.Component {
@@ -86,6 +89,7 @@ class SignUpPersonality extends React.Component {
       });
 
       addUserPersonalities({ personalities: finalPersonalities });
+      this.props.incProgress();
     } else {
       // Change the view and increment the index
       updateChosenPersonalities({ personalityId, level: 5 });
@@ -162,7 +166,7 @@ class SignUpPersonality extends React.Component {
     return (
       <View>
         <ViewContainer>
-          <ProgressBar steps={PERSONALITIES} />
+          <ProgressBar steps={this.props.signup.signupProgress} />
           <Padding style={{ flex: 1 }}>
             <Title>PERSONALITY</Title>
             <SubTitle>

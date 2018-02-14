@@ -13,7 +13,7 @@ import ProgressBar from '../../../components/SignUp/ProgressBar';
 import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { INTERESTS } from '../../../components/SignUp/Constants';
+import { decrementProgress, incrementProgress } from '../../../state/signup';
 
 const mapStateToProps = (state, ownProps) => ({
   tags: state.tags,
@@ -21,6 +21,7 @@ const mapStateToProps = (state, ownProps) => ({
     ? ownProps.navigation.state.params.index
     : 1,
   tagState: state.tagState,
+  signup: state.signup,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -46,6 +47,8 @@ const mapDispatchToProps = dispatch => ({
         routeName: 'SignUpMatching',
       }),
     ),
+  incProgress: () => dispatch(incrementProgress()),
+  decProgress: () => dispatch(decrementProgress()),
 });
 
 export class SignUpLoveAndHate extends React.Component {
@@ -113,7 +116,7 @@ export class SignUpLoveAndHate extends React.Component {
     return (
       <View>
         <ViewContainer>
-          <ProgressBar steps={INTERESTS} />
+          <ProgressBar steps={this.props.signup.signupProgress} />
           <Padding>
             <View style={{ flexDirection: 'row' }}>
               <Title style={{ color: '#ff8a65' }}>YEAH </Title>
@@ -152,6 +155,7 @@ export class SignUpLoveAndHate extends React.Component {
                 this.props.addUserTags({
                   tags: this.props.tagState.chosenTags,
                 });
+                this.props.incProgress();
                 this.props.openSignUpPersonality();
               }
             }}

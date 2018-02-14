@@ -13,7 +13,7 @@ import GenderBox from '../../../components/SignUp/GenderBox';
 import SignUpEmoji from '../../../components/SignUp/SignUpEmoji';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { emojis } from '../../../../assets/misc/emojis';
-import { resetProgress } from '../../../state/signup';
+import { incrementProgress, resetProgress } from '../../../state/signup';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -29,7 +29,8 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
-  resetProgressBar: () => dispatch(resetProgress),
+  resetProgressBar: () => dispatch(resetProgress()),
+  incProgress: () => dispatch(incrementProgress()),
 });
 
 class SignUpView extends React.Component {
@@ -46,6 +47,10 @@ class SignUpView extends React.Component {
 
   componentWillReceiveProps() {
     this.setState({ error: true });
+  }
+
+  componentWillMount() {
+    //this.props.resetProgressBar();
   }
 
   openImageGallery = async () => {
@@ -97,6 +102,8 @@ class SignUpView extends React.Component {
     }
 
     let formdata = this.createFormData(userData, image, genders);
+
+    this.props.incProgress();
 
     this.props.signUp(formdata);
   }

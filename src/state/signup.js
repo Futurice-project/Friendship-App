@@ -30,6 +30,8 @@ export default function(state = initialState, action) {
       return {
         signupProgress: state.signupProgress - 1,
       };
+    case RESET_PROGRESS:
+      return { signupProgress: initialState.signupProgress };
     default:
       return state;
   }

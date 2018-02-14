@@ -8,10 +8,11 @@ import MultiSelect from '../../../utils/react-native-multiple-select/lib/react-n
 import { SignUpWrapper } from '../../../components/Layout/Layout';
 import RoundTab from '../../../components/RoundTab';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
-import { LOCATION } from '../../../components/SignUp/Constants';
+import { decrementProgress, incrementProgress } from '../../../state/signup';
 
 const mapStateToProps = state => ({
   locations: state.locations,
+  signup: state.signup,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -36,6 +37,9 @@ const mapDispatchToProps = dispatch => ({
       }),
     );
   },
+
+  incProgress: () => dispatch(incrementProgress()),
+  decProgress: () => dispatch(decrementProgress()),
 });
 
 export class SignUpLocation extends React.Component {
@@ -60,6 +64,9 @@ export class SignUpLocation extends React.Component {
     const locationsObject = { locations: tempLocations };
 
     this.props.postUserLocations(locationsObject);
+
+    this.props.incProgress();
+
     this.props.openSignUpPersonality();
   }
 
@@ -68,7 +75,7 @@ export class SignUpLocation extends React.Component {
 
     return (
       <SignUpWrapper>
-        <ProgressBar steps={LOCATION} />
+        <ProgressBar steps={this.props.signup.signupProgress} />
         <SignUpDivWrapper
           style={{
             paddingTop: 60,
