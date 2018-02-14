@@ -22,9 +22,13 @@ export default StackNavigator(
   {
     InboxView: {
       screen: InboxView,
+      navigationOptions: { header: () => null },
     },
     ChatView: {
       screen: ChatView,
+      navigationOptions: {
+        tabBarVisible: false,
+      },
     },
     ChatRequest: {
       screen: ChatRequest,
