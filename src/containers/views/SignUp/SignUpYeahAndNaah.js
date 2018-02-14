@@ -56,6 +56,13 @@ export class SignUpLoveAndHate extends React.Component {
     this.props.getTags();
   }
 
+  componentWillUnmount() {
+    console.log('Unmounting Yeah and Naahs : ' + this.props.index);
+    if (this.props.index === 1) {
+      this.props.decProgress();
+    }
+  }
+
   renderFiveLoveAndHateActivities = () => {
     if (!this.props.tags.data.data) {
       return;

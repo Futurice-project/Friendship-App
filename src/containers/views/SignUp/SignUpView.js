@@ -13,7 +13,12 @@ import GenderBox from '../../../components/SignUp/GenderBox';
 import SignUpEmoji from '../../../components/SignUp/SignUpEmoji';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { emojis } from '../../../../assets/misc/emojis';
-import { incrementProgress, resetProgress } from '../../../state/signup';
+import {
+  incrementProgress,
+  resetProgress,
+  updateEmoji,
+  updateUsername,
+} from '../../../state/signup';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -31,6 +36,8 @@ const mapDispatchToProps = dispatch => ({
   },
   resetProgressBar: () => dispatch(resetProgress()),
   incProgress: () => dispatch(incrementProgress()),
+  updateEmoji: credentials => dispatch(updateEmoji(credentials)),
+  updateUsername: credentials => dispatch(updateUsername(credentials)),
 });
 
 class SignUpView extends React.Component {
@@ -106,6 +113,14 @@ class SignUpView extends React.Component {
     this.props.incProgress();
 
     this.props.signUp(formdata);
+
+    /*    if (!this.props.signup.userCreated) {
+      this.props.signUp(formdata);
+      this.props.toggleUser();
+    } else {
+      //Navigate
+      this.props.openSignUpLocation();
+    }*/
   }
 
   createFormData(userData, image, genders) {
@@ -151,17 +166,16 @@ class SignUpView extends React.Component {
   }
 
   updateEmoji(emoji) {
-    if (emoji === this.state.emoji) {
-      return this.setState({ emoji: '', error: false });
+    if (emoji !== this.props.signup.userInfos.emoji) {
+      this.props.updateEmoji(emoji);
     }
-    return this.setState({ emoji, error: false });
   }
 
   renderEmojis() {
     return emojis.map(emoji => (
       <SignUpEmoji
         updateEmoji={() => this.updateEmoji(emoji)}
-        selectedEmoji={this.state.emoji}
+        selectedEmoji={this.props.signup.userInfos.emoji}
         key={emoji}
         emoji={emoji}
       />
@@ -209,13 +223,14 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="(NICK)NAME*"
-                  onChangeText={username =>
-                    this.setState({
+                  onChangeText={username => this.props.updateUsername(username)
+                  /*this.setState({
                       username,
                       validationError: '',
                       error: false,
-                    })}
-                  value={this.state.username}
+                    })*/
+                  }
+                  value={this.props.signup.userInfos.username}
                   onSubmitEditing={() => {
                     this._emailInput.focus();
                   }}

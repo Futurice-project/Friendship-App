@@ -46,6 +46,10 @@ class SignUpMatching extends React.Component {
     description: '',
   };
 
+  componentWillUnmount() {
+    this.props.decProgress();
+  }
+
   render = () => {
     return (
       <KeyboardAvoidingView behavior="padding">

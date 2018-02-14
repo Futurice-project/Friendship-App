@@ -108,6 +108,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   tagState: state.tagState,
 });
+
 /**
  * @param {String} activity - name of the activity
  */
@@ -120,6 +121,7 @@ class YeahAndNaah extends React.Component {
         UIManager.setLayoutAnimationEnabledExperimental(true);
     }
   }
+
   state = {
     status: 0,
     yeahButton: true,
@@ -133,7 +135,6 @@ class YeahAndNaah extends React.Component {
    * @param {boolean} love
    */
   addTag(tagId, love) {
-    console.log(this.props);
     const tagList = [...this.props.tagState.chosenTags, { tagId, love }];
     this.props.updateTags(tagList);
   }
@@ -153,11 +154,6 @@ class YeahAndNaah extends React.Component {
   }
 
   yeahActivity() {
-    console.log(
-      'Yeah-ing activity ' +
-        this.props.activityId +
-        ' : Move title to the left',
-    );
     this.setState({
       wrapperColor: -1,
       yeahButton: false,
@@ -169,11 +165,6 @@ class YeahAndNaah extends React.Component {
   }
 
   nahActivity() {
-    console.log(
-      'Nah-ing activity ' +
-        this.props.activityId +
-        ' : Move title to the right',
-    );
     this.setState({
       wrapperColor: 1,
       yeahButton: false,
@@ -197,6 +188,7 @@ class YeahAndNaah extends React.Component {
     this.removeTag(this.props.activityId);
     LayoutAnimation.configureNext(CustomLayoutSpring);
   }
+
   renderYeah() {
     if (this.state.yeahButton) {
       return (
@@ -213,6 +205,7 @@ class YeahAndNaah extends React.Component {
       );
     }
   }
+
   renderNah() {
     if (this.state.nahButton) {
       return (
@@ -229,6 +222,7 @@ class YeahAndNaah extends React.Component {
       );
     }
   }
+
   render = () => (
     <LoveAndHateWrapper wrapperColor={this.state.wrapperColor}>
       {/* Left part of the component. Contain the button to Yeah the activity */}
@@ -256,4 +250,5 @@ class YeahAndNaah extends React.Component {
     </LoveAndHateWrapper>
   );
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(YeahAndNaah);

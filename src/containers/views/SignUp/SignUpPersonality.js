@@ -63,6 +63,12 @@ class SignUpPersonality extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    if (this.props.navigation.state.params.index === 0) {
+      this.props.decProgress();
+    }
+  }
+
   handleClick = personalityId => {
     const {
       navigation,

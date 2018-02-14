@@ -51,6 +51,10 @@ export class SignUpLocation extends React.Component {
     this.props.getLocations();
   }
 
+  componentWillUnmount() {
+    this.props.decProgress();
+  }
+
   onSelectedItemsChange = selectedLocations => {
     this.setState({ selectedLocations });
   };
