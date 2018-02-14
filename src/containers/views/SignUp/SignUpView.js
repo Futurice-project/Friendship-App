@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Image, View, TextInput } from 'react-native';
+import { Alert, Image, TextInput, View } from 'react-native';
 import { connect } from 'react-redux';
 import { ImagePicker } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -13,10 +13,11 @@ import GenderBox from '../../../components/SignUp/GenderBox';
 import SignUpEmoji from '../../../components/SignUp/SignUpEmoji';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { emojis } from '../../../../assets/misc/emojis';
-import { YOUR_PROFILE } from '../../../components/SignUp/Constants';
+import { resetProgress } from '../../../state/signup';
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  signup: state.signup,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -28,6 +29,7 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
+  resetProgressBar: () => dispatch(resetProgress),
 });
 
 class SignUpView extends React.Component {
@@ -177,7 +179,7 @@ class SignUpView extends React.Component {
       >
         <ViewContainer>
           <HeaderWrapper>
-            <ProgressBar steps={YOUR_PROFILE} />
+            <ProgressBar steps={this.props.signup.signupProgress} />
             <SignUpTitle>YOUR PROFILE</SignUpTitle>
             <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
               PICK YOUR MOOD

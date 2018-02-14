@@ -5,6 +5,7 @@ import NavigatorStateReducer from '../state/navigator';
 import PersonalityStateReducer from '../state/personalities';
 import TagStateReducer from '../state/tags';
 import KeyboardStateReducer from '../state/keyboard';
+import SignUpReducer from '../state/signup';
 
 const reducers = {
   // ## Reducers ##
@@ -14,6 +15,7 @@ const reducers = {
   personalityState: PersonalityStateReducer,
   keyboardState: KeyboardStateReducer,
   tagState: TagStateReducer,
+  signup: SignUpReducer,
 
   //
   ...restReducers,
