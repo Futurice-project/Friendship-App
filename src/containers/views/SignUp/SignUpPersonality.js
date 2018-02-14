@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
@@ -14,8 +14,7 @@ import {
 import Personality from '../../../components/SignUp/Personality';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
 
-const mapStateToProps = (state, ownProps) => ({
-  createUserPersonalities: state.createUserPersonalities,
+const mapStateToProps = state => ({
   personalities: state.personalities,
   personalityState: state.personalityState,
 });
@@ -47,32 +46,44 @@ const mapDispatchToProps = dispatch => ({
 
 class SignUpPersonality extends React.Component {
   componentDidMount() {
-    console.log(this.props);
-    this.props.getPersonalities();
+    if (!this.props.personalities.sync) {
+      this.props.getPersonalities();
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (this.props.personalities === nextProps.personalities) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   handleClick = async personalityId => {
-    // let selectedPersonalities = [];
-    // selectedPersonalities.push({ personalityId, level: 5 });
+    const {
+      navigation,
+      personalities,
+      updateChosenPersonalities,
+      addUserPersonalities,
+      personalityState,
+      changeView,
+    } = this.props;
 
-    if (
-      this.props.navigation.state.params.index + 2 >=
-      this.props.personalities.data.length
-    ) {
+    if (navigation.state.params.index + 2 >= personalities.data.length) {
       // We are at the end of the list
-      const test = await this.props.updateChosenPersonalities({
+      // we need the await so we can send to addUserPersonalties the last selected personality
+      await updateChosenPersonalities({
         personalityId,
         level: 5,
       });
-      console.log(test);
-      this.props.addUserPersonalities({
-        personalities: this.props.personalityState.chosenPersonalities,
+      console.log(personalityState.chosenPersonalities);
+      addUserPersonalities({
+        personalities: personalityState.chosenPersonalities,
       });
     } else {
       // Change the view and increment the index
-      this.props.updateChosenPersonalities({ personalityId, level: 5 });
-      this.props.changeView(this.props.navigation.state.params.index + 2);
-      // this.props.changeView();
+      updateChosenPersonalities({ personalityId, level: 5 });
+      changeView(navigation.state.params.index + 2);
     }
   };
 
@@ -82,26 +93,19 @@ class SignUpPersonality extends React.Component {
    * @returns {XML}
    */
   renderTwoPersonalities() {
-    if (!this.props.personalities.data) {
-      return <Text>Network failed</Text>;
-    }
-
-    if (this.props.personalities.syncing) {
-      return <Text>syncing failed</Text>;
-    }
-
-    if (this.props.personalities.loading) {
-      return <Text>loading failed</Text>;
-    }
-
-    if (!this.props.personalities.sync) {
-      return <Text>sync failed</Text>;
+    if (
+      !this.props.personalities.data ||
+      this.props.personalities.syncing ||
+      this.props.personalities.loading ||
+      !this.props.personalities.sync
+    ) {
+      return <ActivityIndicator />;
     }
 
     let index = this.props.navigation.state.params.index;
-    console.log(index);
+    console.log('key:', this.props.navigation.state.key);
+    console.log('index:', index);
     let personalities = this.props.personalities.data;
-    console.log(personalities);
 
     return (
       <Centered>
@@ -141,8 +145,7 @@ class SignUpPersonality extends React.Component {
           color: '#efebe9',
         }}
       >
-        {this.props.index / 2 + 1}/{this.props.personalities.data.length /
-          2}{' '}
+        {this.props.navigation.state.params.index / 2 + 1}/{this.props.personalities.data.length / 2}
       </Text>
     );
   }
