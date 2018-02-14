@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
@@ -13,6 +13,7 @@ import {
 } from '../../../components/Layout/Layout';
 import Personality from '../../../components/SignUp/Personality';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
+import { PERSONALITIES } from '../../../components/SignUp/Constants';
 
 const mapStateToProps = state => ({
   personalities: state.personalities,
@@ -161,7 +162,7 @@ class SignUpPersonality extends React.Component {
     return (
       <View>
         <ViewContainer>
-          <ProgressBar color="#3a4853" steps="3" />
+          <ProgressBar steps={PERSONALITIES} />
           <Padding style={{ flex: 1 }}>
             <Title>PERSONALITY</Title>
             <SubTitle>

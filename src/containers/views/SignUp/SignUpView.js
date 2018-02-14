@@ -13,6 +13,7 @@ import GenderBox from '../../../components/SignUp/GenderBox';
 import SignUpEmoji from '../../../components/SignUp/SignUpEmoji';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { emojis } from '../../../../assets/misc/emojis';
+import { YOUR_PROFILE } from '../../../components/SignUp/Constants';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -176,7 +177,7 @@ class SignUpView extends React.Component {
       >
         <ViewContainer>
           <HeaderWrapper>
-            <ProgressBar steps="1" />
+            <ProgressBar steps={YOUR_PROFILE} />
             <SignUpTitle>YOUR PROFILE</SignUpTitle>
             <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
               PICK YOUR MOOD

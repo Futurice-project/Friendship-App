@@ -9,6 +9,7 @@ import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
 import rest from '../../../utils/rest';
 import { NavigationActions } from 'react-navigation';
+import { MATCHING_AGREEMENT } from '../../../components/SignUp/Constants';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -47,7 +48,7 @@ class SignUpMatching extends React.Component {
     return (
       <KeyboardAvoidingView behavior="padding">
         <ViewContainer style={{ backgroundColor: '#e8e9e8' }}>
-          <ProgressBar steps={5} />
+          <ProgressBar steps={MATCHING_AGREEMENT} />
           <Padding>
             <Title>FINDING THE RIGHT PEOPLE FOR YOU</Title>
             <P>Do you want to receive recommendation on people</P>

@@ -13,6 +13,7 @@ import ProgressBar from '../../../components/SignUp/ProgressBar';
 import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import { INTERESTS } from '../../../components/SignUp/Constants';
 
 const mapStateToProps = (state, ownProps) => ({
   tags: state.tags,
@@ -112,7 +113,7 @@ export class SignUpLoveAndHate extends React.Component {
     return (
       <View>
         <ViewContainer>
-          <ProgressBar color="#3a4853" steps="4" />
+          <ProgressBar steps={INTERESTS} />
           <Padding>
             <View style={{ flexDirection: 'row' }}>
               <Title style={{ color: '#ff8a65' }}>YEAH </Title>
