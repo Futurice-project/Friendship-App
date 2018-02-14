@@ -32,7 +32,10 @@ export default StackNavigator(
     },
     ChatRequest: {
       screen: ChatRequest,
-      navigationOptions: { header: () => null },
+      navigationOptions: {
+        header: () => null,
+        tabBarVisible: false,
+      },
     },
     // ## End StackNavigator Views ##
   },

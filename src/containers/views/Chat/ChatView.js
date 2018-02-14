@@ -69,7 +69,7 @@ class ChatView extends Component {
           );
         }}
       >
-        <Text>HEYYY</Text>
+        <Text> Inbox </Text>
       </TouchableOpacity>
     ),
     headerRight: (
