@@ -161,7 +161,7 @@ class SignUpPersonality extends React.Component {
     return (
       <View>
         <ViewContainer>
-          <ProgressBar color="#3a4853" steps="5" />
+          <ProgressBar color="#3a4853" steps="3" />
           <Padding style={{ flex: 1 }}>
             <Title>PERSONALITY</Title>
             <SubTitle>

@@ -7,6 +7,7 @@ import { NavigationActions } from 'react-navigation';
 import MultiSelect from '../../../utils/react-native-multiple-select/lib/react-native-multi-select';
 import { SignUpWrapper } from '../../../components/Layout/Layout';
 import RoundTab from '../../../components/RoundTab';
+import ProgressBar from '../../../components/SignUp/ProgressBar';
 
 const mapStateToProps = state => ({
   locations: state.locations,
@@ -66,6 +67,7 @@ export class SignUpLocation extends React.Component {
 
     return (
       <SignUpWrapper>
+        <ProgressBar steps="2" />
         <SignUpDivWrapper
           style={{
             paddingTop: 60,

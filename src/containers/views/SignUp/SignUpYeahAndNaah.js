@@ -112,7 +112,7 @@ export class SignUpLoveAndHate extends React.Component {
     return (
       <View>
         <ViewContainer>
-          <ProgressBar color="#3a4853" steps="5" />
+          <ProgressBar color="#3a4853" steps="4" />
           <Padding>
             <View style={{ flexDirection: 'row' }}>
               <Title style={{ color: '#ff8a65' }}>YEAH </Title>

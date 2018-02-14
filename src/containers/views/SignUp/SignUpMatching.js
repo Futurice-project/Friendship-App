@@ -47,7 +47,7 @@ class SignUpMatching extends React.Component {
     return (
       <KeyboardAvoidingView behavior="padding">
         <ViewContainer style={{ backgroundColor: '#e8e9e8' }}>
-          <ProgressBar steps={3} />
+          <ProgressBar steps={5} />
           <Padding>
             <Title>FINDING THE RIGHT PEOPLE FOR YOU</Title>
             <P>Do you want to receive recommendation on people</P>

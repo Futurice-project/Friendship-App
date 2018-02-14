@@ -176,7 +176,7 @@ class SignUpView extends React.Component {
       >
         <ViewContainer>
           <HeaderWrapper>
-            <ProgressBar color="#d8d8d8" steps="1" />
+            <ProgressBar steps="1" />
             <SignUpTitle>YOUR PROFILE</SignUpTitle>
             <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
               PICK YOUR MOOD
