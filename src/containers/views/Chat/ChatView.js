@@ -53,6 +53,25 @@ class ChatView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: `${navigation.state.params.userEmoji} ${navigation.state.params
       .username}`,
+    headerLeft: (
+      <TouchableOpacity
+        onPress={() => {
+          console.log('navReset');
+          navigation.dispatch(
+            NavigationActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({
+                  routeName: 'InboxView',
+                }),
+              ],
+            }),
+          );
+        }}
+      >
+        <Text>HEYYY</Text>
+      </TouchableOpacity>
+    ),
     headerRight: (
       <PopUpMenu isReportVisible={navigation.state.params.showReport} chat />
     ),
