@@ -68,8 +68,6 @@ class EventDetailView extends Component {
           }
         : require('../../../assets/img/placeholder/grone.jpg');
 
-      console.log(srcImage);
-
       return (
         <EventContainer>
           <EventTopPart

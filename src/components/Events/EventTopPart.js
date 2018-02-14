@@ -5,6 +5,7 @@ import {
   Platform,
   StyleSheet,
   Text,
+  Linking,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -49,6 +50,15 @@ const EventTopPart = props => {
       </TouchableOpacity>
     );
   };
+
+  const openMap = location => {
+    if (Platform.OS === 'ios') {
+      Linking.openURL(`http://maps.apple.com/maps?address=${location}`);
+    } else if (Platform.OS === 'android') {
+      Linking.openURL(`http://maps.google.com/maps?address=${location}`);
+    }
+  };
+
   return (
     <Image style={styles.imageEvent} source={srcImage}>
       <View style={styles.backAndSettingsView}>
@@ -71,9 +81,11 @@ const EventTopPart = props => {
           </EventTitleText>
         </Image>
         <View style={{ backgroundColor: '#F9F6F1' }}>
-          <Details>
-            <LocationText>{location ? location : 'Narnia'}</LocationText>
-          </Details>
+          <TouchableOpacity onPress={() => openMap(location)}>
+            <Details>
+              <LocationText>{location ? location : 'Narnia'}</LocationText>
+            </Details>
+          </TouchableOpacity>
         </View>
       </View>
     </Image>
