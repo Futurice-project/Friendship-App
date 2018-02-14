@@ -59,7 +59,7 @@ class SignUpPersonality extends React.Component {
     }
   }
 
-  handleClick = async personalityId => {
+  handleClick = personalityId => {
     const {
       navigation,
       personalities,
@@ -72,14 +72,19 @@ class SignUpPersonality extends React.Component {
     if (navigation.state.params.index + 2 >= personalities.data.length) {
       // We are at the end of the list
       // we need the await so we can send to addUserPersonalties the last selected personality
-      await updateChosenPersonalities({
+      updateChosenPersonalities({
         personalityId,
         level: 5,
       });
-      console.log(personalityState.chosenPersonalities);
-      addUserPersonalities({
-        personalities: personalityState.chosenPersonalities,
+
+      // we add the last selected personality to the final array
+      let finalPersonalities = personalityState.chosenPersonalities;
+      finalPersonalities.push({
+        personalityId,
+        level: 5,
       });
+
+      addUserPersonalities({ personalities: finalPersonalities });
     } else {
       // Change the view and increment the index
       updateChosenPersonalities({ personalityId, level: 5 });
@@ -103,8 +108,6 @@ class SignUpPersonality extends React.Component {
     }
 
     let index = this.props.navigation.state.params.index;
-    console.log('key:', this.props.navigation.state.key);
-    console.log('index:', index);
     let personalities = this.props.personalities.data;
 
     return (
