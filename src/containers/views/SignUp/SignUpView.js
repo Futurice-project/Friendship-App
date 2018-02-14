@@ -50,7 +50,7 @@ class SignUpView extends React.Component {
   }
 
   componentWillMount() {
-    //this.props.resetProgressBar();
+    this.props.resetProgressBar();
   }
 
   openImageGallery = async () => {
