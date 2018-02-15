@@ -5,6 +5,12 @@ export const RESET_PROGRESS = 'RESET_PROGRESS';
 
 export const UPDATE_EMOJI = 'UPDATE_EMOJI';
 export const UPDATE_USERNAME = 'UPDATE_USERNAME';
+export const UPDATE_EMAIL = 'UPDATE_EMAIL';
+export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
+export const UPDATE_BIRTHYEAR = 'UPDATE_BIRTHYEAR';
+export const UPDATE_IMAGE = 'UPDATE_IMAGE';
+export const ADD_GENDER = 'ADD_GENDER';
+export const REMOVE_GENDER = 'REMOVE_GENDER';
 
 export function decrementProgress() {
   return { type: DEC_PROGRESS };
@@ -36,6 +42,48 @@ export function updateEmoji(payload) {
   };
 }
 
+export function updateEmail(payload) {
+  return {
+    type: UPDATE_EMAIL,
+    payload,
+  };
+}
+
+export function updatePassword(payload) {
+  return {
+    type: UPDATE_PASSWORD,
+    payload,
+  };
+}
+
+export function updateBirthyear(payload) {
+  return {
+    type: UPDATE_BIRTHYEAR,
+    payload,
+  };
+}
+
+export function addGender(payload) {
+  return {
+    type: ADD_GENDER,
+    payload,
+  };
+}
+
+export function removeGender(payload) {
+  return {
+    type: REMOVE_GENDER,
+    payload,
+  };
+}
+
+export function updateImage(payload) {
+  return {
+    type: UPDATE_IMAGE,
+    payload,
+  };
+}
+
 const initialState = {
   signupProgress: 1,
   userInfos: {
@@ -44,7 +92,8 @@ const initialState = {
     password: '',
     username: '',
     birthyear: '',
-    genders: '',
+    genders: [],
+    image: null,
     loading: false,
     error: false,
     validationError: '',
@@ -67,6 +116,26 @@ export default function(state = initialState, action) {
       break;
     case UPDATE_USERNAME:
       state.userInfos.username = action.payload;
+      break;
+    case UPDATE_EMAIL:
+      state.userInfos.email = action.payload;
+      break;
+    case UPDATE_PASSWORD:
+      state.userInfos.password = action.payload;
+      break;
+    case UPDATE_BIRTHYEAR:
+      state.userInfos.birthyear = action.payload;
+      break;
+    case ADD_GENDER:
+      state.userInfos.genders = [...state.userInfos.genders, action.payload];
+      break;
+    case REMOVE_GENDER:
+      const genders = state.userInfos.genders.slice();
+      genders.splice(state.userInfos.genders.indexOf(action.payload), 1);
+      state.userInfos.genders = genders;
+      break;
+    case UPDATE_IMAGE:
+      state.userInfos.image = action.payload;
       break;
   }
   return { ...state };

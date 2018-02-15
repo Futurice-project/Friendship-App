@@ -14,9 +14,15 @@ import SignUpEmoji from '../../../components/SignUp/SignUpEmoji';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { emojis } from '../../../../assets/misc/emojis';
 import {
+  addGender,
   incrementProgress,
+  removeGender,
   resetProgress,
+  updateBirthyear,
+  updateEmail,
   updateEmoji,
+  updateImage,
+  updatePassword,
   updateUsername,
 } from '../../../state/signup';
 
@@ -38,6 +44,12 @@ const mapDispatchToProps = dispatch => ({
   incProgress: () => dispatch(incrementProgress()),
   updateEmoji: credentials => dispatch(updateEmoji(credentials)),
   updateUsername: credentials => dispatch(updateUsername(credentials)),
+  updateEmail: credentials => dispatch(updateEmail(credentials)),
+  updatePassword: credentials => dispatch(updatePassword(credentials)),
+  updateBirthyear: credentials => dispatch(updateBirthyear(credentials)),
+  updateImage: credentials => dispatch(updateImage(credentials)),
+  addGender: credentials => dispatch(addGender(credentials)),
+  removeGender: credentials => dispatch(removeGender(credentials)),
 });
 
 class SignUpView extends React.Component {
@@ -67,7 +79,7 @@ class SignUpView extends React.Component {
     });
 
     if (!result.cancelled) {
-      this.setState({ image: result.uri, error: false });
+      this.props.updateImage(result);
     }
   };
 
@@ -154,15 +166,13 @@ class SignUpView extends React.Component {
   }
 
   updateGenders(value) {
-    if (this.state.genders.indexOf(value) > -1) {
-      const genders = this.state.genders.slice();
-      genders.splice(this.state.genders.indexOf(value), 1);
-      return this.setState({ genders, error: false });
+    if (this.props.signup.userInfos.genders.indexOf(value) > -1) {
+      //Remove a gender
+      this.props.removeGender(value);
+    } else {
+      //Update genders
+      this.props.addGender(value);
     }
-    return this.setState({
-      genders: [...this.state.genders, value],
-      error: false,
-    });
   }
 
   updateEmoji(emoji) {
@@ -223,13 +233,7 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="(NICK)NAME*"
-                  onChangeText={username => this.props.updateUsername(username)
-                  /*this.setState({
-                      username,
-                      validationError: '',
-                      error: false,
-                    })*/
-                  }
+                  onChangeText={username => this.props.updateUsername(username)}
                   value={this.props.signup.userInfos.username}
                   onSubmitEditing={() => {
                     this._emailInput.focus();
@@ -255,9 +259,8 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="EMAIL*"
-                  onChangeText={email =>
-                    this.setState({ email, validationError: '', error: false })}
-                  value={this.state.email}
+                  onChangeText={email => this.props.updateEmail(email)}
+                  value={this.props.signup.userInfos.email}
                 />
               </LabelView>
               <View style={{ width: 278 }}>
@@ -278,13 +281,8 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="PASSWORD*"
-                  onChangeText={password =>
-                    this.setState({
-                      password,
-                      validationError: '',
-                      error: false,
-                    })}
-                  value={this.state.password}
+                  onChangeText={password => this.props.updatePassword(password)}
+                  value={this.props.signup.userInfos.password}
                 />
               </LabelView>
             </LabelContainer>
@@ -302,12 +300,8 @@ class SignUpView extends React.Component {
                   returnKeyType="next"
                   placeholder="BIRTH YEAR*"
                   onChangeText={birthyear =>
-                    this.setState({
-                      birthyear,
-                      validationError: '',
-                      error: false,
-                    })}
-                  value={this.state.birthyear}
+                    this.props.updateBirthyear(birthyear)}
+                  value={this.props.signup.userInfos.birthyear}
                 />
               </LabelView>
               <View style={{ width: 278 }}>
@@ -374,8 +368,12 @@ class SignUpView extends React.Component {
               horizontal
             >
               <PhotoBox onPress={this.openImageGallery}>
-                {image.uri ? (
-                  <Image style={{ width: 93, height: 93 }} source={image} />
+                {this.props.signup.userInfos.image !== null &&
+                this.props.signup.userInfos.image.uri ? (
+                  <Image
+                    style={{ width: 93, height: 93 }}
+                    source={this.props.signup.userInfos.image}
+                  />
                 ) : (
                   <PlusSignText>+</PlusSignText>
                 )}
