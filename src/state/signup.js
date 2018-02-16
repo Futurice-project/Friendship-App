@@ -1,8 +1,9 @@
-// Reducer for progression bar
+// Actions for progression bar
 export const INC_PROGRESS = 'INC_PROGRESS';
 export const DEC_PROGRESS = 'DEC_PROGRESS';
 export const RESET_PROGRESS = 'RESET_PROGRESS';
 
+// Actions for the SignUpView
 export const UPDATE_EMOJI = 'UPDATE_EMOJI';
 export const UPDATE_USERNAME = 'UPDATE_USERNAME';
 export const UPDATE_EMAIL = 'UPDATE_EMAIL';
@@ -11,78 +12,8 @@ export const UPDATE_BIRTHYEAR = 'UPDATE_BIRTHYEAR';
 export const UPDATE_IMAGE = 'UPDATE_IMAGE';
 export const ADD_GENDER = 'ADD_GENDER';
 export const REMOVE_GENDER = 'REMOVE_GENDER';
-
-export function decrementProgress() {
-  return { type: DEC_PROGRESS };
-}
-
-export function incrementProgress() {
-  return {
-    type: INC_PROGRESS,
-  };
-}
-
-export function resetProgress() {
-  return {
-    type: RESET_PROGRESS,
-  };
-}
-
-export function updateUsername(payload) {
-  return {
-    type: UPDATE_USERNAME,
-    payload,
-  };
-}
-
-export function updateEmoji(payload) {
-  return {
-    type: UPDATE_EMOJI,
-    payload,
-  };
-}
-
-export function updateEmail(payload) {
-  return {
-    type: UPDATE_EMAIL,
-    payload,
-  };
-}
-
-export function updatePassword(payload) {
-  return {
-    type: UPDATE_PASSWORD,
-    payload,
-  };
-}
-
-export function updateBirthyear(payload) {
-  return {
-    type: UPDATE_BIRTHYEAR,
-    payload,
-  };
-}
-
-export function addGender(payload) {
-  return {
-    type: ADD_GENDER,
-    payload,
-  };
-}
-
-export function removeGender(payload) {
-  return {
-    type: REMOVE_GENDER,
-    payload,
-  };
-}
-
-export function updateImage(payload) {
-  return {
-    type: UPDATE_IMAGE,
-    payload,
-  };
-}
+export const UPDATE_VALIDATION_ERROR = 'UPDATE_VALIDATION_ERROR';
+export const UPDATE_ERROR = 'UPDATE_ERROR';
 
 const initialState = {
   signupProgress: 1,
@@ -102,6 +33,29 @@ const initialState = {
   chosenPersonalities: [],
   choseTags: [],
 };
+
+export function decrementProgress() {
+  return { type: DEC_PROGRESS };
+}
+
+export function incrementProgress() {
+  return {
+    type: INC_PROGRESS,
+  };
+}
+
+export function resetProgress() {
+  return {
+    type: RESET_PROGRESS,
+  };
+}
+
+export function updateUserInfos(payload, actionType) {
+  return {
+    type: actionType,
+    payload,
+  };
+}
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -136,6 +90,12 @@ export default function(state = initialState, action) {
       break;
     case UPDATE_IMAGE:
       state.userInfos.image = action.payload;
+      break;
+    case UPDATE_VALIDATION_ERROR:
+      state.userInfos.validationError = action.payload;
+      break;
+    case UPDATE_ERROR:
+      state.userInfos.error = action.payload;
       break;
   }
   return { ...state };

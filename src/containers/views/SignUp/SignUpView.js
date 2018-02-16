@@ -14,16 +14,20 @@ import SignUpEmoji from '../../../components/SignUp/SignUpEmoji';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import { emojis } from '../../../../assets/misc/emojis';
 import {
-  addGender,
   incrementProgress,
-  removeGender,
   resetProgress,
-  updateBirthyear,
-  updateEmail,
-  updateEmoji,
-  updateImage,
-  updatePassword,
-  updateUsername,
+  updateUserInfos,
+} from '../../../state/signup';
+import {
+  UPDATE_EMOJI,
+  UPDATE_USERNAME,
+  UPDATE_EMAIL,
+  UPDATE_PASSWORD,
+  UPDATE_BIRTHYEAR,
+  UPDATE_IMAGE,
+  ADD_GENDER,
+  REMOVE_GENDER,
+  UPDATE_VALIDATION_ERROR,
 } from '../../../state/signup';
 
 const mapStateToProps = state => ({
@@ -42,32 +46,11 @@ const mapDispatchToProps = dispatch => ({
   },
   resetProgressBar: () => dispatch(resetProgress()),
   incProgress: () => dispatch(incrementProgress()),
-  updateEmoji: credentials => dispatch(updateEmoji(credentials)),
-  updateUsername: credentials => dispatch(updateUsername(credentials)),
-  updateEmail: credentials => dispatch(updateEmail(credentials)),
-  updatePassword: credentials => dispatch(updatePassword(credentials)),
-  updateBirthyear: credentials => dispatch(updateBirthyear(credentials)),
-  updateImage: credentials => dispatch(updateImage(credentials)),
-  addGender: credentials => dispatch(addGender(credentials)),
-  removeGender: credentials => dispatch(removeGender(credentials)),
+  updateUserInfos: (credentials, actionType) =>
+    dispatch(updateUserInfos(credentials, actionType)),
 });
 
 class SignUpView extends React.Component {
-  state = {
-    email: '',
-    password: '',
-    username: '',
-    birthyear: '',
-    genders: '',
-    loading: false,
-    error: false,
-    validationError: '',
-  };
-
-  componentWillReceiveProps() {
-    this.setState({ error: true });
-  }
-
   componentWillMount() {
     this.props.resetProgressBar();
   }
@@ -79,27 +62,35 @@ class SignUpView extends React.Component {
     });
 
     if (!result.cancelled) {
-      this.props.updateImage(result);
+      this.props.updateUserInfos(result, UPDATE_IMAGE);
     }
   };
 
   renderStatus() {
-    if (this.state.validationError) {
+    if (this.props.signup.userInfos.validationError) {
       return Alert.alert(
         'Validation Error',
-        this.state.validationError,
-        [{ text: 'OK', onPress: () => null }],
+        this.props.signup.userInfos.validationError,
+        [
+          {
+            text: 'OK',
+            onPress: () =>
+              this.props.updateUserInfos('', UPDATE_VALIDATION_ERROR),
+          },
+        ],
         { cancelable: false },
       );
     }
-    if (this.state.error && this.props.auth.error) {
+    /*if (this.props.auth.error) {
       return Alert.alert(
         'Error',
         this.props.auth.error.message,
-        [{ text: 'OK', onPress: () => null }],
-        { cancelable: false },
+        [{text: 'OK', onPress: () => {
+          console.log(this.props.auth.error);
+          }}],
+        {cancelable: false},
       );
-    }
+    }*/
   }
 
   signUp() {
@@ -111,28 +102,17 @@ class SignUpView extends React.Component {
       genders,
       image,
       emoji,
-    } = this.state;
+    } = this.props.signup.userInfos;
     let userData = { email, password, username, birthyear, emoji };
-
     if (!email || !password || !username || !birthyear) {
-      return this.setState({
-        validationError: 'Please enter all required fields',
-      });
+      return this.props.updateUserInfos(
+        'Please enter all required fields',
+        UPDATE_VALIDATION_ERROR,
+      );
     }
-
     let formdata = this.createFormData(userData, image, genders);
-
     this.props.incProgress();
-
     this.props.signUp(formdata);
-
-    /*    if (!this.props.signup.userCreated) {
-      this.props.signUp(formdata);
-      this.props.toggleUser();
-    } else {
-      //Navigate
-      this.props.openSignUpLocation();
-    }*/
   }
 
   createFormData(userData, image, genders) {
@@ -151,7 +131,7 @@ class SignUpView extends React.Component {
     }
 
     if (userData) {
-      for (var key in userData) {
+      for (let key in userData) {
         if (userData[key]) {
           tempFormData.append(key, userData[key]);
         }
@@ -161,24 +141,19 @@ class SignUpView extends React.Component {
     return tempFormData;
   }
 
-  selectEmoji(emoji) {
-    this.setState({ emoji });
-  }
-
   updateGenders(value) {
     if (this.props.signup.userInfos.genders.indexOf(value) > -1) {
-      //Remove a gender
-      this.props.removeGender(value);
+      this.props.updateUserInfos(value, REMOVE_GENDER);
     } else {
-      //Update genders
-      this.props.addGender(value);
+      this.props.updateUserInfos(value, ADD_GENDER);
     }
   }
 
   updateEmoji(emoji) {
-    if (emoji !== this.props.signup.userInfos.emoji) {
-      this.props.updateEmoji(emoji);
-    }
+    this.props.updateUserInfos(
+      emoji !== this.props.signup.userInfos.emoji ? emoji : null,
+      UPDATE_EMOJI,
+    );
   }
 
   renderEmojis() {
@@ -198,9 +173,13 @@ class SignUpView extends React.Component {
     }
   }
 
+  //Verify the email
+  verifyBirthYear() {
+    console.log('Test');
+  }
+
   render() {
     this.renderStatus();
-    const image = { uri: this.state.image };
     return (
       <KeyboardAwareScrollView
         extraHeight={30}
@@ -215,7 +194,6 @@ class SignUpView extends React.Component {
             <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
               PICK YOUR MOOD
             </LabelText>
-            {/* change to FlatList later on to render form database? */}
             <ScrollViewPhoto
               contentContainerStyle={styles.scrollViewMoodContainer}
               showsHorizontalScrollIndicator={false}
@@ -233,7 +211,8 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="(NICK)NAME*"
-                  onChangeText={username => this.props.updateUsername(username)}
+                  onChangeText={username =>
+                    this.props.updateUserInfos(username, UPDATE_USERNAME)}
                   value={this.props.signup.userInfos.username}
                   onSubmitEditing={() => {
                     this._emailInput.focus();
@@ -259,7 +238,8 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="EMAIL*"
-                  onChangeText={email => this.props.updateEmail(email)}
+                  onChangeText={email =>
+                    this.props.updateUserInfos(email, UPDATE_EMAIL)}
                   value={this.props.signup.userInfos.email}
                 />
               </LabelView>
@@ -281,7 +261,8 @@ class SignUpView extends React.Component {
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
                   placeholder="PASSWORD*"
-                  onChangeText={password => this.props.updatePassword(password)}
+                  onChangeText={password =>
+                    this.props.updateUserInfos(password, UPDATE_PASSWORD)}
                   value={this.props.signup.userInfos.password}
                 />
               </LabelView>
@@ -300,7 +281,8 @@ class SignUpView extends React.Component {
                   returnKeyType="next"
                   placeholder="BIRTH YEAR*"
                   onChangeText={birthyear =>
-                    this.props.updateBirthyear(birthyear)}
+                    this.props.updateUserInfos(birthyear, UPDATE_BIRTHYEAR)}
+                  onEndEditing={() => this.verifyBirthYear()}
                   value={this.props.signup.userInfos.birthyear}
                 />
               </LabelView>
