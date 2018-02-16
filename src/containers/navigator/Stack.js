@@ -16,6 +16,7 @@ import ChatView from '../views/Chat/ChatView';
 import ChatRequest from '../views/Chat/ChatRequest';
 import SignUpYeahAndNaah from '../views/SignUp/SignUpYeahAndNaah';
 import UsersForTagView from '../views/UsersForTagView';
+import formTest from '../views/SignUp/SignUpFormTest';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -44,6 +45,10 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
+    /*Test: {
+      screen: formTest,
+      navigationOptions: {header: () => null},
+    },*/
     Welcome: {
       screen: WelcomeView,
       navigationOptions: { header: () => null },

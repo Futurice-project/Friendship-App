@@ -226,7 +226,6 @@ class SignUpView extends React.Component {
             <LabelContainer>
               <LabelView>
                 <TextInput
-                  autoCorrect={false}
                   ref={component => (this._emailInput = component)}
                   onSubmitEditing={() => {
                     this._passwordInput.focus();

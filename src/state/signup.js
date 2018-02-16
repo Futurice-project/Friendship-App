@@ -21,7 +21,7 @@ const initialState = {
     email: '',
     emoji: null,
     password: '',
-    username: '',
+    username: ' ',
     birthyear: '',
     genders: [],
     image: null,

@@ -6,6 +6,7 @@ import PersonalityStateReducer from '../state/personalities';
 import TagStateReducer from '../state/tags';
 import KeyboardStateReducer from '../state/keyboard';
 import SignUpReducer from '../state/signup';
+import { reducer as formReducer } from 'redux-form';
 
 const reducers = {
   // ## Reducers ##
@@ -16,6 +17,7 @@ const reducers = {
   keyboardState: KeyboardStateReducer,
   tagState: TagStateReducer,
   signup: SignUpReducer,
+  signupForm: formReducer,
 
   //
   ...restReducers,
