@@ -9,8 +9,8 @@ import {
   DescriptionWrapper,
 } from '../../components/Layout/Layout';
 import { Description } from '../../components/Layout/TextLayout';
-
 import EventTopPart from '../../components/Events/EventTopPart';
+import TabEvent from '../../components/Events/TabEvent';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -79,6 +79,7 @@ class EventDetailView extends Component {
           <DescriptionWrapper>
             <Description>{description}</Description>
           </DescriptionWrapper>
+          <TabEvent />
         </EventContainer>
       );
     }
