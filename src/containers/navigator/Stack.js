@@ -45,10 +45,10 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
-    /*Test: {
+    Test: {
       screen: formTest,
-      navigationOptions: {header: () => null},
-    },*/
+      navigationOptions: { header: () => null },
+    },
     Welcome: {
       screen: WelcomeView,
       navigationOptions: { header: () => null },

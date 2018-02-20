@@ -2,11 +2,15 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native';
 
-export default class GenderBox extends React.Component {
+export default class SignUpEmoji extends React.Component {
   state = { selected: false };
 
   componentWillReceiveProps(nextProps) {
+    console.log('HELLO ');
+    console.log(nextProps);
     const { emoji, selectedEmoji } = nextProps;
+    console.log(emoji);
+    console.log('selectedEmoji : ' + selectedEmoji);
     if (emoji === selectedEmoji) {
       return this.setState({ selected: true });
     }
@@ -15,7 +19,9 @@ export default class GenderBox extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={() => this.props.updateEmoji()}>
+      <TouchableOpacity
+        onPress={() => this.props.updateEmoji(this.props.emoji)}
+      >
         <MoodContainer
           style={{
             backgroundColor: this.state.selected ? '#ff8a65' : '#ffffff',

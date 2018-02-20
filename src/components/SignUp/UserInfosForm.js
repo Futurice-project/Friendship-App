@@ -3,25 +3,16 @@ import { reduxForm, Field } from 'redux-form';
 import { ScrollView, Text, TouchableOpacity } from 'react-native';
 
 import MyTextInput from './MyTextInput';
+import { emojis } from '../../../assets/misc/emojis';
+import SignUpEmoji from './SignUpEmoji';
+import { UPDATE_EMOJI } from '../../state/signup';
+import styled from 'styled-components/native/index';
+import Emoji from './Emoji';
 
-function MyForm(props) {
+function MyForm({ handleChange, value }) {
   return (
     <ScrollView keyboardShouldPersistTaps={'handled'}>
-      <Text>Email</Text>
-      <Field
-        name={'username'}
-        component={MyTextInput}
-        validate={[
-          val => (val ? undefined : 'Password field is required'),
-          val =>
-            val && val.length >= 8
-              ? undefined
-              : 'Password must be at least 8 characters long',
-        ]}
-      />
-      <TouchableOpacity onPress={props.handleSubmit}>
-        <Text>Submit!</Text>
-      </TouchableOpacity>
+      <Field name={'emoji'} component={Emoji} />
     </ScrollView>
   );
 }

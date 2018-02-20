@@ -17,10 +17,7 @@ export default function MyTextInput(props) {
         placeholderTextColor="#4a4a4a"
         placeholder="(NICK)NAME*"
         onChangeText={input.onChange}
-        value={input.value}
-        onSubmitEditing={() => {
-          this._emailInput.focus();
-        }}
+        value={input.username}
       />
     </View>
   );
