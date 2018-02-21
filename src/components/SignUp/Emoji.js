@@ -3,37 +3,54 @@ import styled from 'styled-components/native/index';
 import React from 'react';
 import SignUpEmoji from './SignUpEmoji';
 
-export default function Emoji(props) {
-  const { input } = props;
-  return (
-    <ScrollViewPhoto
-      contentContainerStyle={styles.scrollViewMoodContainer}
-      showsHorizontalScrollIndicator={false}
-      horizontal
-      style={{ height: 70, marginTop: 22 }}
-    >
-      {this.renderEmojis(input)}
-    </ScrollViewPhoto>
-  );
+export default class Emoji extends React.Component {
+  state = {
+    emoji: '',
+  };
+
+  updateEmoji = newEmoji => {
+    this.setState({ emoji: newEmoji });
+  };
+
+  componentWillUpdate() {
+    console.log('Updating ...');
+  }
+
+  render() {
+    console.log('Rendering ...');
+    const { input } = this.props;
+    return (
+      <ScrollViewPhoto
+        contentContainerStyle={styles.scrollViewMoodContainer}
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        style={{ height: 70, marginTop: 22 }}
+      >
+        {this.renderEmojis(input)}
+      </ScrollViewPhoto>
+    );
+  }
+
+  checkEmoji(e) {
+    return e === this.state.emoji ? '' : e;
+  }
+
+  renderEmojis(input) {
+    return emojis.map(emoji => (
+      <SignUpEmoji
+        updateEmoji={e => {
+          let result = this.checkEmoji(e);
+          input.onChange(result);
+          this.updateEmoji(result);
+        }} //() => this.updateEmoji(emoji, input)
+        selectedEmoji={input.emoji} //this.props.signup.userInfos.emoji
+        key={emoji}
+        emoji={emoji}
+        selected={this.state.emoji === emoji}
+      />
+    ));
+  }
 }
-
-renderEmojis = input => {
-  return emojis.map(emoji => (
-    <SignUpEmoji
-      updateEmoji={input.onChange} //() => this.updateEmoji(emoji, input)
-      selectedEmoji={input.emoji} //this.props.signup.userInfos.emoji
-      key={emoji}
-      emoji={emoji}
-    />
-  ));
-};
-
-updateEmoji = (emoji, input) => {
-  /*this.props.updateUserInfos(
-    emoji !== this.props.signup.userInfos.emoji ? emoji : null,
-    UPDATE_EMOJI,
-  );*/
-};
 
 const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
 
