@@ -10,6 +10,7 @@ import {
   updateUserInfos,
 } from '../../../state/signup';
 import UserInfosForm from '../../../components/SignUp/UserInfosForm';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -65,7 +66,16 @@ class SignUpView extends React.Component {
 
   render() {
     //this.renderStatus();
-    return <UserInfosForm />;
+    return (
+      <KeyboardAwareScrollView
+        extraHeight={30}
+        enableResetScrollToCoords={false}
+        enableOnAndroid={true}
+        enableAutoAutomaticScroll={true}
+      >
+        <UserInfosForm />
+      </KeyboardAwareScrollView>
+    );
   }
 }
 

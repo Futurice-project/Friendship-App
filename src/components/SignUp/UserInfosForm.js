@@ -1,22 +1,33 @@
 import React from 'react';
-import { reduxForm, Field, FormSection, FieldArray } from 'redux-form';
-import { ScrollView, Text, TouchableOpacity } from 'react-native';
+import { Field, reduxForm } from 'redux-form';
+import { ScrollView } from 'react-native';
 
-import MyTextInput from './MyTextInput';
-import { emojis } from '../../../assets/misc/emojis';
-import SignUpEmoji from './SignUpEmoji';
-import { UPDATE_EMOJI } from '../../state/signup';
-import styled from 'styled-components/native/index';
+import SignUpTextInput from './SignUpTextInput';
 import Emoji from './Emoji';
 
 function MyForm() {
   return (
     <ScrollView keyboardShouldPersistTaps={'handled'}>
       <Field name="emoji" component={Emoji} />
+      <Field
+        name="username"
+        component={SignUpTextInput}
+        placeholder="(NICK)NAME*"
+      />
+      <Field
+        name="email"
+        component={SignUpTextInput}
+        keyboardType={'email-address'}
+        placeholder="EMAIL*"
+      />
+      <Field name="pwd" component={SignUpTextInput} placeholder="PASSWORD*" />
+      <Field
+        name="birthDate"
+        component={SignUpTextInput}
+        placeholder="BIRTH YEAR*"
+        keyboardType="numeric"
+      />
       {/*<FormSection name="userInfos">
-      <Field name="email" component={Email}/>
-        <Field name="pwd"/>
-        <Field name="birthDate"/>
       </FormSection>
       <FormSection name="sexe">
 
