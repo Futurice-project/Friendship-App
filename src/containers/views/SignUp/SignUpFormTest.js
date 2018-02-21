@@ -11,6 +11,7 @@ import {
 } from '../../../state/signup';
 import UserInfosForm from '../../../components/SignUp/UserInfosForm';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { ViewContainer } from '../../../components/Layout/Layout';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -73,7 +74,9 @@ class SignUpView extends React.Component {
         enableOnAndroid={true}
         enableAutoAutomaticScroll={true}
       >
-        <UserInfosForm />
+        <ViewContainer>
+          <UserInfosForm />
+        </ViewContainer>
       </KeyboardAwareScrollView>
     );
   }
