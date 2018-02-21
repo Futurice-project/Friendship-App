@@ -12,12 +12,7 @@ export default class Emoji extends React.Component {
     this.setState({ emoji: newEmoji });
   };
 
-  componentWillUpdate() {
-    console.log('Updating ...');
-  }
-
   render() {
-    console.log('Rendering ...');
     const { input } = this.props;
     return (
       <ScrollViewPhoto
@@ -42,8 +37,8 @@ export default class Emoji extends React.Component {
           let result = this.checkEmoji(e);
           input.onChange(result);
           this.updateEmoji(result);
-        }} //() => this.updateEmoji(emoji, input)
-        selectedEmoji={input.emoji} //this.props.signup.userInfos.emoji
+        }}
+        selectedEmoji={input.emoji}
         key={emoji}
         emoji={emoji}
         selected={this.state.emoji === emoji}

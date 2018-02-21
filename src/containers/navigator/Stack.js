@@ -49,6 +49,10 @@ export default StackNavigator(
       screen: formTest,
       navigationOptions: { header: () => null },
     },
+    SignUp: {
+      screen: SignUpView,
+      navigationOptions: { header: () => null },
+    },
     Welcome: {
       screen: WelcomeView,
       navigationOptions: { header: () => null },
@@ -83,10 +87,6 @@ export default StackNavigator(
     },
     SignIn: {
       screen: SignInView,
-      navigationOptions: { header: () => null },
-    },
-    SignUp: {
-      screen: SignUpView,
       navigationOptions: { header: () => null },
     },
     SignUpPersonality: {

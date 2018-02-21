@@ -3,21 +3,7 @@ import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native';
 
 export default class SignUpEmoji extends React.Component {
-  state = { selected: false };
-
-  componentWillReceiveProps() {
-    //const { emoji, selectedEmoji } = nextProps;
-    console.log('..............................');
-    if (this.props.emoji === this.props.selectedEmoji) {
-      return this.setState({ selected: true });
-    }
-    return this.setState({ selected: false });
-  }
-
   render() {
-    //console.log(this.props.emoji);
-    //console.log(this.props.selectedEmoji);
-    //console.log(this.state.selected);
     return (
       <TouchableOpacity
         onPress={() => this.props.updateEmoji(this.props.emoji)}

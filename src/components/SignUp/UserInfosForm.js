@@ -1,14 +1,14 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Image, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
 import SignUpTextInput from './SignUpTextInput';
 import Emoji from './Emoji';
 import styled from 'styled-components/native/index';
 import ProgressBar from './ProgressBar';
-import SignUpSexe from './SignUpSexe';
 import GenderBox from './GenderBox';
 import RoundTab from '../RoundTab';
+import PhotoBox from './PhotoBox';
 
 function MyForm() {
   {
@@ -131,17 +131,7 @@ function MyForm() {
           contentContainerStyle={styles.scrollViewPhotoContainer}
           horizontal
         >
-          <PhotoBox onPress={this.openImageGallery}>
-            {/*this.props.signup.userInfos.image !== null &&
-            this.props.signup.userInfos.image.uri ? (
-              <Image
-                style={{width: 93, height: 93}}
-                source={this.props.signup.userInfos.image}
-              />
-            ) : (
-              <PlusSignText>+</PlusSignText>
-            )*/}
-          </PhotoBox>
+          <Field name="picture" component={PhotoBox} />
         </ScrollViewPhoto>
         <RoundTabContainer>
           <RoundTab
@@ -156,16 +146,6 @@ function MyForm() {
     </View>
   );
 }
-
-const PhotoBox = styled.TouchableOpacity`
-  width: 93;
-  height: 93;
-  background-color: #e8e9e8;
-  margin-right: 15;
-  border-width: 1;
-  border-color: #839297;
-  justify-content: center;
-`;
 
 const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
 
