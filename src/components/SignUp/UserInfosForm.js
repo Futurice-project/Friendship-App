@@ -1,11 +1,14 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { ScrollView, View } from 'react-native';
+import { Image, TextInput, View } from 'react-native';
 
 import SignUpTextInput from './SignUpTextInput';
 import Emoji from './Emoji';
 import styled from 'styled-components/native/index';
 import ProgressBar from './ProgressBar';
+import SignUpSexe from './SignUpSexe';
+import GenderBox from './GenderBox';
+import RoundTab from '../RoundTab';
 
 function MyForm() {
   {
@@ -71,10 +74,118 @@ function MyForm() {
             </LabelTextHelper>
           </View>
         </LabelContainer>
+        <LabelContainer>
+          <View style={{ width: 278 }}>
+            <TextInput
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+              placeholderTextColor="#4a4a4a"
+              placeholder="GENDER*"
+              value=""
+              editable={false}
+            />
+          </View>
+          <View style={{ width: 278 }}>
+            <LabelTextHelper>(visible)</LabelTextHelper>
+          </View>
+          <GenderBoxContainer style={{ height: 44 }}>
+            <GenderBox
+              updateGenders={() => this.updateGenders(1)}
+              gender="WOMAN"
+            />
+            <GenderBox
+              updateGenders={() => this.updateGenders(2)}
+              gender="MAN"
+            />
+          </GenderBoxContainer>
+          <GenderBoxContainer style={{ height: 44, marginLeft: '38%' }}>
+            <GenderBox
+              updateGenders={() => this.updateGenders(3)}
+              gender="HUMAN"
+            />
+            <GenderBox
+              updateGenders={() => this.updateGenders(4)}
+              gender="OTHER"
+            />
+          </GenderBoxContainer>
+        </LabelContainer>
       </FirstLabelWrapper>
+
+      <SecondLabelWrapper>
+        <LabelText
+          style={{
+            marginLeft: 30,
+            color: '#4a4a4a',
+            fontSize: 15,
+            fontFamily: 'NunitoSans-SemiBold',
+          }}
+        >
+          ADD PHOTO
+        </LabelText>
+        <View style={{ width: 278, marginLeft: 30 }}>
+          <LabelTextHelper>
+            This can be a photo of anything you like
+          </LabelTextHelper>
+        </View>
+        <ScrollViewPhoto
+          contentContainerStyle={styles.scrollViewPhotoContainer}
+          horizontal
+        >
+          <PhotoBox onPress={this.openImageGallery}>
+            {/*this.props.signup.userInfos.image !== null &&
+            this.props.signup.userInfos.image.uri ? (
+              <Image
+                style={{width: 93, height: 93}}
+                source={this.props.signup.userInfos.image}
+              />
+            ) : (
+              <PlusSignText>+</PlusSignText>
+            )*/}
+          </PhotoBox>
+        </ScrollViewPhoto>
+        <RoundTabContainer>
+          <RoundTab
+            titleColor="white"
+            tint="#2d4359"
+            title="Next"
+            style={{ flex: 1 }}
+            onPress={() => {}}
+          />
+        </RoundTabContainer>
+      </SecondLabelWrapper>
     </View>
   );
 }
+
+const PhotoBox = styled.TouchableOpacity`
+  width: 93;
+  height: 93;
+  background-color: #e8e9e8;
+  margin-right: 15;
+  border-width: 1;
+  border-color: #839297;
+  justify-content: center;
+`;
+
+const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
+
+const RoundTabContainer = styled.View`margin-top: auto;`;
+
+const SecondLabelWrapper = styled.View`
+  padding-top: 29;
+  width: 100%;
+  height: 276;
+  flex-direction: column;
+  background-color: #e8e9e8;
+`;
+
+const GenderBoxContainer = styled.View`
+  height: 44;
+  width: 100%;
+  margin-left: 26%;
+  flex-direction: row;
+  margin-top: 12;
+`;
 
 const FirstLabelWrapper = styled.View`
   width: 100%;
@@ -131,5 +242,51 @@ const LabelTextHelper = styled.Text`
   font-size: 14;
   color: #9b9b9b;
 `;
+
+const styles = {
+  headerText: {
+    fontFamily: 'NunitoSans-SemiBold',
+    fontSize: 20,
+    color: '#ff8a65',
+  },
+  buttonTextStyle: {
+    width: 230,
+    height: 27,
+    fontSize: 20,
+    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Regular',
+    textAlign: 'center',
+    color: 'white',
+  },
+  statusTextStyle: {
+    fontFamily: 'NunitoSans-Regular',
+    width: '100%',
+    height: 20,
+    fontSize: 15,
+    textAlign: 'center',
+    color: '#f673f7',
+    marginBottom: 10,
+  },
+  textStyle: {
+    fontFamily: 'NunitoSans-Regular',
+    width: '100%',
+    height: 20,
+    fontSize: 15,
+    textAlign: 'center',
+    color: '#f9f7f6',
+    marginBottom: 10,
+  },
+  scrollViewPhotoContainer: {
+    justifyContent: 'space-around',
+    height: 93,
+    paddingLeft: 30,
+  },
+  scrollViewMoodContainer: {
+    justifyContent: 'space-around',
+    height: 70,
+    paddingRight: 23,
+    paddingLeft: 23,
+  },
+};
 
 export default reduxForm({ form: 'SignUp' })(MyForm);
