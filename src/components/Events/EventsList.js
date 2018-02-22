@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
 
 import EventsDetail from './EventsDetail';
 
@@ -7,7 +7,8 @@ const EventsList = ({ events }) => {
   const renderItem = ({ item }) => (
     <EventsDetail
       title={item.title}
-      location={item.location}
+      city={item.city}
+      address={item.address}
       date={item.eventDate}
       id={item.id}
     />

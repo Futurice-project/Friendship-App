@@ -15,10 +15,13 @@ import TabEvent from '../../components/Events/TabEvent';
 const mapStateToProps = state => ({
   auth: state.auth,
   eventDetails: state.eventDetails,
+  eventParticipants: state.eventParticipants,
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchEvent: eventId => dispatch(rest.actions.eventDetails.get({ eventId })),
+  fetchEventParticipants: (eventId, userId) =>
+    dispatch(rest.actions.eventParticipants.get({ eventId, userId })),
 });
 
 class EventDetailView extends Component {
@@ -28,12 +31,19 @@ class EventDetailView extends Component {
 
   componentDidMount = () => {
     const { eventId } = this.props.navigation.state.params;
+    const personId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
     this.props.fetchEvent(eventId);
+    this.props.fetchEventParticipants(eventId, personId);
   };
 
   componentWillReceiveProps(nextProps) {
     // render the event details when we have the data.
-    if (!nextProps.eventDetails.loading) {
+    if (
+      !nextProps.eventDetails.loading &&
+      !nextProps.eventParticipants.loading
+    ) {
       this.setState({
         loaded: true,
       });
@@ -56,7 +66,6 @@ class EventDetailView extends Component {
     if (!this.state.loaded) {
       return <ActivityIndicator />;
     } else {
-      console.log(this.props.eventDetails.data);
       const { title, description, location } = this.props.eventDetails.data;
 
       // if there is no picture for the user we use a default image
@@ -79,7 +88,7 @@ class EventDetailView extends Component {
           <DescriptionWrapper>
             <Description>{description}</Description>
           </DescriptionWrapper>
-          <TabEvent />
+          <TabEvent participants={this.props.eventParticipants} />
         </EventContainer>
       );
     }

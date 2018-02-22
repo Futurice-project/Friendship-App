@@ -46,10 +46,8 @@ class EventsView extends Component {
   render = () => {
     if (!this.props.auth.data.decoded) {
       return (
-        <View style={{ backgroundColor: '#e8e9e8' }}>
-          <Text style={{ color: 'red', fontSize: 15 }}>
-            You need to sign in!
-          </Text>
+        <View style={{ marginTop: 30 }}>
+          <Text style={{ alignSelf: 'center' }}>You need to sign in!</Text>
         </View>
       );
     }

@@ -29,6 +29,7 @@ const persistConfig = {
     'createUserLocations',
     'events',
     'eventDetails',
+    'eventParticipants',
   ],
 };
 

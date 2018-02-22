@@ -33,14 +33,28 @@ class EventsDetail extends Component {
     }
   };
 
+  renderDateAndTime = date => {
+    const eventTime = moment(new Date(date)).format('HH:mm');
+    let eventDate;
+    new Date().getMonth() === new Date(date).getMonth()
+      ? (eventDate = moment(new Date(date)).format('dddd, Do'))
+      : (eventDate = moment(new Date(date)).format('dddd, Do MMM'));
+    return (
+      <CardSection>
+        <Text>{eventDate}</Text>
+        <Text style={{ marginLeft: 10 }}>{eventTime}</Text>
+      </CardSection>
+    );
+  };
+
   render = () => {
-    const { title, location, date, id } = this.props;
+    const { title, city, address, date, id } = this.props;
     const { titleTextStyle } = styles;
+    const eventDate = moment(new Date(date)).format('dddd, Do MMM');
+    const eventTime = moment(new Date(date)).format('HH:mm');
     return (
       <Card>
-        <CardSection>
-          <Text>{moment(new Date(date)).format('dddd, Do MMM')}</Text>
-        </CardSection>
+        {this.renderDateAndTime(date)}
 
         <CardSection>
           <TouchableOpacity onPress={() => this.props.openEvent(id)}>
@@ -50,7 +64,7 @@ class EventsDetail extends Component {
 
         <CardSection>
           <TouchableOpacity onPress={() => this.openMap(location)}>
-            <Text>{location}</Text>
+            <Text>{`${city}, ${address}`}</Text>
           </TouchableOpacity>
         </CardSection>
       </Card>

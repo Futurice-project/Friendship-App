@@ -5,13 +5,13 @@ import ScrollableTabView, {
 } from 'react-native-scrollable-tab-view';
 import styled from 'styled-components/native';
 import Tag from '../Tags';
-import UserDetail from './UserDetail';
+import ParticipantList from './ParticipantList';
 
 const ButtonOption = styled.View`
   flex: 1;
   align-items: center;
-  marginBottom: 50;
-  marginTop: 20;
+  marginBottom: 30;
+  marginTop: 30;
 `;
 
 export default class TabEvent extends PureComponent {
@@ -26,21 +26,13 @@ export default class TabEvent extends PureComponent {
 
   renderJoinThis() {
     return (
-      <View style={{ backgroundColor: this.state.backcolor }}>
+      <View style={{ backgroundColor: '#ffffff' }}>
         <ButtonOption>
           <TouchableOpacity
             onPress={this._onPressButton}
-            style={[
-              styles.buttonStyle,
-              { backgroundColor: this.state.colorBackButton },
-            ]}
+            style={[styles.buttonStyle, { backgroundColor: '#F9F6F1' }]}
           >
-            <Text
-              style={[
-                styles.textButtonStyle,
-                { color: this.state.colorTextButton },
-              ]}
-            >
+            <Text style={[styles.textButtonStyle, { color: '#2d4359' }]}>
               Join this
             </Text>
           </TouchableOpacity>
@@ -50,12 +42,11 @@ export default class TabEvent extends PureComponent {
   }
 
   render = () => {
+    console.log(this.props.participants.data[0].rows);
     return (
-      <View>
+      <View style={{ backgroundColor: '#ffffff' }}>
         {this.renderJoinThis()}
-        <Text>Group Participants</Text>
-        <UserDetail />
-        <UserDetail />
+        <ParticipantList participants={this.props.participants} />
         {this.renderJoinThis()}
       </View>
     );

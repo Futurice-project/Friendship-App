@@ -23,21 +23,6 @@ import resolveAssetSource from 'resolveAssetSource';
 const { width, height } = resolveAssetSource(waveShape);
 
 const EventTopPart = props => {
-  // const {
-  //   birthyear,
-  //   emoji,
-  //   genders,
-  //   location,
-  //   navigateBack,
-  //   numberOfNaah,
-  //   numberOfYeah,
-  //   srcImage,
-  //   showModal,
-  //   username,
-  //   myProfile,
-  //   genderList,
-  // } = props;
-
   const { eventTitle, location, srcImage, navigateBack } = props;
 
   const displaySettingsButton = () => {
