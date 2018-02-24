@@ -23,7 +23,7 @@ import resolveAssetSource from 'resolveAssetSource';
 const { width, height } = resolveAssetSource(waveShape);
 
 const EventTopPart = props => {
-  const { eventTitle, location, srcImage, navigateBack } = props;
+  const { eventTitle, city, address, srcImage, navigateBack } = props;
 
   const displaySettingsButton = () => {
     return (
@@ -68,7 +68,9 @@ const EventTopPart = props => {
         <View style={{ backgroundColor: '#F9F6F1' }}>
           <TouchableOpacity onPress={() => openMap(location)}>
             <Details>
-              <LocationText>{location ? location : 'Narnia'}</LocationText>
+              <LocationText>
+                {city && address ? `${city}, ${address}` : 'Narnia'}
+              </LocationText>
             </Details>
           </TouchableOpacity>
         </View>

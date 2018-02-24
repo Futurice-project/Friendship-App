@@ -16,12 +16,17 @@ const mapStateToProps = state => ({
   auth: state.auth,
   eventDetails: state.eventDetails,
   eventParticipants: state.eventParticipants,
+  eventPersonalities: state.eventPersonalities,
+  eventTags: state.eventTags,
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchEvent: eventId => dispatch(rest.actions.eventDetails.get({ eventId })),
   fetchEventParticipants: (eventId, userId) =>
     dispatch(rest.actions.eventParticipants.get({ eventId, userId })),
+  fetchEventPersonalities: eventId =>
+    dispatch(rest.actions.eventPersonalities.get({ eventId })),
+  fetchEventTags: eventId => dispatch(rest.actions.eventTags.get({ eventId })),
 });
 
 class EventDetailView extends Component {
@@ -36,13 +41,17 @@ class EventDetailView extends Component {
       : null;
     this.props.fetchEvent(eventId);
     this.props.fetchEventParticipants(eventId, personId);
+    this.props.fetchEventPersonalities(eventId);
+    this.props.fetchEventTags(eventId);
   };
 
   componentWillReceiveProps(nextProps) {
     // render the event details when we have the data.
     if (
       !nextProps.eventDetails.loading &&
-      !nextProps.eventParticipants.loading
+      !nextProps.eventParticipants.loading &&
+      !nextProps.eventPersonalities.loading &&
+      !nextProps.eventTags.loading
     ) {
       this.setState({
         loaded: true,
@@ -66,7 +75,12 @@ class EventDetailView extends Component {
     if (!this.state.loaded) {
       return <ActivityIndicator />;
     } else {
-      const { title, description, location } = this.props.eventDetails.data;
+      const {
+        title,
+        description,
+        city,
+        address,
+      } = this.props.eventDetails.data;
 
       // if there is no picture for the user we use a default image
       const srcImage = this.props.eventDetails.data.eventImage
@@ -81,14 +95,19 @@ class EventDetailView extends Component {
         <EventContainer>
           <EventTopPart
             eventTitle={title}
-            location={location}
+            address={address}
+            city={city}
             srcImage={srcImage}
             navigateBack={this.navigateBack}
           />
           <DescriptionWrapper>
             <Description>{description}</Description>
           </DescriptionWrapper>
-          <TabEvent participants={this.props.eventParticipants} />
+          <TabEvent
+            participants={this.props.eventParticipants}
+            personalities={this.props.eventPersonalities}
+            tags={this.props.eventTags}
+          />
         </EventContainer>
       );
     }

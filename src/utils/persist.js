@@ -30,6 +30,8 @@ const persistConfig = {
     'events',
     'eventDetails',
     'eventParticipants',
+    'eventPersonalities',
+    'eventTags',
   ],
 };
 

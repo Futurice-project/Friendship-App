@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 
 import Card from './Card';
 import CardSection from './CardSection';
+import TagCircle from './TagCircle';
 
 const ParticipantWrapper = styled.View`
   width: 100%;
@@ -35,6 +36,19 @@ const ParticipantDetail = ({
     headerTextStyle,
     imageStyle,
   } = styles;
+  const commonYeahs = [];
+  for (let i = 0; i < loveCommon; i++) {
+    commonYeahs.push(<TagCircle key={i} />);
+  }
+  const commonNaahs = [];
+  for (let i = 0; i < hateCommon; i++) {
+    commonNaahs.push(<TagCircle key={i} dark />);
+  }
+
+  console.log(commonYeahs);
+  // const renderyeahs = () => {
+  //   return commonYeahs.map((_, index) => <TagCircle key={index} />);
+  // };
 
   return (
     <ParticipantWrapper wrapperColor={index % 2 === 1 ? 1 : ''}>
@@ -43,13 +57,19 @@ const ParticipantDetail = ({
       </View>
       <View style={headerContentStyle}>
         <Text style={headerTextStyle}>{username}</Text>
-        <Text>{`${loveCommon} Yeahs and ${hateCommon} Naahs`}</Text>
+        <View style={styles.commonNaahsAndYeahs}>
+          <View style={styles.commonNaahsAndYeahs}>{commonYeahs}</View>
+          <View style={styles.commonNaahsAndYeahs}>{commonNaahs}</View>
+        </View>
       </View>
     </ParticipantWrapper>
   );
 };
 
 const styles = StyleSheet.create({
+  commonNaahsAndYeahs: {
+    flexDirection: 'row',
+  },
   emojiCircle: {
     width: 66,
     height: 66,

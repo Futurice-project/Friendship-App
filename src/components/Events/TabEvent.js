@@ -6,6 +6,7 @@ import ScrollableTabView, {
 import styled from 'styled-components/native';
 import Tag from '../Tags';
 import ParticipantList from './ParticipantList';
+import Personality from '../SignUp/Personality';
 
 const ButtonOption = styled.View`
   flex: 1;
@@ -41,12 +42,50 @@ export default class TabEvent extends PureComponent {
     );
   }
 
+  renderPersonalities = () => {
+    return this.props.personalities.data.rows.map((personality, index) => {
+      return (
+        <Personality
+          key={index}
+          title={personality.name}
+          image={personality.name}
+          amount={personality.Number_of_Personalities}
+          profile={true}
+        />
+      );
+    });
+  };
+
   render = () => {
-    console.log(this.props.participants.data[0].rows);
+    const yeahs = [];
+    this.props.tags.data.data.map(tag => {
+      if (tag.love) {
+        yeahs.push(tag);
+      }
+    });
+    const naahs = [];
+    this.props.tags.data.data.map(tag => {
+      if (!tag.love) {
+        naahs.push(tag);
+      }
+    });
+
     return (
       <View style={{ backgroundColor: '#ffffff' }}>
         {this.renderJoinThis()}
         <ParticipantList participants={this.props.participants} />
+        <Text style={styles.groupTextStyle}>GROUP PERSONALITIES</Text>
+        <View style={styles.personalitiesView}>
+          {this.renderPersonalities()}
+        </View>
+        <Text style={styles.groupTagsTextStyle}>TOP YEAHS</Text>
+        <View style={styles.tagList}>
+          {yeahs.map((tag, index) => <Tag key={index} data={tag} />)}
+        </View>
+        <Text style={styles.groupTagsTextStyle}>TOP NAAHS</Text>
+        <View style={styles.tagList}>
+          {naahs.map((tag, index) => <Tag key={index} data={tag} dark />)}
+        </View>
         {this.renderJoinThis()}
       </View>
     );
@@ -54,6 +93,32 @@ export default class TabEvent extends PureComponent {
 }
 
 const styles = StyleSheet.create({
+  tagList: {
+    marginVertical: 15,
+    marginHorizontal: 22,
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+  },
+  groupTextStyle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#4a4a4a',
+    marginLeft: 15,
+    marginBottom: 15,
+    marginTop: 25,
+  },
+  groupTagsTextStyle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#4a4a4a',
+    marginLeft: 15,
+    marginTop: 25,
+  },
+  personalitiesView: {
+    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+  },
   textButtonStyle: {
     alignSelf: 'center',
     fontSize: 20,
