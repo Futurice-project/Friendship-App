@@ -69,6 +69,7 @@ export default class TabEvent extends PureComponent {
         naahs.push(tag);
       }
     });
+    console.log(naahs);
 
     return (
       <View style={{ backgroundColor: '#ffffff' }}>
@@ -80,11 +81,15 @@ export default class TabEvent extends PureComponent {
         </View>
         <Text style={styles.groupTagsTextStyle}>TOP YEAHS</Text>
         <View style={styles.tagList}>
-          {yeahs.map((tag, index) => <Tag key={index} data={tag} />)}
+          {yeahs.map((tag, index) => (
+            <Tag key={index} data={tag} amount={tag.count} />
+          ))}
         </View>
         <Text style={styles.groupTagsTextStyle}>TOP NAAHS</Text>
         <View style={styles.tagList}>
-          {naahs.map((tag, index) => <Tag key={index} data={tag} dark />)}
+          {naahs.map((tag, index) => (
+            <Tag key={index} data={tag} amount={tag.count} dark />
+          ))}
         </View>
         {this.renderJoinThis()}
       </View>
