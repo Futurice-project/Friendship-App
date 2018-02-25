@@ -2,8 +2,6 @@ import React from 'react';
 import { Text, View, Image, Linking, StyleSheet, Platform } from 'react-native';
 import styled from 'styled-components/native';
 
-import Card from './Card';
-import CardSection from './CardSection';
 import TagCircle from './TagCircle';
 
 const ParticipantWrapper = styled.View`
@@ -32,9 +30,10 @@ const ParticipantDetail = ({
   const image = require('../../../assets/img/placeholder/grone.jpg');
   const {
     emojiCircle,
-    headerContentStyle,
-    headerTextStyle,
+    usernameContentStyle,
+    usernameTextStyle,
     imageStyle,
+    commonNaahsAndYeahs,
   } = styles;
   const commonYeahs = [];
   for (let i = 0; i < loveCommon; i++) {
@@ -45,21 +44,16 @@ const ParticipantDetail = ({
     commonNaahs.push(<TagCircle key={i} dark />);
   }
 
-  console.log(commonYeahs);
-  // const renderyeahs = () => {
-  //   return commonYeahs.map((_, index) => <TagCircle key={index} />);
-  // };
-
   return (
     <ParticipantWrapper wrapperColor={index % 2 === 1 ? 1 : ''}>
       <View style={emojiCircle}>
         <Text style={styles.emoji}>{emoji ? emoji : '✌️'}</Text>
       </View>
-      <View style={headerContentStyle}>
-        <Text style={headerTextStyle}>{username}</Text>
-        <View style={styles.commonNaahsAndYeahs}>
-          <View style={styles.commonNaahsAndYeahs}>{commonYeahs}</View>
-          <View style={styles.commonNaahsAndYeahs}>{commonNaahs}</View>
+      <View style={usernameContentStyle}>
+        <Text style={usernameTextStyle}>{username}</Text>
+        <View style={commonNaahsAndYeahs}>
+          <View style={commonNaahsAndYeahs}>{commonYeahs}</View>
+          <View style={commonNaahsAndYeahs}>{commonNaahs}</View>
         </View>
       </View>
     </ParticipantWrapper>
@@ -87,11 +81,11 @@ const styles = StyleSheet.create({
     fontSize: Platform.OS === 'android' ? 30 : 40,
     paddingTop: 8,
   },
-  headerContentStyle: {
+  usernameContentStyle: {
     flexDirection: 'column',
     justifyContent: 'center',
   },
-  headerTextStyle: {
+  usernameTextStyle: {
     fontSize: 18,
   },
 });

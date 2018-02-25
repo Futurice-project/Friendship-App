@@ -10,13 +10,7 @@ import {
   View,
 } from 'react-native';
 
-import {
-  CompatibilityText,
-  Details,
-  FrienshipFont,
-  LocationText,
-  EventTitleText,
-} from '../Layout/TextLayout';
+import { Details, LocationText, EventTitleText } from '../Layout/TextLayout';
 import waveShape from '../../../assets/img/roundTab/roundTab.png';
 import resolveAssetSource from 'resolveAssetSource';
 
@@ -80,14 +74,6 @@ const EventTopPart = props => {
 };
 
 const styles = StyleSheet.create({
-  emojiCircle: {
-    alignSelf: 'flex-end',
-    marginRight: 5,
-    width: 64,
-    height: 64,
-    borderRadius: 64,
-    backgroundColor: '#ffffff',
-  },
   eventTitle: {
     marginTop: 25,
   },

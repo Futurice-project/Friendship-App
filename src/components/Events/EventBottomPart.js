@@ -1,8 +1,5 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import ScrollableTabView, {
-  ScrollableTabBar,
-} from 'react-native-scrollable-tab-view';
 import styled from 'styled-components/native';
 import Tag from '../Tags';
 import ParticipantList from './ParticipantList';
@@ -15,27 +12,16 @@ const ButtonOption = styled.View`
   marginTop: 30;
 `;
 
-export default class TabEvent extends PureComponent {
-  state = {
-    backcolor: '#faf6f0',
-    colorActif: '#6eb1ea',
-    colorInactif: '#b3abab',
-    colorTextButton: '#faf6f0',
-    colorBackButton: '#2d4359',
-    tabIndex: 0,
-  };
-
-  renderJoinThis() {
+export default class EventBottomPart extends PureComponent {
+  renderJoinButton() {
     return (
       <View style={{ backgroundColor: '#ffffff' }}>
         <ButtonOption>
           <TouchableOpacity
             onPress={this._onPressButton}
-            style={[styles.buttonStyle, { backgroundColor: '#F9F6F1' }]}
+            style={styles.buttonStyle}
           >
-            <Text style={[styles.textButtonStyle, { color: '#2d4359' }]}>
-              Join this
-            </Text>
+            <Text style={styles.textButtonStyle}>Join this</Text>
           </TouchableOpacity>
         </ButtonOption>
       </View>
@@ -43,10 +29,10 @@ export default class TabEvent extends PureComponent {
   }
 
   renderPersonalities = () => {
-    return this.props.personalities.data.rows.map((personality, index) => {
+    return this.props.personalities.data.rows.map(personality => {
       return (
         <Personality
-          key={index}
+          key={personality.name}
           title={personality.name}
           image={personality.name}
           amount={personality.Number_of_Personalities}
@@ -69,11 +55,10 @@ export default class TabEvent extends PureComponent {
         naahs.push(tag);
       }
     });
-    console.log(naahs);
 
     return (
       <View style={{ backgroundColor: '#ffffff' }}>
-        {this.renderJoinThis()}
+        {this.renderJoinButton()}
         <ParticipantList participants={this.props.participants} />
         <Text style={styles.groupTextStyle}>GROUP PERSONALITIES</Text>
         <View style={styles.personalitiesView}>
@@ -91,7 +76,7 @@ export default class TabEvent extends PureComponent {
             <Tag key={index} data={tag} amount={tag.count} dark />
           ))}
         </View>
-        {this.renderJoinThis()}
+        {this.renderJoinButton()}
       </View>
     );
   };
@@ -128,6 +113,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#2d4359',
   },
   buttonStyle: {
     alignItems: 'center',
@@ -136,5 +122,6 @@ const styles = StyleSheet.create({
     width: 241,
     height: 47,
     borderRadius: 34,
+    backgroundColor: '#F9F6F1',
   },
 });

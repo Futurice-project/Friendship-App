@@ -10,7 +10,6 @@ const ParticipantList = ({ participants }) => {
       emoji={item.emoji}
       hateCommon={item.hateCommon}
       loveCommon={item.loveCommon}
-      id={item.id}
       index={index}
     />
   );

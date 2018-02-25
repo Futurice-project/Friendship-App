@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 
-export default class TagCircle extends Component {
-  render() {
-    let color = this.props.dark ? '#6eb1ea' : '#ff8a65';
-    return <View style={[styles.circleStyle, { backgroundColor: color }]} />;
-  }
-}
+const TagCircle = ({ dark }) => {
+  let color = dark ? '#6eb1ea' : '#ff8a65';
+  return <View style={[styles.circleStyle, { backgroundColor: color }]} />;
+};
 
 const styles = StyleSheet.create({
   circleStyle: {
@@ -19,3 +17,5 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
 });
+
+export default TagCircle;

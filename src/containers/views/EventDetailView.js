@@ -10,7 +10,7 @@ import {
 } from '../../components/Layout/Layout';
 import { Description } from '../../components/Layout/TextLayout';
 import EventTopPart from '../../components/Events/EventTopPart';
-import TabEvent from '../../components/Events/TabEvent';
+import EventBottomPart from '../../components/Events/EventBottomPart';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -103,7 +103,7 @@ class EventDetailView extends Component {
           <DescriptionWrapper>
             <Description>{description}</Description>
           </DescriptionWrapper>
-          <TabEvent
+          <EventBottomPart
             participants={this.props.eventParticipants}
             personalities={this.props.eventPersonalities}
             tags={this.props.eventTags}
