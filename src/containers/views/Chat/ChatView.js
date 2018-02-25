@@ -117,7 +117,7 @@ class ChatView extends Component {
     this.setState({ isReportVisible: false });
   };
 
-  keyExtractor = item => item.id;
+  keyExtractor = (item, index) => index;
 
   renderItem = ({ item }) => {
     const textAlign =

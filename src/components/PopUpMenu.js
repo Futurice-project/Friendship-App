@@ -22,39 +22,37 @@ class PopUpMenu extends React.Component {
   renderProfile = () => (
     <HeaderButton>
       <PopUpMenuCard>
-        <MenuContext>
-          <Menu
-            ref={this.onRef}
-            renderer={renderers.SlideInMenu}
-            onBackdropPress={() => this.closeMenu()}
-          >
-            <MenuTrigger customStyles={styles.triggerStyles}>
-              <Icon name="more-vert" />
-            </MenuTrigger>
-            <MenuOptions customStyles={styles.optionsStyles}>
-              <MenuOption
-                value={1}
-                onSelect={() => alert('navigate to send message')}
-                text="Follow Profile"
-              />
-              <MenuOption
-                value={2}
-                onSelect={() => alert('navigate to send message')}
-                text="Chat"
-              />
-              <MenuOption
-                onSelect={() => alert('navigate to send message')}
-                text="Invite to Group"
-              />
-              <MenuOption
-                onSelect={() => alert('navigate to send message')}
-                text="Invite to Happening"
-              />
-              <MenuOption text="Close" />
-              <MenuOption onSelect={this.props.isReportVisible} text="Report" />
-            </MenuOptions>
-          </Menu>
-        </MenuContext>
+        <Menu
+          ref={this.onRef}
+          renderer={renderers.SlideInMenu}
+          onBackdropPress={() => this.closeMenu()}
+        >
+          <MenuTrigger customStyles={styles.triggerStyles}>
+            <Icon name="more-vert" />
+          </MenuTrigger>
+          <MenuOptions customStyles={styles.optionsStyles}>
+            <MenuOption
+              value={1}
+              onSelect={() => alert('navigate to send message')}
+              text="Follow Profile"
+            />
+            <MenuOption
+              value={2}
+              onSelect={() => alert('navigate to send message')}
+              text="Chat"
+            />
+            <MenuOption
+              onSelect={() => alert('navigate to send message')}
+              text="Invite to Group"
+            />
+            <MenuOption
+              onSelect={() => alert('navigate to send message')}
+              text="Invite to Happening"
+            />
+            <MenuOption text="Close" />
+            <MenuOption onSelect={this.props.isReportVisible} text="Report" />
+          </MenuOptions>
+        </Menu>
       </PopUpMenuCard>
     </HeaderButton>
   );
