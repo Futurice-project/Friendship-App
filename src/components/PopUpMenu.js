@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon } from 'react-native-elements';
+import { StyleSheet, Platform } from 'react-native';
 import {
   Menu,
   MenuContext,
@@ -59,39 +60,37 @@ class PopUpMenu extends React.Component {
   );
 
   renderChatroom = () => (
-    <MenuContext>
-      <Menu
-        ref={this.onRef}
-        renderer={renderers.SlideInMenu}
-        onBackdropPress={() => this.closeMenu()}
-      >
-        <MenuTrigger customStyles={styles.triggerStyles}>
-          <Icon name="more-vert" />
-        </MenuTrigger>
-        <MenuOptions customStyles={styles.optionsStyles}>
-          <MenuOption
-            value={1}
-            onSelect={() => alert('View prof')}
-            text="View Profile"
-          />
-          <MenuOption
-            value={2}
-            onSelect={() => alert('navigate to send message')}
-            text="Invite to squad"
-          />
-          <MenuOption
-            onSelect={() => alert('navigate to send message')}
-            text="Invite to happening"
-          />
-          <MenuOption
-            onSelect={() => alert('navigate to send message')}
-            text="Block"
-          />
-          <MenuOption text="Close" />
-          <MenuOption onSelect={this.props.isReportVisible} text="Report" />
-        </MenuOptions>
-      </Menu>
-    </MenuContext>
+    <Menu
+      ref={this.onRef}
+      renderer={renderers.SlideInMenu}
+      onBackdropPress={() => this.closeMenu()}
+    >
+      <MenuTrigger customStyles={styles.triggerStyles}>
+        <Icon name="more-vert" />
+      </MenuTrigger>
+      <MenuOptions customStyles={styles.optionsStyles}>
+        <MenuOption
+          value={1}
+          onSelect={() => alert('View prof')}
+          text="View Profile"
+        />
+        <MenuOption
+          value={2}
+          onSelect={() => alert('navigate to send message')}
+          text="Invite to squad"
+        />
+        <MenuOption
+          onSelect={() => alert('navigate to send message')}
+          text="Invite to happening"
+        />
+        <MenuOption
+          onSelect={() => alert('navigate to send message')}
+          text="Block"
+        />
+        <MenuOption text="Close" />
+        <MenuOption onSelect={this.props.isReportVisible} text="Report" />
+      </MenuOptions>
+    </Menu>
   );
   render = () =>
     this.props.chat ? this.renderChatroom() : this.renderProfile();
@@ -116,11 +115,22 @@ const styles = {
   },
   optionsStyles: {
     optionsContainer: {
-      backgroundColor: '#2a343c',
-      marginLeft: -185,
-      marginTop: 270,
-      width: 220,
-      borderWidth: 0,
+      ...Platform.select({
+        ios: {
+          backgroundColor: '#2a343c',
+          marginLeft: -185,
+          marginTop: 270,
+          width: 220,
+          borderWidth: 0,
+        },
+        android: {
+          backgroundColor: '#2a343c',
+          marginTop: -230,
+          marginLeft: 140,
+          width: 220,
+          borderWidth: 0,
+        },
+      }),
     },
     optionText: {
       color: '#ffffff',

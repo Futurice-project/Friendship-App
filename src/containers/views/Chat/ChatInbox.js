@@ -20,7 +20,14 @@ const mapDispatchToProps = dispatch => ({
 
 export class ChatInbox extends React.Component {
   componentDidMount() {
-    this.props.chatRoomsWithUserId(this.props.currentUserId);
+    this.timer = setInterval(
+      () => this.props.chatRoomsWithUserId(this.props.currentUserId),
+      2000,
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   keyExtractor = item => item.id;
