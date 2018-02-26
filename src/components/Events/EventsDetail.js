@@ -25,11 +25,13 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class EventsDetail extends Component {
-  openMap = location => {
+  openMap = (city, address) => {
     if (Platform.OS === 'ios') {
-      Linking.openURL(`http://maps.apple.com/maps?address=${location}`);
+      Linking.openURL(`http://maps.apple.com/maps?address=${city}, ${address}`);
     } else if (Platform.OS === 'android') {
-      Linking.openURL(`http://maps.google.com/maps?address=${location}`);
+      Linking.openURL(
+        `http://maps.google.com/maps?address=${city}, ${address}`,
+      );
     }
   };
 
@@ -63,8 +65,8 @@ class EventsDetail extends Component {
         </CardSection>
 
         <CardSection>
-          <TouchableOpacity onPress={() => this.openMap(location)}>
-            <Text>{`${city}, ${address}`}</Text>
+          <TouchableOpacity onPress={() => this.openMap(city, address)}>
+            <Text>{city && address ? `${city}, ${address}` : 'Narnia'}</Text>
           </TouchableOpacity>
         </CardSection>
       </Card>

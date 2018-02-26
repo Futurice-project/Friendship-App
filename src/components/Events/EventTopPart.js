@@ -30,11 +30,13 @@ const EventTopPart = props => {
     );
   };
 
-  const openMap = location => {
+  const openMap = (city, address) => {
     if (Platform.OS === 'ios') {
-      Linking.openURL(`http://maps.apple.com/maps?address=${location}`);
+      Linking.openURL(`http://maps.apple.com/maps?address=${city}, ${address}`);
     } else if (Platform.OS === 'android') {
-      Linking.openURL(`http://maps.google.com/maps?address=${location}`);
+      Linking.openURL(
+        `http://maps.google.com/maps?address=${city}, ${address}`,
+      );
     }
   };
 
@@ -60,7 +62,7 @@ const EventTopPart = props => {
           </EventTitleText>
         </Image>
         <View style={{ backgroundColor: '#F9F6F1' }}>
-          <TouchableOpacity onPress={() => openMap(location)}>
+          <TouchableOpacity onPress={() => openMap(city, address)}>
             <Details>
               <LocationText>
                 {city && address ? `${city}, ${address}` : 'Narnia'}
