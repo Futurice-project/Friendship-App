@@ -67,16 +67,16 @@ class EventDetailView extends Component {
       });
     }
   }
-  handleButtonPress(eventId, userId) {
+  async handleButtonPress(eventId, userId) {
     this.setState({
       loaded: false,
     });
     if (this.props.eventParticipation.data.data === true) {
-      this.props.leaveEvent(eventId, userId);
+      await this.props.leaveEvent(eventId, userId);
     } else {
-      this.props.joinEvent(eventId, userId);
+      await this.props.joinEvent(eventId, userId);
     }
-    // this.props.fetchEventParticipation(eventId, userId);
+    this.props.fetchEventParticipation(eventId, userId);
   }
 
   navigateBack = () => {
