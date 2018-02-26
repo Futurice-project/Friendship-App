@@ -14,18 +14,33 @@ const ButtonOption = styled.View`
 
 export default class EventBottomPart extends PureComponent {
   renderJoinButton() {
-    return (
-      <View style={{ backgroundColor: '#ffffff' }}>
-        <ButtonOption>
-          <TouchableOpacity
-            onPress={this._onPressButton}
-            style={styles.buttonStyle}
-          >
-            <Text style={styles.textButtonStyle}>Join this</Text>
-          </TouchableOpacity>
-        </ButtonOption>
-      </View>
-    );
+    if (this.props.participation.data.data === true) {
+      return (
+        <View style={{ backgroundColor: '#ffffff' }}>
+          <ButtonOption>
+            <TouchableOpacity
+              onPress={this.props.onButtonPress}
+              style={styles.buttonStyle}
+            >
+              <Text style={styles.textButtonStyle}>Leave this</Text>
+            </TouchableOpacity>
+          </ButtonOption>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ backgroundColor: '#ffffff' }}>
+          <ButtonOption>
+            <TouchableOpacity
+              onPress={this.props.onButtonPress}
+              style={styles.buttonStyle}
+            >
+              <Text style={styles.textButtonStyle}>Join this</Text>
+            </TouchableOpacity>
+          </ButtonOption>
+        </View>
+      );
+    }
   }
 
   renderPersonalities = () => {

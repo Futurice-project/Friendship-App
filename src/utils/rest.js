@@ -176,6 +176,10 @@ const rest = reduxApi({
     url: `${apiRoot}/eventTopYeahsNahs/:eventId`,
     crud: true,
   },
+  eventParticipation: {
+    url: `${apiRoot}/eventParticipation/:eventId/:userId`,
+    crud: true,
+  },
 })
   .use('options', (url, params, getState) => {
     const { auth: { data: { token } } } = getState();
