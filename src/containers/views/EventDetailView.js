@@ -18,6 +18,7 @@ const mapStateToProps = state => ({
   eventParticipants: state.eventParticipants,
   eventPersonalities: state.eventPersonalities,
   eventTags: state.eventTags,
+  eventParticipation: state.eventParticipation,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -27,6 +28,12 @@ const mapDispatchToProps = dispatch => ({
   fetchEventPersonalities: eventId =>
     dispatch(rest.actions.eventPersonalities.get({ eventId })),
   fetchEventTags: eventId => dispatch(rest.actions.eventTags.get({ eventId })),
+  fetchEventParticipation: (eventId, userId) =>
+    dispatch(rest.actions.eventParticipation.get({ eventId, userId })),
+  joinEvent: (eventId, userId) =>
+    dispatch(rest.actions.eventParticipation.post({ eventId, userId })),
+  leaveEvent: (eventId, userId) =>
+    dispatch(rest.actions.eventParticipation.delete({ eventId, userId })),
 });
 
 class EventDetailView extends Component {
@@ -36,13 +43,14 @@ class EventDetailView extends Component {
 
   componentDidMount = () => {
     const { eventId } = this.props.navigation.state.params;
-    const personId = this.props.auth.data.decoded
+    const userId = this.props.auth.data.decoded
       ? this.props.auth.data.decoded.id
       : null;
     this.props.fetchEvent(eventId);
-    this.props.fetchEventParticipants(eventId, personId);
+    this.props.fetchEventParticipants(eventId, userId);
     this.props.fetchEventPersonalities(eventId);
     this.props.fetchEventTags(eventId);
+    this.props.fetchEventParticipation(eventId, userId);
   };
 
   componentWillReceiveProps(nextProps) {
@@ -51,12 +59,24 @@ class EventDetailView extends Component {
       !nextProps.eventDetails.loading &&
       !nextProps.eventParticipants.loading &&
       !nextProps.eventPersonalities.loading &&
-      !nextProps.eventTags.loading
+      !nextProps.eventTags.loading &&
+      !nextProps.eventParticipation.loading
     ) {
       this.setState({
         loaded: true,
       });
     }
+  }
+  handleButtonPress(eventId, userId) {
+    this.setState({
+      loaded: false,
+    });
+    if (this.props.eventParticipation.data.data === true) {
+      this.props.leaveEvent(eventId, userId);
+    } else {
+      this.props.joinEvent(eventId, userId);
+    }
+    // this.props.fetchEventParticipation(eventId, userId);
   }
 
   navigateBack = () => {
@@ -75,6 +95,11 @@ class EventDetailView extends Component {
     if (!this.state.loaded) {
       return <ActivityIndicator />;
     } else {
+      const { eventId } = this.props.navigation.state.params;
+      const userId = this.props.auth.data.decoded
+        ? this.props.auth.data.decoded.id
+        : null;
+      console.log(this.props.eventParticipation);
       const {
         title,
         description,
@@ -107,6 +132,8 @@ class EventDetailView extends Component {
             participants={this.props.eventParticipants}
             personalities={this.props.eventPersonalities}
             tags={this.props.eventTags}
+            onButtonPress={() => this.handleButtonPress(eventId, userId)}
+            participation={this.props.eventParticipation}
           />
         </EventContainer>
       );
