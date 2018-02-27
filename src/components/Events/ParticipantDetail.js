@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Linking, StyleSheet, Platform } from 'react-native';
+import { Text, View, StyleSheet, Platform } from 'react-native';
 import styled from 'styled-components/native';
 
 import TagCircle from './TagCircle';
@@ -24,15 +24,12 @@ const ParticipantDetail = ({
   emoji,
   hateCommon,
   loveCommon,
-  id,
   index,
 }) => {
-  const image = require('../../../assets/img/placeholder/grone.jpg');
   const {
     emojiCircle,
     usernameContentStyle,
     usernameTextStyle,
-    imageStyle,
     commonNaahsAndYeahs,
   } = styles;
   const commonYeahs = [];

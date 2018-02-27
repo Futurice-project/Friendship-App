@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import {
-  View,
   Text,
   TouchableOpacity,
   Linking,
