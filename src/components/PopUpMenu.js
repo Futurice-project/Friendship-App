@@ -13,7 +13,6 @@ import { HeaderButton, PopUpMenuCard } from './Layout/Layout';
 
 class PopUpMenu extends React.Component {
   closeMenu() {
-    console.log(this);
     this.menu.close();
   }
   onRef = r => {

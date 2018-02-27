@@ -92,8 +92,8 @@ class ChatView extends Component {
 
   // Modal functions
   showReport = () => {
-    const { isReportVisible } = this.state;
-    this.setState({ isReportVisible: !isReportVisible });
+    const { isReportVisible, reportDescription } = this.state;
+    this.setState({ isReportVisible: !isReportVisible, reportDescription: '' });
   };
 
   sendReport = () => {
@@ -113,7 +113,9 @@ class ChatView extends Component {
         description,
         reported_by,
       }),
-    });
+    })
+      .then(() => alert('success!'))
+      .catch(() => alert('fail!'));
     this.setState({ isReportVisible: false });
   };
 
@@ -227,6 +229,7 @@ class ChatView extends Component {
   };
 
   render() {
+    console.log(this.state.reportDescription);
     let reportTitle = 'Report ';
     return (
       <KeyboardAvoidingView
@@ -276,21 +279,32 @@ class ChatView extends Component {
             style={{
               height: 200,
               backgroundColor: '#eee',
-              borderRadius: 10,
+              borderRadius: 5,
               paddingVertical: 10,
             }}
           >
-            <TextInput
-              autoCorrect={false}
-              autoCapitalize="none"
-              titleColor="#2d4359"
-              title={reportTitle}
-              placeholder="Description"
-              backColor="#faf6f0"
-              onChangeText={reportDescription =>
-                this.setState({ reportDescription })}
-              value={this.state.reportDescription}
-            />
+            <View
+              style={{
+                marginLeft: 10,
+                borderBottomWidth: 1,
+                marginBottom: 20,
+                paddingBottom: 20,
+              }}
+            >
+              <Text style={{ textAlign: 'center', fontSize: 20 }}>Report</Text>
+              <TextInput
+                autoCorrect={false}
+                autoCapitalize="none"
+                titleColor="#2d4359"
+                title={reportTitle}
+                placeholder="Description"
+                multiline={true}
+                backColor="#faf6f0"
+                onChangeText={reportDescription =>
+                  this.setState({ reportDescription })}
+                value={this.state.reportDescription}
+              />
+            </View>
             <View style={{ flexDirection: 'row' }}>
               <Button
                 title="Cancel"
