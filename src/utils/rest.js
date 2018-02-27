@@ -132,6 +132,11 @@ const rest = reduxApi({
       },
     ],
   },
+  updateReadMessages: {
+    url: `${apiRoot}/messages/read`,
+    options: { method: 'PUT' },
+    crud: true,
+  },
   createUserPersonality: {
     url: `${apiRoot}/user_personality`,
     options: { method: 'POST' },
