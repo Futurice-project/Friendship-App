@@ -2,10 +2,12 @@ import React from 'react';
 import { TabNavigator } from 'react-navigation';
 import { IconImage } from '../../components/Layout/Layout';
 
+import StackChat from './StackChat';
 import SearchView from '../views/SearchView';
 import FollowingView from '../views/FollowingView';
 import InboxView from '../views/Chat/ChatInbox';
 import MyProfile from '../views/MyProfileView';
+import EventsView from '../views/EventsView';
 
 const tabNavigationOptions = title => {
   switch (title) {
@@ -77,12 +79,15 @@ export default TabNavigator(
       screen: SearchView,
       navigationOptions: tabNavigationOptions('Search'),
     },
+    Events: {
+      screen: EventsView,
+    },
     Following: {
       screen: FollowingView,
       navigationOptions: tabNavigationOptions('Following'),
     },
     Inbox: {
-      screen: InboxView,
+      screen: StackChat,
       navigationOptions: tabNavigationOptions('Inbox'),
     },
     MyProfile: {

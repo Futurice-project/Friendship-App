@@ -87,6 +87,11 @@ export const ProfileContainer = styled.ScrollView`
   margin-top: 20;
 `;
 
+export const EventContainer = styled.ScrollView`
+  flex: 1;
+  margin-top: 20;
+`;
+
 export const SignUpWrapper = styled.View`
   flex: 1;
   background-color: #efebe9;
