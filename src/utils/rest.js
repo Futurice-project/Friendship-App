@@ -167,6 +167,32 @@ const rest = reduxApi({
     url: `${apiRoot}/user_locations`,
     options: { method: 'POST' },
   },
+  events: {
+    url: `${apiRoot}/events`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  eventDetails: {
+    url: `${apiRoot}/event/:eventId`,
+    crud: true,
+  },
+  eventParticipants: {
+    url: `${apiRoot}/eventParticipants/:eventId/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  eventPersonalities: {
+    url: `${apiRoot}/eventPersonalities/:eventId`,
+    crud: true,
+  },
+  eventTags: {
+    url: `${apiRoot}/eventTopYeahsNahs/:eventId`,
+    crud: true,
+  },
+  eventParticipation: {
+    url: `${apiRoot}/eventParticipation/:eventId/:userId`,
+    crud: true,
+  },
 })
   .use('options', (url, params, getState) => {
     const { auth: { data: { token } } } = getState();
