@@ -30,6 +30,15 @@ const mapDispatchToProps = dispatch => ({
   chatRoomMessages: id => {
     dispatch(rest.actions.chatRoomMessages({ id }));
   },
+  //update all messages that have been read
+  updateReadMessages: messageIdArr => {
+    dispatch(
+      rest.actions.updateReadMessages(
+        {},
+        { body: JSON.stringify({ messageIdArr: messageIdArr }) },
+      ),
+    );
+  },
   sendMessage: (id, textMessage, userId) => {
     dispatch(
       rest.actions.sendMessage(
@@ -90,12 +99,31 @@ class ChatView extends Component {
     });
     this.props.navigation.setParams({ showReport: this.showReport });
     this.props.chatRoomMessages(this.props.navigation.state.params.chatroomId);
+    //update all unread messages after 3 seconds to make sure all the chatroom messages have been fetched
+    setTimeout(() => this.getUnreadMessagesAndUpdateStatus(), 3000);
   };
 
   componentWillReceiveProps = () => {
     if (this.props.chatroom) {
       this.props.navigation.setParams({ chatroom: this.props.chatroom });
     }
+  };
+
+  getUnreadMessagesAndUpdateStatus = () => {
+    //get an array of all the unread messages which have the 'read' field equals to 'false' and user_id not equals to current user id
+    let messageArr = this.props.chatRoom.messages
+      ? this.props.chatRoom.messages.filter(
+          message =>
+            message.read === false &&
+            message.user_id !== this.props.currentUserId,
+        )
+      : [];
+    console.log(messageArr);
+    //get an array of all the id of unread messages
+    let messageIdArr = messageArr.map(message => message.id);
+    console.log(messageIdArr);
+    //call the update function to change the 'read' field into 'true'
+    this.props.updateReadMessages(messageIdArr);
   };
 
   sendMessage = () => {
