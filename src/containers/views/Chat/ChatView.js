@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 import rest from '../../../utils/rest';
 import Button from '../../../components/Button';
 import PopUpMenu from '../../../components/PopUpMenu';
@@ -54,9 +54,10 @@ class ChatView extends Component {
     title: `${navigation.state.params.userEmoji} ${navigation.state.params
       .username}`,
     headerLeft: (
-      <TouchableOpacity
+      <Icon
+        style={{ padding: 15, fontSize: 26 }}
+        name={'ios-arrow-back'}
         onPress={() => {
-          console.log('navReset');
           navigation.dispatch(
             NavigationActions.reset({
               index: 0,
@@ -68,9 +69,7 @@ class ChatView extends Component {
             }),
           );
         }}
-      >
-        <Text> Inbox </Text>
-      </TouchableOpacity>
+      />
     ),
     headerRight: (
       <PopUpMenu isReportVisible={navigation.state.params.showReport} chat />
