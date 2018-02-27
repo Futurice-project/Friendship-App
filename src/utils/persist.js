@@ -28,6 +28,12 @@ const persistConfig = {
     'createUserPersonalities',
     'createUserLocations',
     'personalityState',
+    'events',
+    'eventDetails',
+    'eventParticipants',
+    'eventPersonalities',
+    'eventTags',
+    'eventParticipation',
   ],
 };
 

@@ -7,6 +7,7 @@ import SearchView from '../views/SearchView';
 import FollowingView from '../views/FollowingView';
 import InboxView from '../views/Chat/ChatInbox';
 import MyProfile from '../views/MyProfileView';
+import EventsView from '../views/EventsView';
 
 const tabNavigationOptions = title => {
   switch (title) {
@@ -77,6 +78,9 @@ export default TabNavigator(
     Search: {
       screen: SearchView,
       navigationOptions: tabNavigationOptions('Search'),
+    },
+    Events: {
+      screen: EventsView,
     },
     Following: {
       screen: FollowingView,
