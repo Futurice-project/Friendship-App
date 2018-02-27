@@ -1,17 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
-import styled from 'styled-components/native';
 import Person from './Person';
-
-const ButtonOption = styled.View`
-  flex: 1;
-  align-items: center;
-  marginBottom: 50;
-  marginTop: 20;
-`;
 
 export default class TabForTags extends PureComponent {
   state = {
@@ -26,7 +18,7 @@ export default class TabForTags extends PureComponent {
   //allow when we change the tab to have the good colors
   handleChangeTab = ({ i }) => {
     // **Update ** save current page index
-    if (i == 0) {
+    if (i === 0) {
       // NAAHS
       this.setState({
         backcolor: '#faf6f0',

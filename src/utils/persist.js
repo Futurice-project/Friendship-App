@@ -1,6 +1,5 @@
 import { AsyncStorage } from 'react-native';
 import { persistStore } from 'redux-persist';
-import rest from './rest';
 
 const persistConfig = {
   storage: AsyncStorage,
@@ -28,6 +27,13 @@ const persistConfig = {
     'createUserPersonality',
     'createUserPersonalities',
     'createUserLocations',
+    'personalityState',
+    'events',
+    'eventDetails',
+    'eventParticipants',
+    'eventPersonalities',
+    'eventTags',
+    'eventParticipation',
   ],
 };
 

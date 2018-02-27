@@ -1,21 +1,14 @@
 import React from 'react';
-import { Text, View, TouchableHighlight } from 'react-native';
 import { Icon } from 'react-native-elements';
 import {
   Menu,
   MenuContext,
-  MenuOptions,
   MenuOption,
+  MenuOptions,
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
-
-import Modal from 'react-native-modal';
-import {
-  PopUpMenuCard,
-  TouchableHighlightButton,
-  HeaderButton,
-} from './Layout';
+import { HeaderButton, PopUpMenuCard } from './Layout/Layout';
 
 class PopUpMenu extends React.Component {
   closeMenu() {
