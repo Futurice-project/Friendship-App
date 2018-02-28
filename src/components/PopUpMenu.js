@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'react-native-elements';
-import { StyleSheet, Platform, Dimensions } from 'react-native';
+import { StyleSheet, View, Platform, Dimensions } from 'react-native';
 import {
   Menu,
   MenuContext,
@@ -57,11 +57,7 @@ class PopUpMenu extends React.Component {
   );
 
   renderChatroom = () => (
-    <Menu
-      ref={this.onRef}
-      renderer={renderers.SlideInMenu}
-      onBackdropPress={() => this.closeMenu()}
-    >
+    <Menu ref={this.onRef} onBackdropPress={() => this.closeMenu()}>
       <MenuTrigger customStyles={styles.triggerStyles}>
         <Icon name="more-vert" />
       </MenuTrigger>
@@ -120,22 +116,10 @@ const styles = {
           width: 220,
           borderWidth: 0,
         },
-        android: {
-          backgroundColor: '#2a343c',
-          marginTop: -Dimensions.get('window').height / 2.1,
-          marginLeft: Dimensions.get('window').width / 2.1,
-          width: Dimensions.get('window').width / 1.9,
-          height: Dimensions.get('window').height / 2.26,
-          borderWidth: 0,
-        },
       }),
     },
     optionText: {
-      color: '#ffffff',
       fontSize: 18,
-    },
-    optionWrapper: {
-      padding: 11,
     },
   },
   touchableHighlightProps: {
