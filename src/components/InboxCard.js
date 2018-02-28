@@ -23,6 +23,12 @@ class InboxCard extends React.Component {
   };
 
   componentDidMount() {
+    let messArr = this.props.data.messages;
+    if (messArr.length !== 0) {
+      for (let message of messArr) {
+        console.log(message.read);
+      }
+    }
     this.getTime();
   }
 
@@ -95,6 +101,14 @@ class InboxCard extends React.Component {
 
   render() {
     const { creator, receiver, messages } = this.props.data;
+    const totalUnreadMessages = messages.filter(
+      message =>
+        message.read === false && message.user_id !== this.props.currentUserId,
+    );
+    const unreadMessagesText =
+      totalUnreadMessages.length > 0
+        ? `( ${totalUnreadMessages.length} unread messages )`
+        : '';
     const lastMessage = messages[messages.length - 1];
     const lastMessageText =
       lastMessage.text_message.length > 35
@@ -125,6 +139,7 @@ class InboxCard extends React.Component {
               <Text style={styles.inboxCardName}>{username}</Text>
               <Text style={styles.inboxCardTime}>{this.state.time}</Text>
             </View>
+            <Text style={styles.inboxCardMessage}>{unreadMessagesText}</Text>
             <Text style={styles.inboxCardMessage}>{lastMessageText}</Text>
           </View>
         </View>
