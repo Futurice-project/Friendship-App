@@ -34,3 +34,8 @@ From this page you can see if the server is running or if there are errors.
 ```
 $ heroku run bash
 ```
+
+# list of encountered problems 
+
+- I Had to use yarn to install the dependencies and I had to delete the files created by npm.
+- When using `Heroku run bash` if you push a new master to heroku you have to restart the bash terminal.
