@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'react-native-elements';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, Dimensions } from 'react-native';
 import {
   Menu,
   MenuContext,
@@ -122,9 +122,10 @@ const styles = {
         },
         android: {
           backgroundColor: '#2a343c',
-          marginTop: -230,
-          marginLeft: 140,
-          width: 220,
+          marginTop: -Dimensions.get('window').height / 2.1,
+          marginLeft: Dimensions.get('window').width / 2.1,
+          width: Dimensions.get('window').width / 1.9,
+          height: Dimensions.get('window').height / 2.26,
           borderWidth: 0,
         },
       }),

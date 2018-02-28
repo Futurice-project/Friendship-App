@@ -11,8 +11,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native';
-
 import rest from '../../../utils/rest';
 import Button from '../../../components/Button';
 import PopUpMenu from '../../../components/PopUpMenu';
@@ -229,7 +229,8 @@ class ChatView extends Component {
   };
 
   render() {
-    console.log(this.state.reportDescription);
+    console.log(Dimensions.get('window').width);
+    console.log(Dimensions.get('window').height);
     let reportTitle = 'Report ';
     return (
       <KeyboardAvoidingView
