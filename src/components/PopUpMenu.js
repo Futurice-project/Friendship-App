@@ -21,11 +21,7 @@ class PopUpMenu extends React.Component {
   renderProfile = () => (
     <HeaderButton>
       <PopUpMenuCard>
-        <Menu
-          ref={this.onRef}
-          renderer={renderers.SlideInMenu}
-          onBackdropPress={() => this.closeMenu()}
-        >
+        <Menu ref={this.onRef} onBackdropPress={() => this.closeMenu()}>
           <MenuTrigger customStyles={styles.triggerStyles}>
             <Icon name="more-vert" />
           </MenuTrigger>

@@ -11,7 +11,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Dimensions,
 } from 'react-native';
 import rest from '../../../utils/rest';
 import Button from '../../../components/Button';
@@ -64,6 +63,8 @@ class ChatView extends Component {
     description: '',
     isOptionsVisible: false,
     isReportVisible: false,
+    isReportStatusVisible: false,
+    reportStatusText: '',
   };
 
   componentDidMount = () => {
@@ -114,8 +115,18 @@ class ChatView extends Component {
         reported_by,
       }),
     })
-      .then(() => alert('success!'))
-      .catch(() => alert('fail!'));
+      .then(() =>
+        this.setState({
+          isReportStatusVisible: true,
+          reportStatusText: 'User reported',
+        }),
+      )
+      .catch(() =>
+        this.setState({
+          isReportStatusVisible: true,
+          reportStatusText: 'Report failed',
+        }),
+      );
     this.setState({ isReportVisible: false });
   };
 
@@ -229,8 +240,7 @@ class ChatView extends Component {
   };
 
   render() {
-    console.log(Dimensions.get('window').width);
-    console.log(Dimensions.get('window').height);
+    console.log(this.state.reportStatusText);
     let reportTitle = 'Report ';
     return (
       <KeyboardAvoidingView
@@ -245,7 +255,12 @@ class ChatView extends Component {
           data={this.props.chatRoom.messages || []}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
-          style={{ flex: 1, backgroundColor: 'white' }}
+          style={[
+            { flex: 1 },
+            this.state.isReportVisible || this.state.isReportStatusVisible
+              ? { backgroundColor: 'rgba(0,0,0,0.5)' }
+              : { backgroundColor: 'white' },
+          ]}
         />
         <TextInputCard>
           <TextInput
@@ -273,57 +288,125 @@ class ChatView extends Component {
         </TextInputCard>
         <Modal
           visible={this.state.isReportVisible}
-          animationIn="slideInUp"
-          animationInTiming={200}
+          transparent
+          animationType="slide"
         >
           <View
             style={{
-              height: 200,
-              backgroundColor: '#eee',
+              height: 350,
               borderRadius: 5,
-              paddingVertical: 10,
+              backgroundColor: '#F1F1F3',
+              padding: 20,
+              paddingLeft: 10,
             }}
           >
             <View
               style={{
                 marginLeft: 10,
-                borderBottomWidth: 1,
+                borderBottomWidth: 0.8,
+                borderBottomColor: 'gray',
                 marginBottom: 20,
                 paddingBottom: 20,
               }}
             >
-              <Text style={{ textAlign: 'center', fontSize: 20 }}>Report</Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  paddingBottom: 15,
+                  borderBottomColor: 'gray',
+                  borderBottomWidth: 0.8,
+                }}
+              >
+                Send Report
+              </Text>
+              <Text style={{ marginTop: 10, fontSize: 16, color: '#60686d' }}>
+                Report Title
+              </Text>
+              <TextInput style={styles.reportInput} />
+              <Text style={{ marginTop: 10, fontSize: 16, color: '#60686d' }}>
+                Report Description
+              </Text>
               <TextInput
                 autoCorrect={false}
                 autoCapitalize="none"
-                titleColor="#2d4359"
                 title={reportTitle}
                 placeholder="Description"
                 multiline={true}
-                backColor="#faf6f0"
                 onChangeText={reportDescription =>
                   this.setState({ reportDescription })}
                 value={this.state.reportDescription}
+                style={styles.reportInput}
               />
+              <Text style={{ marginTop: 5, color: '#60686d' }}>
+                *Average response time is 2 days{' '}
+              </Text>
             </View>
-            <View style={{ flexDirection: 'row' }}>
-              <Button
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+              <TouchableOpacity
                 title="Cancel"
-                primary
-                textColor="green"
-                size="half"
-                color="light"
                 onPress={this.showReport}
-              />
-              <Button
+                style={styles.cancelButton}
+              >
+                <Text
+                  style={{
+                    color: '#F9F1EF',
+                    fontSize: 16,
+                    fontWeight: '600',
+                  }}
+                >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
                 title="Report"
-                border
-                textColor="black"
-                size="half"
-                color="dark"
                 onPress={this.sendReport}
-              />
+                style={styles.reportButton}
+              >
+                <Text
+                  style={{
+                    color: '#F9F1EF',
+                    fontSize: 16,
+                    fontWeight: '600',
+                  }}
+                >
+                  Report
+                </Text>
+              </TouchableOpacity>
             </View>
+          </View>
+        </Modal>
+        <Modal
+          visible={this.state.isReportStatusVisible}
+          transparent
+          animationType="slide"
+        >
+          <View
+            style={{
+              height: 150,
+              borderRadius: 10,
+              backgroundColor: '#F1F1F3',
+              padding: 20,
+              paddingLeft: 10,
+            }}
+          >
+            <Text
+              style={{ textAlign: 'center', fontSize: 25, marginBottom: 10 }}
+            >
+              {this.state.reportStatusText}
+            </Text>
+            <TouchableOpacity
+              style={{
+                alignSelf: 'stretch',
+                padding: 10,
+                backgroundColor: 'red',
+                borderRadius: 10,
+              }}
+              onPress={() => this.setState({ isReportStatusVisible: false })}
+            >
+              <Text style={{ textAlign: 'center' }}>OK</Text>
+            </TouchableOpacity>
           </View>
         </Modal>
       </KeyboardAvoidingView>
@@ -348,7 +431,6 @@ const styles = {
     flex: 1,
     padding: 20,
     paddingBottom: 30,
-    backgroundColor: '#f1f1f3',
     margin: 10,
     marginRight: 20,
     marginLeft: 40,
@@ -357,10 +439,42 @@ const styles = {
     flex: 1,
     padding: 20,
     paddingBottom: 30,
-    backgroundColor: '#d8d8d8',
     margin: 10,
     marginRight: 40,
     marginLeft: 20,
+  },
+  reportInput: {
+    borderLeftWidth: 0.5,
+    borderRightWidth: 0.5,
+    borderWidth: 0.5,
+    borderTopWidth: 0.5,
+    borderRadius: 8,
+    height: 40,
+    borderBottomColor: 'grey',
+    borderTopColor: 'grey',
+    borderLeftColor: 'grey',
+    borderRightColor: 'grey',
+    marginLeft: 2,
+    marginTop: 5,
+    paddingRight: 5,
+    paddingLeft: 5,
+    fontSize: 18,
+    lineHeight: 23,
+  },
+  reportButton: {
+    backgroundColor: '#00bfff',
+    borderRadius: 5,
+    borderWidth: 1,
+    padding: 13,
+    borderColor: '#14B28B',
+    marginLeft: 5,
+  },
+  cancelButton: {
+    backgroundColor: '#ed5249',
+    borderRadius: 5,
+    borderWidth: 1,
+    padding: 13,
+    borderColor: '#14B28B',
   },
 };
 
