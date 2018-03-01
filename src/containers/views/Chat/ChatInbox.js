@@ -37,7 +37,6 @@ export class ChatInbox extends React.Component {
   };
 
   render() {
-    console.log(this.props.chatrooms);
     return (
       <View style={{ flex: 1 }}>
         <Text
@@ -51,7 +50,7 @@ export class ChatInbox extends React.Component {
         >
           SUGGESTIONS
         </Text>
-        <SuggestionList />
+        <SuggestionList existingChatRooms={this.props.chatrooms} />
         <RoundTab tint="#ffffff" title="CHATS" fontSize="12" />
         <FlatList
           data={this.props.chatrooms}

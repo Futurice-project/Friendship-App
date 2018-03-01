@@ -1,7 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 
 import rest from '../utils/rest';
 
@@ -45,9 +51,18 @@ export class SuggestionList extends React.Component {
   };
 
   render() {
+    if (!this.props.existingChatRooms) {
+      return <ActivityIndicator />;
+    }
+    const exsitingUsers = this.props.existingChatRooms.map(
+      user => user.receiver.id,
+    );
+    const suggestedUsers = this.props.suggestionUsers.filter(
+      user => exsitingUsers.indexOf(user.id) < 0,
+    );
     return (
       <FlatList
-        data={this.props.suggestionUsers}
+        data={suggestedUsers}
         keyExtractor={this.keyExtractor}
         renderItem={this.renderItem}
         style={{ height: 80, marginTop: 10 }}
