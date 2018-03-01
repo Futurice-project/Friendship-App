@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import rest from '../../../utils/rest';
 import Button from '../../../components/Button';
 import PopUpMenu from '../../../components/PopUpMenu';

@@ -37,6 +37,7 @@ export class ChatInbox extends React.Component {
   };
 
   render() {
+    console.log(this.props.chatrooms);
     return (
       <View style={{ flex: 1 }}>
         <Text
