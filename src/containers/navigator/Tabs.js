@@ -1,13 +1,61 @@
-import { TabNavigator, TabBarBottom } from 'react-navigation';
+import React from 'react';
+import { TabNavigator } from 'react-navigation';
+import { IconImage } from '../../components/Layout/Layout';
 
-// ## View Imports ##
+import SearchView from '../views/SearchView';
+import FollowingView from '../views/FollowingView';
+import InboxView from '../views/Chat/ChatInbox';
+import MyProfile from '../views/MyProfileView';
 
-import PeopleView from '../views/PeopleView';
-import FollowingView from '../views/Following';
-import InboxView from '../views/Inbox';
-import MyProfile from '../views/MyProfile';
+const tabNavigationOptions = title => {
+  switch (title) {
+    case 'Search':
+      return {
+        title,
+        tabBarIcon: ({ tintColor }) => (
+          <IconImage
+            source={require('../../../assets/tab-icon-search.png')}
+            tintColor={tintColor}
+          />
+        ),
+      };
+    case 'Following':
+      return {
+        title,
+        tabBarIcon: ({ tintColor }) => (
+          <IconImage
+            source={require('../../../assets/tab-icon-following.png')}
+            tintColor={tintColor}
+          />
+        ),
+      };
+    case 'Inbox':
+      return {
+        title,
+        tabBarIcon: ({ tintColor }) => (
+          <IconImage
+            source={require('../../../assets/tab-icon-inbox.png')}
+            tintColor={tintColor}
+          />
+        ),
+      };
+    case 'MyProfile':
+      return {
+        title,
+        tabBarIcon: ({ tintColor }) => (
+          <IconImage
+            source={require('../../../assets/tab-icon-myprofile.png')}
+            tintColor={tintColor}
+          />
+        ),
+      };
+    default:
+      break;
+  }
+};
 
 const TabNavigatorConfig = {
+  tabBarPosition: 'bottom',
   tabBarOptions: {
     tintColor: 'black',
     activeTintColor: '#219412',
@@ -15,8 +63,6 @@ const TabNavigatorConfig = {
     style: {
       backgroundColor: 'white',
     },
-    scrollEnabled: true,
-    tabBarComponent: TabBarBottom,
     showIcon: true,
     labelStyle: {
       fontSize: 11,
@@ -27,27 +73,21 @@ const TabNavigatorConfig = {
 
 export default TabNavigator(
   {
-    Search: { screen: PeopleView },
-    Following: { screen: FollowingView },
-    Inbox: { screen: InboxView },
-    MyProfile: { screen: MyProfile },
-
-    // ## End TabNavigator Views ##
-  },
-  {
-    tabBarPosition: 'bottom',
-    tabBarOptions: {
-      tintColor: 'black',
-      activeTintColor: '#219412',
-      inactiveTintColor: '#000000',
-      style: {
-        backgroundColor: 'white',
-      },
-      showIcon: true,
-      labelStyle: {
-        fontSize: 11,
-        paddingBottom: 2,
-      },
+    Search: {
+      screen: SearchView,
+      navigationOptions: tabNavigationOptions('Search'),
+    },
+    Following: {
+      screen: FollowingView,
+      navigationOptions: tabNavigationOptions('Following'),
+    },
+    Inbox: {
+      screen: InboxView,
+      navigationOptions: tabNavigationOptions('Inbox'),
+    },
+    MyProfile: {
+      screen: MyProfile,
+      navigationOptions: tabNavigationOptions('MyProfile'),
     },
   },
   TabNavigatorConfig,

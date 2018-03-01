@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { TouchableHighlight, View, Text } from 'react-native';
+import { Text, TouchableHighlight, View } from 'react-native';
 
 const mapStateToProps = state => ({
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
@@ -89,7 +89,7 @@ class InboxCard extends React.Component {
           ' ' +
           msgTime.toTimeString().split(' ')[0];
       }
-      this.setState({ time: time });
+      this.setState({ time });
     }
   };
 
@@ -101,13 +101,13 @@ class InboxCard extends React.Component {
         ? lastMessage.text_message.slice(0, 35) + '...'
         : lastMessage.text_message;
     const userId =
-      this.props.currentUserId == creator.id ? receiver.id : creator.id;
+      this.props.currentUserId === creator.id ? receiver.id : creator.id;
     const username =
-      this.props.currentUserId == creator.id
+      this.props.currentUserId === creator.id
         ? receiver.username
         : creator.username;
     const emoji =
-      this.props.currentUserId == creator.id ? receiver.emoji : creator.emoji;
+      this.props.currentUserId === creator.id ? receiver.emoji : creator.emoji;
     return (
       <TouchableHighlight
         onPress={() =>

@@ -1,17 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import { FlexRow } from './Layout';
-import styled from 'styled-components/native';
-
-const mapStateToProps = state => ({});
+const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => ({
   openSearchTag: tagId =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SearchList',
+        routeName: 'UsersForTag',
         params: { tagId },
       }),
     ),
