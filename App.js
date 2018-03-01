@@ -88,11 +88,9 @@ export default class App extends React.Component {
 
   renderApp = () =>
     this.state.rehydrated && this.state.fontLoaded ? (
-      <MenuProvider>
-        <Provider store={store}>
-          <Navigator />
-        </Provider>
-      </MenuProvider>
+      <Provider store={store}>
+        <Navigator />
+      </Provider>
     ) : null;
 
   render = () => (
