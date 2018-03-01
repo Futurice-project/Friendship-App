@@ -103,17 +103,6 @@ const styles = {
     },
   },
   optionsStyles: {
-    optionsContainer: {
-      ...Platform.select({
-        ios: {
-          backgroundColor: '#2a343c',
-          marginLeft: -185,
-          marginTop: 270,
-          width: 220,
-          borderWidth: 0,
-        },
-      }),
-    },
     optionText: {
       fontSize: 18,
     },
