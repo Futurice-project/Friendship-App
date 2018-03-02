@@ -3,7 +3,6 @@ import { Icon } from 'react-native-elements';
 import { StyleSheet, View, Platform, Dimensions } from 'react-native';
 import {
   Menu,
-  MenuContext,
   MenuOption,
   MenuOptions,
   MenuTrigger,
