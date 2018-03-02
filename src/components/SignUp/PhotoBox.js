@@ -6,6 +6,7 @@ import { Image } from 'react-native';
 export default class PhotoBox extends React.Component {
   state = {
     selected: false,
+    picture: null,
   };
 
   openImageGallery = async input => {
@@ -16,18 +17,15 @@ export default class PhotoBox extends React.Component {
 
     if (!result.cancelled) {
       input.onChange(result);
-      this.setState({ selected: true });
+      this.setState({ selected: true, picture: result });
     }
   };
 
-  renderPicture(input) {
-    console.log('Rendering picture...');
-    console.log(input);
-    console.log(input.value);
-    console.log(input.name);
-    console.log(input.picture);
-    if (this.state.selected && input.picture) {
-      return <Image style={{ width: 93, height: 93 }} source={input.picture} />;
+  renderPicture() {
+    if (this.state.selected && this.state.picture) {
+      return (
+        <Image style={{ width: 93, height: 93 }} source={this.state.picture} />
+      );
     }
     return <PlusSignText>+</PlusSignText>;
   }
@@ -35,14 +33,9 @@ export default class PhotoBox extends React.Component {
   render() {
     const { input } = this.props;
 
-    console.log('Rendering .... ');
-    console.log(input);
-    console.log(input.picture);
-    console.log('---------------');
-
     return (
       <Photo onPress={() => this.openImageGallery(input)}>
-        {this.renderPicture(input)}
+        {this.renderPicture()}
       </Photo>
     );
   }
