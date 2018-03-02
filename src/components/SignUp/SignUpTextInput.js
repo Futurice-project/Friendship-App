@@ -18,6 +18,7 @@ export default class SignUpTextInput extends React.Component {
           placeholder={this.props.placeholder}
           onChangeText={input.onChange}
           value={input.email}
+          style={{ fontFamily: 'NunitoSans-SemiBold', fontSize: 18 }}
         />
       </View>
     );

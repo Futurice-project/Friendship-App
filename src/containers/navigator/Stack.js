@@ -7,7 +7,6 @@ import Tabs from './Tabs';
 import WelcomeView from '../views/WelcomeView';
 import SearchView from '../views/SearchView';
 import SignInView from '../views/SignIn/SignInView';
-import SignUpView from '../views/SignUp/SignUpView';
 import ProfileUser from '../views/PeopleProfileView';
 import SignUpMatching from '../views/SignUp/SignUpMatching';
 import SignUpLocation from '../views/SignUp/SignUpLocation';
@@ -16,7 +15,7 @@ import ChatView from '../views/Chat/ChatView';
 import ChatRequest from '../views/Chat/ChatRequest';
 import SignUpYeahAndNaah from '../views/SignUp/SignUpYeahAndNaah';
 import UsersForTagView from '../views/UsersForTagView';
-import formTest from '../views/SignUp/SignUpFormTest';
+import SignUpView from '../views/SignUp/_SignUpView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -45,21 +44,17 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
-    Test: {
-      screen: formTest,
-      navigationOptions: { header: () => null },
-    },
     SignUp: {
       screen: SignUpView,
-      navigationOptions: { header: () => null },
-    },
-    Welcome: {
-      screen: WelcomeView,
       navigationOptions: { header: () => null },
     },
     SignUpLocation: {
       screen: SignUpLocation,
       title: 'SignUpLocation',
+      navigationOptions: { header: () => null },
+    },
+    Welcome: {
+      screen: WelcomeView,
       navigationOptions: { header: () => null },
     },
     SignUpMatching: {
