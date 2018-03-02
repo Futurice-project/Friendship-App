@@ -39,3 +39,4 @@ $ heroku run bash
 
 - I Had to use yarn to install the dependencies and I had to delete the files created by npm.
 - When using `Heroku run bash` if you push a new master to heroku you have to restart the bash terminal.
+- If you want to use DataGrip in the advanced properties of your data source you have to set ssl to true and sslfactory to org.postgresql.ssl.NonValidatingFactory
