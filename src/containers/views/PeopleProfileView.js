@@ -2,7 +2,6 @@ import React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-
 import {
   Centered,
   DescriptionWrapper,
@@ -67,7 +66,7 @@ class ProfileUser extends React.Component {
   // Modal functions
   showReport = () => {
     const { isReportVisible } = this.state;
-    this.setState({ isReportVisible: !isReportVisible });
+    this.setState({ isReportVisible: !isReportVisible, reportDescription: '' });
   };
 
   sendReport = () => {
