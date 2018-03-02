@@ -341,7 +341,7 @@ class ChatView extends Component {
         >
           <View
             style={{
-              height: 350,
+              height: 270,
               borderRadius: 5,
               backgroundColor: '#F1F1F3',
               padding: 20,
@@ -369,10 +369,6 @@ class ChatView extends Component {
               >
                 Send Report
               </Text>
-              <Text style={{ marginTop: 10, fontSize: 16, color: '#60686d' }}>
-                Report Title
-              </Text>
-              <TextInput style={styles.reportInput} />
               <Text style={{ marginTop: 10, fontSize: 16, color: '#60686d' }}>
                 Report Description
               </Text>
