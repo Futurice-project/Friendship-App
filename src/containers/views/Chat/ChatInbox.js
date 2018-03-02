@@ -20,10 +20,17 @@ const mapDispatchToProps = dispatch => ({
 
 export class ChatInbox extends React.Component {
   componentDidMount() {
-    this.props.chatRoomsWithUserId(this.props.currentUserId);
+    this.timer = setInterval(
+      () => this.props.chatRoomsWithUserId(this.props.currentUserId),
+      2000,
+    );
   }
 
-  keyExtractor = item => item.id;
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  keyExtractor = (item, index) => index;
 
   renderItem = ({ item }) => {
     return <InboxCard data={item} />;
@@ -43,7 +50,7 @@ export class ChatInbox extends React.Component {
         >
           SUGGESTIONS
         </Text>
-        <SuggestionList />
+        <SuggestionList existingChatRooms={this.props.chatrooms} />
         <RoundTab tint="#ffffff" title="CHATS" fontSize="12" />
         <FlatList
           data={this.props.chatrooms}

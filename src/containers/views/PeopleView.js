@@ -102,7 +102,7 @@ export class PeopleView extends React.Component {
         <Centered style={{ paddingBottom: 45, backgroundColor: '#fff' }}>
           <FlatList
             data={data}
-            keyExtractor={item => item.id}
+            keyExtractor={(item, index) => index}
             renderItem={({ item }) => <Person box data={item} />}
             onEndReached={this.handleEnd}
             onEndReachedThreshold={0.4}
