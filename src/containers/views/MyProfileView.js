@@ -14,6 +14,7 @@ import TabProfile from '../../components/Profile/TabProfile';
 import MyProfileModal from '../../components/Profile/MyProfileModal';
 import Personality from '../../components/SignUp/Personality';
 import ProfileTopPart from '../../components/Profile/ProfileTopPart';
+import EditForm from '../../components/Profile/EditForm';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -37,6 +38,7 @@ class MyProfile extends React.Component {
   state = {
     loaded: false,
     isModalVisible: false,
+    showEditForm: false,
   };
 
   componentDidMount() {
@@ -147,6 +149,16 @@ class MyProfile extends React.Component {
       return <ActivityIndicator />;
     }
 
+    if (this.state.showEditForm) {
+      return (
+        <EditForm
+          userData={this.props.currentUser.data}
+          onCancel={() => this.setState({ showEditForm: false })}
+        />
+      );
+    }
+    console.log(this.props.currentUser.data);
+
     return (
       <ProfileContainer>
         <ProfileTopPart
@@ -162,6 +174,7 @@ class MyProfile extends React.Component {
           myProfile
           birthyear={this.props.currentUser.data.birthyear}
           genderList={this.props.currentUser.data.genderlist}
+          showEditForm={() => this.setState({ showEditForm: true })}
         />
 
         <DescriptionWrapper>

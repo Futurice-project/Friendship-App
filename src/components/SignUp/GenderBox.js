@@ -4,6 +4,17 @@ import styled from 'styled-components/native';
 export default class GenderBox extends React.Component {
   state = { color: '#ffffff' };
 
+  componentDidMount() {
+    if (this.props.gender === 'WOMAN' && this.state.color === '#ffffff') {
+      this.props.updateGenders();
+      this.setState({ color: '#ff8a65' });
+    } else if (this.props.gender === 'Man' && this.state.color === '#ffffff') {
+      this.props.updateGenders();
+      this.setState({ color: '#ff8a65' });
+    }
+    this.setState({ color: '#ffffff' });
+  }
+
   _handlePress() {
     this.props.updateGenders();
     if (this.state.color === '#ffffff') {
@@ -13,6 +24,7 @@ export default class GenderBox extends React.Component {
   }
 
   render() {
+    console.log(this.props.gender);
     return (
       <View style={{ backgroundColor: this.state.color }}>
         <TouchableOpacity onPress={() => this._handlePress()}>
