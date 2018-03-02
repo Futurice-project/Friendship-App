@@ -8,9 +8,20 @@ import FollowingView from '../views/FollowingView';
 import InboxView from '../views/Chat/ChatInbox';
 import MyProfile from '../views/MyProfileView';
 import EventsView from '../views/EventsView';
+import HomeView from '../views/HomeView';
 
 const tabNavigationOptions = title => {
   switch (title) {
+    case 'Home':
+      return {
+        title,
+        tabBarIcon: ({ tintColor }) => (
+          <IconImage
+            source={require('../../../assets/tab-icon-search.png')}
+            tintColor={tintColor}
+          />
+        ),
+      };
     case 'Search':
       return {
         title,
@@ -74,6 +85,12 @@ const TabNavigatorConfig = {
 };
 
 export default TabNavigator(
+  {
+    Home: {
+      screen: HomeView,
+      navigationOptions: tabNavigationOptions('Home'),
+    },
+  },
   {
     Search: {
       screen: SearchView,

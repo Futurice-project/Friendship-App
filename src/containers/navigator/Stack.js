@@ -17,6 +17,7 @@ import ChatRequest from '../views/Chat/ChatRequest';
 import SignUpYeahAndNaah from '../views/SignUp/SignUpYeahAndNaah';
 import UsersForTagView from '../views/UsersForTagView';
 import EventDetailView from '../views/EventDetailView';
+import HomeView from '../views/HomeView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -103,6 +104,10 @@ export default StackNavigator(
     EventDetailView: {
       screen: EventDetailView,
       navigationOptions: { header: () => null },
+    },
+    HomeView: {
+      screen: HomeView,
+      navigationOptions: { title: 'Home page' },
     },
     // ## End StackNavigator Views ##
   },
