@@ -1,5 +1,12 @@
 import React from 'react';
-import { Alert, Image, View, TextInput, Text } from 'react-native';
+import {
+  Alert,
+  Image,
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { ImagePicker } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -50,6 +57,7 @@ class EditForm extends React.Component {
         username: this.props.userData.username,
         birthyear: this.props.userData.birthyear.toString(),
         genders: this.props.userData.genderlist[0],
+        emoji: this.props.userData.emoji,
       });
     }
   }
@@ -88,7 +96,19 @@ class EditForm extends React.Component {
     }
   }
 
-  signUp() {
+  updateProfile = (id, formData) => {
+    fetch(`http://localhost:3888/users/${id}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: this.props.auth.data.token,
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(() => console.log(JSON.stringify(formData)))
+      .catch(() => alert('fail'));
+  };
+
+  onSubmit() {
     const {
       email,
       password,
@@ -100,40 +120,35 @@ class EditForm extends React.Component {
     } = this.state;
     let userData = { email, password, username, birthyear, emoji };
 
-    if (!email || !password || !username || !birthyear) {
+    if (!email || !username || !birthyear) {
       return this.setState({
         validationError: 'Please enter all required fields',
       });
     }
 
     let formdata = this.createFormData(userData, image, genders);
-
-    this.props.signUp(formdata);
+    this.updateProfile(this.props.userData.id, formdata);
   }
 
   createFormData(userData, image, genders) {
-    let tempFormData = new FormData();
-
+    let tempFormData = {};
     if (image) {
-      tempFormData.append('image', {
+      tempFormData['image'] = {
         uri: image,
         name: 'image.png',
         type: 'multipart/form-data',
-      });
+      };
     }
-
     if (genders) {
-      tempFormData.append('genders', JSON.stringify(genders));
+      tempFormData['genders'] = genders;
     }
-
     if (userData) {
       for (var key in userData) {
         if (userData[key]) {
-          tempFormData.append(key, userData[key]);
+          tempFormData[key] = userData[key];
         }
       }
     }
-
     return tempFormData;
   }
 
@@ -199,13 +214,12 @@ class EditForm extends React.Component {
                 marginRight: 20,
               }}
             >
-              <Text
-                style={styles.headerText}
-                onPress={() => this.props.onCancel()}
-              >
-                Cancel
-              </Text>
-              <Text style={styles.headerText}>Join</Text>
+              <TouchableOpacity onPress={() => this.props.onCancel()}>
+                <Text style={styles.headerText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.onSubmit()}>
+                <Text style={styles.headerText}>Join</Text>
+              </TouchableOpacity>
             </View>
             <SignUpTitle>EDIT PROFILE</SignUpTitle>
             <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
@@ -337,26 +351,67 @@ class EditForm extends React.Component {
               </View>
               <GenderBoxContainer
                 gender={this.state.genders}
+                updateGenderById={value => this.updateGenders.bind(this, value)}
                 style={{ height: 44 }}
               >
-                <GenderBox
-                  updateGenders={() => this.updateGenders(1)}
-                  gender="WOMAN"
-                />
-                <GenderBox
-                  updateGenders={() => this.updateGenders(2)}
-                  gender="MAN"
-                />
+                <View
+                  style={[
+                    styles.genderStyle,
+                    this.state.genders === 'WOMAN'
+                      ? { backgroundColor: '#ff8a65' }
+                      : { backgroundColor: '#ffffff' },
+                  ]}
+                >
+                  <TouchableOpacity
+                    onPress={() => this.setState({ genders: 'WOMAN' })}
+                  >
+                    <Text style={styles.genderText}>WOMAN</Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={[
+                    styles.genderStyle,
+                    this.state.genders === 'MAN'
+                      ? { backgroundColor: '#ff8a65' }
+                      : { backgroundColor: '#ffffff' },
+                  ]}
+                >
+                  <TouchableOpacity
+                    onPress={() => this.setState({ genders: 'MAN' })}
+                  >
+                    <Text style={styles.genderText}>MAN</Text>
+                  </TouchableOpacity>
+                </View>
               </GenderBoxContainer>
               <GenderBoxContainer style={{ height: 44, marginLeft: '38%' }}>
-                <GenderBox
-                  updateGenders={() => this.updateGenders(3)}
-                  gender="HUMAN"
-                />
-                <GenderBox
-                  updateGenders={() => this.updateGenders(4)}
-                  gender="OTHER"
-                />
+                <View
+                  style={[
+                    styles.genderStyle,
+                    this.state.genders === 'HUMAN'
+                      ? { backgroundColor: '#ff8a65' }
+                      : { backgroundColor: '#ffffff' },
+                  ]}
+                >
+                  <TouchableOpacity
+                    onPress={() => this.setState({ genders: 'HUMAN' })}
+                  >
+                    <Text style={styles.genderText}>HUMAN</Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={[
+                    styles.genderStyle,
+                    this.state.genders === 'OTHER'
+                      ? { backgroundColor: '#ff8a65' }
+                      : { backgroundColor: '#ffffff' },
+                  ]}
+                >
+                  <TouchableOpacity
+                    onPress={() => this.setState({ genders: 'OTHER' })}
+                  >
+                    <Text style={styles.genderText}>OTHER</Text>
+                  </TouchableOpacity>
+                </View>
               </GenderBoxContainer>
             </LabelContainer>
           </FirstLabelWrapper>
@@ -542,6 +597,21 @@ const styles = {
     height: 70,
     paddingRight: 23,
     paddingLeft: 23,
+  },
+  genderStyle: {
+    overflow: 'hidden',
+    height: 44,
+    width: '36%',
+    borderRadius: 27,
+    paddingLeft: 15,
+    marginRight: 11,
+    justifyContent: 'center',
+  },
+  genderText: {
+    fontFamily: 'NunitoSans-SemiBold',
+    fontSize: 18,
+    color: '#4a4a4a',
+    textAlign: 'left',
   },
 };
 
