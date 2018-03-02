@@ -26,7 +26,6 @@ class InboxCard extends React.Component {
     let messArr = this.props.data.messages;
     if (messArr.length !== 0) {
       for (let message of messArr) {
-        console.log(message.read);
       }
     }
     this.getTime();
