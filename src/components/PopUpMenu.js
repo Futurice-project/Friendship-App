@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon } from 'react-native-elements';
+import { StyleSheet, View, Platform, Dimensions } from 'react-native';
 import {
   Menu,
   MenuContext,
@@ -12,7 +13,6 @@ import { HeaderButton, PopUpMenuCard } from './Layout/Layout';
 
 class PopUpMenu extends React.Component {
   closeMenu() {
-    console.log(this);
     this.menu.close();
   }
   onRef = r => {
@@ -21,77 +21,65 @@ class PopUpMenu extends React.Component {
   renderProfile = () => (
     <HeaderButton>
       <PopUpMenuCard>
-        <MenuContext>
-          <Menu
-            ref={this.onRef}
-            renderer={renderers.SlideInMenu}
-            onBackdropPress={() => this.closeMenu()}
-          >
-            <MenuTrigger customStyles={styles.triggerStyles}>
-              <Icon name="more-vert" />
-            </MenuTrigger>
-            <MenuOptions customStyles={styles.optionsStyles}>
-              <MenuOption
-                value={1}
-                onSelect={() => alert('navigate to send message')}
-                text="Follow Profile"
-              />
-              <MenuOption
-                value={2}
-                onSelect={() => alert('navigate to send message')}
-                text="Chat"
-              />
-              <MenuOption
-                onSelect={() => alert('navigate to send message')}
-                text="Invite to Group"
-              />
-              <MenuOption
-                onSelect={() => alert('navigate to send message')}
-                text="Invite to Happening"
-              />
-              <MenuOption text="Close" />
-              <MenuOption onSelect={this.props.isReportVisible} text="Report" />
-            </MenuOptions>
-          </Menu>
-        </MenuContext>
+        <Menu ref={this.onRef} onBackdropPress={() => this.closeMenu()}>
+          <MenuTrigger customStyles={styles.triggerStyles}>
+            <Icon name="more-vert" />
+          </MenuTrigger>
+          <MenuOptions customStyles={styles.optionsStyles}>
+            <MenuOption
+              value={1}
+              onSelect={() => alert('navigate to send message')}
+              text="Follow Profile"
+            />
+            <MenuOption
+              value={2}
+              onSelect={() => alert('navigate to send message')}
+              text="Chat"
+            />
+            <MenuOption
+              onSelect={() => alert('navigate to send message')}
+              text="Invite to Group"
+            />
+            <MenuOption
+              onSelect={() => alert('navigate to send message')}
+              text="Invite to Happening"
+            />
+            <MenuOption text="Close" />
+            <MenuOption onSelect={this.props.isReportVisible} text="Report" />
+          </MenuOptions>
+        </Menu>
       </PopUpMenuCard>
     </HeaderButton>
   );
 
   renderChatroom = () => (
-    <MenuContext>
-      <Menu
-        ref={this.onRef}
-        renderer={renderers.SlideInMenu}
-        onBackdropPress={() => this.closeMenu()}
-      >
-        <MenuTrigger customStyles={styles.triggerStyles}>
-          <Icon name="more-vert" />
-        </MenuTrigger>
-        <MenuOptions customStyles={styles.optionsStyles}>
-          <MenuOption
-            value={1}
-            onSelect={() => alert('View prof')}
-            text="View Profile"
-          />
-          <MenuOption
-            value={2}
-            onSelect={() => alert('navigate to send message')}
-            text="Invite to squad"
-          />
-          <MenuOption
-            onSelect={() => alert('navigate to send message')}
-            text="Invite to happening"
-          />
-          <MenuOption
-            onSelect={() => alert('navigate to send message')}
-            text="Block"
-          />
-          <MenuOption text="Close" />
-          <MenuOption onSelect={this.props.isReportVisible} text="Report" />
-        </MenuOptions>
-      </Menu>
-    </MenuContext>
+    <Menu ref={this.onRef} onBackdropPress={() => this.closeMenu()}>
+      <MenuTrigger customStyles={styles.triggerStyles}>
+        <Icon name="more-vert" />
+      </MenuTrigger>
+      <MenuOptions customStyles={styles.optionsStyles}>
+        <MenuOption
+          value={1}
+          onSelect={() => alert('View prof')}
+          text="View Profile"
+        />
+        <MenuOption
+          value={2}
+          onSelect={() => alert('navigate to send message')}
+          text="Invite to squad"
+        />
+        <MenuOption
+          onSelect={() => alert('navigate to send message')}
+          text="Invite to happening"
+        />
+        <MenuOption
+          onSelect={() => alert('navigate to send message')}
+          text="Block"
+        />
+        <MenuOption text="Close" />
+        <MenuOption onSelect={this.props.isReportVisible} text="Report" />
+      </MenuOptions>
+    </Menu>
   );
   render = () =>
     this.props.chat ? this.renderChatroom() : this.renderProfile();
@@ -115,19 +103,8 @@ const styles = {
     },
   },
   optionsStyles: {
-    optionsContainer: {
-      backgroundColor: '#2a343c',
-      marginLeft: -185,
-      marginTop: 270,
-      width: 220,
-      borderWidth: 0,
-    },
     optionText: {
-      color: '#ffffff',
       fontSize: 18,
-    },
-    optionWrapper: {
-      padding: 11,
     },
   },
   touchableHighlightProps: {

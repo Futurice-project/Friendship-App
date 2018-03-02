@@ -30,15 +30,6 @@ const mapDispatchToProps = dispatch => ({
   chatRoomMessages: id => {
     dispatch(rest.actions.chatRoomMessages({ id }));
   },
-  //update all messages that have been read
-  updateReadMessages: messageIdArr => {
-    dispatch(
-      rest.actions.updateReadMessages(
-        {},
-        { body: JSON.stringify({ messageIdArr: messageIdArr }) },
-      ),
-    );
-  },
   sendMessage: (id, textMessage, userId) => {
     dispatch(
       rest.actions.sendMessage(
@@ -62,24 +53,6 @@ class ChatView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: `${navigation.state.params.userEmoji} ${navigation.state.params
       .username}`,
-    headerLeft: (
-      <Icon
-        style={{ padding: 15, fontSize: 26 }}
-        name={'ios-arrow-back'}
-        onPress={() => {
-          navigation.dispatch(
-            NavigationActions.reset({
-              index: 0,
-              actions: [
-                NavigationActions.navigate({
-                  routeName: 'InboxView',
-                }),
-              ],
-            }),
-          );
-        }}
-      />
-    ),
     headerRight: (
       <PopUpMenu isReportVisible={navigation.state.params.showReport} chat />
     ),
@@ -91,6 +64,8 @@ class ChatView extends Component {
     description: '',
     isOptionsVisible: false,
     isReportVisible: false,
+    isReportStatusVisible: false,
+    reportStatusText: '',
   };
 
   componentDidMount = () => {
@@ -99,31 +74,12 @@ class ChatView extends Component {
     });
     this.props.navigation.setParams({ showReport: this.showReport });
     this.props.chatRoomMessages(this.props.navigation.state.params.chatroomId);
-    //update all unread messages after 3 seconds to make sure all the chatroom messages have been fetched
-    setTimeout(() => this.getUnreadMessagesAndUpdateStatus(), 3000);
   };
 
   componentWillReceiveProps = () => {
     if (this.props.chatroom) {
       this.props.navigation.setParams({ chatroom: this.props.chatroom });
     }
-  };
-
-  getUnreadMessagesAndUpdateStatus = () => {
-    //get an array of all the unread messages which have the 'read' field equals to 'false' and user_id not equals to current user id
-    let messageArr = this.props.chatRoom.messages
-      ? this.props.chatRoom.messages.filter(
-          message =>
-            message.read === false &&
-            message.user_id !== this.props.currentUserId,
-        )
-      : [];
-    console.log(messageArr);
-    //get an array of all the id of unread messages
-    let messageIdArr = messageArr.map(message => message.id);
-    console.log(messageIdArr);
-    //call the update function to change the 'read' field into 'true'
-    this.props.updateReadMessages(messageIdArr);
   };
 
   sendMessage = () => {
@@ -138,8 +94,8 @@ class ChatView extends Component {
 
   // Modal functions
   showReport = () => {
-    const { isReportVisible } = this.state;
-    this.setState({ isReportVisible: !isReportVisible });
+    const { isReportVisible, reportDescription } = this.state;
+    this.setState({ isReportVisible: !isReportVisible, reportDescription: '' });
   };
 
   sendReport = () => {
@@ -159,11 +115,23 @@ class ChatView extends Component {
         description,
         reported_by,
       }),
-    });
+    })
+      .then(() =>
+        this.setState({
+          isReportStatusVisible: true,
+          reportStatusText: 'User reported',
+        }),
+      )
+      .catch(() =>
+        this.setState({
+          isReportStatusVisible: true,
+          reportStatusText: 'Report failed',
+        }),
+      );
     this.setState({ isReportVisible: false });
   };
 
-  keyExtractor = item => item.id;
+  keyExtractor = (item, index) => index;
 
   renderItem = ({ item }) => {
     const textAlign =
@@ -273,6 +241,7 @@ class ChatView extends Component {
   };
 
   render() {
+    console.log(this.state.reportStatusText);
     let reportTitle = 'Report ';
     return (
       <KeyboardAvoidingView
@@ -287,7 +256,12 @@ class ChatView extends Component {
           data={this.props.chatRoom.messages || []}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
-          style={{ flex: 1, backgroundColor: 'white' }}
+          style={[
+            { flex: 1 },
+            this.state.isReportVisible || this.state.isReportStatusVisible
+              ? { backgroundColor: 'rgba(0,0,0,0.5)' }
+              : { backgroundColor: 'white' },
+          ]}
         />
         <TextInputCard>
           <TextInput
@@ -315,46 +289,125 @@ class ChatView extends Component {
         </TextInputCard>
         <Modal
           visible={this.state.isReportVisible}
-          animationIn="slideInUp"
-          animationInTiming={200}
+          transparent
+          animationType="slide"
         >
           <View
             style={{
-              height: 200,
-              backgroundColor: '#eee',
-              borderRadius: 10,
-              paddingVertical: 10,
+              height: 350,
+              borderRadius: 5,
+              backgroundColor: '#F1F1F3',
+              padding: 20,
+              paddingLeft: 10,
             }}
           >
-            <TextInput
-              autoCorrect={false}
-              autoCapitalize="none"
-              titleColor="#2d4359"
-              title={reportTitle}
-              placeholder="Description"
-              backColor="#faf6f0"
-              onChangeText={reportDescription =>
-                this.setState({ reportDescription })}
-              value={this.state.reportDescription}
-            />
-            <View style={{ flexDirection: 'row' }}>
-              <Button
-                title="Cancel"
-                primary
-                textColor="green"
-                size="half"
-                color="light"
-                onPress={this.showReport}
+            <View
+              style={{
+                marginLeft: 10,
+                borderBottomWidth: 0.8,
+                borderBottomColor: 'gray',
+                marginBottom: 20,
+                paddingBottom: 20,
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  paddingBottom: 15,
+                  borderBottomColor: 'gray',
+                  borderBottomWidth: 0.8,
+                }}
+              >
+                Send Report
+              </Text>
+              <Text style={{ marginTop: 10, fontSize: 16, color: '#60686d' }}>
+                Report Title
+              </Text>
+              <TextInput style={styles.reportInput} />
+              <Text style={{ marginTop: 10, fontSize: 16, color: '#60686d' }}>
+                Report Description
+              </Text>
+              <TextInput
+                autoCorrect={false}
+                autoCapitalize="none"
+                title={reportTitle}
+                placeholder="Description"
+                multiline={true}
+                onChangeText={reportDescription =>
+                  this.setState({ reportDescription })}
+                value={this.state.reportDescription}
+                style={styles.reportInput}
               />
-              <Button
-                title="Report"
-                border
-                textColor="black"
-                size="half"
-                color="dark"
-                onPress={this.sendReport}
-              />
+              <Text style={{ marginTop: 5, color: '#60686d' }}>
+                *Average response time is 2 days{' '}
+              </Text>
             </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+              <TouchableOpacity
+                title="Cancel"
+                onPress={this.showReport}
+                style={styles.cancelButton}
+              >
+                <Text
+                  style={{
+                    color: '#F9F1EF',
+                    fontSize: 16,
+                    fontWeight: '600',
+                  }}
+                >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                title="Report"
+                onPress={this.sendReport}
+                style={styles.reportButton}
+              >
+                <Text
+                  style={{
+                    color: '#F9F1EF',
+                    fontSize: 16,
+                    fontWeight: '600',
+                  }}
+                >
+                  Report
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          visible={this.state.isReportStatusVisible}
+          transparent
+          animationType="slide"
+        >
+          <View
+            style={{
+              height: 150,
+              borderRadius: 10,
+              backgroundColor: '#F1F1F3',
+              padding: 20,
+              paddingLeft: 10,
+            }}
+          >
+            <Text
+              style={{ textAlign: 'center', fontSize: 25, marginBottom: 10 }}
+            >
+              {this.state.reportStatusText}
+            </Text>
+            <TouchableOpacity
+              style={{
+                alignSelf: 'stretch',
+                padding: 10,
+                backgroundColor: 'red',
+                borderRadius: 10,
+              }}
+              onPress={() => this.setState({ isReportStatusVisible: false })}
+            >
+              <Text style={{ textAlign: 'center' }}>OK</Text>
+            </TouchableOpacity>
           </View>
         </Modal>
       </KeyboardAvoidingView>
@@ -379,7 +432,6 @@ const styles = {
     flex: 1,
     padding: 20,
     paddingBottom: 30,
-    backgroundColor: '#f1f1f3',
     margin: 10,
     marginRight: 20,
     marginLeft: 40,
@@ -388,10 +440,42 @@ const styles = {
     flex: 1,
     padding: 20,
     paddingBottom: 30,
-    backgroundColor: '#d8d8d8',
     margin: 10,
     marginRight: 40,
     marginLeft: 20,
+  },
+  reportInput: {
+    borderLeftWidth: 0.5,
+    borderRightWidth: 0.5,
+    borderWidth: 0.5,
+    borderTopWidth: 0.5,
+    borderRadius: 8,
+    height: 40,
+    borderBottomColor: 'grey',
+    borderTopColor: 'grey',
+    borderLeftColor: 'grey',
+    borderRightColor: 'grey',
+    marginLeft: 2,
+    marginTop: 5,
+    paddingRight: 5,
+    paddingLeft: 5,
+    fontSize: 18,
+    lineHeight: 23,
+  },
+  reportButton: {
+    backgroundColor: '#00bfff',
+    borderRadius: 5,
+    borderWidth: 1,
+    padding: 13,
+    borderColor: '#14B28B',
+    marginLeft: 5,
+  },
+  cancelButton: {
+    backgroundColor: '#ed5249',
+    borderRadius: 5,
+    borderWidth: 1,
+    padding: 13,
+    borderColor: '#14B28B',
   },
 };
 

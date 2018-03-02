@@ -17,6 +17,7 @@ import {
   AppContainer,
 } from './src/components/Layout/Layout';
 import { Font } from 'expo';
+import { MenuContext } from 'react-native-popup-menu';
 
 export default class App extends React.Component {
   state = {
@@ -87,9 +88,11 @@ export default class App extends React.Component {
 
   renderApp = () =>
     this.state.rehydrated && this.state.fontLoaded ? (
-      <Provider store={store}>
-        <Navigator />
-      </Provider>
+      <MenuContext>
+        <Provider store={store}>
+          <Navigator />
+        </Provider>
+      </MenuContext>
     ) : null;
 
   render = () => (
