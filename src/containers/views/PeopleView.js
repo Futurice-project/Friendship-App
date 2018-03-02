@@ -35,7 +35,7 @@ const mapDispatchToProps = dispatch => ({
     ),
 });
 
-export class SearchView extends React.Component {
+export class PeopleView extends React.Component {
   state = {
     userData: [],
     searchedUsername: '',
@@ -145,4 +145,4 @@ export class SearchView extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchView);
+export default connect(mapStateToProps, mapDispatchToProps)(PeopleView);

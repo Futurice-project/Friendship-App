@@ -3,8 +3,7 @@ import { TabNavigator } from 'react-navigation';
 import { IconImage } from '../../components/Layout/Layout';
 
 import StackChat from './StackChat';
-import SearchView from '../views/SearchView';
-import FollowingView from '../views/FollowingView';
+import PeopleView from '../views/PeopleView';
 import InboxView from '../views/Chat/ChatInbox';
 import MyProfile from '../views/MyProfileView';
 import EventsView from '../views/EventsView';
@@ -17,27 +16,17 @@ const tabNavigationOptions = title => {
         title,
         tabBarIcon: ({ tintColor }) => (
           <IconImage
-            source={require('../../../assets/tab-icon-search.png')}
+            source={require('../../../assets/tab-icon-home.png')}
             tintColor={tintColor}
           />
         ),
       };
-    case 'Search':
+    case 'People':
       return {
         title,
         tabBarIcon: ({ tintColor }) => (
           <IconImage
-            source={require('../../../assets/tab-icon-search.png')}
-            tintColor={tintColor}
-          />
-        ),
-      };
-    case 'Following':
-      return {
-        title,
-        tabBarIcon: ({ tintColor }) => (
-          <IconImage
-            source={require('../../../assets/tab-icon-following.png')}
+            source={require('../../../assets/tab-icon-people.png')}
             tintColor={tintColor}
           />
         ),
@@ -52,7 +41,7 @@ const tabNavigationOptions = title => {
           />
         ),
       };
-    case 'MyProfile':
+    case 'Profile':
       return {
         title,
         tabBarIcon: ({ tintColor }) => (
@@ -90,18 +79,12 @@ export default TabNavigator(
       screen: HomeView,
       navigationOptions: tabNavigationOptions('Home'),
     },
-  },
-  {
-    Search: {
-      screen: SearchView,
-      navigationOptions: tabNavigationOptions('Search'),
-    },
     Events: {
       screen: EventsView,
     },
-    Following: {
-      screen: FollowingView,
-      navigationOptions: tabNavigationOptions('Following'),
+    People: {
+      screen: PeopleView,
+      navigationOptions: tabNavigationOptions('People'),
     },
     Inbox: {
       screen: StackChat,
@@ -109,7 +92,7 @@ export default TabNavigator(
     },
     MyProfile: {
       screen: MyProfile,
-      navigationOptions: tabNavigationOptions('MyProfile'),
+      navigationOptions: tabNavigationOptions('Profile'),
     },
   },
   TabNavigatorConfig,
