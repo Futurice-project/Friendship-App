@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
 import { connect } from 'react-redux';
 import { IconImage } from '../../components/Layout/Layout';
@@ -13,6 +20,12 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchEvents: () => dispatch(rest.actions.events.get()),
+  openEventForm: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'EventCreateView',
+      }),
+    ),
 });
 
 class EventsView extends Component {
@@ -56,9 +69,32 @@ class EventsView extends Component {
       <View style={{ flex: 1 }}>
         <EventsHeader headerText="Events" />
         {this.renderContent()}
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => this.props.openEventForm()}
+          style={styles.TouchableOpacityStyle}
+        >
+          <Text style={{ fontSize: 30 }}>{'+'}</Text>
+        </TouchableOpacity>
       </View>
     );
   };
 }
+
+const styles = StyleSheet.create({
+  TouchableOpacityStyle: {
+    position: 'absolute',
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 5,
+    bottom: 15,
+    borderStyle: 'solid',
+    borderWidth: 2,
+    backgroundColor: '#d8d8d8',
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsView);

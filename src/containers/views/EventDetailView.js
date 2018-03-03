@@ -67,6 +67,7 @@ class EventDetailView extends Component {
       });
     }
   }
+
   async handleButtonPress(eventId, userId) {
     this.setState({
       loaded: false,
