@@ -43,11 +43,26 @@ class EditForm extends React.Component {
     password: '',
     username: '',
     birthyear: '',
-    genders: '',
+    genderId: '',
     loading: false,
     error: false,
     validationError: '',
   };
+
+  getGenderById(gender) {
+    switch (gender) {
+      case 'WOMAN':
+        return '1';
+      case 'MAN':
+        return '2';
+      case 'HUMAN':
+        return '3';
+      case 'OTHER':
+        return '4';
+      default:
+        return;
+    }
+  }
 
   componentDidMount() {
     console.log(this.props.userData);
@@ -56,7 +71,7 @@ class EditForm extends React.Component {
         email: this.props.userData.email,
         username: this.props.userData.username,
         birthyear: this.props.userData.birthyear.toString(),
-        genders: this.props.userData.genderlist[0],
+        genderId: this.getGenderById(this.props.userData.genderlist[0]),
         emoji: this.props.userData.emoji,
       });
     }
@@ -114,23 +129,22 @@ class EditForm extends React.Component {
       password,
       username,
       birthyear,
-      genders,
+      genderId,
       image,
       emoji,
     } = this.state;
-    let userData = { email, password, username, birthyear, emoji };
+    let userData = { email, username, birthyear, emoji };
 
     if (!email || !username || !birthyear) {
       return this.setState({
         validationError: 'Please enter all required fields',
       });
     }
-
-    let formdata = this.createFormData(userData, image, genders);
+    let formdata = this.createFormData(userData, genderId);
     this.updateProfile(this.props.userData.id, formdata);
   }
 
-  createFormData(userData, image, genders) {
+  createFormData(userData, genderId, image) {
     let tempFormData = {};
     if (image) {
       tempFormData['image'] = {
@@ -139,16 +153,13 @@ class EditForm extends React.Component {
         type: 'multipart/form-data',
       };
     }
-    if (genders) {
-      tempFormData['genders'] = genders;
-    }
+    tempFormData['genderId'] = genderId;
     if (userData) {
-      for (var key in userData) {
-        if (userData[key]) {
-          tempFormData[key] = userData[key];
-        }
+      for (let value in userData) {
+        tempFormData[value] = userData[value];
       }
     }
+    console.log(tempFormData);
     return tempFormData;
   }
 
@@ -349,21 +360,17 @@ class EditForm extends React.Component {
               <View style={{ width: 278 }}>
                 <LabelTextHelper>(visible)</LabelTextHelper>
               </View>
-              <GenderBoxContainer
-                gender={this.state.genders}
-                updateGenderById={value => this.updateGenders.bind(this, value)}
-                style={{ height: 44 }}
-              >
+              <GenderBoxContainer style={{ height: 44 }}>
                 <View
                   style={[
                     styles.genderStyle,
-                    this.state.genders === 'WOMAN'
+                    this.state.genderId === '1'
                       ? { backgroundColor: '#ff8a65' }
                       : { backgroundColor: '#ffffff' },
                   ]}
                 >
                   <TouchableOpacity
-                    onPress={() => this.setState({ genders: 'WOMAN' })}
+                    onPress={() => this.setState({ genderId: '1' })}
                   >
                     <Text style={styles.genderText}>WOMAN</Text>
                   </TouchableOpacity>
@@ -371,13 +378,13 @@ class EditForm extends React.Component {
                 <View
                   style={[
                     styles.genderStyle,
-                    this.state.genders === 'MAN'
+                    this.state.genderId === '2'
                       ? { backgroundColor: '#ff8a65' }
                       : { backgroundColor: '#ffffff' },
                   ]}
                 >
                   <TouchableOpacity
-                    onPress={() => this.setState({ genders: 'MAN' })}
+                    onPress={() => this.setState({ genderId: '2' })}
                   >
                     <Text style={styles.genderText}>MAN</Text>
                   </TouchableOpacity>
@@ -387,13 +394,13 @@ class EditForm extends React.Component {
                 <View
                   style={[
                     styles.genderStyle,
-                    this.state.genders === 'HUMAN'
+                    this.state.genderId === '3'
                       ? { backgroundColor: '#ff8a65' }
                       : { backgroundColor: '#ffffff' },
                   ]}
                 >
                   <TouchableOpacity
-                    onPress={() => this.setState({ genders: 'HUMAN' })}
+                    onPress={() => this.setState({ genderId: '3' })}
                   >
                     <Text style={styles.genderText}>HUMAN</Text>
                   </TouchableOpacity>
@@ -401,13 +408,13 @@ class EditForm extends React.Component {
                 <View
                   style={[
                     styles.genderStyle,
-                    this.state.genders === 'OTHER'
+                    this.state.genderId === '4'
                       ? { backgroundColor: '#ff8a65' }
                       : { backgroundColor: '#ffffff' },
                   ]}
                 >
                   <TouchableOpacity
-                    onPress={() => this.setState({ genders: 'OTHER' })}
+                    onPress={() => this.setState({ genderId: '4' })}
                   >
                     <Text style={styles.genderText}>OTHER</Text>
                   </TouchableOpacity>
