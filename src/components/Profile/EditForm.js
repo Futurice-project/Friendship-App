@@ -21,6 +21,7 @@ import SignUpEmoji from '../SignUp/SignUpEmoji';
 import LoadingIndicator from '../LoadingIndicator';
 import { emojis } from '../../../assets/misc/emojis';
 import { YOUR_PROFILE } from '../SignUp/Constants';
+import Modal from 'react-native-modal';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -43,13 +44,14 @@ class EditForm extends React.Component {
     password: '',
     username: '',
     birthyear: '',
-    genders: '',
+    genderArr: '',
     loading: false,
     error: false,
     validationError: '',
     exsitingGenders: '',
+    image: '',
+    isModalVisible: false,
   };
-
   componentDidMount() {
     console.log(this.props.userData);
     if (this.props.userData) {
@@ -57,12 +59,21 @@ class EditForm extends React.Component {
         email: this.props.userData.email,
         username: this.props.userData.username,
         birthyear: this.props.userData.birthyear.toString(),
-        genders: this.getGendersById(this.props.userData.genderlist),
+        genderArr: this.getGendersById(this.props.userData.genderlist),
         emoji: this.props.userData.emoji,
       });
     }
   }
 
+  renderImage(Image) {
+    if (Image) {
+      return `uri: 'data:image/png;base64,' + ${Image}`;
+    }
+    return;
+  }
+  //const srcImage = this.props.currentUser.data.image
+  //? { uri: 'data:image/png;base64,' + this.props.currentUser.data.image }
+  //: require('../../../assets/img/placeholder/grone.jpg');
   getGendersById(exsitingGenders) {
     let genderArry = [];
     exsitingGenders.forEach(gender => {
@@ -91,6 +102,7 @@ class EditForm extends React.Component {
 
     if (!result.cancelled) {
       this.setState({ image: result.uri, error: false });
+      console.log('changing phoneo1');
     }
   };
 
@@ -121,8 +133,9 @@ class EditForm extends React.Component {
       },
       body: formData,
     })
-      .then(() => console.log(formData))
-      .catch(() => alert('fail'));
+      .then(() => this.props.closeEditForm())
+      .then(() => this.props.onRefresh())
+      .catch(() => this.setState({ isModalVisible: true }));
   };
 
   onSubmit() {
@@ -131,7 +144,7 @@ class EditForm extends React.Component {
       password,
       username,
       birthyear,
-      genders,
+      genderArr,
       image,
       emoji,
     } = this.state;
@@ -142,11 +155,11 @@ class EditForm extends React.Component {
         validationError: 'Please enter all required fields',
       });
     }
-    let formdata = this.createFormData(userData, image, genders);
+    let formdata = this.createFormData(userData, image, genderArr);
     this.updateProfile(this.props.userData.id, formdata);
   }
 
-  createFormData(userData, image, genders) {
+  createFormData(userData, image, genderArr) {
     let tempFormData = new FormData();
 
     if (image) {
@@ -157,8 +170,8 @@ class EditForm extends React.Component {
       });
     }
 
-    if (genders) {
-      tempFormData.append('genders', JSON.stringify(genders));
+    if (genderArr) {
+      tempFormData.append('genderArr', JSON.stringify(genderArr));
     }
 
     if (userData) {
@@ -177,13 +190,13 @@ class EditForm extends React.Component {
   }
 
   updateGenders(value) {
-    if (this.state.genders.indexOf(value) > -1) {
-      const genders = this.state.genders.slice();
-      genders.splice(this.state.genders.indexOf(value), 1);
-      return this.setState({ genders, error: false });
+    if (this.state.genderArr.indexOf(value) > -1) {
+      const genders = this.state.genderArr.slice();
+      genders.splice(this.state.genderArr.indexOf(value), 1);
+      return this.setState({ genderArr: genders, error: false });
     }
     return this.setState({
-      genders: [...this.state.genders, value],
+      genderArr: [...this.state.genderArr, value],
       error: false,
     });
   }
@@ -213,9 +226,12 @@ class EditForm extends React.Component {
   }
 
   render() {
+    const srcImage = require('../../../assets/img/placeholder/grone.jpg');
     this.renderStatus();
-    const image = { uri: this.state.image };
-    console.log('state is', this.state.genders);
+    const image =
+      this.props.userData.image && !this.state.image
+        ? { uri: 'data:image/png;base64,' + this.props.userData.image }
+        : { uri: this.state.image };
     return (
       <KeyboardAwareScrollView
         extraHeight={30}
@@ -235,11 +251,11 @@ class EditForm extends React.Component {
                 marginRight: 20,
               }}
             >
-              <TouchableOpacity onPress={() => this.props.onCancel()}>
+              <TouchableOpacity onPress={() => this.props.closeEditForm()}>
                 <Text style={styles.headerText}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.onSubmit()}>
-                <Text style={styles.headerText}>Join</Text>
+                <Text style={styles.headerText}>SAVE</Text>
               </TouchableOpacity>
             </View>
             <SignUpTitle>EDIT PROFILE</SignUpTitle>
@@ -317,7 +333,7 @@ class EditForm extends React.Component {
                   secureTextEntry
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
-                  placeholder="PASSWORD*"
+                  placeholder="PASSWORD"
                   onChangeText={password =>
                     this.setState({
                       password,
@@ -327,6 +343,11 @@ class EditForm extends React.Component {
                   value={this.state.password}
                 />
               </LabelView>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>
+                  (Leave it blank if not changing)
+                </LabelTextHelper>
+              </View>
             </LabelContainer>
           </HeaderWrapper>
           <FirstLabelWrapper>
@@ -410,7 +431,7 @@ class EditForm extends React.Component {
                 fontFamily: 'NunitoSans-SemiBold',
               }}
             >
-              ADD PHOTO
+              CHANGE PHOTO
             </LabelText>
             <View style={{ width: 278, marginLeft: 30 }}>
               <LabelTextHelper>
@@ -425,7 +446,7 @@ class EditForm extends React.Component {
                 {image.uri ? (
                   <Image style={{ width: 93, height: 93 }} source={image} />
                 ) : (
-                  <PlusSignText>+</PlusSignText>
+                  <Image style={{ width: 93, height: 93 }} source={srcImage} />
                 )}
               </PhotoBox>
             </ScrollViewPhoto>
@@ -433,14 +454,69 @@ class EditForm extends React.Component {
               <RoundTab
                 titleColor="white"
                 tint="#2d4359"
-                title="Next"
+                title="Submit"
                 style={{ flex: 1 }}
-                onPress={() => this.signUp()}
+                onPress={() => this.onSubmit()}
               />
             </RoundTabContainer>
           </SecondLabelWrapper>
         </ViewContainer>
         {this.renderLoadingIndicator()}
+        <Modal
+          transparent
+          animationType="slide"
+          isVisible={this.state.isModalVisible}
+        >
+          <View
+            style={{
+              height: 150,
+              borderRadius: 5,
+              backgroundColor: '#F1F1F3',
+              padding: 20,
+              paddingLeft: 10,
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 20,
+                fontWeight: 'bold',
+                paddingBottom: 15,
+                borderBottomColor: 'gray',
+                borderBottomWidth: 0.8,
+              }}
+            >
+              Profile edit fail!
+            </Text>
+            <Text
+              style={{ textAlign: 'center', fontSize: 16, color: '#60686d' }}
+            >
+              Check your input or network connection!
+            </Text>
+            <TouchableOpacity
+              title="OK"
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#ed5249',
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: '#14B28B',
+                padding: 10,
+              }}
+              onPress={() => this.setState({ isModalVisible: false })}
+            >
+              <Text
+                style={{
+                  color: '#F9F1EF',
+                  fontSize: 16,
+                  fontWeight: '600',
+                }}
+              >
+                OK
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </KeyboardAwareScrollView>
     );
   }

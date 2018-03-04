@@ -153,7 +153,9 @@ class MyProfile extends React.Component {
       return (
         <EditForm
           userData={this.props.currentUser.data}
-          onCancel={() => this.setState({ showEditForm: false })}
+          closeEditForm={() =>
+            this.setState({ showEditForm: !this.state.showEditForm })}
+          onRefresh={() => this.fetchCurrentUserInfo()}
         />
       );
     }
