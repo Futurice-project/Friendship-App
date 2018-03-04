@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { ImagePicker } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
-
 import rest from '../../utils/rest';
 import { ViewContainer } from '../Layout/Layout';
 import RoundTab from '../RoundTab';
@@ -65,12 +64,6 @@ class EditForm extends React.Component {
     }
   }
 
-  renderImage(Image) {
-    if (Image) {
-      return `uri: 'data:image/png;base64,' + ${Image}`;
-    }
-    return;
-  }
   //const srcImage = this.props.currentUser.data.image
   //? { uri: 'data:image/png;base64,' + this.props.currentUser.data.image }
   //: require('../../../assets/img/placeholder/grone.jpg');
@@ -102,7 +95,6 @@ class EditForm extends React.Component {
 
     if (!result.cancelled) {
       this.setState({ image: result.uri, error: false });
-      console.log('changing phoneo1');
     }
   };
 
