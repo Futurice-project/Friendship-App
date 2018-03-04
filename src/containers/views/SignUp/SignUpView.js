@@ -121,7 +121,7 @@ class SignUpView extends React.Component {
         }
       }
     }
-
+    console.log(tempFormData);
     return tempFormData;
   }
 
@@ -166,6 +166,7 @@ class SignUpView extends React.Component {
   }
 
   render() {
+    console.log(this.state.genders);
     this.renderStatus();
     const image = { uri: this.state.image };
     return (
