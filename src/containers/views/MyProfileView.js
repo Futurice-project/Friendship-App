@@ -1,8 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, Text, View, StyleSheet } from 'react-native';
+import {
+  ActivityIndicator,
+  Text,
+  View,
+  StyleSheet,
+  BackHandler,
+} from 'react-native';
 import { NavigationActions } from 'react-navigation';
-
 import rest from '../../utils/rest';
 import {
   Centered,
@@ -43,6 +48,14 @@ class MyProfile extends React.Component {
 
   componentDidMount() {
     this.fetchCurrentUserInfo();
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.setState({ showEditForm: false });
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -153,8 +166,7 @@ class MyProfile extends React.Component {
       return (
         <EditForm
           userData={this.props.currentUser.data}
-          closeEditForm={() =>
-            this.setState({ showEditForm: !this.state.showEditForm })}
+          closeEditForm={() => this.setState({ showEditForm: false })}
           onRefresh={() => this.fetchCurrentUserInfo()}
         />
       );
