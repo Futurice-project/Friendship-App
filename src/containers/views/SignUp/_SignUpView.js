@@ -8,14 +8,8 @@ import SignupHeader from '../../../components/SignUp/SignupHeader';
 import MainInformations from '../../../components/SignUp/MainInformations';
 import AdditionalInformations from '../../../components/SignUp/AdditionalInformations';
 import PicturePicker from '../../../components/SignUp/PicturePicker';
-
-const validate = values => {
-  const errors = {};
-  if (!values.username) {
-    errors.username = 'Required';
-  }
-  return errors;
-};
+import submit from '../../../components/SignUp/validate';
+import { connect } from 'react-redux';
 
 class SignUpView extends React.Component {
   render() {
@@ -38,4 +32,9 @@ class SignUpView extends React.Component {
   }
 }
 
-export default reduxForm({ form: 'signUp' }, validate)(SignUpView);
+export default connect()(
+  reduxForm({
+    form: 'signup',
+    onSubmit: submit,
+  })(SignUpView),
+);

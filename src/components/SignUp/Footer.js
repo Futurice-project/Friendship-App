@@ -2,10 +2,12 @@ import React from 'react';
 import { Part } from './Layout';
 import RoundTab from '../RoundTab';
 import styled from 'styled-components/native/index';
+import { connect } from 'react-redux';
+import { submit } from 'redux-form';
 
-export default class Footer extends React.Component {
+class Footer extends React.Component {
   render() {
-    const { handleSubmit } = this.props;
+    const { dispatch } = this.props;
     return (
       <Part style={{ paddingBottom: 0 }}>
         <RoundTabContainer>
@@ -14,7 +16,7 @@ export default class Footer extends React.Component {
             tint="#2d4359"
             title="Next"
             style={{ flex: 1 }}
-            onPress={() => handleSubmit}
+            onPress={() => dispatch(submit('signup'))}
           />
         </RoundTabContainer>
       </Part>
@@ -23,3 +25,5 @@ export default class Footer extends React.Component {
 }
 
 const RoundTabContainer = styled.View`margin-top: auto;`;
+
+export default connect()(Footer);
