@@ -1,5 +1,11 @@
 import styled from 'styled-components/native/index';
 
+/**
+ * Layout for the sign up process
+ * Hierarchy : Container > Part > FieldContainer
+ * Sub-part : FieldContainer > (FieldWrapper > Field) && ErrorText [optional] && HintWrapper > LabelTextHelper
+ * */
+
 export const LabelText = styled.Text`
   font-family: 'NunitoSans-SemiBold';
   font-size: 18;

@@ -10,7 +10,7 @@ import {
   LabelText,
   LabelTextHelper,
   Part,
-} from './Layout';
+} from '../Layout/SignupLayout';
 import { connect } from 'react-redux';
 import { renderErrorMessage } from './validate';
 
@@ -83,6 +83,12 @@ const renderPwdField = submittedErrors => {
   );
 };
 
+/**
+ * Renders the fields for the user to enter his/hers main information :
+ * - username
+ * - email
+ * - password
+ * */
 class MainInformations extends React.Component {
   render() {
     return (

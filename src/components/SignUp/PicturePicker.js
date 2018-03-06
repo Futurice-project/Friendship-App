@@ -7,11 +7,14 @@ import {
   LabelText,
   LabelTextHelper,
   Part,
-} from './Layout';
+} from '../Layout/SignupLayout';
 import { View } from 'react-native';
 import { Field } from 'redux-form';
 import styled from 'styled-components/native/index';
 
+/**
+ * Renders the picture picker so that the user can add his/her own picture
+ * */
 export default class PicturePicker extends React.Component {
   render() {
     return (

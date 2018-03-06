@@ -1,6 +1,6 @@
 import { SubmissionError } from 'redux-form';
 import React from 'react';
-import { ErrorText } from './Layout';
+import { ErrorText } from '../Layout/SignupLayout';
 
 export default function submit(values) {
   let err = null;

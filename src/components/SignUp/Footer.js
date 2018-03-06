@@ -1,10 +1,13 @@
 import React from 'react';
-import { Part } from './Layout';
+import { Part } from '../Layout/SignupLayout';
 import RoundTab from '../RoundTab';
 import styled from 'styled-components/native/index';
 import { connect } from 'react-redux';
 import { submit } from 'redux-form';
 
+/**
+ * Renders the NEXT button aka footer for all the sign up process
+ * */
 class Footer extends React.Component {
   render() {
     const { dispatch } = this.props;

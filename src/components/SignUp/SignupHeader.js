@@ -2,12 +2,17 @@ import React from 'react';
 import ProgressBar from './ProgressBar';
 import styled from 'styled-components/native/index';
 
+/** Header for the sign up process
+ * @param {string} backgroundStyle - set the header background
+ * @param {integer} processStage - set the progressBar progress
+ * @param {String} headerTitle - set the title of the header
+ **/
 export default class SignupHeader extends React.Component {
   render() {
     return (
       <HeaderWrapper backgroundStyle={this.props.backgroundStyle}>
         <ProgressBar steps={this.props.processStage} />
-        <SignUpTitle>YOUR PROFILE</SignUpTitle>
+        <SignUpTitle>{this.props.headerTitle}</SignUpTitle>
       </HeaderWrapper>
     );
   }

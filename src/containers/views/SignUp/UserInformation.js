@@ -11,6 +11,7 @@ import PicturePicker from '../../../components/SignUp/PicturePicker';
 import submit from '../../../components/SignUp/validate';
 import { NavigationActions } from 'react-navigation';
 
+/* The sign up process starts here with the user's information */
 class UserInformation extends React.Component {
   render() {
     return (
@@ -21,7 +22,11 @@ class UserInformation extends React.Component {
         enableAutoAutomaticScroll={true}
       >
         <ViewContainer>
-          <SignupHeader processStage={YOUR_PROFILE} backgroundStyle={'light'} />
+          <SignupHeader
+            processStage={YOUR_PROFILE}
+            backgroundStyle={'light'}
+            headerTitle={'YOUR PROFILE'}
+          />
           <MainInformations />
           <AdditionalInformations />
           <PicturePicker />

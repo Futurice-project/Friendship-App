@@ -8,7 +8,7 @@ import {
   LabelText,
   LabelTextHelper,
   Part,
-} from './Layout';
+} from '../Layout/SignupLayout';
 import Field from 'redux-form/es/Field';
 import React from 'react';
 import { View } from 'react-native';
@@ -59,6 +59,11 @@ const renderGenderPicker = submittedErrors => {
   );
 };
 
+/**
+ * Renders additionnal information fields :
+ * - Birth Year
+ * - Genders
+ * */
 class AdditionalInformations extends React.Component {
   render() {
     return (
