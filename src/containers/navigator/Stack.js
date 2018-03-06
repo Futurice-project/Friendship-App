@@ -15,7 +15,7 @@ import ChatView from '../views/Chat/ChatView';
 import ChatRequest from '../views/Chat/ChatRequest';
 import SignUpYeahAndNaah from '../views/SignUp/SignUpYeahAndNaah';
 import UsersForTagView from '../views/UsersForTagView';
-import SignUpView from '../views/SignUp/_SignUpView';
+import UserInformation from '../views/SignUp/UserInformation';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -44,17 +44,19 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
+    Welcome: {
+      screen: WelcomeView,
+      navigationOptions: { header: () => null },
+    },
+    /* First view of the sign up process
+     * Basic information about the user are asked in that view */
     SignUp: {
-      screen: SignUpView,
+      screen: UserInformation,
       navigationOptions: { header: () => null },
     },
     SignUpLocation: {
       screen: SignUpLocation,
       title: 'SignUpLocation',
-      navigationOptions: { header: () => null },
-    },
-    Welcome: {
-      screen: WelcomeView,
       navigationOptions: { header: () => null },
     },
     SignUpMatching: {

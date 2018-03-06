@@ -43,4 +43,8 @@ export const LabelTextHelper = styled.Text`
   color: #9b9b9b;
 `;
 
-export const Text = styled.Text``;
+export const ErrorText = styled.Text`
+  font-family: 'NunitoSans-SemiBold';
+  font-size: 14;
+  color: #ff0000;
+`;

@@ -11,6 +11,12 @@ import {
   LabelTextHelper,
   Part,
 } from './Layout';
+import { connect } from 'react-redux';
+import { renderErrorMessage } from './validate';
+
+const mapStateToProps = state => ({
+  signup: state.form.signup,
+});
 
 const renderEmojiField = () => {
   return (
@@ -23,7 +29,7 @@ const renderEmojiField = () => {
   );
 };
 
-const renderUsernameField = () => {
+const renderUsernameField = submittedErrors => {
   return (
     <FieldContainer style={{ marginTop: 15 }}>
       <FieldWrapper>
@@ -36,11 +42,14 @@ const renderUsernameField = () => {
       <HintWrapper>
         <LabelTextHelper>(visible)</LabelTextHelper>
       </HintWrapper>
+      {submittedErrors && submittedErrors.username ? (
+        renderErrorMessage(submittedErrors.username)
+      ) : null}
     </FieldContainer>
   );
 };
 
-const renderEmailField = () => {
+const renderEmailField = submittedErrors => {
   return (
     <FieldContainer>
       <FieldWrapper>
@@ -54,31 +63,45 @@ const renderEmailField = () => {
       <HintWrapper>
         <LabelTextHelper>(private)</LabelTextHelper>
       </HintWrapper>
+      {submittedErrors && submittedErrors.email ? (
+        renderErrorMessage(submittedErrors.email)
+      ) : null}
     </FieldContainer>
   );
 };
 
-const renderPwdField = () => {
+const renderPwdField = submittedErrors => {
   return (
     <FieldContainer>
       <FieldWrapper>
         <Field name="pwd" component={SignUpTextInput} placeholder="PASSWORD*" />
       </FieldWrapper>
+      {submittedErrors && submittedErrors.pwd ? (
+        renderErrorMessage(submittedErrors.pwd)
+      ) : null}
     </FieldContainer>
   );
 };
 
-export default class MainInformations extends React.Component {
+class MainInformations extends React.Component {
   render() {
     return (
       <Container>
         {renderEmojiField()}
         <Part>
-          {renderUsernameField()}
-          {renderEmailField()}
-          {renderPwdField()}
+          {renderUsernameField(
+            this.props.signup ? this.props.signup.submitErrors : null,
+          )}
+          {renderEmailField(
+            this.props.signup ? this.props.signup.submitErrors : null,
+          )}
+          {renderPwdField(
+            this.props.signup ? this.props.signup.submitErrors : null,
+          )}
         </Part>
       </Container>
     );
   }
 }
+
+export default connect(mapStateToProps, null)(MainInformations);

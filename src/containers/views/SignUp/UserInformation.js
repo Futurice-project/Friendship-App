@@ -9,9 +9,9 @@ import MainInformations from '../../../components/SignUp/MainInformations';
 import AdditionalInformations from '../../../components/SignUp/AdditionalInformations';
 import PicturePicker from '../../../components/SignUp/PicturePicker';
 import submit from '../../../components/SignUp/validate';
-import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
-class SignUpView extends React.Component {
+class UserInformation extends React.Component {
   render() {
     return (
       <KeyboardAwareScrollView
@@ -32,9 +32,10 @@ class SignUpView extends React.Component {
   }
 }
 
-export default connect()(
-  reduxForm({
-    form: 'signup',
-    onSubmit: submit,
-  })(SignUpView),
-);
+export default reduxForm({
+  form: 'signup',
+  onSubmit: submit,
+  onSubmitSuccess: (result, dispatch, props) => {
+    dispatch(NavigationActions.navigate({ routeName: 'SignUpLocation' }));
+  },
+})(UserInformation);

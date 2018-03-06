@@ -9,6 +9,7 @@ import { SignUpWrapper } from '../../../components/Layout/Layout';
 import RoundTab from '../../../components/RoundTab';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
 import { decrementProgress, incrementProgress } from '../../../state/signup';
+import { LOCATION } from '../../../components/SignUp/Constants';
 
 const mapStateToProps = state => ({
   locations: state.locations,
@@ -79,7 +80,7 @@ export class SignUpLocation extends React.Component {
 
     return (
       <SignUpWrapper>
-        <ProgressBar steps={this.props.signup.signupProgress} />
+        <ProgressBar steps={LOCATION} />
         <SignUpDivWrapper
           style={{
             paddingTop: 60,

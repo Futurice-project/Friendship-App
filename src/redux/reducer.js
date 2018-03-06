@@ -16,8 +16,8 @@ const reducers = {
   personalityState: PersonalityStateReducer,
   keyboardState: KeyboardStateReducer,
   tagState: TagStateReducer,
-  signup: SignUpReducer,
-  signupForm: formReducer,
+  //signup: SignUpReducer,
+  form: formReducer,
 
   //
   ...restReducers,

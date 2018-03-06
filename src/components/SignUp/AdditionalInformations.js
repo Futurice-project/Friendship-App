@@ -12,8 +12,14 @@ import {
 import Field from 'redux-form/es/Field';
 import React from 'react';
 import { View } from 'react-native';
+import { renderErrorMessage } from './validate';
+import { connect } from 'react-redux';
 
-const renderBirthYearField = () => {
+const mapStateToProps = state => ({
+  signup: state.form.signup,
+});
+
+const renderBirthYearField = submittedErrors => {
   return (
     <FieldContainer style={{ marginTop: 19 }}>
       <FieldWrapper>
@@ -27,11 +33,14 @@ const renderBirthYearField = () => {
       <HintWrapper>
         <LabelTextHelper>(This will be displayed as age range)</LabelTextHelper>
       </HintWrapper>
+      {submittedErrors && submittedErrors.birthDate ? (
+        renderErrorMessage(submittedErrors.birthDate)
+      ) : null}
     </FieldContainer>
   );
 };
 
-const renderGenderPicker = () => {
+const renderGenderPicker = submittedErrors => {
   return (
     <FieldContainer>
       <View style={{ width: 278 }}>
@@ -41,19 +50,30 @@ const renderGenderPicker = () => {
         <LabelTextHelper>(visible)</LabelTextHelper>
       </HintWrapper>
       <Field name="gender" component={Genders} />
+      <View style={{ paddingTop: 10 }}>
+        {submittedErrors && submittedErrors.gender ? (
+          renderErrorMessage(submittedErrors.gender)
+        ) : null}
+      </View>
     </FieldContainer>
   );
 };
 
-export default class AdditionalInformations extends React.Component {
+class AdditionalInformations extends React.Component {
   render() {
     return (
       <Container>
         <Part backgroundStyle={'light'}>
-          {renderBirthYearField()}
-          {renderGenderPicker()}
+          {renderBirthYearField(
+            this.props.signup ? this.props.signup.submitErrors : null,
+          )}
+          {renderGenderPicker(
+            this.props.signup ? this.props.signup.submitErrors : null,
+          )}
         </Part>
       </Container>
     );
   }
 }
+
+export default connect(mapStateToProps, null)(AdditionalInformations);
