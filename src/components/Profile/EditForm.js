@@ -43,16 +43,15 @@ class EditForm extends React.Component {
     password: '',
     username: '',
     birthyear: '',
-    genderArr: '',
+    genderArr: '', // because tne name "genders" in conflit with the global genders in the backend, so i changed the name to genderArr
     loading: false,
     error: false,
     validationError: '',
-    exsitingGenders: '',
+    exsitingGenders: '', // get the exsitingGenders that the users have
     image: '',
-    isModalVisible: false,
+    isModalVisible: false, //for error handling
   };
   componentDidMount() {
-    console.log(this.props.userData);
     if (this.props.userData) {
       this.setState({
         email: this.props.userData.email,
@@ -68,6 +67,7 @@ class EditForm extends React.Component {
   //? { uri: 'data:image/png;base64,' + this.props.currentUser.data.image }
   //: require('../../../assets/img/placeholder/grone.jpg');
   getGendersById(exsitingGenders) {
+    // a helper function to get the current user's exsitingGenders
     let genderArry = [];
     exsitingGenders.forEach(gender => {
       if (gender === 'WOMAN') {
@@ -125,9 +125,9 @@ class EditForm extends React.Component {
       },
       body: formData,
     })
-      .then(() => this.props.closeEditForm())
-      .then(() => this.props.onRefresh())
-      .catch(() => this.setState({ isModalVisible: true }));
+      .then(() => this.props.closeEditForm()) //close the form
+      .then(() => this.props.onRefresh()) //do a fetch to fetch the latest user data
+      .catch(() => this.setState({ isModalVisible: true })); //show error modal if fail!
   };
 
   onSubmit() {
@@ -218,10 +218,10 @@ class EditForm extends React.Component {
   }
 
   render() {
-    const srcImage = require('../../../assets/img/placeholder/grone.jpg');
+    const srcImage = require('../../../assets/img/placeholder/grone.jpg'); //if the user doesnt have profile pic, then this is the defult one we give to the user
     this.renderStatus();
     const image =
-      this.props.userData.image && !this.state.image
+      this.props.userData.image && !this.state.image //if the user already has his own profile pic
         ? { uri: 'data:image/png;base64,' + this.props.userData.image }
         : { uri: this.state.image };
     return (
