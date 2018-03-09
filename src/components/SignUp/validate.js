@@ -4,10 +4,8 @@ import { ErrorText } from '../Layout/SignupLayout';
 
 export default function submit(values) {
   let err = null;
-  console.log('Validating ...');
 
   if (!values.username) {
-    console.log('Checking username ...');
     err = {
       ...err,
       username: 'Enter a valid username',
@@ -20,7 +18,6 @@ export default function submit(values) {
   }
 
   if (!values.email || emailNotValid(values.email)) {
-    console.log('Checking email ...');
     err = {
       ...err,
       email: 'Enter a valid email (ex. foo@bar.com)',
@@ -28,7 +25,6 @@ export default function submit(values) {
   }
 
   if (!values.pwd) {
-    console.log('Checking password ...');
     err = {
       ...err,
       pwd: 'Enter a valid password',
@@ -36,7 +32,6 @@ export default function submit(values) {
   }
 
   if (!values.birthDate) {
-    console.log('Checking birth year ...');
     err = {
       ...err,
       birthDate: 'Enter a valid birth year',
@@ -44,7 +39,6 @@ export default function submit(values) {
   }
 
   if (!values.gender) {
-    console.log('Checking username ...');
     err = {
       ...err,
       gender: 'Select at least a gender',
