@@ -13,6 +13,7 @@ import {
 } from '../Layout/SignupLayout';
 import { connect } from 'react-redux';
 import { renderErrorMessage } from './validate';
+import SignupField from './SignupField';
 
 const mapStateToProps = state => ({
   signup: state.form.signup,
@@ -30,22 +31,47 @@ const renderEmojiField = () => {
 };
 
 const renderUsernameField = submittedErrors => {
+  console.log('Rendering username ...');
+  console.log(submittedErrors);
   return (
-    <FieldContainer style={{ marginTop: 15 }}>
-      <FieldWrapper>
-        <Field
-          name="username"
-          component={SignUpTextInput}
-          placeholder="(NICK)NAME*"
-        />
-      </FieldWrapper>
+    <SignupField
+      name={'username'}
+      component={SignUpTextInput}
+      placeholder={'(NICK)NAME*'}
+      hinttext
+      texthelper={'(visible)'}
+      err={submittedErrors => {
+        console.log('Error ...');
+        console.log(submittedErrors);
+        if (submittedErrors && submittedErrors.username) {
+          console.log(submittedErrors.username);
+          return submittedErrors.username;
+        }
+      }}
+    />
+    /*    < FieldContainer
+      style = {
+      {
+        marginTop: 15
+      }
+    }>
+    <
+      FieldWrapper >
+      < Field
+      name = "username"
+      component = {SignUpTextInput}
+      placeholder = "(NICK)NAME*"
+        / >
+        < /FieldWrapper>
       <HintWrapper>
         <LabelTextHelper>(visible)</LabelTextHelper>
       </HintWrapper>
-      {submittedErrors && submittedErrors.username ? (
-        renderErrorMessage(submittedErrors.username)
-      ) : null}
-    </FieldContainer>
+      {
+        submittedErrors && submittedErrors.username ? (
+          renderErrorMessage(submittedErrors.username)
+        ) : null
+      }
+    </FieldContainer>*/
   );
 };
 
