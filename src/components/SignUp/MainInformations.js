@@ -12,7 +12,7 @@ import {
   Part,
 } from '../Layout/SignupLayout';
 import { connect } from 'react-redux';
-import { renderErrorMessage } from './validate';
+import { checkErrorMessage, renderErrorMessage } from './validate';
 import SignupField from './SignupField';
 
 const mapStateToProps = state => ({
@@ -31,81 +31,40 @@ const renderEmojiField = () => {
 };
 
 const renderUsernameField = submittedErrors => {
-  console.log('Rendering username ...');
-  console.log(submittedErrors);
   return (
     <SignupField
       name={'username'}
       component={SignUpTextInput}
       placeholder={'(NICK)NAME*'}
-      hinttext
       texthelper={'(visible)'}
-      err={submittedErrors => {
-        console.log('Error ...');
-        console.log(submittedErrors);
-        if (submittedErrors && submittedErrors.username) {
-          console.log(submittedErrors.username);
-          return submittedErrors.username;
-        }
-      }}
+      err={checkErrorMessage(submittedErrors, 'USERNAME')}
     />
-    /*    < FieldContainer
-      style = {
-      {
-        marginTop: 15
-      }
-    }>
-    <
-      FieldWrapper >
-      < Field
-      name = "username"
-      component = {SignUpTextInput}
-      placeholder = "(NICK)NAME*"
-        / >
-        < /FieldWrapper>
-      <HintWrapper>
-        <LabelTextHelper>(visible)</LabelTextHelper>
-      </HintWrapper>
-      {
-        submittedErrors && submittedErrors.username ? (
-          renderErrorMessage(submittedErrors.username)
-        ) : null
-      }
-    </FieldContainer>*/
   );
 };
 
 const renderEmailField = submittedErrors => {
   return (
-    <FieldContainer>
-      <FieldWrapper>
-        <Field
-          name="email"
-          component={SignUpTextInput}
-          keyboardType={'email-address'}
-          placeholder="EMAIL*"
-        />
-      </FieldWrapper>
-      <HintWrapper>
-        <LabelTextHelper>(private)</LabelTextHelper>
-      </HintWrapper>
-      {submittedErrors && submittedErrors.email ? (
-        renderErrorMessage(submittedErrors.email)
-      ) : null}
-    </FieldContainer>
+    <SignupField
+      name={'email'}
+      component={SignUpTextInput}
+      placeholder={'EMAIL*'}
+      hinttext
+      texthelper={'(private)'}
+      keyboardType={'email-address'}
+      err={checkErrorMessage(submittedErrors, 'EMAIL')}
+      style={{ marginTop: 15 }}
+    />
   );
 };
 
 const renderPwdField = submittedErrors => {
   return (
-    <FieldContainer>
-      <FieldWrapper>
-        <Field name="pwd" component={SignUpTextInput} placeholder="PASSWORD*" />
-      </FieldWrapper>
-      {submittedErrors && submittedErrors.pwd ? (
-        renderErrorMessage(submittedErrors.pwd)
-      ) : null}
-    </FieldContainer>
+    <SignupField
+      name={'pwd'}
+      component={SignUpTextInput}
+      placeholder={'PASSWORD*'}
+      err={checkErrorMessage(submittedErrors, 'PASSWORD')}
+    />
   );
 };
 

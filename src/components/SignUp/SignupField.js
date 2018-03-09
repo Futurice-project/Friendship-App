@@ -11,12 +11,13 @@ import { renderErrorMessage } from './validate';
 export default class SignupField extends React.Component {
   render() {
     return (
-      <FieldContainer style={{ marginTop: 15 }}>
+      <FieldContainer>
         <FieldWrapper>
           <Field
             name={this.props.name}
             component={this.props.component}
             placeholder={this.props.placeholder}
+            keyboardType={this.props.keyboardType}
           />
         </FieldWrapper>
         {this.props.hinttext ? (

@@ -53,6 +53,21 @@ export default function submit(values) {
   }
 }
 
+export function checkErrorMessage(submittedErrors, type) {
+  if (submittedErrors) {
+    switch (type) {
+      case 'USERNAME':
+        return submittedErrors.username ? submittedErrors.username : null;
+      case 'EMAIL':
+        return submittedErrors.email ? submittedErrors.email : null;
+      case 'PASSWORD':
+        return submittedErrors.pwd ? submittedErrors.pwd : null;
+      default:
+        return null;
+    }
+  }
+}
+
 export const renderErrorMessage = error => {
   return <ErrorText>{error}</ErrorText>;
 };
