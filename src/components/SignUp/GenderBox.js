@@ -4,6 +4,17 @@ import styled from 'styled-components/native';
 export default class GenderBox extends React.Component {
   state = { color: '#ffffff' };
 
+  componentDidMount() {
+    if (this.props.exsitingGenders) {
+      this.props.exsitingGenders.forEach(item => {
+        if (item === this.props.gender) {
+          //loop through the exsitingGenders that the current user has, and return them to editForm.js
+          return this.setState({ color: '#ff8a65' });
+        }
+      });
+    }
+  }
+
   _handlePress() {
     this.props.updateGenders();
     if (this.state.color === '#ffffff') {

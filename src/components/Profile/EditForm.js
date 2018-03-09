@@ -1,19 +1,26 @@
 import React from 'react';
-import { Alert, Image, View, TextInput } from 'react-native';
+import {
+  Alert,
+  Image,
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { ImagePicker } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
-
-import rest from '../../../utils/rest';
-import { ViewContainer } from '../../../components/Layout/Layout';
-import RoundTab from '../../../components/RoundTab';
-import ProgressBar from '../../../components/SignUp/ProgressBar';
-import GenderBox from '../../../components/SignUp/GenderBox';
-import SignUpEmoji from '../../../components/SignUp/SignUpEmoji';
-import LoadingIndicator from '../../../components/LoadingIndicator';
-import { emojis } from '../../../../assets/misc/emojis';
-import { YOUR_PROFILE } from '../../../components/SignUp/Constants';
+import rest from '../../utils/rest';
+import { ViewContainer } from '../Layout/Layout';
+import RoundTab from '../RoundTab';
+import ProgressBar from '../SignUp/ProgressBar';
+import GenderBox from '../SignUp/GenderBox';
+import SignUpEmoji from '../SignUp/SignUpEmoji';
+import LoadingIndicator from '../LoadingIndicator';
+import { emojis } from '../../../assets/misc/emojis';
+import { YOUR_PROFILE } from '../SignUp/Constants';
+import Modal from 'react-native-modal';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -30,17 +37,51 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-class SignUpView extends React.Component {
+class EditForm extends React.Component {
   state = {
     email: '',
     password: '',
     username: '',
     birthyear: '',
-    genders: '',
+    genderArr: '', // because tne name "genders" in conflit with the global genders in the backend, so i changed the name to genderArr
     loading: false,
     error: false,
     validationError: '',
+    exsitingGenders: '', // get the exsitingGenders that the users have
+    image: '',
+    isModalVisible: false, //for error handling
   };
+  componentDidMount() {
+    if (this.props.userData) {
+      this.setState({
+        email: this.props.userData.email,
+        username: this.props.userData.username,
+        birthyear: this.props.userData.birthyear.toString(),
+        genderArr: this.getGendersById(this.props.userData.genderlist),
+        emoji: this.props.userData.emoji,
+      });
+    }
+  }
+
+  //const srcImage = this.props.currentUser.data.image
+  //? { uri: 'data:image/png;base64,' + this.props.currentUser.data.image }
+  //: require('../../../assets/img/placeholder/grone.jpg');
+  getGendersById(exsitingGenders) {
+    // a helper function to get the current user's exsitingGenders
+    let genderArry = [];
+    exsitingGenders.forEach(gender => {
+      if (gender === 'WOMAN') {
+        genderArry.push(1);
+      } else if (gender === 'MAN') {
+        genderArry.push(2);
+      } else if (gender === 'HUMAN') {
+        genderArry.push(3);
+      } else {
+        genderArry.push(4);
+      }
+    });
+    return genderArry;
+  }
 
   componentWillReceiveProps() {
     this.setState({ error: true });
@@ -76,30 +117,41 @@ class SignUpView extends React.Component {
     }
   }
 
-  signUp() {
+  updateProfile = (id, formData) => {
+    fetch(`http://localhost:3888/users/${id}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: this.props.auth.data.token,
+      },
+      body: formData,
+    })
+      .then(() => this.props.closeEditForm()) //close the form
+      .then(() => this.props.onRefresh()) //do a fetch to fetch the latest user data
+      .catch(() => this.setState({ isModalVisible: true })); //show error modal if fail!
+  };
+
+  onSubmit() {
     const {
       email,
       password,
       username,
       birthyear,
-      genders,
+      genderArr,
       image,
       emoji,
     } = this.state;
-    let userData = { email, password, username, birthyear, emoji };
+    let userData = { email, password, birthyear, username, emoji };
 
-    if (!email || !password || !username || !birthyear) {
+    if (!email || !username || !birthyear) {
       return this.setState({
         validationError: 'Please enter all required fields',
       });
     }
-
-    let formdata = this.createFormData(userData, image, genders);
-
-    this.props.signUp(formdata);
+    let formdata = this.createFormData(userData, image, genderArr);
+    this.updateProfile(this.props.userData.id, formdata);
   }
 
-  createFormData(userData, image, genders) {
+  createFormData(userData, image, genderArr) {
     let tempFormData = new FormData();
 
     if (image) {
@@ -110,8 +162,8 @@ class SignUpView extends React.Component {
       });
     }
 
-    if (genders) {
-      tempFormData.append('genders', JSON.stringify(genders));
+    if (genderArr) {
+      tempFormData.append('genderArr', JSON.stringify(genderArr));
     }
 
     if (userData) {
@@ -130,13 +182,13 @@ class SignUpView extends React.Component {
   }
 
   updateGenders(value) {
-    if (this.state.genders.indexOf(value) > -1) {
-      const genders = this.state.genders.slice();
-      genders.splice(this.state.genders.indexOf(value), 1);
-      return this.setState({ genders, error: false });
+    if (this.state.genderArr.indexOf(value) > -1) {
+      const genders = this.state.genderArr.slice();
+      genders.splice(this.state.genderArr.indexOf(value), 1);
+      return this.setState({ genderArr: genders, error: false });
     }
     return this.setState({
-      genders: [...this.state.genders, value],
+      genderArr: [...this.state.genderArr, value],
       error: false,
     });
   }
@@ -166,9 +218,12 @@ class SignUpView extends React.Component {
   }
 
   render() {
-    console.log(this.state.genders);
+    const srcImage = require('../../../assets/img/placeholder/grone.jpg'); //if the user doesnt have profile pic, then this is the defult one we give to the user
     this.renderStatus();
-    const image = { uri: this.state.image };
+    const image =
+      this.props.userData.image && !this.state.image //if the user already has his own profile pic
+        ? { uri: 'data:image/png;base64,' + this.props.userData.image }
+        : { uri: this.state.image };
     return (
       <KeyboardAwareScrollView
         extraHeight={30}
@@ -178,8 +233,24 @@ class SignUpView extends React.Component {
       >
         <ViewContainer>
           <HeaderWrapper>
-            <ProgressBar steps={YOUR_PROFILE} />
-            <SignUpTitle>YOUR PROFILE</SignUpTitle>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 30,
+                marginLeft: 20,
+                marginRight: 20,
+              }}
+            >
+              <TouchableOpacity onPress={() => this.props.closeEditForm()}>
+                <Text style={styles.headerText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.onSubmit()}>
+                <Text style={styles.headerText}>SAVE</Text>
+              </TouchableOpacity>
+            </View>
+            <SignUpTitle>EDIT PROFILE</SignUpTitle>
             <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
               PICK YOUR MOOD
             </LabelText>
@@ -254,7 +325,7 @@ class SignUpView extends React.Component {
                   secureTextEntry
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#4a4a4a"
-                  placeholder="PASSWORD*"
+                  placeholder="PASSWORD"
                   onChangeText={password =>
                     this.setState({
                       password,
@@ -264,6 +335,11 @@ class SignUpView extends React.Component {
                   value={this.state.password}
                 />
               </LabelView>
+              <View style={{ width: 278 }}>
+                <LabelTextHelper>
+                  (Leave it blank if not changing)
+                </LabelTextHelper>
+              </View>
             </LabelContainer>
           </HeaderWrapper>
           <FirstLabelWrapper>
@@ -309,20 +385,28 @@ class SignUpView extends React.Component {
               </View>
               <GenderBoxContainer style={{ height: 44 }}>
                 <GenderBox
+                  updateGenderById={value => this.updateGenders(value)}
+                  exsitingGenders={this.props.userData.genderlist}
                   updateGenders={() => this.updateGenders(1)}
                   gender="WOMAN"
                 />
                 <GenderBox
+                  updateGenderById={value => this.updateGenders(value)}
+                  exsitingGenders={this.props.userData.genderlist}
                   updateGenders={() => this.updateGenders(2)}
                   gender="MAN"
                 />
               </GenderBoxContainer>
               <GenderBoxContainer style={{ height: 44, marginLeft: '38%' }}>
                 <GenderBox
+                  updateGenderById={value => this.updateGenders(value)}
+                  exsitingGenders={this.props.userData.genderlist}
                   updateGenders={() => this.updateGenders(3)}
                   gender="HUMAN"
                 />
                 <GenderBox
+                  updateGenderById={value => this.updateGenders(value)}
+                  exsitingGenders={this.props.userData.genderlist}
                   updateGenders={() => this.updateGenders(4)}
                   gender="OTHER"
                 />
@@ -339,7 +423,7 @@ class SignUpView extends React.Component {
                 fontFamily: 'NunitoSans-SemiBold',
               }}
             >
-              ADD PHOTO
+              CHANGE PHOTO
             </LabelText>
             <View style={{ width: 278, marginLeft: 30 }}>
               <LabelTextHelper>
@@ -354,7 +438,7 @@ class SignUpView extends React.Component {
                 {image.uri ? (
                   <Image style={{ width: 93, height: 93 }} source={image} />
                 ) : (
-                  <PlusSignText>+</PlusSignText>
+                  <Image style={{ width: 93, height: 93 }} source={srcImage} />
                 )}
               </PhotoBox>
             </ScrollViewPhoto>
@@ -362,14 +446,69 @@ class SignUpView extends React.Component {
               <RoundTab
                 titleColor="white"
                 tint="#2d4359"
-                title="Next"
+                title="Submit"
                 style={{ flex: 1 }}
-                onPress={() => this.signUp()}
+                onPress={() => this.onSubmit()}
               />
             </RoundTabContainer>
           </SecondLabelWrapper>
         </ViewContainer>
         {this.renderLoadingIndicator()}
+        <Modal
+          transparent
+          animationType="slide"
+          isVisible={this.state.isModalVisible}
+        >
+          <View
+            style={{
+              height: 150,
+              borderRadius: 5,
+              backgroundColor: '#F1F1F3',
+              padding: 20,
+              paddingLeft: 10,
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 20,
+                fontWeight: 'bold',
+                paddingBottom: 15,
+                borderBottomColor: 'gray',
+                borderBottomWidth: 0.8,
+              }}
+            >
+              Profile edit fail!
+            </Text>
+            <Text
+              style={{ textAlign: 'center', fontSize: 16, color: '#60686d' }}
+            >
+              Check your input or network connection!
+            </Text>
+            <TouchableOpacity
+              title="OK"
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#ed5249',
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: '#14B28B',
+                padding: 10,
+              }}
+              onPress={() => this.setState({ isModalVisible: false })}
+            >
+              <Text
+                style={{
+                  color: '#F9F1EF',
+                  fontSize: 16,
+                  fontWeight: '600',
+                }}
+              >
+                OK
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </KeyboardAwareScrollView>
     );
   }
@@ -377,7 +516,7 @@ class SignUpView extends React.Component {
 
 const HeaderWrapper = styled.View`
   width: 100%;
-  height: 505;
+  height: 550;
   display: flex;
   flex-direction: column;
   background-color: #e8e9e8;
@@ -410,7 +549,6 @@ const SignUpTitle = styled.Text`
   color: #839297;
   margin-left: 30;
   margin-right: 10;
-  margin-top: 37;
 `;
 
 const LabelView = styled.View`
@@ -515,4 +653,4 @@ const styles = {
   },
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpView);
+export default connect(mapStateToProps, mapDispatchToProps)(EditForm);
