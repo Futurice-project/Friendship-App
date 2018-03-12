@@ -171,7 +171,6 @@ class MyProfile extends React.Component {
         />
       );
     }
-    console.log(this.props.currentUser.data);
 
     return (
       <ProfileContainer>

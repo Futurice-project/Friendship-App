@@ -99,7 +99,6 @@ class EventDetailView extends Component {
       const userId = this.props.auth.data.decoded
         ? this.props.auth.data.decoded.id
         : null;
-      console.log(this.props.eventParticipation);
       const {
         title,
         description,
