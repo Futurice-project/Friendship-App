@@ -1,10 +1,10 @@
 import styled from 'styled-components/native';
 import React from 'react';
 import {
-  TouchableWithoutFeedback,
   LayoutAnimation,
-  UIManager,
   Platform,
+  TouchableWithoutFeedback,
+  UIManager,
 } from 'react-native';
 
 export const ToggleSwitch = styled.View`

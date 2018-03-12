@@ -1,11 +1,11 @@
 import React from 'react';
-import { NavigationActions, addNavigationHelpers } from 'react-navigation';
+import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import RootNavigator from './Stack';
 
 // Throw a helpful error message when the TabNavigator couldn't be found by name
-const missingTabNavigator = `Error while handling back button press:
+/*const missingTabNavigator = `Error while handling back button press:
 
 Route with name 'Tabs' was not found in the root of the navigation state.
 
@@ -13,7 +13,7 @@ If you have moved the 'Tabs' route, you need to:
   * Edit src/modules/Navigator.js
   * Update handleBackButton() so it knows
     where to find your TabNavigator
-    (or make it ignore tabs altogether)`;
+    (or make it ignore tabs altogether)`;*/
 
 /**
  * Override the back button
@@ -30,7 +30,7 @@ export const handleBackButton = ({ navigatorState }, dispatch) => {
 
   // If the tab navigator is missing
   if (tabNavigatorIndex === -1) {
-    if (navigatorState.routes.length == 1) {
+    if (navigatorState.routes.length === 1) {
       // We are on the homescreen, so we want the os to handle the back button
       // Pressing the back button will then close the app
       return false;
