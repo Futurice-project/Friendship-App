@@ -1,6 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, FlatList, View, Text } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 
 const mapStateToProps = state => ({});
 
@@ -13,6 +19,11 @@ export class HomeView extends React.Component {
     return (
       <View>
         <Text>Home View </Text>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate('Report')}
+        >
+          <Text>Report</Text>
+        </TouchableOpacity>
       </View>
     );
   }

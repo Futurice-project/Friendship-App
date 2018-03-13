@@ -6,6 +6,7 @@ import rest from '../../../utils/rest';
 import RoundTab from '../../../components/RoundTab';
 import InboxCard from '../../../components/InboxCard';
 import SuggestionList from '../../../components/SuggestionList';
+import Report from '../Report/Report';
 
 const mapStateToProps = state => ({
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
@@ -19,6 +20,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export class ChatInbox extends React.Component {
+  state = { showReport: false };
   componentDidMount() {
     this.timer = setInterval(
       () => this.props.chatRoomsWithUserId(this.props.currentUserId),
@@ -37,6 +39,9 @@ export class ChatInbox extends React.Component {
   };
 
   render() {
+    if (this.state.showReport) {
+      return <Report />;
+    }
     return (
       <View style={{ flex: 1 }}>
         <Text

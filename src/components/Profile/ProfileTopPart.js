@@ -114,12 +114,14 @@ const ProfileTopPart = props => {
             }}
           >
             <UsernameText>{username}</UsernameText>
-            <TouchableOpacity onPress={() => showEditForm()}>
-              <Image
-                source={require('../../../assets/edit.png')}
-                style={{ width: 38, height: 38 }}
-              />
-            </TouchableOpacity>
+            {myProfile ? (
+              <TouchableOpacity onPress={() => showEditForm()}>
+                <Image
+                  source={require('../../../assets/edit.png')}
+                  style={{ width: 38, height: 38 }}
+                />
+              </TouchableOpacity>
+            ) : null}
           </View>
           <CompatibilityText style={{ textAlign: 'center' }}>
             {myProfile ? 'You have ' : null}
