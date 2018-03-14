@@ -12,6 +12,7 @@ const ReportContent = ({
 }) => {
   const { title, text, reportInput } = styles;
   if (!data.content.reasonTitle) {
+    // if the user chooses "i just dont like it" category
     return (
       <View>
         <ReportHeader

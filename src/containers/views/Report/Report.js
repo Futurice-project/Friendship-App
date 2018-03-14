@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import ReportList from './ReportList';
-import reportField from './reportField';
+import reportField from './reportField'; //this is the json file
 import ReportContent from './ReportContent';
 import ReportStatus from './ReportStatus';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -10,13 +10,13 @@ import ReportHeader from './ReportHeader';
 export default class Report extends Component {
   state = {
     showContent: false,
-    content: '',
-    text: '',
+    content: '', // the report category the user has chosen.
+    text: '', // the report input field
     showReportStatus: false,
-    isReportStatusVisible: false,
   };
 
   renderReportList() {
+    // my own list component(better customized) to render a list of report field
     return reportField.map((item, i) => {
       return (
         <TouchableOpacity
@@ -38,7 +38,7 @@ export default class Report extends Component {
     fetch(`http://localhost:3888/reports`, {
       method: 'post',
       headers: {
-        Authorization: this.props.navigation.state.params.data.auth,
+        Authorization: this.props.navigation.state.params.data.auth, // data pass from the react navigation from peopleprofile.view and ChatView.js
       },
       body: JSON.stringify({
         userId,
@@ -63,6 +63,7 @@ export default class Report extends Component {
       );
     }
     if (this.state.showContent) {
+      // after the user clicks on one of the categories
       return (
         <ReportContent
           data={this.state.content}

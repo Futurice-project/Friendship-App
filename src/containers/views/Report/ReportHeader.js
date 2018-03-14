@@ -9,12 +9,12 @@ const ReportHeader = ({ headerText, navigateBack, onCancel }) => {
     <View style={viewContainer}>
       <TouchableOpacity onPress={navigateBack}>
         <Icon
-          style={{ padding: 15, fontSize: 26, textAlign: 'center' }}
+          style={{ paddingLeft: 15, fontSize: 26, textAlign: 'center' }}
           name={'ios-arrow-back'}
         />
       </TouchableOpacity>
       <Text style={textStyle}>{headerText}</Text>
-      {onCancel && (
+      {onCancel && ( // in "report success View, you dont have the cancel button design"
         <TouchableOpacity onPress={onCancel}>
           <Text
             style={{

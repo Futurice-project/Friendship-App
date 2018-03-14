@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'react-native-modal';
 import { NavigationActions } from 'react-navigation';
 import ReversedFlatList from 'react-native-reversed-flat-list';
 import styled from 'styled-components/native';
@@ -14,7 +13,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import rest from '../../../utils/rest';
-import Button from '../../../components/Button';
 import PopUpMenu from '../../../components/PopUpMenu';
 
 const mapDispatchToProps = dispatch => ({
