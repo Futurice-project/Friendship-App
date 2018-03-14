@@ -49,7 +49,6 @@ export default class Report extends Component {
   }
 
   render() {
-    console.log(this.props.navigation.state.params.data);
     if (this.state.showReportStatus && this.state.showContent) {
       return (
         <ReportStatus
