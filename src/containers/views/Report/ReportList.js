@@ -39,7 +39,7 @@ const ReportList = ({ data }) => {
       </View>
       <Icon
         style={{ padding: 15, fontSize: 20, textAlign: 'center' }}
-        name={'ios-arrow-back'}
+        name={'ios-arrow-forward'}
       />
     </View>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const ReportHeader = ({ headerText, navigateBack }) => {
+const ReportHeader = ({ headerText, navigateBack, onCancel }) => {
   const { viewContainer, textStyle } = styles;
 
   return (
@@ -14,7 +14,21 @@ const ReportHeader = ({ headerText, navigateBack }) => {
         />
       </TouchableOpacity>
       <Text style={textStyle}>{headerText}</Text>
-      <Text>Cancel</Text>
+      {onCancel && (
+        <TouchableOpacity onPress={onCancel}>
+          <Text
+            style={{
+              fontFamily: 'NunitoSans-Regular',
+              fontSize: 15,
+              color: '#bbbbbb',
+              textDecorationLine: 'underline',
+              marginRight: 10,
+            }}
+          >
+            Cancel
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -23,7 +37,7 @@ const styles = {
   viewContainer: {
     backgroundColor: '#F8F8F8',
     paddingTop: 20,
-    height: 60,
+    height: 70,
     flexDirection: 'row',
     alignItems: 'center',
     shadowColor: '#4a9b9b9b',

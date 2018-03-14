@@ -106,17 +106,9 @@ export default [
   {
     title: 'I just don’t like it',
     content: {
-      title: 'Report user for violence or harm?',
+      title: 'Don’t like this user?',
       subtitle:
-        'After the user has been reviewed, they will be reprimanded if we determine them to be breaking community rules.',
-      reasonTitle: 'You should report the user if:',
-      reasons: [
-        '- They have photos of extreme graphic violence',
-        '- They encourage violence or attacks on anyone',
-        '- They threaten violence or harm',
-      ],
-      confidential:
-        'If your report a user, Friendship app won’t tell them who reported them.',
+        'If you don’t like this user, send us a message explaining why. Meanwhile you can block the user to prevent them from seeing or contacting your profile.',
     },
   },
 ];

@@ -19,11 +19,6 @@ export class HomeView extends React.Component {
     return (
       <View>
         <Text>Home View </Text>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Report')}
-        >
-          <Text>Report</Text>
-        </TouchableOpacity>
       </View>
     );
   }
