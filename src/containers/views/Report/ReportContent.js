@@ -41,8 +41,6 @@ const ReportContent = ({
               width: 200,
               backgroundColor: '#ed7a5f',
               alignItems: 'center',
-              borderWidth: 2,
-              borderColor: '#2d4359',
               borderRadius: 34,
             }}
           >
@@ -59,7 +57,7 @@ const ReportContent = ({
               width: 200,
               alignItems: 'center',
               borderRadius: 34,
-              borderWidth: 1,
+              borderWidth: 2,
               borderColor: '#2d4359',
             }}
           >
@@ -103,8 +101,6 @@ const ReportContent = ({
             width: 200,
             backgroundColor: '#ed7a5f',
             alignItems: 'center',
-            borderWidth: 2,
-            borderColor: '#2d4359',
             borderRadius: 34,
           }}
         >
@@ -119,7 +115,7 @@ const ReportContent = ({
             width: 200,
             alignItems: 'center',
             borderRadius: 34,
-            borderWidth: 1,
+            borderWidth: 2,
             borderColor: '#2d4359',
           }}
         >

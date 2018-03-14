@@ -43,7 +43,6 @@ class PopUpMenu extends React.Component {
               onSelect={() => alert('navigate to send message')}
               text="Invite to Happening"
             />
-            <MenuOption text="Close" />
             <MenuOption onSelect={this.props.isReportVisible} text="Report" />
           </MenuOptions>
         </Menu>
@@ -75,7 +74,6 @@ class PopUpMenu extends React.Component {
           onSelect={() => alert('navigate to send message')}
           text="Block"
         />
-        <MenuOption text="Close" />
         <MenuOption onSelect={this.props.isReportVisible} text="Report" />
       </MenuOptions>
     </Menu>
