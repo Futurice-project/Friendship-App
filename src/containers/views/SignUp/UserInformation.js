@@ -38,6 +38,8 @@ class UserInformation extends React.Component {
 
 export default reduxForm({
   form: 'signup',
+  destroyOnUnmount: false,
+  forceUnregisterOnUnmount: true,
   onSubmit: validate,
   onSubmitSuccess: (result, dispatch, props) => {
     dispatch(props.onSubmitSucceeded);

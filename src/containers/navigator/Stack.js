@@ -45,15 +45,15 @@ const StackNavigatorConfig = {
 
 export default StackNavigator(
   {
-    SignUpLocation: {
-      screen: SignUpLocation,
-      title: 'SignUpLocation',
-      navigationOptions: { header: () => null },
-    },
     /* First view of the sign up process
      * Basic information about the user are asked in that view */
     SignUp: {
       screen: Signup,
+      navigationOptions: { header: () => null },
+    },
+    SignUpLocation: {
+      screen: SignUpLocation,
+      title: 'SignUpLocation',
       navigationOptions: { header: () => null },
     },
     Welcome: {

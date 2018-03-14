@@ -1,7 +1,7 @@
 import React from 'react';
 import UserInformation from './UserInformation';
-import { SignUpLocation } from './SignUpLocation';
 import SignUpPersonality from './SignUpPersonality';
+import SignUpLocation from './SignUpLocation';
 import SignUpYeahAndNaah from './SignUpYeahAndNaah';
 import SignUpMatching from './SignUpMatching';
 import rest from '../../../utils/rest';
@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
 class Signup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { page: 2 };
+    this.state = { page: 1 };
   }
 
   nextPage(page) {
