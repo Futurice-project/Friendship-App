@@ -39,11 +39,11 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
-  openChatView: (chatroomId, username, userEmoji) =>
+  openChatView: (chatroomId, username, userEmoji, id) =>
     dispatch(
       NavigationActions.navigate({
         routeName: 'ChatView',
-        params: { chatroomId, username, userEmoji },
+        params: { chatroomId, username, userEmoji, id },
       }),
     ),
 });
@@ -61,7 +61,12 @@ export class ChatRequest extends React.Component {
     Keyboard.dismiss();
     const { username, emoji } = this.props.navigation.state.params.user;
 
-    this.props.openChatView(chatroomId, username, emoji);
+    this.props.openChatView(
+      chatroomId,
+      username,
+      emoji,
+      this.props.navigation.state.params.user.id,
+    );
     this.props.sendMessage(
       chatroomId,
       this.state.text,

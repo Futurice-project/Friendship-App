@@ -1,6 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, FlatList, View, Text } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 
 const mapStateToProps = state => ({});
 

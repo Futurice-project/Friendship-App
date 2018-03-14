@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'react-native-modal';
 import { NavigationActions } from 'react-navigation';
 import ReversedFlatList from 'react-native-reversed-flat-list';
 import styled from 'styled-components/native';
@@ -14,7 +13,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import rest from '../../../utils/rest';
-import Button from '../../../components/Button';
 import PopUpMenu from '../../../components/PopUpMenu';
 
 const mapDispatchToProps = dispatch => ({
@@ -79,7 +77,11 @@ class ChatView extends Component {
       />
     ),
     headerRight: (
-      <PopUpMenu isReportVisible={navigation.state.params.showReport} chat />
+      <PopUpMenu
+        isReportVisible={() =>
+          navigation.navigate('Report', { data: navigation.state.params })}
+        chat
+      />
     ),
   });
 
@@ -88,16 +90,17 @@ class ChatView extends Component {
     text: '',
     description: '',
     isOptionsVisible: false,
-    isReportVisible: false,
-    isReportStatusVisible: false,
-    reportStatusText: '',
   };
 
   componentDidMount = () => {
     this.setState({
       chatroomId: this.props.navigation.state.params.chatroomId,
     });
-    this.props.navigation.setParams({ showReport: this.showReport });
+    this.props.navigation.setParams({
+      showReport: this.showReport,
+      currentUser: this.props.currentUserId,
+      auth: this.props.auth.data.token,
+    });
     this.props.chatRoomMessages(this.props.navigation.state.params.chatroomId);
     //update all unread messages after 3 seconds to make sure all the chatroom messages have been fetched
     setTimeout(() => this.getUnreadMessagesAndUpdateStatus(), 3000);
@@ -132,46 +135,6 @@ class ChatView extends Component {
 
     this.props.sendMessage(chatroomId, textMessage, userId);
     this.setState({ text: '' });
-  };
-
-  // Modal functions
-  showReport = () => {
-    const { isReportVisible } = this.state;
-    this.setState({ isReportVisible: !isReportVisible, reportDescription: '' });
-  };
-
-  sendReport = () => {
-    const creator = this.props.chatRoom.creator;
-    const receiver = this.props.chatRoom.receiver;
-    const userId =
-      this.props.currentUserId === creator.id ? receiver.id : creator.id;
-    const description = this.state.reportDescription;
-    const reported_by = this.props.currentUserId;
-    fetch(`http://localhost:3888/reports`, {
-      method: 'post',
-      headers: {
-        Authorization: this.props.auth.data.token,
-      },
-      body: JSON.stringify({
-        userId,
-        description,
-        reported_by,
-      }),
-    })
-      .then(() =>
-        this.setState({
-          isReportStatusVisible: true,
-          isReportVisible: false,
-          reportStatusText: 'User reported',
-        }),
-      )
-      .catch(() =>
-        this.setState({
-          isReportStatusVisible: true,
-          isReportVisible: false,
-          reportStatusText: 'Report failed',
-        }),
-      );
   };
 
   keyExtractor = (item, index) => index;
@@ -284,7 +247,6 @@ class ChatView extends Component {
   };
 
   render() {
-    let reportTitle = 'Report ';
     return (
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -298,12 +260,7 @@ class ChatView extends Component {
           data={this.props.chatRoom.messages || []}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
-          style={[
-            { flex: 1 },
-            this.state.isReportVisible || this.state.isReportStatusVisible
-              ? { backgroundColor: 'rgba(0,0,0,0.5)' }
-              : { backgroundColor: 'white' },
-          ]}
+          style={{ flex: 1, backgroundColor: 'white' }}
         />
         <TextInputCard>
           <TextInput
@@ -329,125 +286,6 @@ class ChatView extends Component {
             </TouchableOpacity>
           </ChatInputButtonCard>
         </TextInputCard>
-        <Modal
-          visible={this.state.isReportVisible}
-          transparent
-          animationType="slide"
-        >
-          <View
-            style={{
-              height: 270,
-              borderRadius: 5,
-              backgroundColor: '#F1F1F3',
-              padding: 20,
-              paddingLeft: 10,
-            }}
-          >
-            <View
-              style={{
-                marginLeft: 10,
-                borderBottomWidth: 0.8,
-                borderBottomColor: 'gray',
-                marginBottom: 20,
-                paddingBottom: 20,
-              }}
-            >
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: 20,
-                  fontWeight: 'bold',
-                  paddingBottom: 15,
-                  borderBottomColor: 'gray',
-                  borderBottomWidth: 0.8,
-                }}
-              >
-                Send Report
-              </Text>
-              <Text style={{ marginTop: 10, fontSize: 16, color: '#60686d' }}>
-                Report Description
-              </Text>
-              <TextInput
-                autoCorrect={false}
-                autoCapitalize="none"
-                title={reportTitle}
-                placeholder="Description"
-                multiline={true}
-                onChangeText={reportDescription =>
-                  this.setState({ reportDescription })}
-                value={this.state.reportDescription}
-                style={styles.reportInput}
-              />
-              <Text style={{ marginTop: 5, color: '#60686d' }}>
-                *Average response time is 2 days{' '}
-              </Text>
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-              <TouchableOpacity
-                title="Cancel"
-                onPress={this.showReport}
-                style={styles.cancelButton}
-              >
-                <Text
-                  style={{
-                    color: '#F9F1EF',
-                    fontSize: 16,
-                    fontWeight: '600',
-                  }}
-                >
-                  Cancel
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                title="Report"
-                onPress={this.sendReport}
-                style={styles.reportButton}
-              >
-                <Text
-                  style={{
-                    color: '#F9F1EF',
-                    fontSize: 16,
-                    fontWeight: '600',
-                  }}
-                >
-                  Report
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-        <Modal
-          visible={this.state.isReportStatusVisible}
-          transparent
-          animationType="slide"
-        >
-          <View
-            style={{
-              height: 150,
-              borderRadius: 10,
-              backgroundColor: '#F1F1F3',
-              padding: 20,
-              paddingLeft: 10,
-            }}
-          >
-            <Text
-              style={{ textAlign: 'center', fontSize: 25, marginBottom: 10 }}
-            >
-              {this.state.reportStatusText}
-            </Text>
-            <TouchableOpacity
-              style={{
-                alignSelf: 'stretch',
-                padding: 10,
-                backgroundColor: 'red',
-                borderRadius: 10,
-              }}
-              onPress={() => this.setState({ isReportStatusVisible: false })}
-            >
-              <Text style={{ textAlign: 'center' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
       </KeyboardAvoidingView>
     );
   }
@@ -481,39 +319,6 @@ const styles = {
     margin: 10,
     marginRight: 40,
     marginLeft: 20,
-  },
-  reportInput: {
-    borderLeftWidth: 0.5,
-    borderRightWidth: 0.5,
-    borderWidth: 0.5,
-    borderTopWidth: 0.5,
-    borderRadius: 8,
-    height: 40,
-    borderBottomColor: 'grey',
-    borderTopColor: 'grey',
-    borderLeftColor: 'grey',
-    borderRightColor: 'grey',
-    marginLeft: 2,
-    marginTop: 5,
-    paddingRight: 5,
-    paddingLeft: 5,
-    fontSize: 18,
-    lineHeight: 23,
-  },
-  reportButton: {
-    backgroundColor: '#00bfff',
-    borderRadius: 5,
-    borderWidth: 1,
-    padding: 13,
-    borderColor: '#14B28B',
-    marginLeft: 5,
-  },
-  cancelButton: {
-    backgroundColor: '#ed5249',
-    borderRadius: 5,
-    borderWidth: 1,
-    padding: 13,
-    borderColor: '#14B28B',
   },
 };
 
