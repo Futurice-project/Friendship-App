@@ -4,13 +4,6 @@ export default [
     content: {
       title: 'Feedback for Friendship app',
       subtitle: 'Thank you for taking the time to help us make the app better!',
-      reasonTitle: 'You should contact us if:',
-      reasons: [
-        '- User has shown concerning behaviour',
-        '- User has talked about self harm or suicide',
-      ],
-      confidential:
-        'If your report a user, Friendship app won’t tell them who reported them.',
     },
   },
   {

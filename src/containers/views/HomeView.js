@@ -17,7 +17,12 @@ export class HomeView extends React.Component {
 
   render() {
     return (
-      <View>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: '#ffffff',
+        }}
+      >
         <Text>Home View </Text>
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate('Feedback')}

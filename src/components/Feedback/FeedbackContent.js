@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, TextInput as Input } from 'react-native';
 import TextInput from '../TextInput';
-
+import { CheckBox } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FeedbackHeader from './FeedbackHeader';
-
+import { Slider } from 'react-native-elements';
 const FeedbackContent = ({
   data,
   navigateBack,
@@ -12,7 +12,14 @@ const FeedbackContent = ({
   onChange,
   onCancel,
 }) => {
-  const { title, text, feedbackInput, interestInput } = styles;
+  const {
+    title,
+    text,
+    feedbackInput,
+    interestInput,
+    surveyTitle,
+    surveyText,
+  } = styles;
   if (data.content.title === 'Send us an idea') {
     // if the user chooses "i just dont like it" category
     return (
@@ -61,7 +68,10 @@ const FeedbackContent = ({
       </View>
     );
   }
-  if (data.content.title === 'Suggest an interest' || 'Suggest an activity') {
+  if (
+    data.content.title === 'Suggest an interest' ||
+    data.content.title === 'Suggest an activity'
+  ) {
     return (
       <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <FeedbackHeader
@@ -120,50 +130,59 @@ const FeedbackContent = ({
         onCancel={onCancel}
       />
       <View style={{ padding: 30 }}>
-        <Text style={[title, { marginBottom: 10 }]}>{data.content.title}</Text>
-        <Text style={[text, { marginBottom: 10 }]}>
-          {data.content.subtitle}
+        <Text style={[title, { marginBottom: 10 }]}>
+          Feedback for Friendship app
         </Text>
-        <Text style={text}>{data.content.reasonTitle}</Text>
-        {data.content.reasons.map((item, i) => (
-          <Text style={text} key={i}>
-            {item}
-          </Text>
-        ))}
-        <Text style={[text, { marginTop: 30 }]}>
-          {data.content.confidential}
+        <Text style={[text]}>
+          Thank you for taking the time to help us make the app better!
         </Text>
       </View>
-      <View style={{ marginTop: 40, alignItems: 'center' }}>
-        <TouchableOpacity
-          onPress={sendReport}
+      <View
+        style={{
+          marginBottom: 10,
+          alignItems: 'stretch',
+        }}
+      >
+        <Text style={surveyTitle}>How would you rate the app?</Text>
+        <Slider
           style={{
-            padding: 13,
-            width: 200,
-            backgroundColor: '#ed7a5f',
-            alignItems: 'center',
-            borderRadius: 34,
+            marginLeft: 30,
+            marginRight: 30,
+          }}
+          thumbStyle={{
+            width: 30,
+            height: 30,
+            borderRadius: 30,
+          }}
+          trackStyle={{ height: 10, borderRadius: 27 }}
+          minimumTrackTintColor="#839297"
+          maximumTrackTintColor="#e8e9e8"
+          thumbTintColor="#839297"
+          value={0.2}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginLeft: 33,
+            marginRight: 33,
           }}
         >
-          <Text style={{ alignSelf: 'center', color: '#faf5f0', fontSize: 16 }}>
-            Report
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            marginTop: 10,
-            padding: 13,
-            width: 200,
-            alignItems: 'center',
-            borderRadius: 34,
-            borderWidth: 2,
-            borderColor: '#2d4359',
-          }}
-        >
-          <Text style={{ alignSelf: 'center', color: '#2d4359', fontSize: 16 }}>
-            Block
-          </Text>
-        </TouchableOpacity>
+          <Text style={surveyText}>Naah...</Text>
+          <Text style={surveyText}>Meh.</Text>
+          <Text style={surveyText}>Yeah!</Text>
+        </View>
+      </View>
+      <View>
+        <Text style={surveyTitle}>What’s your goal for using the app?</Text>
+        <CheckBox
+          title="Make one good friend"
+          checkedColor="#839297"
+          checkedIcon="circle"
+          uncheckedIcon="circle-o"
+          containerStyle={{ backgroundColor: 'white', borderWidth: 0 }}
+          checked
+        />
       </View>
     </View>
   );
@@ -210,6 +229,18 @@ const styles = {
     color: '#949795',
     fontFamily: 'NunitoSans-Regular',
     fontSize: 13,
+  },
+  surveyTitle: {
+    marginLeft: 20,
+    color: '#4a4a4a',
+    fontSize: 12,
+    marginBottom: 10,
+    fontFamily: 'NunitoSans-Bold',
+  },
+  surveyText: {
+    fontFamily: 'NunitoSans-Light',
+    fontSize: 13,
+    color: '#2d4359',
   },
 };
 export default FeedbackContent;
