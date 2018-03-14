@@ -2,7 +2,10 @@ import { SubmissionError } from 'redux-form';
 import React from 'react';
 import { ErrorText } from '../Layout/SignupLayout';
 
-export default function submit(values) {
+export default function validate(values, type) {
+  console.log('Validating ...');
+  console.log(type);
+
   let err = null;
 
   if (!values.username) {
@@ -42,6 +45,14 @@ export default function submit(values) {
     err = {
       ...err,
       gender: 'Select at least a gender',
+    };
+  }
+
+  console.log(values.locations);
+  if (values.locations <= 0) {
+    err = {
+      ...err,
+      gender: 'Select at least a location',
     };
   }
 

@@ -8,8 +8,9 @@ import MultiSelect from '../../../utils/react-native-multiple-select/lib/react-n
 import { SignUpWrapper } from '../../../components/Layout/Layout';
 import RoundTab from '../../../components/RoundTab';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
-import { decrementProgress, incrementProgress } from '../../../state/signup';
 import { LOCATION } from '../../../components/SignUp/Constants';
+import validate from '../../../components/SignUp/validate';
+import { Field, reduxForm, submit } from 'redux-form';
 
 const mapStateToProps = state => ({
   locations: state.locations,
@@ -38,9 +39,6 @@ const mapDispatchToProps = dispatch => ({
       }),
     );
   },
-
-  incProgress: () => dispatch(incrementProgress()),
-  decProgress: () => dispatch(decrementProgress()),
 });
 
 export class SignUpLocation extends React.Component {
@@ -50,10 +48,6 @@ export class SignUpLocation extends React.Component {
 
   componentWillMount() {
     this.props.getLocations();
-  }
-
-  componentWillUnmount() {
-    this.props.decProgress();
   }
 
   onSelectedItemsChange = selectedLocations => {
@@ -77,6 +71,9 @@ export class SignUpLocation extends React.Component {
 
   render() {
     const { selectedLocations } = this.state;
+    const { dispatch, input } = this.props;
+
+    console.log(input);
 
     return (
       <SignUpWrapper>
@@ -99,22 +96,30 @@ export class SignUpLocation extends React.Component {
         <SignUpDivWrapper
           style={{ flex: 8, justifyContent: 'center', marginTop: 20 }}
         >
-          <MultiSelect
-            hideTags
-            items={this.props.locations.data}
-            uniqueKey="id"
-            hideSubmitButton={true}
-            fixedHeight={true}
-            onSelectedItemsChange={this.onSelectedItemsChange}
-            selectedItems={selectedLocations}
-            selectText="REGION*"
-            searchInputPlaceholderText="Search municipalities..."
-            selectedItemTextColor="#ff8a65"
-            selectedItemIconColor="#ff8a65"
-            title="YOUR LOCATION"
+          <Field
+            name={'locations'}
+            component={() => (
+              <MultiSelect
+                hideTags
+                items={this.props.locations.data}
+                uniqueKey="id"
+                hideSubmitButton={true}
+                fixedHeight={true}
+                onSelectedItemsChange={e => {
+                  console.log(e);
+                  input.onChange(e);
+                }}
+                selectedItems={selectedLocations}
+                selectText="REGION*"
+                searchInputPlaceholderText="Search municipalities..."
+                selectedItemTextColor="#ff8a65"
+                selectedItemIconColor="#ff8a65"
+                title="YOUR LOCATION"
+              />
+            )}
           />
         </SignUpDivWrapper>
-        <RoundTab title="NEXT" onPress={() => this.onPressNext()} />
+        <RoundTab title="NEXT" onPress={() => dispatch(submit('signup'))} />
       </SignUpWrapper>
     );
   }
@@ -149,4 +154,13 @@ const SignUpWelcomeText = styled.Text`
   background-color: transparent;
 `;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpLocation);
+export default reduxForm({
+  form: 'signup',
+  onSubmit: () => {
+    console.log(this.state.selectedLocations);
+    validate(this.state.selectedLocations, 'LOCATION');
+  },
+  onSubmitSuccess: (result, dispatch, props) => {
+    dispatch(props.onSubmitSucceeded);
+  },
+})(connect(mapStateToProps, mapDispatchToProps)(SignUpLocation));

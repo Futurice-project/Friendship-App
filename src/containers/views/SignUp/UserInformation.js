@@ -8,8 +8,7 @@ import SignupHeader from '../../../components/SignUp/SignupHeader';
 import MainInformations from '../../../components/SignUp/MainInformations';
 import AdditionalInformations from '../../../components/SignUp/AdditionalInformations';
 import PicturePicker from '../../../components/SignUp/PicturePicker';
-import submit from '../../../components/SignUp/validate';
-import { NavigationActions } from 'react-navigation';
+import validate from '../../../components/SignUp/validate';
 
 /* The sign up process starts here with the user's information */
 class UserInformation extends React.Component {
@@ -39,8 +38,8 @@ class UserInformation extends React.Component {
 
 export default reduxForm({
   form: 'signup',
-  onSubmit: submit,
+  onSubmit: validate,
   onSubmitSuccess: (result, dispatch, props) => {
-    dispatch(NavigationActions.navigate({ routeName: 'SignUpLocation' }));
+    dispatch(props.onSubmitSucceeded);
   },
 })(UserInformation);
