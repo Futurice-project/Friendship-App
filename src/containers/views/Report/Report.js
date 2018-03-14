@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import ReportList from './ReportList';
 import reportField from './reportField'; //this is the json file
 import ReportContent from './ReportContent';
@@ -68,7 +68,12 @@ export default class Report extends Component {
       );
     }
     return (
-      <View style={{ flex: 1 }}>
+      <ScrollView
+        style={{
+          flex: 1,
+          backgroundColor: '#ffffff',
+        }}
+      >
         <ReportHeader
           navigateBack={() => this.props.navigation.goBack()}
           headerText="Report"
@@ -89,7 +94,7 @@ export default class Report extends Component {
         <View style={{ borderTopWidth: 0.5, borderTopColor: '#d4d6d5' }}>
           {this.renderReportList()}
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

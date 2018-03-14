@@ -40,7 +40,7 @@ const styles = {
     height: 70,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#4a9b9b9b',
+    shadowColor: '#d8d8d8',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     elevation: 10,
