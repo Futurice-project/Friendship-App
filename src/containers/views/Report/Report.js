@@ -51,15 +51,7 @@ export default class Report extends Component {
   render() {
     if (this.state.showReportStatus && this.state.showContent) {
       return (
-        <ReportStatus
-          navigateBack={() =>
-            this.setState({
-              showContent: false,
-              showReportStatus: false,
-              content: '',
-              text: '',
-            })}
-        />
+        <ReportStatus navigateBack={() => this.props.navigation.goBack()} />
       );
     }
     if (this.state.showContent) {
