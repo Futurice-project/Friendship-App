@@ -14,7 +14,7 @@ const ReportContent = ({
   if (!data.content.reasonTitle) {
     // if the user chooses "i just dont like it" category
     return (
-      <View>
+      <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <ReportHeader
           navigateBack={navigateBack}
           headerText="Report"
@@ -29,8 +29,8 @@ const ReportContent = ({
             autoCapitalize="none"
             placeholder={data.content.subtitle}
             multiline={true}
-            style={reportInput}
             onChangeText={text => onChange(text)}
+            style={reportInput}
           />
         </View>
         <View style={{ marginTop: 40, alignItems: 'center' }}>
@@ -72,7 +72,7 @@ const ReportContent = ({
     );
   }
   return (
-    <View>
+    <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
       <ReportHeader
         navigateBack={navigateBack}
         headerText="Report"
@@ -135,18 +135,19 @@ const styles = {
     color: '#4a4a4a',
   },
   reportInput: {
+    height: 150,
     backgroundColor: '#e8e9e8',
-    borderWidth: 1,
-    borderColor: '#2d4359',
     borderRadius: 33,
-    height: 100,
     marginLeft: 2,
-    marginTop: 5,
-    paddingRight: 5,
-    paddingLeft: 5,
+    marginTop: 4,
+    paddingRight: 30,
+    paddingLeft: 30,
+    paddingTop: 10,
+    paddingBottom: 10,
     fontSize: 14,
     lineHeight: 18,
     fontFamily: 'NunitoSans-Regular',
+    textAlignVertical: 'top',
   },
   text: {
     color: '#949795',
