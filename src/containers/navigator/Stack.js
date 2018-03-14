@@ -19,6 +19,7 @@ import UsersForTagView from '../views/UsersForTagView';
 import EventDetailView from '../views/EventDetailView';
 import HomeView from '../views/HomeView';
 import Report from '../views/Report/Report';
+import Feedback from '../views/Feedback/Feedback';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -112,6 +113,10 @@ export default StackNavigator(
     },
     Report: {
       screen: Report,
+      navigationOptions: { header: () => null },
+    },
+    Feedback: {
+      screen: Feedback,
       navigationOptions: { header: () => null },
     },
     // ## End StackNavigator Views ##

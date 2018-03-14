@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const ReportList = ({ data }) => {
+const FeedbackList = ({ data }) => {
   return (
     <View
       style={{
@@ -15,7 +15,7 @@ const ReportList = ({ data }) => {
         justifyContent: 'space-between',
       }}
     >
-      <View style={{ marginLeft: 20 }}>
+      <View style={{ marginLeft: 20, flex: 1, flexWrap: 'wrap' }}>
         <Text
           style={{
             color: '#4a4a4a',
@@ -45,4 +45,4 @@ const ReportList = ({ data }) => {
   );
 };
 
-export default ReportList;
+export default FeedbackList;

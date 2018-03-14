@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const ReportHeader = ({ headerText, navigateBack, onCancel }) => {
+const FeedbackHeader = ({ headerText, navigateBack, onCancel }) => {
   const { viewContainer, textStyle } = styles;
 
   return (
@@ -52,4 +52,4 @@ const styles = {
   },
 };
 
-export default ReportHeader;
+export default FeedbackHeader;

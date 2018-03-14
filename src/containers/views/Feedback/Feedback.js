@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import FeedbackList from '../../../components/Feedback/FeedbackList';
-import reportField from '../../../components/Feedback/reportField'; //this is the json file
-import ReportContent from '../../../components/Feedback/ReportContent';
+import feedbackField from '../../../components/Feedback/feedbackField'; //this is the json file
+import FeedbackContent from '../../../components/Feedback/FeedbackContent';
 import FeedbackStatus from '../../../components/Feedback/FeedbackStatus';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FeedbackHeader from './../../../components/Feedback/FeedbackHeader';
 
-export default class Report extends Component {
+export default class Feedback extends Component {
   state = {
     showContent: false,
     content: '', // the report category the user has chosen.
     text: '', // the report input field
-    showReportStatus: false,
+    showFeedbackStatus: false,
   };
 
-  renderReportList() {
+  renderFeedbackList() {
     // my own list component(better customized) to render a list of report field
-    return reportField.map((item, i) => {
+    return feedbackField.map((item, i) => {
       return (
         <TouchableOpacity
           key={i}
@@ -29,35 +29,20 @@ export default class Report extends Component {
     });
   }
 
-  sendReport() {
-    const userId = this.props.navigation.state.params.data.id;
-    const reported_by = this.props.navigation.state.params.data.currentUser;
-    const description = this.state.text
-      ? this.state.text
-      : this.state.content.title;
-    fetch(`http://localhost:3888/reports`, {
-      method: 'post',
-      headers: {
-        Authorization: this.props.navigation.state.params.data.auth, // data pass from the react navigation from peopleprofile.view and ChatView.js
-      },
-      body: JSON.stringify({
-        userId,
-        description,
-        reported_by,
-      }),
-    }).then(() => this.setState({ showReportStatus: true }));
+  sendFeedback() {
+    this.setState({ showFeedbackStatus: true });
   }
 
   render() {
-    const reportStatus = {
-      title: 'Thank you for your report.',
+    const feedbackStatus = {
+      title: 'Thank you for your feedback!',
       subtitle:
-        'Your report helps keep Friendship app safe and fun for everyone. We will review your report, and reprimand the user if they are breaking community guidelines.',
+        'Feedback is awesome and so are you! We continuously make improvements based on users suggestions. Your input is valuable.',
     };
-    if (this.state.showReportStatus && this.state.showContent) {
+    if (this.state.showFeedbackStatus && this.state.showContent) {
       return (
         <FeedbackStatus
-          data={reportStatus}
+          data={feedbackStatus}
           navigateBack={() => this.props.navigation.goBack()}
         />
       );
@@ -65,11 +50,11 @@ export default class Report extends Component {
     if (this.state.showContent) {
       // after the user clicks on one of the categories
       return (
-        <ReportContent
+        <FeedbackContent
           data={this.state.content}
           navigateBack={() =>
             this.setState({ showContent: false, content: '', text: '' })}
-          sendReport={() => this.sendReport()}
+          sendReport={() => this.sendFeedback()}
           onChange={text => this.setState({ text })}
           onCancel={() => this.props.navigation.goBack()}
         />
@@ -84,7 +69,7 @@ export default class Report extends Component {
       >
         <FeedbackHeader
           navigateBack={() => this.props.navigation.goBack()}
-          headerText="Report"
+          headerText="Feedback"
           onCancel={() => this.props.navigation.goBack()}
         />
         <View style={{ padding: 25 }}>
@@ -96,11 +81,11 @@ export default class Report extends Component {
               lineHeight: 25,
             }}
           >
-            Choose a reason for reporting this user:
+            We love to hear feedback!
           </Text>
         </View>
         <View style={{ borderTopWidth: 0.5, borderTopColor: '#d4d6d5' }}>
-          {this.renderReportList()}
+          {this.renderFeedbackList()}
         </View>
       </ScrollView>
     );
