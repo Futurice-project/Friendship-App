@@ -7,18 +7,27 @@ export default [
       inputForm: [
         {
           title: 'What about the app has made finding one good friend easy?',
+          name: 'easy',
           subtitle:
             'Tell us anything you liked! For example: Was the app easy to use? Was the matching algorithm effective? Did you find it easy to connect through yeahs and naahs?',
         },
         {
           title: 'What about the app has made finding one good friend hard?',
+          name: 'hard',
           subtitle:
             'Tell us anything you didn’t like. For example: Did you have trouble finding something? Did you find it difficult to meet up with people?',
         },
         {
           title: 'How could we improve?',
+          name: 'improve',
           subtitle: 'Free word! All suggestions are welcome.',
         },
+      ],
+      checkbox: [
+        'Make one good friend',
+        'Find a friend group',
+        'Find fun events',
+        'Find friends to do specific activities with ',
       ],
     },
   },
