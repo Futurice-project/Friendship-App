@@ -14,6 +14,8 @@ export default class Feedback extends Component {
     text: '', // the report input field
     showFeedbackStatus: false,
     checkBox: false,
+    rating: 10,
+    goalRate: 10,
   };
 
   renderFeedbackList() {
@@ -37,6 +39,7 @@ export default class Feedback extends Component {
   }
 
   render() {
+    console.log(this.state.goalRate);
     const feedbackStatus = {
       title: 'Thank you for your feedback!',
       subtitle:
@@ -62,6 +65,10 @@ export default class Feedback extends Component {
           onCancel={() => this.props.navigation.goBack()}
           onChecked={() => this.setState({ checkBox: !this.state.checkBox })}
           checked={this.state.checkBox}
+          rating={this.state.rating}
+          goalRate={this.state.goalRate}
+          onRatingChange={rating => this.setState({ rating })}
+          onGoalRateChange={goalRate => this.setState({ goalRate })}
         />
       );
     }

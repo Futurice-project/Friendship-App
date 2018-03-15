@@ -21,6 +21,10 @@ const FeedbackContent = ({
   onCancel,
   onChecked,
   checked,
+  rating,
+  goalRate,
+  onRatingChange,
+  onGoalRateChange,
 }) => {
   const {
     title,
@@ -167,8 +171,11 @@ const FeedbackContent = ({
           trackStyle={{ height: 10, borderRadius: 27 }}
           minimumTrackTintColor="#839297"
           maximumTrackTintColor="#e8e9e8"
+          minimumValue={1}
+          maximumValue={20}
           thumbTintColor="#839297"
-          value={0.2}
+          value={rating}
+          onValueChange={rating => onRatingChange(rating)}
         />
         <View
           style={{
@@ -197,7 +204,6 @@ const FeedbackContent = ({
             padding: 0,
           }}
           onIconPress={onChecked}
-          checked={checked}
         />
         <CheckBox
           title="Find a friend group"
@@ -292,8 +298,11 @@ const FeedbackContent = ({
             trackStyle={{ height: 10, borderRadius: 27 }}
             minimumTrackTintColor="#839297"
             maximumTrackTintColor="#e8e9e8"
+            minimumValue={1}
+            maximumValue={20}
             thumbTintColor="#839297"
-            value={0.2}
+            value={goalRate}
+            onValueChange={goalrate => onGoalRateChange(goalrate)}
           />
           <View
             style={{
