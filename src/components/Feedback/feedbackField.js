@@ -36,7 +36,7 @@ export default [
     content: {
       title: 'Suggest an interest',
       subtitle: 'Is an interest missing from the app? Suggest it here!',
-      placeholder: 'Interest',
+      placeholder: 'INTEREST',
     },
   },
   {
@@ -44,7 +44,7 @@ export default [
     content: {
       title: 'Suggest an activity',
       subtitle: 'Is an activity missing from the app? Suggest it here!',
-      placeholder: 'Activity',
+      placeholder: 'ACTIVITY',
     },
   },
   {

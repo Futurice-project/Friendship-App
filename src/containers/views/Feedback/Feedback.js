@@ -84,7 +84,7 @@ export default class Feedback extends Component {
   }
 
   getInitialState() {
-    //reset state
+    //reset state on navigate back
     this.setState({
       showContent: false,
       content: '',
@@ -123,19 +123,19 @@ export default class Feedback extends Component {
           suggestion={this.state.suggestion}
           onChange={suggestion => this.setState({ suggestion })}
           onCancel={() => this.props.navigation.goBack()}
-          onChecked={value => this.onCheckBoxSelect.bind(this, value)}
-          checked={value => this.checkedStatus(value)}
-          rating={this.state.rating}
-          goalRate={this.state.goalRate}
-          onRatingChange={rating => this.setState({ rating })}
-          onGoalRateChange={goalRate => this.setState({ goalRate })}
-          others={this.state.others}
-          onOtherChange={others => this.setState({ others })}
-          easy={this.state.easy}
+          onChecked={value => this.onCheckBoxSelect.bind(this, value)} // for the check box
+          checked={value => this.checkedStatus(value)} // for the check box
+          rating={this.state.rating} // rating slider
+          goalRate={this.state.goalRate} // goal rating slider
+          onRatingChange={rating => this.setState({ rating })} // rating slider
+          onGoalRateChange={goalRate => this.setState({ goalRate })} // goal rating slider
+          others={this.state.others} // for the last field of checkbox called other, it has an input field
+          onOtherChange={others => this.setState({ others })} // same as above
+          easy={this.state.easy} // What about the app has made finding one good friend easy?
           onEasyChange={easy => this.setState({ easy })}
-          hard={this.state.hard}
+          hard={this.state.hard} // What about the app has made finding one good friend hard?
           onHardChange={hard => this.setState({ hard })}
-          improve={this.state.improve}
+          improve={this.state.improve} // How could we improve?
           onImproveChange={improve => this.setState({ improve })}
         />
       );

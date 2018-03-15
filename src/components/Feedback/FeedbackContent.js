@@ -11,7 +11,6 @@ import CheckBoxs from './CheckBoxs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FeedbackHeader from './FeedbackHeader';
 import { Slider } from 'react-native-elements';
-import { FormInput } from 'react-native-elements';
 
 export default class FeedbackContent extends React.Component {
   render() {
@@ -50,7 +49,7 @@ export default class FeedbackContent extends React.Component {
       checkBoxText,
     } = styles;
     if (data.content.title === 'Send us an idea') {
-      // if the user chooses "i just dont like it" category
+      // if the user chooses "Send us an idea" category
       return (
         <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
           <FeedbackHeader
@@ -110,11 +109,16 @@ export default class FeedbackContent extends React.Component {
             headerText="Feedback"
             onCancel={onCancel}
           />
-          <View style={{ padding: 30 }}>
-            <Text style={[title, { marginBottom: 20 }]}>
+          <View style={{ padding: 10 }}>
+            <Text
+              style={[
+                title,
+                { paddingLeft: 20, marginTop: 20, marginBottom: 15 },
+              ]}
+            >
               {data.content.title}
             </Text>
-            <Text style={[text, { marginBottom: 10 }]}>
+            <Text style={[text, { paddingLeft: 20 }]}>
               {data.content.subtitle}
             </Text>
             <TextInput
@@ -156,6 +160,7 @@ export default class FeedbackContent extends React.Component {
       );
     }
     return (
+      // this is almost hard coded due to large differences
       <ScrollView style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <FeedbackHeader
           navigateBack={navigateBack}
@@ -180,8 +185,8 @@ export default class FeedbackContent extends React.Component {
           </Text>
           <Slider
             style={{
-              marginLeft: 30,
-              marginRight: 30,
+              marginLeft: 20,
+              marginRight: 20,
             }}
             thumbStyle={{
               width: 30,
@@ -201,8 +206,8 @@ export default class FeedbackContent extends React.Component {
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              marginLeft: 33,
-              marginRight: 33,
+              marginLeft: 30,
+              marginRight: 30,
             }}
           >
             <Text style={surveyText}>Naah...</Text>
@@ -211,7 +216,9 @@ export default class FeedbackContent extends React.Component {
           </View>
         </View>
         <View style={{ marginLeft: 20, marginBottom: 20 }}>
-          <Text style={surveyTitle}>What’s your goal for using the app?</Text>
+          <Text style={[surveyTitle, { marginBottom: 20 }]}>
+            What’s your goal for using the app?
+          </Text>
           {data.content.checkbox.map((item, index) => (
             <CheckBoxs title={item} key={index} onIconPress={onChecked(item)} />
           ))}
@@ -222,12 +229,13 @@ export default class FeedbackContent extends React.Component {
               marginBottom: 20,
             }}
           >
-            <CheckBoxs title="Other" onIconPress={onChecked('Other')} />
-            <FormInput
-              inputStyle={{
+            <CheckBoxs title="Other:" onIconPress={onChecked('Other')} />
+            <Input
+              style={{
                 borderBottomColor: '#839297',
                 borderBottomWidth: 1,
                 width: 100,
+                marginLeft: -13,
               }}
               placeholder="write something"
               onChangeText={text => onOtherChange(text)}
@@ -236,7 +244,7 @@ export default class FeedbackContent extends React.Component {
           </View>
           <View
             style={{
-              marginBottom: 20,
+              marginBottom: 30,
               alignItems: 'stretch',
             }}
           >
@@ -247,7 +255,7 @@ export default class FeedbackContent extends React.Component {
             <Slider
               style={{
                 marginLeft: 20,
-                marginRight: 30,
+                marginRight: 20,
               }}
               thumbStyle={{
                 width: 30,
@@ -267,8 +275,8 @@ export default class FeedbackContent extends React.Component {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginLeft: 33,
-                marginRight: 33,
+                marginLeft: 30,
+                marginRight: 30,
               }}
             >
               <Text style={surveyText}>Not at all</Text>
@@ -276,8 +284,8 @@ export default class FeedbackContent extends React.Component {
               <Text style={surveyText}>Very well</Text>
             </View>
           </View>
-          <View style={{ padding: 10 }}>
-            <Text style={[title, { marginBottom: 20 }]}>
+          <View style={{ marginBottom: 30 }}>
+            <Text style={[surveyTitle, { marginBottom: 20 }]}>
               {data.content.inputForm[0].title}
             </Text>
             <Input
@@ -290,8 +298,8 @@ export default class FeedbackContent extends React.Component {
               value={easy}
             />
           </View>
-          <View style={{ padding: 10 }}>
-            <Text style={[title, { marginBottom: 20 }]}>
+          <View style={{ marginBottom: 30 }}>
+            <Text style={[surveyTitle, { marginBottom: 20 }]}>
               {data.content.inputForm[1].title}
             </Text>
             <Input
@@ -304,8 +312,8 @@ export default class FeedbackContent extends React.Component {
               value={hard}
             />
           </View>
-          <View style={{ padding: 10 }}>
-            <Text style={[title, { marginBottom: 20 }]}>
+          <View>
+            <Text style={[surveyTitle, { marginBottom: 20 }]}>
               {data.content.inputForm[2].title}
             </Text>
             <Input
@@ -348,6 +356,7 @@ export default class FeedbackContent extends React.Component {
     );
   }
 }
+
 const styles = {
   title: {
     fontFamily: 'NunitoSans-Bold',
@@ -371,12 +380,12 @@ const styles = {
     textAlignVertical: 'top',
   },
   interestInput: {
-    height: 40,
+    height: 50,
     backgroundColor: '#e8e9e8',
     borderRadius: 33,
     marginLeft: 2,
     marginTop: 4,
-    paddingRight: 30,
+    paddingRight: 40,
     paddingLeft: 30,
     paddingTop: 10,
     paddingBottom: 10,
@@ -395,7 +404,7 @@ const styles = {
     marginLeft: 10,
     color: '#4a4a4a',
     fontSize: 12,
-    marginBottom: 5,
+    marginBottom: 10,
     fontFamily: 'NunitoSans-Bold',
   },
   surveyText: {

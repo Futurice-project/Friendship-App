@@ -13,8 +13,6 @@ const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({});
 
 export class HomeView extends React.Component {
-  state = {};
-
   render() {
     return (
       <View
@@ -23,12 +21,7 @@ export class HomeView extends React.Component {
           backgroundColor: '#ffffff',
         }}
       >
-        <Text>Home View </Text>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Feedback')}
-        >
-          <Text>Feedback goes from here!</Text>
-        </TouchableOpacity>
+        <Text>Hello, this is the Home View </Text>
       </View>
     );
   }
