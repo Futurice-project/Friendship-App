@@ -85,6 +85,15 @@ class MyProfile extends React.Component {
 
   _hideModal = () => this.setState({ isModalVisible: false });
 
+  onFeedback = () => {
+    const Feedbackdata = {
+      currentUser: this.props.auth.data.decoded.id,
+      auth: this.props.auth.data.token,
+    };
+    this._hideModal();
+    this.props.navigation.navigate('Feedback', { data: Feedbackdata });
+  };
+
   navigateBack = () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
@@ -133,7 +142,6 @@ class MyProfile extends React.Component {
 
   render = () => {
     const userLoggedIn = this.props.auth.data.decoded;
-
     let love = this.props.tagsForCurrentUser.data.filter(tag => {
       return tag.love === true;
     });
@@ -205,6 +213,7 @@ class MyProfile extends React.Component {
           isModalVisible={this.state.isModalVisible}
           onPressButton={this._onPressButton}
           signOut={this.props.signOut}
+          onFeedback={this.onFeedback}
         />
       </ProfileContainer>
     );

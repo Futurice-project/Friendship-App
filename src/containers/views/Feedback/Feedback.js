@@ -56,17 +56,15 @@ export default class Feedback extends Component {
   }
 
   sendFeedback() {
-    const currentUser = this.props.navigation.state.params.data.currentUser;
-    const {
-      suggestion,
-      checkBoxs,
-      rating,
-      goalRate,
-      others,
-      easy,
-      hard,
-      improve,
-    } = this.state;
+    const given_by = this.props.navigation.state.params.data.currentUser;
+    const { suggestion, others, easy, hard, improve } = this.state;
+    const rating = Math.round(this.state.rating);
+    const goalRate = Math.round(this.state.goalRate);
+    const checkBox = this.state.checkBoxs;
+    if (this.state.checkBoxs.indexOf('Other') > -1 && others) {
+      checkBox[this.state.checkBoxs.indexOf('Other')] = others;
+    }
+    const checkBoxs = checkBox.join();
     fetch(`http://localhost:3888/feedbacks`, {
       method: 'post',
       headers: {
@@ -74,14 +72,13 @@ export default class Feedback extends Component {
       },
       body: JSON.stringify({
         suggestion,
-        checkBoxs,
         rating,
         goalRate,
-        others,
         easy,
         hard,
+        checkBoxs,
         improve,
-        currentUser,
+        given_by,
       }),
     }).then(() => this.setState({ showFeedbackStatus: true }));
   }
