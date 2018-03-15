@@ -13,6 +13,7 @@ export default class Feedback extends Component {
     content: '', // the report category the user has chosen.
     text: '', // the report input field
     showFeedbackStatus: false,
+    checkBox: false,
   };
 
   renderFeedbackList() {
@@ -28,6 +29,8 @@ export default class Feedback extends Component {
       );
     });
   }
+
+  onCheckBotChange() {}
 
   sendFeedback() {
     this.setState({ showFeedbackStatus: true });
@@ -57,6 +60,8 @@ export default class Feedback extends Component {
           sendReport={() => this.sendFeedback()}
           onChange={text => this.setState({ text })}
           onCancel={() => this.props.navigation.goBack()}
+          onChecked={() => this.setState({ checkBox: !this.state.checkBox })}
+          checked={this.state.checkBox}
         />
       );
     }
