@@ -3,72 +3,56 @@ import { connect } from 'react-redux';
 import rest from '../../../utils/rest';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
-import { SignUpWrapper } from '../../../components/Layout/Layout';
+import {
+  SignUpWrapper,
+  ViewContainer,
+} from '../../../components/Layout/Layout';
 import RoundTab from '../../../components/RoundTab';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
-import { LOCATION } from '../../../components/SignUp/Constants';
+import { LOCATION, YOUR_PROFILE } from '../../../components/SignUp/Constants';
 import validate from '../../../components/SignUp/validate';
 import { Field, reduxForm, submit } from 'redux-form';
 import LocationList from '../../../components/SignUp/LocationList';
-
-/*const mapStateToProps = state => ({
-  locations: state.locations,
-  signup: state.signup,
-});
-
-const mapDispatchToProps = dispatch => ({
-  getLocations: () => {
-    dispatch(rest.actions.locations());
-  },
-
-  postUserLocations: locationsObject => {
-    dispatch(
-      rest.actions.createUserLocations(
-        {},
-        {body: JSON.stringify(locationsObject)},
-      ),
-    );
-  },
-
-  openSignUpPersonality: () => {
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SignUpPersonality',
-        params: {index: 0},
-      }),
-    );
-  },
-});*/
+import { View } from 'react-native';
+import SignupHeader from '../../../components/SignUp/SignupHeader';
+import {
+  Container,
+  LabelText,
+  Part,
+} from '../../../components/Layout/SignupLayout';
+import Footer from '../../../components/SignUp/Footer';
 
 class SignUpLocation extends React.Component {
   state = {
     selectedLocations: [],
   };
 
-  onSelectedItemsChange = selectedLocations => {
-    this.setState({ selectedLocations });
-  };
-
-  onPressNext() {
-    let { selectedLocations } = this.state;
-    let tempLocations = selectedLocations.map(location => ({
-      locationId: location,
-    }));
-
-    const locationsObject = { locations: tempLocations };
-
-    this.props.postUserLocations(locationsObject);
-
-    this.props.incProgress();
-
-    this.props.openSignUpPersonality();
-  }
-
   render() {
     const { dispatch } = this.props;
 
     return (
-      <SignUpWrapper>
+      <View
+        style={{ display: 'flex', height: '100%', flexDirection: 'column' }}
+      >
+        <SignupHeader processStage={LOCATION} headerTitle={'HEY !'} />
+        <Container style={{ flex: 1, backgroundColor: '#efebe9' }}>
+          <Part style={{ flex: 2 }}>
+            <LabelText
+              style={{ marginTop: 21, marginLeft: 30, marginRight: 30 }}
+            >
+              With your location, we will find the happenings, groups and people
+              closest to you.
+            </LabelText>
+          </Part>
+          <Part style={{ flex: 8, marginTop: 45 }}>
+            <Field name={'locations'} component={LocationList} />
+          </Part>
+          <Footer style={{ flex: 1 }} blue />
+        </Container>
+      </View>
+    );
+    {
+      /*<SignUpWrapper>
         <ProgressBar steps={LOCATION} />
         <SignUpDivWrapper
           style={{
@@ -91,8 +75,8 @@ class SignUpLocation extends React.Component {
           <Field name={'locations'} component={LocationList} />
         </SignUpDivWrapper>
         <RoundTab title="NEXT" onPress={() => dispatch(submit('signup'))} />
-      </SignUpWrapper>
-    );
+      </SignUpWrapper>*/
+    }
   }
 }
 

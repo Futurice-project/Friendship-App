@@ -47,13 +47,13 @@ export default function validate(values) {
     };
   }
 
-  console.log(values.locations);
-  if (values.locations.length <= 0) {
+  //console.log(values.locations);
+  /*if (values.locations.length <= 0) {
     err = {
       ...err,
       gender: 'Select at least a location',
     };
-  }
+  }*/
 
   if (err) {
     throw new SubmissionError({

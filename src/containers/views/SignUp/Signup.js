@@ -19,8 +19,6 @@ class Signup extends React.Component {
   }
 
   nextPage(page) {
-    console.log('next page ...');
-    console.log(page);
     this.setState({ page: page + 1 });
   }
 

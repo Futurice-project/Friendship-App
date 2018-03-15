@@ -15,8 +15,8 @@ class Footer extends React.Component {
       <Part style={{ paddingBottom: 0 }}>
         <RoundTabContainer>
           <RoundTab
-            titleColor="white"
-            tint="#2d4359"
+            titleColor={this.props.blue ? '#2d4359' : '#ffffff'}
+            tint={this.props.blue ? '#ff8a65' : '#2d4359'}
             title="Next"
             style={{ flex: 1 }}
             onPress={() => dispatch(submit('signup'))}
