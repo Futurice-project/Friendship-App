@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
+import HideWithKeyboard from 'react-native-hide-with-keyboard';
 
 import rest from '../../../utils/rest';
 import {
