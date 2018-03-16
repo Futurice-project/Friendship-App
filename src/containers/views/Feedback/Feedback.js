@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
-import FeedbackList from '../../../components/Feedback/FeedbackList';
-import feedbackField from '../../../components/Feedback/feedbackField'; //this is the json file
+import FeedbackListItem from '../../../components/Feedback/FeedbackListItem';
+import feedbackFields from '../../../components/Feedback/feedbackField'; //this is the json file
 import FeedbackContent from '../../../components/Feedback/FeedbackContent';
 import FeedbackStatus from '../../../components/Feedback/FeedbackStatus';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -17,20 +17,20 @@ export default class Feedback extends Component {
     rating: 10,
     goalRate: 10,
     others: '', // the last checkbox field which contains an input
-    easy: '', //
-    hard: '',
-    improve: '',
+    findFriendEasy: '', //
+    findFriendHard: '',
+    suggestImprovement: '',
   };
 
   renderFeedbackList() {
     // my own list component(better customized) to render a list of report field
-    return feedbackField.map((item, i) => {
+    return feedbackFields.map((item, i) => {
       return (
         <TouchableOpacity
           key={i}
           onPress={() => this.setState({ showContent: true, content: item })}
         >
-          <FeedbackList data={item} />
+          <FeedbackListItem data={item} />
         </TouchableOpacity>
       );
     });
@@ -57,7 +57,13 @@ export default class Feedback extends Component {
 
   sendFeedback() {
     const given_by = this.props.navigation.state.params.data.currentUser;
-    const { suggestion, others, easy, hard, improve } = this.state;
+    const {
+      suggestion,
+      others,
+      findFriendEasy,
+      findFriendHard,
+      suggestImprovement,
+    } = this.state;
     const rating = Math.round(this.state.rating);
     const goalRate = Math.round(this.state.goalRate);
     const checkBox = this.state.checkBoxs;
@@ -74,10 +80,10 @@ export default class Feedback extends Component {
         suggestion,
         rating,
         goalRate,
-        easy,
-        hard,
+        findFriendEasy,
+        findFriendHard,
+        suggestImprovement,
         checkBoxs,
-        improve,
         given_by,
       }),
     }).then(() => this.setState({ showFeedbackStatus: true }));
@@ -93,9 +99,9 @@ export default class Feedback extends Component {
       rating: 10,
       goalRate: 10,
       others: '',
-      easy: '',
-      hard: '',
-      improve: '',
+      findFriendEasy: '',
+      findFriendHard: '',
+      suggestImprovement: '',
     });
   }
 
@@ -131,12 +137,13 @@ export default class Feedback extends Component {
           onGoalRateChange={goalRate => this.setState({ goalRate })} // goal rating slider
           others={this.state.others} // for the last field of checkbox called other, it has an input field
           onOtherChange={others => this.setState({ others })} // same as above
-          easy={this.state.easy} // What about the app has made finding one good friend easy?
-          onEasyChange={easy => this.setState({ easy })}
-          hard={this.state.hard} // What about the app has made finding one good friend hard?
-          onHardChange={hard => this.setState({ hard })}
-          improve={this.state.improve} // How could we improve?
-          onImproveChange={improve => this.setState({ improve })}
+          findFriendEasy={this.state.findFriendEasy} // What about the app has made finding one good friend easy?
+          onEasyChange={findFriendEasy => this.setState({ findFriendEasy })}
+          findFriendHard={this.state.findFriendHard} // What about the app has made finding one good friend hard?
+          onHardChange={findFriendHard => this.setState({ findFriendHard })}
+          suggestImprovement={this.state.suggestImprovement} // How could we improve?
+          onImproveChange={suggestImprovement =>
+            this.setState({ suggestImprovement })}
         />
       );
     }

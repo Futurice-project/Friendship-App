@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
-import FeedbackList from '../../../components/Feedback/FeedbackList';
-import reportField from '../../../components/Feedback/reportField'; //this is the json file
+import FeedbackListItem from '../../../components/Feedback/FeedbackListItem';
+import reportFields from '../../../components/Feedback/reportField'; //this is the json file
 import ReportContent from '../../../components/Feedback/ReportContent';
 import FeedbackStatus from '../../../components/Feedback/FeedbackStatus';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -17,13 +17,13 @@ export default class Report extends Component {
 
   renderReportList() {
     // my own list component(better customized) to render a list of report field
-    return reportField.map((item, i) => {
+    return reportFields.map((item, i) => {
       return (
         <TouchableOpacity
           key={i}
           onPress={() => this.setState({ showContent: true, content: item })}
         >
-          <FeedbackList data={item} />
+          <FeedbackListItem data={item} />
         </TouchableOpacity>
       );
     });

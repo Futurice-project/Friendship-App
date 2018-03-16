@@ -10,7 +10,8 @@ import TextInput from '../TextInput';
 import CheckBoxs from './CheckBoxs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FeedbackHeader from './FeedbackHeader';
-import { Slider } from 'react-native-elements';
+import Slider from './Slider';
+import SurveyQuestion from './SurveyQuestion';
 
 export default class FeedbackContent extends React.Component {
   render() {
@@ -21,19 +22,15 @@ export default class FeedbackContent extends React.Component {
       onCancel,
       onChange,
       onChecked,
-      checked,
       rating,
       goalRate,
       onRatingChange,
       onGoalRateChange,
       others,
       onOtherChange,
-      interest,
-      idea,
-      activity,
-      easy,
-      hard,
-      improve,
+      findFriendEasy,
+      findFriendHard,
+      suggestImprovement,
       suggestion,
       onEasyChange,
       onHardChange,
@@ -46,62 +43,8 @@ export default class FeedbackContent extends React.Component {
       interestInput,
       surveyTitle,
       surveyText,
-      checkBoxText,
     } = styles;
-    if (data.content.title === 'Send us an idea') {
-      // if the user chooses "Send us an idea" category
-      return (
-        <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
-          <FeedbackHeader
-            navigateBack={navigateBack}
-            headerText="Feedback"
-            onCancel={onCancel}
-          />
-          <View style={{ padding: 30 }}>
-            <Text style={[title, { marginBottom: 20 }]}>
-              {data.content.title}
-            </Text>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              placeholder={data.content.subtitle}
-              multiline={true}
-              style={feedbackInput}
-              value={suggestion}
-              name="suggestion"
-              onChangeText={text => onChange(text)}
-            />
-          </View>
-          <View style={{ marginTop: 40, alignItems: 'center' }}>
-            <TouchableOpacity
-              onPress={sendReport}
-              style={{
-                padding: 13,
-                width: 200,
-                backgroundColor: '#2d4359',
-                alignItems: 'center',
-                borderRadius: 34,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'NunitoSans-SemiBold',
-                  alignSelf: 'center',
-                  color: '#faf5f0',
-                  fontSize: 16,
-                }}
-              >
-                Send feedback
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-    }
-    if (
-      data.content.title === 'Suggest an interest' ||
-      data.content.title === 'Suggest an activity'
-    ) {
+    if (data.content.title !== 'Feedback for Friendship app') {
       return (
         <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
           <FeedbackHeader
@@ -118,20 +61,35 @@ export default class FeedbackContent extends React.Component {
             >
               {data.content.title}
             </Text>
-            <Text style={[text, { paddingLeft: 20 }]}>
-              {data.content.subtitle}
-            </Text>
-            <TextInput
-              autoCorrect={false}
-              autoCapitalize="none"
-              placeholder={data.content.placeholder}
-              placeholderTextColor="#3b3b3d"
-              multiline={true}
-              value={suggestion}
-              name="suggestion"
-              onChangeText={text => onChange(text)}
-              style={interestInput}
-            />
+            {data.content.title === 'Send us an idea' ? (
+              <Input
+                autoCorrect={false}
+                autoCapitalize="none"
+                placeholder={data.content.subtitle}
+                multiline={true}
+                style={feedbackInput}
+                value={suggestion}
+                name="suggestion"
+                onChangeText={text => onChange(text)}
+              />
+            ) : (
+              <View>
+                <Text style={[text, { paddingLeft: 20 }]}>
+                  {data.content.subtitle}
+                </Text>
+                <TextInput
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  placeholder={data.content.placeholder}
+                  placeholderTextColor="#3b3b3d"
+                  multiline={true}
+                  value={suggestion}
+                  name="suggestion"
+                  onChangeText={text => onChange(text)}
+                  style={[interestInput, { borderBottomWidth: 0 }]}
+                />
+              </View>
+            )}
           </View>
           <View style={{ marginTop: 40, alignItems: 'center' }}>
             <TouchableOpacity
@@ -183,25 +141,7 @@ export default class FeedbackContent extends React.Component {
           <Text style={[surveyTitle, { marginLeft: 20 }]}>
             How would you rate the app?
           </Text>
-          <Slider
-            style={{
-              marginLeft: 20,
-              marginRight: 20,
-            }}
-            thumbStyle={{
-              width: 30,
-              height: 30,
-              borderRadius: 30,
-            }}
-            trackStyle={{ height: 10, borderRadius: 27 }}
-            minimumTrackTintColor="#839297"
-            maximumTrackTintColor="#e8e9e8"
-            minimumValue={1}
-            maximumValue={20}
-            thumbTintColor="#839297"
-            value={rating}
-            onValueChange={rating => onRatingChange(rating)}
-          />
+          <Slider rating={rating} onRatingChange={onRatingChange} />
           <View
             style={{
               flexDirection: 'row',
@@ -242,88 +182,76 @@ export default class FeedbackContent extends React.Component {
               value={others}
             />
           </View>
+        </View>
+        <View
+          style={{
+            marginBottom: 20,
+            marginLeft: 10,
+            marginRight: 10,
+            alignItems: 'stretch',
+          }}
+        >
+          <Text style={[surveyTitle, { marginLeft: 20 }]}>
+            How well have you accomplished your goal of making one good friend?
+          </Text>
+          <Slider rating={goalRate} onRatingChange={onGoalRateChange} />
           <View
             style={{
-              marginBottom: 30,
-              alignItems: 'stretch',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginLeft: 30,
+              marginRight: 30,
             }}
           >
-            <Text style={[surveyTitle, { marginLeft: 10 }]}>
-              How well have you accomplished your goal of making one good
-              friend?
-            </Text>
-            <Slider
-              style={{
-                marginLeft: 20,
-                marginRight: 20,
-              }}
-              thumbStyle={{
-                width: 30,
-                height: 30,
-                borderRadius: 30,
-              }}
-              trackStyle={{ height: 10, borderRadius: 27 }}
-              minimumTrackTintColor="#839297"
-              maximumTrackTintColor="#e8e9e8"
-              minimumValue={1}
-              maximumValue={20}
-              thumbTintColor="#839297"
-              value={goalRate}
-              onValueChange={goalrate => onGoalRateChange(goalrate)}
-            />
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginLeft: 30,
-                marginRight: 30,
-              }}
-            >
-              <Text style={surveyText}>Not at all</Text>
-              <Text style={surveyText}>OKish</Text>
-              <Text style={surveyText}>Very well</Text>
-            </View>
+            <Text style={surveyText}>Not at all</Text>
+            <Text style={surveyText}>OKish</Text>
+            <Text style={surveyText}>Very well</Text>
           </View>
-          <View style={{ marginBottom: 30 }}>
-            <Text style={[surveyTitle, { marginBottom: 20 }]}>
+        </View>
+        <View style={{ flex: 1 }}>
+          <View style={{ marginBottom: 30, marginTop: 10 }}>
+            <Text
+              style={[
+                surveyTitle,
+                { marginLeft: 30, marginRight: 20, marginBottom: 10 },
+              ]}
+            >
               {data.content.inputForm[0].title}
             </Text>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              placeholder={data.content.inputForm[0].subtitle}
-              multiline={true}
-              style={feedbackInput}
-              onChangeText={text => onEasyChange(text)}
-              value={easy}
+            <SurveyQuestion
+              subtitle={data.content.inputForm[0].subtitle}
+              onChange={onEasyChange}
+              value={findFriendEasy}
             />
           </View>
           <View style={{ marginBottom: 30 }}>
-            <Text style={[surveyTitle, { marginBottom: 20 }]}>
+            <Text
+              style={[
+                surveyTitle,
+                { marginLeft: 30, marginRight: 20, marginBottom: 10 },
+              ]}
+            >
               {data.content.inputForm[1].title}
             </Text>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              placeholder={data.content.inputForm[1].subtitle}
-              multiline={true}
-              style={feedbackInput}
-              onChangeText={text => onHardChange(text)}
-              value={hard}
+            <SurveyQuestion
+              subtitle={data.content.inputForm[1].subtitle}
+              onChange={onHardChange}
+              value={findFriendHard}
             />
           </View>
           <View>
-            <Text style={[surveyTitle, { marginBottom: 20 }]}>
+            <Text
+              style={[
+                surveyTitle,
+                { marginLeft: 30, marginRight: 20, marginBottom: 10 },
+              ]}
+            >
               {data.content.inputForm[2].title}
             </Text>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              placeholder={data.content.inputForm[2].subtitle}
-              multiline={true}
-              style={feedbackInput}
-              onChangeText={text => onImproveChange(text)}
-              value={improve}
+            <SurveyQuestion
+              subtitle={data.content.inputForm[2].subtitle}
+              onChange={onImproveChange}
+              value={suggestImprovement}
             />
           </View>
         </View>
@@ -367,7 +295,7 @@ const styles = {
     height: 150,
     backgroundColor: '#e8e9e8',
     borderRadius: 33,
-    marginLeft: 2,
+    marginLeft: 10,
     marginRight: 10,
     marginTop: 4,
     paddingRight: 40,

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const FeedbackList = ({ data }) => {
+const FeedbackListItem = ({ data }) => {
   return (
     <View
       style={{
@@ -45,4 +45,4 @@ const FeedbackList = ({ data }) => {
   );
 };
 
-export default FeedbackList;
+export default FeedbackListItem;
