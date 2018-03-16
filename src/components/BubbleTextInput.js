@@ -39,6 +39,7 @@ const Input = styled.TextInput.attrs({
   color: #9b9b9b;
   padding-left: 20;
   padding-right: 20;
+  min-height: 100;
 `;
 
 /**
