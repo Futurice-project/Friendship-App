@@ -93,62 +93,69 @@ class Person extends React.Component {
         }
       : require('../../assets/img/placeholder/grone.jpg');
     return (
-      <Image style={styles.topPart} source={srcImage}>
-        <View style={{ flex: 70, backgroundColor: 'rgba(96, 104, 109, 0.55)' }}>
-          <BoldDescription style={styles.topText}>
-            {this.props.data.description}
-          </BoldDescription>
-          <LocationText style={{ textAlign: 'center', paddingTop: 20 }}>
-            {this.state.locations}
-          </LocationText>
-        </View>
-        <FlexRow style={styles.bottomPart}>
-          {/* with flex:1 long username don't go exceed the bottom part  */}
-
-          <View style={styles.flexRow}>
-            <View style={styles.whiteCircle}>
-              <Text style={styles.emoji}>{this.props.data.emoji}</Text>
-            </View>
-            <View style={styles.viewBottom}>
-              <TouchableOpacity
-                style={styles.nameView}
-                onPress={() =>
-                  this.props.openProfile(
-                    this.props.data.id,
-                    this.props.data.username,
-                  )}
-              >
-                <Text style={styles.textName}>{this.state.shortUser}</Text>
-              </TouchableOpacity>
-              <Text style={styles.textDetails}>
-                {this.state.age}
-                {this.state.genders}
-              </Text>
-              <CompatibilityText style={{ marginBottom: 0, marginTop: 3 }}>
-                <YeahColor>
-                  {this.props.data.loveCommon ? this.props.data.loveCommon : 0}
-                  <FrienshipFont> YEAH</FrienshipFont>
-                </YeahColor>{' '}
-                &{' '}
-                <NaahColor>
-                  {this.props.data.hateCommon ? this.props.data.hateCommon : 0}
-                  <FrienshipFont> NAAH</FrienshipFont>
-                </NaahColor>{' '}
-              </CompatibilityText>
-              <Text
-                style={{
-                  flexWrap: 'wrap',
-                  fontSize: 12,
-                  color: '#4a4a4a',
-                  marginTop: -3,
-                }}
-              >
-                in common
-              </Text>
-            </View>
+      <TouchableOpacity
+        style={styles.nameView}
+        onPress={() =>
+          this.props.openProfile(this.props.data.id, this.props.data.username)}
+      >
+        <Image style={styles.topPart} source={srcImage}>
+          <View
+            style={{ flex: 70, backgroundColor: 'rgba(96, 104, 109, 0.55)' }}
+          >
+            <BoldDescription style={styles.topText}>
+              {this.props.data.description}
+            </BoldDescription>
+            <LocationText style={{ textAlign: 'center', paddingTop: 20 }}>
+              {this.state.locations}
+            </LocationText>
           </View>
-        </FlexRow>
-      </Image>
+          <FlexRow style={styles.bottomPart}>
+            {/* with flex:1 long username don't go exceed the bottom part  */}
+
+            <View style={styles.flexRow}>
+              <View style={styles.whiteCircle}>
+                <Text style={styles.emoji}>{this.props.data.emoji}</Text>
+              </View>
+              <View style={styles.viewBottom}>
+                <Text style={styles.textName}>{this.state.shortUser}</Text>
+                <Text style={styles.textDetails}>
+                  {this.state.age}
+                  {this.state.genders}
+                </Text>
+                <CompatibilityText style={{ marginBottom: 0, marginTop: 3 }}>
+                  <YeahColor>
+                    {this.props.data.loveCommon ? (
+                      this.props.data.loveCommon
+                    ) : (
+                      0
+                    )}
+                    <FrienshipFont> YEAH</FrienshipFont>
+                  </YeahColor>{' '}
+                  &{' '}
+                  <NaahColor>
+                    {this.props.data.hateCommon ? (
+                      this.props.data.hateCommon
+                    ) : (
+                      0
+                    )}
+                    <FrienshipFont> NAAH</FrienshipFont>
+                  </NaahColor>{' '}
+                </CompatibilityText>
+                <Text
+                  style={{
+                    flexWrap: 'wrap',
+                    fontSize: 12,
+                    color: '#4a4a4a',
+                    marginTop: -3,
+                  }}
+                >
+                  in common
+                </Text>
+              </View>
+            </View>
+          </FlexRow>
+        </Image>
+      </TouchableOpacity>
     );
   };
 
