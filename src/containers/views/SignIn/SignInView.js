@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
+import HideWithKeyboard from 'react-native-hide-with-keyboard';
 
 import rest from '../../../utils/rest';
 import {
@@ -118,7 +119,11 @@ class SignInView extends React.Component {
       status = `Loading ...`;
     }
 
-    return <Text style={styles.statusTextStyle}>{status}</Text>;
+    return (
+      <HideWithKeyboard>
+        <Text style={styles.statusTextStyle}>{status}</Text>
+      </HideWithKeyboard>
+    );
   }
 
   /**
@@ -153,6 +158,7 @@ class SignInView extends React.Component {
    * @returns {*|SignInView}
    */
   signIn() {
+    Keyboard.dismiss();
     const { email, password } = this.state;
     if (!email || !password) {
       return this.setState({
@@ -194,15 +200,24 @@ class SignInView extends React.Component {
               <HeaderWrapper>
                 <Text
                   style={styles.headerText}
-                  onPress={this.props.openWelcomeScreen}
+                  onPress={() => {
+                    Keyboard.dismiss();
+                    this.props.openWelcomeScreen();
+                  }}
                 >
                   Cancel
                 </Text>
-                <Text style={styles.headerText} onPress={this.props.openSignUp}>
+                <Text
+                  style={styles.headerText}
+                  onPress={() => {
+                    Keyboard.dismiss();
+                    this.props.openSignUp();
+                  }}
+                >
                   Join
                 </Text>
               </HeaderWrapper>
-              <Centered style={{ flex: 2 }}>
+              <Centered style={{ flex: 2, paddingBottom: 40 }}>
                 <TextInput
                   titleColor="#f9f7f6"
                   title="EMAIL"
@@ -240,10 +255,12 @@ class SignInView extends React.Component {
                     this.signIn();
                   }}
                 />
+                <HideWithKeyboard>
+                  <Text style={styles.textStyle}>
+                    Need help with your password?
+                  </Text>
+                </HideWithKeyboard>
                 {this.renderStatus()}
-                <Text style={styles.textStyle}>
-                  Need help with your password?
-                </Text>
               </Centered>
             </Padding>
           </TouchableWithoutFeedback>
