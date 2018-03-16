@@ -2,9 +2,10 @@ import React from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FeedbackHeader from './FeedbackHeader';
+import Styles from './Layout';
 
 const FeedbackStatus = ({ navigateBack, data }) => {
-  const { title, text } = styles;
+  const { title, text } = Styles;
 
   return (
     <View>
@@ -15,19 +16,6 @@ const FeedbackStatus = ({ navigateBack, data }) => {
       </View>
     </View>
   );
-};
-
-const styles = {
-  title: {
-    fontFamily: 'NunitoSans-Bold',
-    fontSize: 15,
-    color: '#4a4a4a',
-  },
-  text: {
-    color: '#949795',
-    fontFamily: 'NunitoSans-Regular',
-    fontSize: 13,
-  },
 };
 
 export default FeedbackStatus;

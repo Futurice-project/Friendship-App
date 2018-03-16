@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FeedbackHeader from './FeedbackHeader';
+import Styles from './Layout';
 
 const ReportContent = ({
   data,
@@ -10,7 +11,7 @@ const ReportContent = ({
   onChange,
   onCancel,
 }) => {
-  const { title, text, reportInput } = styles;
+  const { title, text, feedbackInput } = Styles;
   if (!data.content.reasonTitle) {
     // if the user chooses "i just dont like it" category
     return (
@@ -30,7 +31,7 @@ const ReportContent = ({
             placeholder={data.content.subtitle}
             multiline={true}
             onChangeText={text => onChange(text)}
-            style={reportInput}
+            style={feedbackInput}
           />
         </View>
         <View style={{ marginTop: 40, alignItems: 'center' }}>
@@ -128,31 +129,4 @@ const ReportContent = ({
   );
 };
 
-const styles = {
-  title: {
-    fontFamily: 'NunitoSans-Bold',
-    fontSize: 15,
-    color: '#4a4a4a',
-  },
-  reportInput: {
-    height: 150,
-    backgroundColor: '#e8e9e8',
-    borderRadius: 33,
-    marginLeft: 2,
-    marginTop: 4,
-    paddingRight: 30,
-    paddingLeft: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
-    fontSize: 14,
-    lineHeight: 18,
-    fontFamily: 'NunitoSans-Regular',
-    textAlignVertical: 'top',
-  },
-  text: {
-    color: '#949795',
-    fontFamily: 'NunitoSans-Regular',
-    fontSize: 13,
-  },
-};
 export default ReportContent;

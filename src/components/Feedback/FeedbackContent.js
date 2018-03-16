@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import FeedbackHeader from './FeedbackHeader';
 import Slider from './Slider';
 import SurveyQuestion from './SurveyQuestion';
+import Styles from './Layout';
 
 export default class FeedbackContent extends React.Component {
   render() {
@@ -43,7 +44,7 @@ export default class FeedbackContent extends React.Component {
       interestInput,
       surveyTitle,
       surveyText,
-    } = styles;
+    } = Styles;
     if (data.content.title !== 'Feedback for Friendship app') {
       return (
         <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
@@ -284,60 +285,3 @@ export default class FeedbackContent extends React.Component {
     );
   }
 }
-
-const styles = {
-  title: {
-    fontFamily: 'NunitoSans-Bold',
-    fontSize: 15,
-    color: '#4a4a4a',
-  },
-  feedbackInput: {
-    height: 150,
-    backgroundColor: '#e8e9e8',
-    borderRadius: 33,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 4,
-    paddingRight: 40,
-    paddingLeft: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
-    fontSize: 14,
-    lineHeight: 18,
-    fontFamily: 'NunitoSans-Regular',
-    textAlignVertical: 'top',
-  },
-  interestInput: {
-    height: 50,
-    backgroundColor: '#e8e9e8',
-    borderRadius: 33,
-    marginLeft: 2,
-    marginTop: 4,
-    paddingRight: 40,
-    paddingLeft: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
-    fontSize: 14,
-    color: '#2d4359',
-    letterSpacing: 1.47,
-    fontFamily: 'NunitoSans-LightItalic',
-    textAlignVertical: 'top',
-  },
-  text: {
-    color: '#949795',
-    fontFamily: 'NunitoSans-Regular',
-    fontSize: 13,
-  },
-  surveyTitle: {
-    marginLeft: 10,
-    color: '#4a4a4a',
-    fontSize: 12,
-    marginBottom: 10,
-    fontFamily: 'NunitoSans-Bold',
-  },
-  surveyText: {
-    fontFamily: 'NunitoSans-Light',
-    fontSize: 13,
-    color: '#2d4359',
-  },
-};
