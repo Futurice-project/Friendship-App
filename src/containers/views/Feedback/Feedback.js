@@ -66,11 +66,11 @@ export default class Feedback extends Component {
     } = this.state;
     const rating = Math.round(this.state.rating);
     const goalRate = Math.round(this.state.goalRate);
-    const checkBox = this.state.checkBoxs;
-    if (this.state.checkBoxs.indexOf('Other') > -1 && others) {
-      checkBox[this.state.checkBoxs.indexOf('Other')] = others;
+    const checkBoxs = this.state.checkBoxs;
+    let OtherReason = 'none';
+    if (checkBoxs.indexOf(5) > -1 && others) {
+      OtherReason = others;
     }
-    const checkBoxs = checkBox.join();
     fetch(`http://localhost:3888/feedbacks`, {
       method: 'post',
       headers: {
@@ -80,11 +80,12 @@ export default class Feedback extends Component {
         suggestion,
         rating,
         goalRate,
+        checkBoxs,
         findFriendEasy,
         findFriendHard,
         suggestImprovement,
-        checkBoxs,
         given_by,
+        OtherReason,
       }),
     }).then(() => this.setState({ showFeedbackStatus: true }));
   }

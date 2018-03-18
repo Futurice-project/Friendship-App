@@ -161,7 +161,11 @@ export default class FeedbackContent extends React.Component {
             What’s your goal for using the app?
           </Text>
           {data.content.checkbox.map((item, index) => (
-            <CheckBoxs title={item} key={index} onIconPress={onChecked(item)} />
+            <CheckBoxs
+              title={item.text}
+              key={index}
+              onIconPress={onChecked(item.id)}
+            />
           ))}
           <View
             style={{
@@ -170,14 +174,15 @@ export default class FeedbackContent extends React.Component {
               marginBottom: 20,
             }}
           >
-            <CheckBoxs title="Other:" onIconPress={onChecked('Other')} />
+            <CheckBoxs title="Other:" onIconPress={onChecked(5)} />
             <Input
               style={{
                 borderBottomColor: '#839297',
                 borderBottomWidth: 1,
-                width: 100,
-                marginLeft: -13,
+                width: 110,
+                marginLeft: -10,
               }}
+              fontStyle={'NunitoSans-LightItalic'}
               placeholder="write something"
               onChangeText={text => onOtherChange(text)}
               value={others}
