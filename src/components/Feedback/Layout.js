@@ -1,4 +1,7 @@
 import React from 'react';
+import { Platform } from 'react-native';
+
+const customWidth = Platform.OS === 'ios' ? 320 : 300;
 
 const Styles = {
   title: {
@@ -24,14 +27,10 @@ const Styles = {
   },
   interestInput: {
     height: 50,
+    width: customWidth,
     backgroundColor: '#e8e9e8',
     borderRadius: 33,
-    marginLeft: 2,
-    marginTop: 4,
-    paddingRight: 40,
-    paddingLeft: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 20,
     fontSize: 14,
     color: '#2d4359',
     letterSpacing: 1.47,

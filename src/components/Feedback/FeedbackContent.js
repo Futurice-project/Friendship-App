@@ -5,6 +5,8 @@ import {
   Text,
   TouchableOpacity,
   TextInput as Input,
+  StatusBar,
+  Platform,
 } from 'react-native';
 import TextInput from '../TextInput';
 import CheckBoxs from './CheckBoxs';
