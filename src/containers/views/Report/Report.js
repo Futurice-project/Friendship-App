@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
-import ReportList from './ReportList';
-import reportField from './reportField'; //this is the json file
-import ReportContent from './ReportContent';
-import ReportStatus from './ReportStatus';
+import FeedbackListItem from '../../../components/Feedback/FeedbackListItem';
+import reportFields from '../../../components/Feedback/reportField'; //this is the json file
+import ReportContent from '../../../components/Feedback/ReportContent';
+import FeedbackStatus from '../../../components/Feedback/FeedbackStatus';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ReportHeader from './ReportHeader';
+import FeedbackHeader from './../../../components/Feedback/FeedbackHeader';
 
 export default class Report extends Component {
   state = {
@@ -17,13 +17,13 @@ export default class Report extends Component {
 
   renderReportList() {
     // my own list component(better customized) to render a list of report field
-    return reportField.map((item, i) => {
+    return reportFields.map((item, i) => {
       return (
         <TouchableOpacity
           key={i}
           onPress={() => this.setState({ showContent: true, content: item })}
         >
-          <ReportList data={item} />
+          <FeedbackListItem data={item} />
         </TouchableOpacity>
       );
     });
@@ -49,9 +49,17 @@ export default class Report extends Component {
   }
 
   render() {
+    const reportStatus = {
+      title: 'Thank you for your report.',
+      subtitle:
+        'Your report helps keep Friendship app safe and fun for everyone. We will review your report, and reprimand the user if they are breaking community guidelines.',
+    };
     if (this.state.showReportStatus && this.state.showContent) {
       return (
-        <ReportStatus navigateBack={() => this.props.navigation.goBack()} />
+        <FeedbackStatus
+          data={reportStatus}
+          navigateBack={() => this.props.navigation.goBack()}
+        />
       );
     }
     if (this.state.showContent) {
@@ -74,7 +82,7 @@ export default class Report extends Component {
           backgroundColor: '#ffffff',
         }}
       >
-        <ReportHeader
+        <FeedbackHeader
           navigateBack={() => this.props.navigation.goBack()}
           headerText="Report"
           onCancel={() => this.props.navigation.goBack()}

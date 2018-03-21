@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Styles from './Layout';
 
-const ReportList = ({ data }) => {
+const FeedbackListItem = ({ data }) => {
   return (
     <View
       style={{
@@ -15,27 +16,9 @@ const ReportList = ({ data }) => {
         justifyContent: 'space-between',
       }}
     >
-      <View style={{ marginLeft: 20 }}>
-        <Text
-          style={{
-            color: '#4a4a4a',
-            fontSize: 15,
-            fontFamily: 'NunitoSans-Bold',
-          }}
-        >
-          {data.title}
-        </Text>
-        {data.subtitle && (
-          <Text
-            style={{
-              color: '#949795',
-              fontFamily: 'NunitoSans-Regular',
-              fontSize: 13,
-            }}
-          >
-            {data.subtitle}
-          </Text>
-        )}
+      <View style={{ marginLeft: 20, flex: 1, flexWrap: 'wrap' }}>
+        <Text style={Styles.title}>{data.title}</Text>
+        {data.subtitle && <Text style={Styles.text}>{data.subtitle}</Text>}
       </View>
       <Icon
         style={{ padding: 15, fontSize: 20, textAlign: 'center' }}
@@ -45,4 +28,4 @@ const ReportList = ({ data }) => {
   );
 };
 
-export default ReportList;
+export default FeedbackListItem;

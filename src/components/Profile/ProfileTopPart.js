@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import {
   CompatibilityText,
@@ -15,7 +15,7 @@ import {
   LocationText,
   NaahColor,
   UsernameText,
-  YeahColor
+  YeahColor,
 } from '../Layout/TextLayout';
 import waveShape from '../../../assets/img/roundTab/roundTab.png';
 import resolveAssetSource from 'resolveAssetSource';
@@ -36,7 +36,7 @@ const ProfileTopPart = props => {
     username,
     myProfile,
     genderList,
-    showEditForm
+    showEditForm,
   } = props;
   const getAge = () => {
     const parsedBirthYear = parseInt(birthyear);
@@ -100,7 +100,7 @@ const ProfileTopPart = props => {
         style={{
           backgroundColor: 'transparent',
           justifyContent: 'flex-end',
-          flex: 1
+          flex: 1,
         }}
       >
         <Image source={waveShape} style={styles.waveShape}>
@@ -110,10 +110,16 @@ const ProfileTopPart = props => {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: 25
+              marginTop: 25,
             }}
           >
-            <UsernameText>{username}</UsernameText>
+            <UsernameText>
+              {username.length > 15 ? (
+                username.substr(0, 15).concat('…')
+              ) : (
+                username
+              )}
+            </UsernameText>
             {myProfile ? (
               <TouchableOpacity onPress={() => showEditForm()}>
                 <Image
@@ -154,22 +160,22 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 64,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
   },
   emoji: {
     backgroundColor: 'transparent',
     alignSelf: 'center',
     fontSize: Platform.OS === 'android' ? 30 : 40,
-    paddingTop: 8
+    paddingTop: 8,
   },
   waveShape: {
     height: Dimensions.get('window').width * height / width,
     width: Dimensions.get('window').width,
-    tintColor: '#F9F6F1'
+    tintColor: '#F9F6F1',
   },
   imageUser: {
     width: Dimensions.get('window').width,
-    height: Platform.OS === 'android' ? 330 : 250
+    height: Platform.OS === 'android' ? 330 : 250,
   },
   backAndSettingsView: {
     marginTop: 5,
@@ -177,16 +183,16 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   backButton: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   settingsIcon: {
     width: 24,
     height: 24,
-    tintColor: '#4A4A4A'
-  }
+    tintColor: '#4A4A4A',
+  },
 });
 
 export default ProfileTopPart;
