@@ -123,7 +123,7 @@ export class SignUpLoveAndHate extends React.Component {
     return (
       <View>
         <ViewContainer>
-          <ProgressBar steps={this.props.signup.signupProgress} />
+          <ProgressBar steps={4} />
           <Padding>
             <View style={{ flexDirection: 'row' }}>
               <Title style={{ color: '#ff8a65' }}>YEAH </Title>

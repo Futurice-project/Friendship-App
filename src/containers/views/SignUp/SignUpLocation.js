@@ -1,17 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import rest from '../../../utils/rest';
-import styled from 'styled-components/native';
-import { NavigationActions } from 'react-navigation';
-import {
-  SignUpWrapper,
-  ViewContainer,
-} from '../../../components/Layout/Layout';
-import RoundTab from '../../../components/RoundTab';
-import ProgressBar from '../../../components/SignUp/ProgressBar';
-import { LOCATION, YOUR_PROFILE } from '../../../components/SignUp/Constants';
+import { LOCATION } from '../../../components/SignUp/Constants';
 import validate from '../../../components/SignUp/validate';
-import { Field, reduxForm, submit } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import LocationList from '../../../components/SignUp/LocationList';
 import { View } from 'react-native';
 import SignupHeader from '../../../components/SignUp/SignupHeader';
@@ -28,8 +18,6 @@ class SignUpLocation extends React.Component {
   };
 
   render() {
-    const { dispatch } = this.props;
-
     return (
       <View
         style={{ display: 'flex', height: '100%', flexDirection: 'column' }}

@@ -53,13 +53,11 @@ export default class Personality extends React.Component {
     imageWidth: 0,
   };
 
-  /**
-   * When the component is mounting we switch images based on the set text name
-   * in this.props.image
-   */
-  componentWillMount() {
-    switch (this.props.image) {
+  checkPersonality(image) {
+    console.log(image);
+    switch (image) {
       case 'relaxed': {
+        console.log('... relaxed');
         const { width, height } = resolveAssetSource(
           this.props.profile ? relaxedSmall : relaxed,
         );
@@ -71,6 +69,7 @@ export default class Personality extends React.Component {
         break;
       }
       case 'ambitious': {
+        console.log('... ambitious');
         const { width, height } = resolveAssetSource(
           this.props.profile ? ambitiousSmall : ambitious,
         );
@@ -82,6 +81,7 @@ export default class Personality extends React.Component {
         break;
       }
       case 'traditional': {
+        console.log('... traditional');
         const { width, height } = resolveAssetSource(
           this.props.profile ? traditionalSmall : traditional,
         );
@@ -93,6 +93,7 @@ export default class Personality extends React.Component {
         break;
       }
       case 'open-minded': {
+        console.log('... open-minded');
         const { width, height } = resolveAssetSource(
           this.props.profile ? openMindedSmall : openMinded,
         );
@@ -104,6 +105,7 @@ export default class Personality extends React.Component {
         break;
       }
       case 'religion': {
+        console.log('... religion');
         const { width, height } = resolveAssetSource(
           this.props.profile ? religionSmall : religion,
         );
@@ -115,6 +117,7 @@ export default class Personality extends React.Component {
         break;
       }
       case 'free thinker': {
+        console.log('... freethinker');
         const { width, height } = resolveAssetSource(
           this.props.profile ? freeThinkerSmall : freeThinker,
         );
@@ -126,6 +129,7 @@ export default class Personality extends React.Component {
         break;
       }
       case 'going out': {
+        console.log('... going out');
         const { width, height } = resolveAssetSource(
           this.props.profile ? goingOutSmall : goingOut,
         );
@@ -137,6 +141,7 @@ export default class Personality extends React.Component {
         break;
       }
       case 'chilling out': {
+        console.log('... chilling out');
         const { width, height } = resolveAssetSource(
           this.props.profile ? chillOutSmall : chillOut,
         );
@@ -148,6 +153,7 @@ export default class Personality extends React.Component {
         break;
       }
       default: {
+        console.log('... default');
         const { width, height } = resolveAssetSource(placeholder);
         this.setState({
           imageObject: placeholder,
@@ -156,6 +162,18 @@ export default class Personality extends React.Component {
         });
       }
     }
+  }
+
+  /**
+   * When the component is mounting we switch images based on the set text name
+   * in this.props.image
+   */
+  componentDidMount() {
+    this.checkPersonality(this.props.image);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.checkPersonality(nextProps.image);
   }
 
   /**
@@ -174,6 +192,7 @@ export default class Personality extends React.Component {
    * @returns {XML}
    */
   render = () => {
+    console.log(this.state.imageObject);
     return (
       <View style={{ display: 'flex', paddingLeft: 7, paddingRight: 7 }}>
         <TouchableOpacity

@@ -2,102 +2,53 @@ import React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import styled from 'styled-components/native';
-import { NavigationActions } from 'react-navigation';
 
 import rest from '../../../utils/rest';
-import { addPersonality } from '../../../state/personalities';
-import {
-  Centered,
-  Padding,
-  ViewContainer,
-} from '../../../components/Layout/Layout';
-import Personality from '../../../components/SignUp/Personality';
+import { Padding, ViewContainer } from '../../../components/Layout/Layout';
+import TwoPersonalities from '../../../components/SignUp/TwoPersonalities';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
-import { decrementProgress, incrementProgress } from '../../../state/signup';
+import validate from '../../../components/SignUp/validate';
+import { Field, reduxForm, submit } from 'redux-form';
 
 const mapStateToProps = state => ({
   personalities: state.personalities,
-  personalityState: state.personalityState,
-  signup: state.signup,
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeView: index => {
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SignUpPersonality',
-        params: { index },
-      }),
-    );
-  },
-  updateChosenPersonalities: personality => {
-    dispatch(addPersonality(personality));
-  },
   getPersonalities: () => {
     dispatch(rest.actions.personalities());
-  },
-  addUserPersonalities: credentials => {
-    dispatch(
-      rest.actions.createUserPersonalities(
-        {},
-        { body: JSON.stringify(credentials) },
-      ),
-    );
   },
 });
 
 class SignUpPersonality extends React.Component {
-  componentDidMount() {
-    if (!this.props.personalities.sync) {
-      this.props.getPersonalities();
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: 0,
+      selectedPersonalities: [],
+    };
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (this.props.personalities === nextProps.personalities) {
-      return false;
+  componentWillMount() {
+    this.props.getPersonalities();
+  }
+
+  handleClick = (personalityId, input) => {
+    const { personalities } = this.props;
+
+    if (this.state.index + 2 >= personalities.data.length) {
+      const tmp = [...this.state.selectedPersonalities, personalityId];
+      input.onChange(tmp);
+      this.props.dispatch(submit('signup'));
     } else {
-      return true;
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.props.navigation.state.params.index === 0) {
-      this.props.decProgress();
-    }
-  }
-
-  handleClick = personalityId => {
-    const {
-      navigation,
-      personalities,
-      updateChosenPersonalities,
-      addUserPersonalities,
-      personalityState,
-      changeView,
-    } = this.props;
-
-    if (navigation.state.params.index + 2 >= personalities.data.length) {
-      // We are at the end of the list
-      // we need the await so we can send to addUserPersonalties the last selected personality
-      updateChosenPersonalities({
-        personalityId,
-        level: 5,
+      this.setState(prevState => {
+        const tmp = [...prevState.selectedPersonalities, personalityId];
+        input.onChange(tmp);
+        return {
+          index: prevState.index + 2,
+          selectedPersonalities: tmp,
+        };
       });
-
-      // we add the last selected personality to the final array
-      let finalPersonalities = personalityState.chosenPersonalities;
-      finalPersonalities.push({
-        personalityId,
-        level: 5,
-      });
-
-      addUserPersonalities({ personalities: finalPersonalities });
-      this.props.incProgress();
-    } else {
-      // Change the view and increment the index
-      updateChosenPersonalities({ personalityId, level: 5 });
-      changeView(navigation.state.params.index + 2);
     }
   };
 
@@ -116,25 +67,19 @@ class SignUpPersonality extends React.Component {
       return <ActivityIndicator />;
     }
 
-    let index = this.props.navigation.state.params.index;
+    let index = this.state.index;
     let personalities = this.props.personalities.data;
 
     return (
-      <Centered>
-        <Personality
-          key={personalities[index].id}
-          title={personalities[index].name}
-          image={personalities[index].name}
-          onPress={() => this.handleClick(personalities[index].id)}
-        />
-        <PersonalityText>or</PersonalityText>
-        <Personality
-          key={personalities[index + 1].id}
-          title={personalities[index + 1].name}
-          image={personalities[index + 1].name}
-          onPress={() => this.handleClick(personalities[index + 1].id)}
-        />
-      </Centered>
+      <Field
+        name={'personalities'}
+        component={TwoPersonalities}
+        id={[personalities[index].id, personalities[index + 1].id]}
+        personality={[personalities[index].name, personalities[index + 1].name]}
+        // image={[personalities[index].name, personalities[index + 1].name]}
+        onPress={(personalityId, input) =>
+          this.handleClick(personalityId, input)}
+      />
     );
   }
 
@@ -146,7 +91,7 @@ class SignUpPersonality extends React.Component {
    */
   renderProgress() {
     if (!this.props.personalities.data) {
-      return;
+      return null;
     }
 
     return (
@@ -157,7 +102,7 @@ class SignUpPersonality extends React.Component {
           color: '#efebe9',
         }}
       >
-        {this.props.navigation.state.params.index / 2 + 1}/{this.props.personalities.data.length / 2}
+        {this.state.index / 2 + 1}/{this.props.personalities.data.length / 2}
       </Text>
     );
   }
@@ -224,4 +169,12 @@ const SubTitle = styled.View`
   flex-direction: row;
 `;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpPersonality);
+export default reduxForm({
+  form: 'signup',
+  destroyOnUnmount: false,
+  forceUnregisterOnUnmount: true,
+  onSubmit: validate,
+  onSubmitSuccess: (result, dispatch, props) => {
+    dispatch(props.onSubmitSucceeded);
+  },
+})(connect(mapStateToProps, mapDispatchToProps)(SignUpPersonality));

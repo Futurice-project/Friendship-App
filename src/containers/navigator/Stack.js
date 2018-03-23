@@ -51,13 +51,13 @@ export default StackNavigator(
       screen: Signup,
       navigationOptions: { header: () => null },
     },
+    Welcome: {
+      screen: WelcomeView,
+      navigationOptions: { header: () => null },
+    },
     SignUpLocation: {
       screen: SignUpLocation,
       title: 'SignUpLocation',
-      navigationOptions: { header: () => null },
-    },
-    Welcome: {
-      screen: WelcomeView,
       navigationOptions: { header: () => null },
     },
     SignUpMatching: {

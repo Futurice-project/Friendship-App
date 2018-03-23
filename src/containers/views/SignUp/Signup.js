@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
 class Signup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { page: 1 };
+    this.state = { page: 3 };
   }
 
   nextPage(page) {
@@ -37,6 +37,7 @@ class Signup extends React.Component {
       case 2:
         return (
           <SignUpLocation
+            previousPage={this.previousPage}
             onSubmitSucceeded={() => this.nextPage(this.state.page)}
           />
         );
