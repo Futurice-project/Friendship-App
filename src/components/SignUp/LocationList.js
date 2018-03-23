@@ -12,24 +12,6 @@ const mapDispatchToProps = dispatch => ({
   getLocations: () => {
     dispatch(rest.actions.locations());
   },
-
-  postUserLocations: locationsObject => {
-    dispatch(
-      rest.actions.createUserLocations(
-        {},
-        { body: JSON.stringify(locationsObject) },
-      ),
-    );
-  },
-
-  openSignUpPersonality: () => {
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SignUpPersonality',
-        params: { index: 0 },
-      }),
-    );
-  },
 });
 
 class LocationList extends React.Component {

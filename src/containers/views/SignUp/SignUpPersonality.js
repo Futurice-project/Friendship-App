@@ -44,8 +44,6 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
-  incProgress: () => dispatch(incrementProgress()),
-  decProgress: () => dispatch(decrementProgress()),
 });
 
 class SignUpPersonality extends React.Component {
@@ -172,7 +170,7 @@ class SignUpPersonality extends React.Component {
     return (
       <View>
         <ViewContainer>
-          <ProgressBar steps={this.props.signup.signupProgress} />
+          <ProgressBar steps={3} />
           <Padding style={{ flex: 1 }}>
             <Title>PERSONALITY</Title>
             <SubTitle>

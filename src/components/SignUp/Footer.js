@@ -7,6 +7,7 @@ import { submit } from 'redux-form';
 
 /**
  * Renders the NEXT button aka footer for all the sign up process
+ * @param {boolean} blue – Determine the color of the text and thus, the color of the RoundTab
  * */
 class Footer extends React.Component {
   render() {
@@ -15,8 +16,8 @@ class Footer extends React.Component {
       <Part style={{ paddingBottom: 0 }}>
         <RoundTabContainer>
           <RoundTab
-            titleColor={this.props.blue ? '#2d4359' : '#ffffff'}
-            tint={this.props.blue ? '#ff8a65' : '#2d4359'}
+            titleColor={this.props.textColor === 'blue' ? '#2d4359' : '#ffffff'}
+            tint={this.props.textColor === 'blue' ? '#ff8a65' : '#2d4359'}
             title="Next"
             style={{ flex: 1 }}
             onPress={() => dispatch(submit('signup'))}
