@@ -4,18 +4,11 @@ import SignUpPersonality from './SignUpPersonality';
 import SignUpLocation from './SignUpLocation';
 import SignUpYeahAndNaah from './SignUpYeahAndNaah';
 import SignUpMatching from './SignUpMatching';
-import rest from '../../../utils/rest';
-
-const mapDispatchToProps = dispatch => ({
-  getLocations: () => {
-    dispatch(rest.actions.locations());
-  },
-});
 
 class Signup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { page: 3 };
+    this.state = { page: 1 };
   }
 
   nextPage(page) {

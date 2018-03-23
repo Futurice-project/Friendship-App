@@ -1,14 +1,18 @@
 import React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import styled from 'styled-components/native';
 
 import rest from '../../../utils/rest';
-import { Padding, ViewContainer } from '../../../components/Layout/Layout';
 import TwoPersonalities from '../../../components/SignUp/TwoPersonalities';
-import ProgressBar from '../../../components/SignUp/ProgressBar';
 import validate from '../../../components/SignUp/validate';
 import { Field, reduxForm, submit } from 'redux-form';
+import { PERSONALITIES } from '../../../components/SignUp/Constants';
+import SignupHeader from '../../../components/SignUp/SignupHeader';
+import {
+  Container,
+  LabelText,
+  Part,
+} from '../../../components/Layout/SignupLayout';
 
 const mapStateToProps = state => ({
   personalities: state.personalities,
@@ -76,7 +80,6 @@ class SignUpPersonality extends React.Component {
         component={TwoPersonalities}
         id={[personalities[index].id, personalities[index + 1].id]}
         personality={[personalities[index].name, personalities[index + 1].name]}
-        // image={[personalities[index].name, personalities[index + 1].name]}
         onPress={(personalityId, input) =>
           this.handleClick(personalityId, input)}
       />
@@ -113,12 +116,19 @@ class SignUpPersonality extends React.Component {
    */
   render() {
     return (
-      <View>
-        <ViewContainer>
-          <ProgressBar steps={3} />
-          <Padding style={{ flex: 1 }}>
-            <Title>PERSONALITY</Title>
-            <SubTitle>
+      <View
+        style={{ display: 'flex', height: '100%', flexDirection: 'column' }}
+      >
+        <SignupHeader
+          processStage={PERSONALITIES}
+          headerTitle={'PERSONALITY'}
+          backgroundStyle={'darkblue'}
+        />
+        <Container style={{ flex: 1 }}>
+          <Part style={{ flex: 1, backgroundColor: '#2a343c' }}>
+            <LabelText
+              style={{ marginTop: 21, marginLeft: 30, marginRight: 30 }}
+            >
               {this.renderProgress()}
               <Text
                 style={{
@@ -127,47 +137,32 @@ class SignUpPersonality extends React.Component {
                   color: '#efebe9',
                 }}
               >
+                {' '}
                 Lifestyle
               </Text>
-            </SubTitle>
+            </LabelText>
+          </Part>
+          <Part style={{ flex: 15, backgroundColor: '#2a343c' }}>
             <Text
               style={{
                 fontFamily: 'NunitoSans-Light',
                 fontSize: 16,
                 color: '#efebe9',
+                marginTop: 21,
+                marginLeft: 30,
+                marginRight: 30,
+                marginBottom: 30,
               }}
             >
-              Are you more..
+              Are you more ...
             </Text>
             {this.renderTwoPersonalities()}
-          </Padding>
-        </ViewContainer>
+          </Part>
+        </Container>
       </View>
     );
   }
 }
-
-const PersonalityText = styled.Text`
-  margin-top: 15;
-  margin-bottom: 15;
-  font-size: 16;
-  color: #efebe9;
-  font-family: 'NunitoSans-Light';
-`;
-
-const Title = styled.Text`
-  margin-top: 50;
-  font-size: 40;
-  font-family: 'Friendship_version_2';
-  color: #faf5f0;
-`;
-
-const SubTitle = styled.View`
-  margin-top: 10;
-  margin-bottom: 10;
-  display: flex;
-  flex-direction: row;
-`;
 
 export default reduxForm({
   form: 'signup',

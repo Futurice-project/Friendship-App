@@ -1,8 +1,8 @@
 import React from 'react';
 import MultiSelect from '../../utils/react-native-multiple-select/lib/react-native-multi-select';
-import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
 import { connect } from 'react-redux';
+import { ActivityIndicator } from 'react-native';
 
 const mapStateToProps = state => ({
   locations: state.locations,
@@ -33,6 +33,15 @@ class LocationList extends React.Component {
   render() {
     const { input } = this.props;
     const { selectedLocations } = this.state;
+
+    if (
+      !this.props.locations.data ||
+      this.props.locations.syncing ||
+      this.props.locations.loading ||
+      !this.props.locations.sync
+    ) {
+      return <ActivityIndicator />;
+    }
 
     return (
       <MultiSelect

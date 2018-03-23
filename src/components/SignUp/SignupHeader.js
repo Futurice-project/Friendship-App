@@ -11,7 +11,10 @@ export default class SignupHeader extends React.Component {
   render() {
     return (
       <HeaderWrapper backgroundStyle={this.props.backgroundStyle}>
-        <ProgressBar steps={this.props.processStage} />
+        <ProgressBar
+          steps={this.props.processStage}
+          color={this.props.backgroundStyle === 'darkblue' ? '#3a4853' : ''}
+        />
         <SignUpTitle>{this.props.headerTitle}</SignUpTitle>
       </HeaderWrapper>
     );
@@ -22,8 +25,16 @@ const HeaderWrapper = styled.View`
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: ${props =>
-    props.backgroundStyle === 'light' ? '#f9f7f6' : '#efebe9'};
+  background-color: ${props => {
+    switch (props.backgroundStyle) {
+      case 'light':
+        return '#f9f7f6';
+      case 'darkblue':
+        return '#2a343c';
+      default:
+        return '#efebe9';
+    }
+  }};
 `;
 
 const SignUpTitle = styled.Text`
