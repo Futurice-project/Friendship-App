@@ -8,7 +8,7 @@ import SignUpMatching from './SignUpMatching';
 class Signup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { page: 1 };
+    this.state = { page: 4 };
   }
 
   nextPage(page) {

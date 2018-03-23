@@ -12,118 +12,134 @@ import { View } from 'react-native';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
 import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
-import { decrementProgress, incrementProgress } from '../../../state/signup';
+import { INTERESTS } from '../../../components/SignUp/Constants';
+import { Field, reduxForm } from 'redux-form';
+import YeahAndNaahList from '../../../components/SignUp/YeahAndNaahList';
+import validate from '../../../components/SignUp/validate';
 
-const mapStateToProps = (state, ownProps) => ({
-  tags: state.tags,
-  index: ownProps.navigation.state.params
-    ? ownProps.navigation.state.params.index
-    : 1,
-  tagState: state.tagState,
-  signup: state.signup,
+const mapStateToProps = state => ({
+  yeahs: state.yeahs,
+  nahs: state.nahs,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getTags: () => {
-    dispatch(rest.actions.tags()).catch(err => console.log(err));
+  getYeahs: () => {
+    dispatch(rest.actions.yeahs()).catch(err => console.log(err));
   },
-  addUserTags: credentials => {
-    dispatch(
-      rest.actions.userTags({}, { body: JSON.stringify(credentials) }),
-    ).catch(err => console.log(err));
+  getNahs: () => {
+    dispatch(rest.actions.nahs()).catch(err => console.log(err));
   },
-  changeView: index => {
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'YeahAndNaah',
-        params: { index },
-      }),
-    );
-  },
-  openSignUpPersonality: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'SignUpMatching',
-      }),
-    ),
-  incProgress: () => dispatch(incrementProgress()),
-  decProgress: () => dispatch(decrementProgress()),
 });
 
 export class SignUpLoveAndHate extends React.Component {
-  componentWillMount() {
-    this.props.getTags();
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: 0,
+      selectedYeahs: [],
+      selectedNahs: [],
+      category: 1,
+    };
   }
 
-  componentWillUnmount() {
-    console.log('Unmounting Yeah and Naahs : ' + this.props.index);
-    if (this.props.index === 1) {
-      this.props.decProgress();
-    }
+  componentWillMount() {
+    this.props.getYeahs();
+    this.props.getNahs();
   }
 
   renderFiveLoveAndHateActivities = () => {
-    if (!this.props.tags.data.data) {
+    if (!this.props.yeahs.data.data) {
       return;
     }
-    let activities = this.props.tags.data.data.map(activity => {
-      //activities have a category equal to 1
-      if (activity.category === 1) {
-        return (
-          <YeahAndNaah
-            key={activity.id}
-            activityName={activity.name}
-            activityId={activity.id}
-          />
-        );
-      }
-    });
 
-    return <Activities>{activities}</Activities>;
-  };
+    let activities = [];
 
-  renderFiveLoveAndHateInterests = () => {
-    if (!this.props.tags.data.data) {
-      return;
+    console.log(this.state.index);
+    console.log(this.props.yeahs.data.data.length);
+
+    for (
+      let i = this.state.index;
+      i <= this.props.yeahs.data.data.length - 1 && i < this.state.index + 5;
+      i++
+    ) {
+      activities.push(
+        <YeahAndNaah
+          key={this.props.yeahs.data.data[i].id}
+          activityName={this.props.yeahs.data.data[i].name}
+          activityId={this.props.yeahs.data.data[i].id}
+        />,
+      );
     }
-    let activities = this.props.tags.data.data.map(activity => {
-      //interests have a category equal to 2
-      if (activity.category === 2) {
-        return (
-          <YeahAndNaah
-            key={activity.id}
-            activityName={activity.name}
-            activityId={activity.id}
-          />
-        );
-      }
-    });
 
     return <Activities>{activities}</Activities>;
   };
 
   renderPage() {
-    if (this.props.index === 1) {
-      return this.renderFiveLoveAndHateActivities();
-    } else {
-      return this.renderFiveLoveAndHateInterests();
+    if (!this.props.yeahs.data.data) {
+      return;
     }
+
+    const yeahsAndNaahs =
+      this.state.category === 1
+        ? this.props.yeahs.data.data
+        : this.props.nahs.data.data;
+    let array = [];
+
+    for (
+      let i = this.state.index;
+      i <= yeahsAndNaahs.length - 1 && i < this.state.index + 5;
+      i++
+    ) {
+      array.push(
+        <YeahAndNaah
+          key={yeahsAndNaahs[i].id}
+          activityName={yeahsAndNaahs[i].name}
+          activityId={yeahsAndNaahs[i].id}
+        />,
+      );
+    }
+
+    return (
+      <Field name={'yeahsAndNaahs'} component={YeahAndNaahList} list={array} />
+    );
   }
 
   renderTitle() {
-    if (this.props.index === 1) {
-      return '1/2 Activities';
-    } else {
-      return '2/2 Interests';
-    }
+    return this.state.category + '/2 Activities';
   }
+
+  handleClick = () => {
+    switch (this.state.category) {
+      case 1:
+        if (this.state.index + 5 <= this.props.yeahs.data.data.length - 1) {
+          console.log('Continuing cat 1');
+          this.setState(prevState => ({ index: prevState.index + 5 }));
+        } else {
+          console.log('Changing cat');
+          this.setState(prevState => ({
+            index: 0,
+            category: prevState.category + 1,
+          }));
+        }
+        break;
+      case 2:
+        if (this.state.index + 5 <= this.props.nahs.data.data.length - 1) {
+          console.log('Continuing cat 2');
+          this.setState(prevState => ({ index: prevState.index + 5 }));
+        } else {
+          console.log('Submit');
+        }
+        break;
+      default:
+        console.log('DEFAULT ...');
+    }
+  };
 
   render() {
     return (
       <View>
         <ViewContainer>
-          <ProgressBar steps={4} />
+          <ProgressBar steps={INTERESTS} />
           <Padding>
             <View style={{ flexDirection: 'row' }}>
               <Title style={{ color: '#ff8a65' }}>YEAH </Title>
@@ -150,22 +166,12 @@ export class SignUpLoveAndHate extends React.Component {
               paddingRight: -16,
             }}
           >
-            <Centered>{this.renderPage()}</Centered>
+            {this.renderPage()}
           </Padding>
           <RoundTab
             title="NEXT"
             tint="#faf5f0"
-            onPress={() => {
-              if (this.props.index === 1) {
-                this.props.changeView(2);
-              } else {
-                this.props.addUserTags({
-                  tags: this.props.tagState.chosenTags,
-                });
-                this.props.incProgress();
-                this.props.openSignUpPersonality();
-              }
-            }}
+            onPress={() => this.handleClick()}
           />
         </ViewContainer>
       </View>
@@ -192,4 +198,12 @@ const Activities = styled.View`
   justify-content: center;
 `;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpLoveAndHate);
+export default reduxForm({
+  form: 'signup',
+  destroyOnUnmount: false,
+  forceUnregisterOnUnmount: true,
+  onSubmit: validate,
+  onSubmitSuccess: (result, dispatch, props) => {
+    dispatch(props.onSubmitSucceeded);
+  },
+})(connect(mapStateToProps, mapDispatchToProps)(SignUpLoveAndHate));

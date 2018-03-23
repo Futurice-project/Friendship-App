@@ -44,6 +44,14 @@ const rest = reduxApi({
     url: `${apiRoot}/tags`,
     crud: true,
   },
+  yeahs: {
+    url: `${apiRoot}/yeahs`,
+    crud: true,
+  },
+  nahs: {
+    url: `${apiRoot}/nahs`,
+    crud: true,
+  },
   userTags: {
     url: `${apiRoot}/user_tags`,
     options: { method: 'POST' },
