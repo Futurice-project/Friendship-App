@@ -173,7 +173,7 @@ const rest = reduxApi({
     options: { method: 'POST' },
   },
   events: {
-    url: `${apiRoot}/events`,
+    url: `${apiRoot}/events/:userId`,
     transformer: transformers.array,
     crud: true,
   },
