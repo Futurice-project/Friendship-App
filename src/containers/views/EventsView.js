@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
 import { connect } from 'react-redux';
 import { IconImage } from '../../components/Layout/Layout';
@@ -9,19 +16,19 @@ import EventsList from '../../components/Events/EventsList';
 const mapStateToProps = state => ({
   events: state.events,
   auth: state.auth,
-  changeOrder: state.changeOrder,
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchEvents: userId => {
-    dispatch(rest.actions.events.get({ userId }));
-  },
+  fetchEvents: userId => dispatch(rest.actions.events.get({ userId })),
+  openEventForm: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'EventCreateView',
+      }),
+    ),
 });
 
 class EventsView extends Component {
-  state = {
-    changeOrder: false,
-  };
   static navigationOptions = {
     title: 'Events',
     header: {
@@ -39,7 +46,6 @@ class EventsView extends Component {
     const userId = this.props.auth.data.decoded
       ? this.props.auth.data.decoded.id
       : null;
-
     this.props.fetchEvents(userId);
   };
 
@@ -53,8 +59,6 @@ class EventsView extends Component {
     return <ActivityIndicator />;
   };
 
-  changeSortOrder = () => {};
-
   render = () => {
     if (!this.props.auth.data.decoded) {
       return (
@@ -67,13 +71,33 @@ class EventsView extends Component {
     return (
       <View style={{ flex: 1 }}>
         <EventsHeader headerText="Events" />
-        <TouchableOpacity onPress={() => this.changeSortOrder()}>
-          <Text> Recommended </Text>
-        </TouchableOpacity>
         {this.renderContent()}
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => this.props.openEventForm()}
+          style={styles.TouchableOpacityStyle}
+        >
+          <Text style={{ fontSize: 30 }}>{'+'}</Text>
+        </TouchableOpacity>
       </View>
     );
   };
 }
+
+const styles = StyleSheet.create({
+  TouchableOpacityStyle: {
+    position: 'absolute',
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 5,
+    bottom: 15,
+    borderStyle: 'solid',
+    borderWidth: 2,
+    backgroundColor: '#d8d8d8',
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsView);

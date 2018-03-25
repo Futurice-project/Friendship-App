@@ -141,6 +141,7 @@ class MyProfile extends React.Component {
   };
 
   render = () => {
+    console.log(this.props.currentUser);
     const userLoggedIn = this.props.auth.data.decoded;
     let love = this.props.tagsForCurrentUser.data.filter(tag => {
       return tag.love === true;

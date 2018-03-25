@@ -172,6 +172,21 @@ const rest = reduxApi({
     url: `${apiRoot}/user_locations`,
     options: { method: 'POST' },
   },
+  createEvent: {
+    url: `${apiRoot}/events`,
+    reducerName: 'events',
+    options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
+          }),
+        );
+      },
+    ],
+  },
   events: {
     url: `${apiRoot}/events/:userId`,
     transformer: transformers.array,

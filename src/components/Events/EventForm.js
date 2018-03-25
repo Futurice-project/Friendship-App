@@ -1,28 +1,54 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  Alert,
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   TextInput,
   Image,
+  Slider,
 } from 'react-native';
+import { Dropdown } from 'react-native-material-dropdown';
 import { ImagePicker } from 'expo';
 import styled from 'styled-components/native';
 
 import { EventContainer } from '../Layout/Layout';
 import MultiSelect from '../../utils/react-native-multiple-select/lib/react-native-multi-select';
 import RoundTab from '../RoundTab';
+import rest from '../../utils/rest';
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  locations: state.locations,
+});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  getLocations: () => {
+    dispatch(rest.actions.locations());
+  },
+});
 
 class EventForm extends Component {
   state = {
+    title: '',
+    description: '',
+    city: '',
+    address: '',
+    minParticipants: '1',
+    maxParticipants: '5',
+    participantsMix: 1,
     error: false,
+    validationError: '',
   };
+
+  componentWillMount() {
+    this.props.getLocations();
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ error: true });
+  }
 
   openImageGallery = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -31,14 +57,123 @@ class EventForm extends Component {
     });
 
     if (!result.cancelled) {
-      this.setState({ image: result.uri, error: false });
+      this.setState({ eventImage: result.uri, error: false });
     }
   };
 
+  renderStatus() {
+    if (this.state.validationError) {
+      return Alert.alert(
+        'Validation Error',
+        this.state.validationError,
+        [{ text: 'OK', onPress: () => null }],
+        { cancelable: false },
+      );
+    }
+  }
+
+  submit() {
+    const {
+      title,
+      description,
+      city,
+      address,
+      minParticipants,
+      maxParticipants,
+      participantsMix,
+      eventImage,
+    } = this.state;
+
+    let eventData = {
+      title,
+      description,
+      city,
+      address,
+      minParticipants,
+      maxParticipants,
+      participantsMix,
+    };
+
+    if (!title || !city || !address) {
+      return this.setState({
+        validationError: 'Please enter all required fields',
+      });
+    }
+
+    let formdata = this.createFormData(eventData, eventImage);
+    console.log('HAHHAHA');
+    console.log(formdata);
+    this.props.createEvent(formdata);
+  }
+
+  createFormData(eventData, eventImage) {
+    let tempFormData = new FormData();
+
+    if (eventImage) {
+      tempFormData.append('eventImage', {
+        uri: eventImage,
+        name: 'image.png',
+        type: 'multipart/form-data',
+      });
+    }
+
+    if (eventData) {
+      for (var key in eventData) {
+        if (eventData[key]) {
+          tempFormData.append(key, eventData[key]);
+        }
+      }
+    }
+
+    return tempFormData;
+  }
+
+  renderPeopleMix(peopleMixValue) {
+    switch (peopleMixValue) {
+      case 1:
+        return 'Diverse, open to all';
+      case 2:
+        return 'People mix num. 2';
+      case 3:
+        return 'People mix num. 3';
+      case 4:
+        return 'Me and my homies';
+      case 5:
+        return 'People mix num. 5';
+    }
+  }
+
   render() {
-    const image = { uri: this.state.image };
+    const cities = this.props.locations.data.map(city => {
+      return { value: city.name };
+    });
+    console.log(cities);
+    this.renderStatus();
+    const minParticipantsData = [
+      {
+        value: '1',
+      },
+      {
+        value: '5',
+      },
+      {
+        value: '10',
+      },
+    ];
+    const maxParticipantsData = [
+      {
+        value: '5',
+      },
+      {
+        value: '10',
+      },
+      {
+        value: 'Unlimited',
+      },
+    ];
+    const eventImage = { uri: this.state.eventImage };
     return (
-      <EventContainer>
+      <View>
         <View style={{ backgroundColor: '#f9f7f6' }}>
           <TouchableOpacity
             onPress={this.props.navigateBack}
@@ -58,19 +193,20 @@ class EventForm extends Component {
                 underlineColorAndroid="transparent"
                 placeholderTextColor="#4a4a4a"
                 placeholder="TITLE*"
-                // onChangeText={username =>
-                //   this.setState({
-                //     username,
-                //     validationError: '',
-                //     error: false,
-                //   })}
-                // value={this.state.username}
+                onChangeText={title =>
+                  this.setState({
+                    title,
+                    validationError: '',
+                    error: false,
+                  })}
+                value={this.state.title}
                 // onSubmitEditing={() => {
                 //   this._emailInput.focus();
                 // }}
               />
             </LabelView>
           </LabelContainer>
+
           <LabelContainer>
             <LabelView>
               <TextInput
@@ -80,35 +216,11 @@ class EventForm extends Component {
                 underlineColorAndroid="transparent"
                 placeholderTextColor="#4a4a4a"
                 placeholder="DESCRIPTION"
-                // onChangeText={username =>
-                //   this.setState({
-                //     username,
-                //     validationError: '',
-                //     error: false,
-                //   })}
-                // value={this.state.username}
-                // onSubmitEditing={() => {
-                //   this._emailInput.focus();
-                // }}
-              />
-            </LabelView>
-          </LabelContainer>
-          <LabelContainer>
-            <LabelView>
-              <TextInput
-                autoCorrect={false}
-                returnKeyType="next"
-                keyboardType="email-address"
-                underlineColorAndroid="transparent"
-                placeholderTextColor="#4a4a4a"
-                placeholder="CITY*"
-                // onChangeText={username =>
-                //   this.setState({
-                //     username,
-                //     validationError: '',
-                //     error: false,
-                //   })}
-                // value={this.state.username}
+                onChangeText={description =>
+                  this.setState({
+                    description,
+                  })}
+                value={this.state.description}
                 // onSubmitEditing={() => {
                 //   this._emailInput.focus();
                 // }}
@@ -116,20 +228,30 @@ class EventForm extends Component {
             </LabelView>
           </LabelContainer>
 
-          {/* <MultiSelect
-          hideTags
-          // items={this.props.locations.data}
-          // uniqueKey="id"
-          hideSubmitButton={true}
-          fixedHeight={true}
-          // onSelectedItemsChange={this.onSelectedItemsChange}
-          // selectedItems={selectedLocations}
-          selectText="CITY*"
-          searchInputPlaceholderText="Search municipalities..."
-          selectedItemTextColor="#ff8a65"
-          selectedItemIconColor="#ff8a65"
-          title="CITY*"
-        /> */}
+          <View
+            style={{
+              alignItems: 'center',
+              width: '100%',
+              backgroundColor: '#e8e9e8',
+            }}
+          >
+            <View style={{ width: 278, marginTop: -20 }}>
+              <Dropdown
+                label="CITY*"
+                data={cities}
+                value={this.state.city}
+                onChangeText={city =>
+                  this.setState({
+                    city,
+                    validationError: '',
+                    error: false,
+                  })}
+                fontSize={18}
+                baseColor={'#4a4a4a'}
+              />
+            </View>
+          </View>
+
           <LabelContainer>
             <LabelView>
               <TextInput
@@ -139,13 +261,13 @@ class EventForm extends Component {
                 underlineColorAndroid="transparent"
                 placeholderTextColor="#4a4a4a"
                 placeholder="STREET ADDRESS*"
-                // onChangeText={username =>
-                //   this.setState({
-                //     username,
-                //     validationError: '',
-                //     error: false,
-                //   })}
-                // value={this.state.username}
+                onChangeText={address =>
+                  this.setState({
+                    address,
+                    validationError: '',
+                    error: false,
+                  })}
+                value={this.state.address}
                 // onSubmitEditing={() => {
                 //   this._emailInput.focus();
                 // }}
@@ -153,7 +275,127 @@ class EventForm extends Component {
             </LabelView>
           </LabelContainer>
         </View>
-        <View style={{ backgroundColor: '#f9f7f6', height: 100 }} />
+
+        <View
+          style={{
+            alignItems: 'center',
+            width: '100%',
+            backgroundColor: '#f9f7f6',
+          }}
+        >
+          <Text
+            style={{
+              width: 278,
+              marginTop: 40,
+              color: '#4a4a4a',
+              fontSize: 18,
+            }}
+          >
+            MIN. PARTICIPANTS
+          </Text>
+          <View style={{ width: 278, marginTop: -20 }}>
+            <Dropdown
+              value="1"
+              data={minParticipantsData}
+              value={this.state.minParticipants}
+              onChangeText={minParticipants =>
+                this.setState({
+                  minParticipants,
+                })}
+              fontSize={18}
+              baseColor={'#4a4a4a'}
+            />
+          </View>
+          <Text style={{ width: 278, color: '#abaaaa', textAlign: 'center' }}>
+            * Hangout is considered off if less people
+          </Text>
+        </View>
+
+        <View
+          style={{
+            alignItems: 'center',
+            width: '100%',
+            backgroundColor: '#f9f7f6',
+          }}
+        >
+          <Text
+            style={{
+              width: 278,
+              marginTop: 40,
+              color: '#4a4a4a',
+              fontSize: 18,
+            }}
+          >
+            MAX. PARTICIPANTS
+          </Text>
+          <View style={{ width: 278, marginTop: -20 }}>
+            <Dropdown
+              value="5"
+              data={maxParticipantsData}
+              fontSize={18}
+              baseColor={'#4a4a4a'}
+              value={this.state.maxParticipants}
+              onChangeText={maxParticipants =>
+                this.setState({
+                  maxParticipants,
+                })}
+            />
+          </View>
+          <Text style={{ width: 278, color: '#abaaaa', textAlign: 'center' }}>
+            * New joiners not accepted beyond this number
+          </Text>
+        </View>
+
+        <View
+          style={{
+            alignItems: 'center',
+            width: '100%',
+            backgroundColor: '#f9f7f6',
+          }}
+        >
+          <Text style={{ color: '#2e4358', marginTop: 40, fontSize: 21 }}>
+            PEOPLE MIX
+          </Text>
+          <View style={{ width: 278 }}>
+            <Slider
+              maximumValue={5}
+              minimumValue={1}
+              step={1}
+              value={this.state.participantsMix}
+              onValueChange={participantsMix =>
+                this.setState({
+                  participantsMix,
+                })}
+              minimumTrackTintColor="#e8e9e8"
+              maximumTrackTintColor="#e8e9e8"
+            />
+          </View>
+          <Text
+            style={{
+              width: 278,
+              marginBottom: 20,
+              marginTop: 10,
+              color: '#2e4358',
+              fontSize: 16,
+            }}
+          >
+            {this.renderPeopleMix(this.state.participantsMix)}
+          </Text>
+          <Text
+            style={{
+              width: 278,
+              color: '#abaaaa',
+              textAlign: 'center',
+              marginBottom: 50,
+            }}
+          >
+            * This controls who can see and join the happening. It's based on
+            profile personality types and number of shared Yeahs and Nahs
+            between participants. Select what might work best for your
+            happening.
+          </Text>
+        </View>
+
         <BottomLabelWrapper>
           <LabelText
             style={{
@@ -175,8 +417,8 @@ class EventForm extends Component {
             horizontal
           >
             <PhotoBox onPress={this.openImageGallery}>
-              {image.uri ? (
-                <Image style={{ width: 93, height: 93 }} source={image} />
+              {eventImage.uri ? (
+                <Image style={{ width: 93, height: 93 }} source={eventImage} />
               ) : (
                 <PlusSignText>+</PlusSignText>
               )}
@@ -188,11 +430,11 @@ class EventForm extends Component {
               tint="#2d4359"
               title="Create"
               style={{ flex: 1 }}
-              // onPress={() => this.signUp()}
+              onPress={() => this.submit()}
             />
           </RoundTabContainer>
         </BottomLabelWrapper>
-      </EventContainer>
+      </View>
     );
   }
 }
