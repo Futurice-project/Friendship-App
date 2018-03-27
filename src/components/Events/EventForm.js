@@ -44,6 +44,18 @@ class EventForm extends Component {
 
   componentWillMount() {
     this.props.getLocations();
+    if (this.props.edit) {
+      this.setState({
+        id: this.props.eventDetails.id,
+        title: this.props.eventDetails.title,
+        description: this.props.eventDetails.description,
+        city: this.props.eventDetails.city,
+        address: this.props.eventDetails.address,
+        minParticipants: this.props.eventDetails.minParticipants,
+        maxParticipants: this.props.eventDetails.maxParticipants,
+        participantsMix: parseInt(this.props.eventDetails.participantsMix),
+      });
+    }
   }
 
   componentWillReceiveProps() {
@@ -144,10 +156,10 @@ class EventForm extends Component {
   }
 
   render() {
+    console.log(this.props.eventDetails);
     const cities = this.props.locations.data.map(city => {
       return { value: city.name };
     });
-    console.log(cities);
     this.renderStatus();
     const minParticipantsData = [
       {
@@ -181,7 +193,9 @@ class EventForm extends Component {
           >
             <Text style={{ fontSize: 22 }}> {'<'} </Text>
           </TouchableOpacity>
-          <Text style={styles.formTitle}>NEW EVENT</Text>
+          <Text style={styles.formTitle}>
+            {this.props.edit ? 'EDIT EVENT' : 'NEW EVENT'}
+          </Text>
         </View>
         <View style={{ backgroundColor: '#e8e9e8' }}>
           <LabelContainer>
@@ -395,40 +409,70 @@ class EventForm extends Component {
             happening.
           </Text>
         </View>
-
-        <BottomLabelWrapper>
-          <LabelText
+        <BottomLabelWrapper
+          style={
+            this.props.edit ? (
+              { backgroundColor: '#f9f7f6', height: 385 }
+            ) : (
+              { backgroundColor: '#e8e9e8', height: 276 }
+            )
+          }
+        >
+          <View
             style={{
-              marginLeft: 30,
-              color: '#4a4a4a',
-              fontSize: 15,
-              fontFamily: 'NunitoSans-SemiBold',
+              paddingTop: 29,
+              paddingBottom: 31,
+              backgroundColor: '#e8e9e8',
             }}
           >
-            ADD PHOTO
-          </LabelText>
-          <View style={{ width: 278, marginLeft: 30 }}>
-            <LabelTextHelper>
-              Add a photo that best describes the event.
-            </LabelTextHelper>
+            <LabelText
+              style={{
+                marginLeft: 30,
+                color: '#4a4a4a',
+                fontSize: 15,
+                fontFamily: 'NunitoSans-SemiBold',
+              }}
+            >
+              ADD PHOTO
+            </LabelText>
+            <View style={{ width: 278, marginLeft: 30 }}>
+              <LabelTextHelper>
+                Add a photo that best describes the event.
+              </LabelTextHelper>
+            </View>
+            <ScrollViewPhoto
+              contentContainerStyle={styles.scrollViewPhotoContainer}
+              horizontal
+            >
+              <PhotoBox onPress={this.openImageGallery}>
+                {eventImage.uri ? (
+                  <Image
+                    style={{ width: 93, height: 93 }}
+                    source={eventImage}
+                  />
+                ) : (
+                  <PlusSignText>+</PlusSignText>
+                )}
+              </PhotoBox>
+            </ScrollViewPhoto>
           </View>
-          <ScrollViewPhoto
-            contentContainerStyle={styles.scrollViewPhotoContainer}
-            horizontal
-          >
-            <PhotoBox onPress={this.openImageGallery}>
-              {eventImage.uri ? (
-                <Image style={{ width: 93, height: 93 }} source={eventImage} />
-              ) : (
-                <PlusSignText>+</PlusSignText>
-              )}
-            </PhotoBox>
-          </ScrollViewPhoto>
+          {this.props.edit ? (
+            <View style={{ backgroundColor: '#f9f7f6' }}>
+              <ButtonOption>
+                <TouchableOpacity
+                  // onPress={}
+                  style={styles.buttonStyle}
+                >
+                  <Text style={styles.textButtonStyle}>Cancel Event</Text>
+                </TouchableOpacity>
+              </ButtonOption>
+            </View>
+          ) : null}
           <RoundTabContainer>
             <RoundTab
               titleColor="white"
               tint="#2d4359"
-              title="Create"
+              title={this.props.edit ? 'Update' : 'Create'}
               style={{ flex: 1 }}
               onPress={() => this.submit()}
             />
@@ -438,6 +482,13 @@ class EventForm extends Component {
     );
   }
 }
+
+const ButtonOption = styled.View`
+  flex: 1;
+  align-items: center;
+  marginBottom: 30;
+  marginTop: 30;
+`;
 
 const LabelContainer = styled.View`
   height: 50;
@@ -454,11 +505,8 @@ const LabelView = styled.View`
 `;
 
 const BottomLabelWrapper = styled.View`
-  padding-top: 29;
   width: 100%;
-  height: 276;
   flex-direction: column;
-  background-color: #e8e9e8;
 `;
 
 const LabelText = styled.Text`
@@ -512,6 +560,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     height: 93,
     paddingLeft: 30,
+  },
+
+  textButtonStyle: {
+    alignSelf: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#ffffff',
+  },
+  buttonStyle: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: 241,
+    height: 47,
+    borderRadius: 34,
+    backgroundColor: '#eb7a63',
   },
 });
 

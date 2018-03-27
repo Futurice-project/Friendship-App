@@ -2,6 +2,8 @@ import React from 'react';
 import { Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
+import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 
 const ButtonOption = styled.View`
   align-items: center;
@@ -9,7 +11,28 @@ const ButtonOption = styled.View`
 `;
 // TODO delete useless style and import
 // _hideModal, state.isModalVisible, _onPressButton, this.props.signOut()
-const MyEventModal = ({ hideModal, isModalVisible, deleteEvent }) => {
+const mapDispatchToProps = dispatch => ({
+  openEditForm: eventDetails =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'EventEditView',
+        params: { eventDetails },
+      }),
+    ),
+});
+
+const MyEventModal = ({
+  hideModal,
+  isModalVisible,
+  deleteEvent,
+  eventDetails,
+  openEditForm,
+}) => {
+  const openEventEditForm = eventDetails => {
+    hideModal();
+    openEditForm(eventDetails);
+  };
+
   return (
     <Modal
       backdropColor="#2a343c"
@@ -36,7 +59,10 @@ const MyEventModal = ({ hideModal, isModalVisible, deleteEvent }) => {
         </TouchableOpacity>
 
         <ButtonOption>
-          <TouchableOpacity style={styles.buttonStyle}>
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={() => openEventEditForm(eventDetails)}
+          >
             <Text style={styles.buttonTextStyle}>Edit</Text>
           </TouchableOpacity>
         </ButtonOption>
@@ -60,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyEventModal;
+export default connect(null, mapDispatchToProps)(MyEventModal);

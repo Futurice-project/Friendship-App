@@ -34,6 +34,8 @@ class EventEditView extends Component {
           enableAutoAutomaticScroll={true}
         >
           <EventForm
+            edit
+            eventDetails={this.props.navigation.state.params.eventDetails}
             navigateBack={this.navigateBack}
             createEvent={this.props.createEvent}
           />
