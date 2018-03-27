@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 
 import rest from '../../../utils/rest';
 import RoundTab from '../../../components/RoundTab';
@@ -11,6 +11,7 @@ import Report from '../Report/Report';
 const mapStateToProps = state => ({
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
   chatrooms: state.chatRoomsWithUserId.data.data,
+  chatroomRefreshState: state.chatRoomsWithUserId,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -21,10 +22,11 @@ const mapDispatchToProps = dispatch => ({
 
 export class ChatInbox extends React.Component {
   state = { showReport: false };
+
   componentDidMount() {
     this.timer = setInterval(
       () => this.props.chatRoomsWithUserId(this.props.currentUserId),
-      2000,
+      3000,
     );
   }
 
@@ -42,6 +44,7 @@ export class ChatInbox extends React.Component {
     if (this.state.showReport) {
       return <Report />;
     }
+
     return (
       <View style={{ flex: 1 }}>
         <Text
@@ -56,14 +59,35 @@ export class ChatInbox extends React.Component {
           SUGGESTIONS
         </Text>
         <SuggestionList existingChatRooms={this.props.chatrooms} />
-        <RoundTab tint="#ffffff" title="CHATS" fontSize="12" />
-        <FlatList
-          data={this.props.chatrooms}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-          style={{ flex: 1, backgroundColor: 'white', minHeight: 300 }}
-        />
+        <View style={{ flex: 10 }}>
+          <RoundTab tint="#ffffff" title="CHATS" fontSize="12" />
+          {this.renderChatList()}
+        </View>
       </View>
+    );
+  }
+
+  renderChatList() {
+    if (
+      !this.props.chatroomRefreshState.data ||
+      this.props.chatroomRefreshState.syncing ||
+      this.props.chatroomRefreshState.loading ||
+      !this.props.chatroomRefreshState.sync
+    ) {
+      return (
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+
+    return (
+      <FlatList
+        data={this.props.chatrooms}
+        keyExtractor={this.keyExtractor}
+        renderItem={this.renderItem}
+        style={{ flex: 1, backgroundColor: 'white', minHeight: 300 }}
+      />
     );
   }
 }

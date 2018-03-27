@@ -65,7 +65,7 @@ export class SuggestionList extends React.Component {
         data={suggestedUsers}
         keyExtractor={this.keyExtractor}
         renderItem={this.renderItem}
-        style={{ height: 80, marginTop: 10 }}
+        style={{ marginTop: 10, height: 50 }}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
