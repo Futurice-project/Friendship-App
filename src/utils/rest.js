@@ -178,12 +178,7 @@ const rest = reduxApi({
     options: { method: 'POST' },
     postfetch: [
       function({ dispatch }) {
-        dispatch(
-          NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
-          }),
-        );
+        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
       },
     ],
   },
@@ -193,12 +188,7 @@ const rest = reduxApi({
     options: { method: 'PATCH' },
     postfetch: [
       function({ dispatch }) {
-        dispatch(
-          NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
-          }),
-        );
+        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
       },
     ],
   },
@@ -208,12 +198,7 @@ const rest = reduxApi({
     options: { method: 'DELETE' },
     postfetch: [
       function({ dispatch }) {
-        dispatch(
-          NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
-          }),
-        );
+        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
       },
     ],
   },
