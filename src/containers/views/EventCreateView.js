@@ -18,13 +18,28 @@ const mapDispatchToProps = dispatch => ({
     ),
 });
 
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
 class EventCreateView extends Component {
+  state = {
+    hostId: '',
+  };
+  componentWillMount = () => {
+    const hostId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
+    this.setState({ hostId });
+  };
+
   navigateBack = () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
   };
 
   render() {
+    console.log('Host Id', this.state.hostId);
     return (
       <EventContainer>
         <KeyboardAwareScrollView
@@ -36,6 +51,7 @@ class EventCreateView extends Component {
           <EventForm
             navigateBack={this.navigateBack}
             createEvent={this.props.createEvent}
+            hostId={this.state.hostId}
           />
         </KeyboardAwareScrollView>
       </EventContainer>
@@ -43,4 +59,4 @@ class EventCreateView extends Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(EventCreateView);
+export default connect(mapStateToProps, mapDispatchToProps)(EventCreateView);

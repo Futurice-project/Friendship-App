@@ -21,6 +21,8 @@ const EventsList = ({ events }) => {
       data={events.data}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
+      refreshing={false}
+      onRefresh={renderItem}
     />
   );
 };

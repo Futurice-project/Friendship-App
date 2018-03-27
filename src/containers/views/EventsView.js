@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+
 import rest from '../../utils/rest';
 import { connect } from 'react-redux';
 import { IconImage } from '../../components/Layout/Layout';
@@ -29,6 +30,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class EventsView extends Component {
+  state = {
+    initialOrder: true,
+  };
   static navigationOptions = {
     title: 'Events',
     header: {
@@ -51,7 +55,9 @@ class EventsView extends Component {
 
   renderContent = () => {
     const { events } = this.props;
-
+    if (!this.state.initialOrder) {
+      events.data.reverse();
+    }
     if (!events.loading) {
       return <EventsList events={events} />;
     }
@@ -60,6 +66,9 @@ class EventsView extends Component {
   };
   // render
 
+  changeSortOrder = () => {
+    this.setState({ initialOrder: false });
+  };
   render = () => {
     if (!this.props.auth.data.decoded) {
       return (
@@ -72,6 +81,9 @@ class EventsView extends Component {
     return (
       <View style={{ flex: 1 }}>
         <EventsHeader headerText="Events" />
+        <TouchableOpacity onPress={() => this.changeSortOrder()}>
+          <Text> Recommended </Text>
+        </TouchableOpacity>
         {this.renderContent()}
         <TouchableOpacity
           activeOpacity={0.5}
