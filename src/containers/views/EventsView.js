@@ -81,8 +81,21 @@ class EventsView extends Component {
     return (
       <View style={{ flex: 1 }}>
         <EventsHeader headerText="Events" />
-        <TouchableOpacity onPress={() => this.changeSortOrder()}>
-          <Text> Recommended </Text>
+        <TouchableOpacity
+          onPress={() => this.changeSortOrder()}
+          style={{ marginTop: 10, marginBottom: 10 }}
+        >
+          <Text
+            style={{
+              color: '#3a4e61',
+              fontWeight: 'bold',
+              textAlign: 'right',
+              paddingRight: 20,
+            }}
+          >
+            {' '}
+            Recommended{' '}
+          </Text>
         </TouchableOpacity>
         {this.renderContent()}
         <TouchableOpacity

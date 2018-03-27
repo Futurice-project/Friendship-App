@@ -3,14 +3,16 @@ import { FlatList, View, Text, StyleSheet } from 'react-native';
 
 import ParticipantDetail from './ParticipantDetail';
 
-const ParticipantList = ({ participants }) => {
+const ParticipantList = ({ participants, currentUser }) => {
   const renderItem = ({ item, index }) => (
     <ParticipantDetail
+      id={item.id}
       username={item.username}
       emoji={item.emoji}
       hateCommon={item.hateCommon}
       loveCommon={item.loveCommon}
       index={index}
+      currentUser={currentUser}
     />
   );
 

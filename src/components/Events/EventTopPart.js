@@ -24,6 +24,7 @@ const EventTopPart = props => {
     showModal,
     srcImage,
     navigateBack,
+    isHost,
   } = props;
 
   const displaySettingsButton = () => {
@@ -53,7 +54,7 @@ const EventTopPart = props => {
         <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
           <Text style={{ fontSize: 22 }}> {'<'} </Text>
         </TouchableOpacity>
-        {displaySettingsButton()}
+        {props.isHost ? displaySettingsButton() : null}
       </View>
 
       <View

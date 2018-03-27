@@ -55,6 +55,7 @@ class EventForm extends Component {
         minParticipants: this.props.eventDetails.minParticipants,
         maxParticipants: this.props.eventDetails.maxParticipants,
         participantsMix: parseInt(this.props.eventDetails.participantsMix),
+        eventImage: this.props.eventDetails.eventImage,
       });
     }
   }
