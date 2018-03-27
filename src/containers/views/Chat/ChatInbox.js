@@ -25,8 +25,9 @@ export class ChatInbox extends React.Component {
 
   componentDidMount() {
     this.timer = setInterval(
-      () => this.props.chatRoomsWithUserId(this.props.currentUserId),
-      3000,
+      async () =>
+        await this.props.chatRoomsWithUserId(this.props.currentUserId),
+      2000,
     );
   }
 
@@ -61,33 +62,14 @@ export class ChatInbox extends React.Component {
         <SuggestionList existingChatRooms={this.props.chatrooms} />
         <View style={{ flex: 10 }}>
           <RoundTab tint="#ffffff" title="CHATS" fontSize="12" />
-          {this.renderChatList()}
+          <FlatList
+            data={this.props.chatrooms}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+            style={{ flex: 1, backgroundColor: 'white', minHeight: 300 }}
+          />
         </View>
       </View>
-    );
-  }
-
-  renderChatList() {
-    if (
-      !this.props.chatroomRefreshState.data ||
-      this.props.chatroomRefreshState.syncing ||
-      this.props.chatroomRefreshState.loading ||
-      !this.props.chatroomRefreshState.sync
-    ) {
-      return (
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-
-    return (
-      <FlatList
-        data={this.props.chatrooms}
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderItem}
-        style={{ flex: 1, backgroundColor: 'white', minHeight: 300 }}
-      />
     );
   }
 }
