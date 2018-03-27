@@ -9,13 +9,14 @@ import rest from '../../utils/rest';
 import { EventContainer } from '../../components/Layout/Layout';
 
 const mapDispatchToProps = dispatch => ({
-  createEvent: formData =>
+  updateEvent: (id, formData) =>
     dispatch(
-      rest.actions.createEvent(
-        {},
+      rest.actions.updateEvent(
+        { id: id },
         { body: formData, headers: { 'Content-Type': 'multipart/form-data' } },
       ),
     ),
+  deleteEvent: id => dispatch(rest.actions.deleteEvent({ id })),
 });
 
 class EventEditView extends Component {
@@ -37,7 +38,8 @@ class EventEditView extends Component {
             edit
             eventDetails={this.props.navigation.state.params.eventDetails}
             navigateBack={this.navigateBack}
-            createEvent={this.props.createEvent}
+            updateEvent={this.props.updateEvent}
+            deleteEvent={this.props.deleteEvent}
           />
         </KeyboardAwareScrollView>
       </EventContainer>

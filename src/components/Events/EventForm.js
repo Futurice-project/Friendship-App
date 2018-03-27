@@ -46,7 +46,6 @@ class EventForm extends Component {
     this.props.getLocations();
     if (this.props.edit) {
       this.setState({
-        id: this.props.eventDetails.id,
         title: this.props.eventDetails.title,
         description: this.props.eventDetails.description,
         city: this.props.eventDetails.city,
@@ -113,9 +112,11 @@ class EventForm extends Component {
     }
 
     let formdata = this.createFormData(eventData, eventImage);
-    console.log('HAHHAHA');
-    console.log(formdata);
-    this.props.createEvent(formdata);
+    if (this.props.edit) {
+      this.props.updateEvent(this.props.eventDetails.id, formdata);
+    } else {
+      this.props.createEvent(formdata);
+    }
   }
 
   createFormData(eventData, eventImage) {
@@ -156,7 +157,6 @@ class EventForm extends Component {
   }
 
   render() {
-    console.log(this.props.eventDetails);
     const cities = this.props.locations.data.map(city => {
       return { value: city.name };
     });
@@ -460,7 +460,8 @@ class EventForm extends Component {
             <View style={{ backgroundColor: '#f9f7f6' }}>
               <ButtonOption>
                 <TouchableOpacity
-                  // onPress={}
+                  onPress={() =>
+                    this.props.deleteEvent(this.props.eventDetails.id)}
                   style={styles.buttonStyle}
                 >
                   <Text style={styles.textButtonStyle}>Cancel Event</Text>

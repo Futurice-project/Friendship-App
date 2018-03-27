@@ -187,6 +187,36 @@ const rest = reduxApi({
       },
     ],
   },
+  updateEvent: {
+    url: `${apiRoot}/events/:id`,
+    reducerName: 'events',
+    options: { method: 'PATCH' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
+          }),
+        );
+      },
+    ],
+  },
+  deleteEvent: {
+    url: `${apiRoot}/events/:id`,
+    reducerName: 'events',
+    options: { method: 'DELETE' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
+          }),
+        );
+      },
+    ],
+  },
   events: {
     url: `${apiRoot}/events/:userId`,
     transformer: transformers.array,
