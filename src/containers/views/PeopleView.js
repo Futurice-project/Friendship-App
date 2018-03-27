@@ -1,16 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import rest from '../../utils/rest';
 import { SearchBar } from 'react-native-elements';
 import throttle from 'lodash/throttle';
 
-import { Title, Header, SmallHeader, Description } from '../../components/Text';
-
-import { ViewContainerTop, Centered, IconImage } from '../../components/Layout';
+import { Centered, ViewContainerTop } from '../../components/Layout/Layout';
 import Person from '../../components/Person';
-import Tag from '../../components/Tags';
 import RoundTab from '../../components/RoundTab';
 
 const mapStateToProps = state => ({
@@ -29,76 +26,83 @@ const mapDispatchToProps = dispatch => ({
     promises rejection */
     dispatch(rest.actions.usersSearch.force({ username }));
   },
+  redirectToWelcomeScreen: () =>
+    dispatch(
+      NavigationActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
+      }),
+    ),
 });
 
 export class PeopleView extends React.Component {
-  static navigationOptions = {
-    tabBarIcon: ({ tintColor }) => (
-      <IconImage
-        source={require('../../../assets/search0.png')}
-        tintColor={tintColor}
-      />
-    ),
-  };
-
   state = {
-    data: [],
+    userData: [],
     searchedUsername: '',
     currentPage: 0,
   };
 
   componentDidMount() {
-    this.fetchData(this.state.currentPage);
+    this.redirectWhenNotLoggedIn();
+    this.fetchUsersForPage(this.state.currentPage);
   }
 
   componentWillReceiveProps(nextProps) {
+    this.setStateWithUsersData(nextProps);
+  }
+
+  redirectWhenNotLoggedIn = () => {
+    if (!this.props.auth.data.decoded) {
+      this.props.redirectToWelcomeScreen();
+    }
+  };
+
+  setStateWithUsersData = nextProps => {
     if (
       nextProps.usersByPage.data.data &&
       nextProps.usersByPage.data.data !== this.props.usersByPage.data.data
     ) {
       this.setState({
-        data: [...this.state.data, ...nextProps.usersByPage.data.data],
+        userData: [...this.state.userData, ...nextProps.usersByPage.data.data],
       });
     }
-  }
+  };
 
   // fetch 10 users and add them to the state.data
-  fetchData = currentPage => {
+  fetchUsersForPage = currentPage => {
     this.props.fetchUsersByPage(currentPage);
     this.setState({ currentPage: this.state.currentPage + 1 });
   };
 
+  //this variable prevent handleEnd() to be called during the first render (know RN bug)
+  onEndReachedCalledDuringMomentum = true;
+
   handleEnd = () => {
     if (!this.onEndReachedCalledDuringMomentum) {
       // fetch 10 more users from the db
-      this.fetchData(this.state.currentPage);
+      this.fetchUsersForPage(this.state.currentPage);
       this.onEndReachedCalledDuringMomentum = true;
     }
   };
 
-  // Creates a throttled function that only invokes func at most once per every 1 second.
+  // Creates a throttled function that only invokes refreshUsersSearch at most once per every 1 second.
   getUserByUsername = throttle(username => {
     this.setState({ searchedUsername: username });
     this.props.refreshUsersSearch(username);
   }, 1000);
 
-  renderPeople() {
-    if (this.props.usersSearch.loading && this.props.usersByPage.loading) {
-      return <ActivityIndicator />;
-    }
+  renderPeopleList() {
+    const data =
+      this.state.searchedUsername.length > 0
+        ? this.props.usersSearch.data
+        : this.state.userData;
     return (
       <View>
         <RoundTab tint="#ffffff" title="PEOPLE" />
         <Centered style={{ paddingBottom: 45, backgroundColor: '#fff' }}>
           <FlatList
-            data={
-              this.state.searchedUsername.length > 0 ? (
-                this.props.usersSearch.data
-              ) : (
-                this.state.data
-              )
-            }
-            keyExtractor={item => item.id}
+            data={data}
+            keyExtractor={(item, index) => index}
             renderItem={({ item }) => <Person box data={item} />}
             onEndReached={this.handleEnd}
             onEndReachedThreshold={0.4}
@@ -131,7 +135,11 @@ export class PeopleView extends React.Component {
           placeholder="Search People"
           clearIcon
         />
-        {this.renderPeople()}
+        {!this.props.usersByPage.data.data ? (
+          <ActivityIndicator />
+        ) : (
+          this.renderPeopleList()
+        )}
       </ViewContainerTop>
     );
   }

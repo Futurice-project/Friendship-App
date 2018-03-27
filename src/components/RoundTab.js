@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
 import React from 'react';
-import { Image, Dimensions, TouchableOpacity } from 'react-native';
+import { Dimensions, TouchableOpacity } from 'react-native';
 import resolveAssetSource from 'resolveAssetSource';
 import image from '../../assets/img/roundTab/roundTab.png';
+
 const { width, height } = resolveAssetSource(image);
 
 //style for the image
