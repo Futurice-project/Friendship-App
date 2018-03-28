@@ -73,8 +73,11 @@ export default class EventBottomPart extends PureComponent {
 
     return (
       <View style={{ backgroundColor: '#ffffff' }}>
-        {this.renderJoinButton()}
-        <ParticipantList participants={this.props.participants} />
+        {!this.props.isHost ? this.renderJoinButton() : null}
+        <ParticipantList
+          participants={this.props.participants}
+          currentUser={this.props.currentUser}
+        />
         <Text style={styles.groupTextStyle}>GROUP PERSONALITIES</Text>
         <View style={styles.personalitiesView}>
           {this.renderPersonalities()}
@@ -91,7 +94,7 @@ export default class EventBottomPart extends PureComponent {
             <Tag key={index} data={tag} amount={tag.count} dark />
           ))}
         </View>
-        {this.renderJoinButton()}
+        {!this.props.isHost ? this.renderJoinButton() : null}
       </View>
     );
   };

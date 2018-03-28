@@ -17,11 +17,19 @@ import resolveAssetSource from 'resolveAssetSource';
 const { width, height } = resolveAssetSource(waveShape);
 
 const EventTopPart = props => {
-  const { eventTitle, city, address, srcImage, navigateBack } = props;
+  const {
+    eventTitle,
+    city,
+    address,
+    showModal,
+    srcImage,
+    navigateBack,
+    isHost,
+  } = props;
 
   const displaySettingsButton = () => {
     return (
-      <TouchableOpacity style={styles.settings}>
+      <TouchableOpacity onPress={showModal} style={styles.settings}>
         <Image
           style={styles.settingsIcon}
           source={require('../../../assets/settingsIcon.png')}
@@ -46,7 +54,7 @@ const EventTopPart = props => {
         <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
           <Text style={{ fontSize: 22 }}> {'<'} </Text>
         </TouchableOpacity>
-        {displaySettingsButton()}
+        {props.isHost ? displaySettingsButton() : null}
       </View>
 
       <View

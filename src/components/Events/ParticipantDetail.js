@@ -25,6 +25,8 @@ const ParticipantDetail = ({
   hateCommon,
   loveCommon,
   index,
+  id,
+  currentUser,
 }) => {
   const {
     emojiCircle,
@@ -48,10 +50,12 @@ const ParticipantDetail = ({
       </View>
       <View style={usernameContentStyle}>
         <Text style={usernameTextStyle}>{username}</Text>
-        <View style={commonNaahsAndYeahs}>
-          <View style={commonNaahsAndYeahs}>{commonYeahs}</View>
-          <View style={commonNaahsAndYeahs}>{commonNaahs}</View>
-        </View>
+        {!(currentUser === id) ? (
+          <View style={commonNaahsAndYeahs}>
+            <View style={commonNaahsAndYeahs}>{commonYeahs}</View>
+            <View style={commonNaahsAndYeahs}>{commonNaahs}</View>
+          </View>
+        ) : null}
       </View>
     </ParticipantWrapper>
   );

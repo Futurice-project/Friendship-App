@@ -11,6 +11,7 @@ import {
 import { Description } from '../../components/Layout/TextLayout';
 import EventTopPart from '../../components/Events/EventTopPart';
 import EventBottomPart from '../../components/Events/EventBottomPart';
+import MyEventModal from '../../components/Events/MyEventModal';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -39,7 +40,11 @@ const mapDispatchToProps = dispatch => ({
 class EventDetailView extends Component {
   state = {
     loaded: false,
+    isModalVisible: false,
   };
+  _showModal = () => this.setState({ isModalVisible: true });
+
+  _hideModal = () => this.setState({ isModalVisible: false });
 
   componentDidMount = () => {
     const { eventId } = this.props.navigation.state.params;
@@ -67,6 +72,7 @@ class EventDetailView extends Component {
       });
     }
   }
+
   async handleButtonPress(eventId, userId) {
     this.setState({
       loaded: false,
@@ -76,7 +82,11 @@ class EventDetailView extends Component {
     } else {
       await this.props.joinEvent(eventId, userId);
     }
-    this.props.fetchEventParticipation(eventId, userId);
+    await this.props.fetchEventParticipation(eventId, userId);
+    await this.props.fetchEventParticipants(eventId, userId);
+    await this.props.fetchEventPersonalities(eventId);
+    await this.props.fetchEventTags(eventId);
+    await this.props.fetchEventParticipation(eventId, userId);
   }
 
   navigateBack = () => {
@@ -121,8 +131,10 @@ class EventDetailView extends Component {
             eventTitle={title}
             address={address}
             city={city}
+            showModal={this._showModal}
             srcImage={srcImage}
             navigateBack={this.navigateBack}
+            isHost={this.props.eventDetails.data.hostId === userId}
           />
           <DescriptionWrapper>
             <Description>{description}</Description>
@@ -133,6 +145,13 @@ class EventDetailView extends Component {
             tags={this.props.eventTags}
             onButtonPress={() => this.handleButtonPress(eventId, userId)}
             participation={this.props.eventParticipation}
+            isHost={this.props.eventDetails.data.hostId === userId}
+            currentUser={userId}
+          />
+          <MyEventModal
+            eventDetails={this.props.eventDetails.data}
+            hideModal={this._hideModal}
+            isModalVisible={this.state.isModalVisible}
           />
         </EventContainer>
       );
