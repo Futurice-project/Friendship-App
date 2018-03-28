@@ -55,7 +55,8 @@ class EventForm extends Component {
         minParticipants: this.props.eventDetails.minParticipants,
         maxParticipants: this.props.eventDetails.maxParticipants,
         participantsMix: parseInt(this.props.eventDetails.participantsMix),
-        eventImage: this.props.eventDetails.eventImage,
+        eventImage:
+          'data:image/png;base64,' + this.props.eventDetails.eventImage,
       });
     }
   }
@@ -165,6 +166,7 @@ class EventForm extends Component {
     const cities = this.props.locations.data.map(city => {
       return { value: city.name };
     });
+    const eventImage = { uri: this.state.eventImage };
     this.renderStatus();
     const minParticipantsData = [
       {
@@ -188,7 +190,6 @@ class EventForm extends Component {
         value: 'Unlimited',
       },
     ];
-    const eventImage = { uri: this.state.eventImage };
     return (
       <View>
         <View style={{ backgroundColor: '#f9f7f6' }}>

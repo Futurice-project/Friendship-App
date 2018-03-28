@@ -94,6 +94,7 @@ class EditForm extends React.Component {
     });
 
     if (!result.cancelled) {
+      console.log(result.uri);
       this.setState({ image: result.uri, error: false });
     }
   };

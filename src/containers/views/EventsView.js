@@ -30,9 +30,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class EventsView extends Component {
-  state = {
-    initialOrder: true,
-  };
   static navigationOptions = {
     title: 'Events',
     header: {
@@ -45,6 +42,13 @@ class EventsView extends Component {
       />
     ),
   };
+
+  constructor() {
+    super();
+    this.state = {
+      initialOrder: true,
+    };
+  }
 
   componentDidMount = () => {
     const userId = this.props.auth.data.decoded
@@ -69,6 +73,7 @@ class EventsView extends Component {
   changeSortOrder = () => {
     this.setState({ initialOrder: false });
   };
+
   render = () => {
     if (!this.props.auth.data.decoded) {
       return (
@@ -100,7 +105,7 @@ class EventsView extends Component {
         {this.renderContent()}
         <TouchableOpacity
           activeOpacity={0.5}
-          onPress={() => this.props.openEventForm()}
+          onPress={this.props.openEventForm}
           style={styles.TouchableOpacityStyle}
         >
           <Text style={{ fontSize: 30 }}>{'+'}</Text>
