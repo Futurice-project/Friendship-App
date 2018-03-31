@@ -10,7 +10,9 @@ import {
   Image,
   Slider,
 } from 'react-native';
+import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
+import PickerSelect from 'react-native-picker-select';
 import { ImagePicker } from 'expo';
 import styled from 'styled-components/native';
 
@@ -41,6 +43,9 @@ class EventForm extends Component {
     error: false,
     validationError: '',
     hostId: '',
+    cityTest: '',
+    date: '',
+    time: '',
   };
 
   componentWillMount() {
@@ -163,31 +168,44 @@ class EventForm extends Component {
   }
 
   render() {
+    console.log(this.props.eventDetails);
     const cities = this.props.locations.data.map(city => {
-      return { value: city.name };
+      return { label: city.name, value: city.name, key: city.name };
     });
     const eventImage = { uri: this.state.eventImage };
     this.renderStatus();
     const minParticipantsData = [
       {
+        label: '1',
         value: '1',
+        key: '1',
       },
       {
+        label: '5',
         value: '5',
+        key: '5',
       },
       {
+        label: '10',
         value: '10',
+        key: '10',
       },
     ];
     const maxParticipantsData = [
       {
+        label: '5',
         value: '5',
+        key: '5',
       },
       {
+        label: '10',
         value: '10',
+        key: '10',
       },
       {
+        label: 'Unlimited',
         value: 'Unlimited',
+        key: 'Unlimited',
       },
     ];
     return (
@@ -248,29 +266,111 @@ class EventForm extends Component {
             </LabelView>
           </LabelContainer>
 
-          <View
-            style={{
-              alignItems: 'center',
-              width: '100%',
-              backgroundColor: '#e8e9e8',
-            }}
-          >
-            <View style={{ width: 278, marginTop: -20 }}>
-              <Dropdown
-                label="CITY*"
-                data={cities}
+          <LabelContainer style={{ marginBottom: 10, marginTop: 10 }}>
+            <View
+              style={{
+                width: 250,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <DatePicker
+                style={{ width: 150 }}
+                date={this.state.date}
+                mode="date"
+                placeholder="DATE*"
+                format="MMMM Do YYYY"
+                showIcon={false}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateInput: {
+                    borderTopWidth: 0,
+                    borderLeftWidth: 0,
+                    borderRightWidth: 0,
+                    borderBottomWidth: 2,
+                    borderBottomColor: '#979797',
+                    alignItems: 'flex-start',
+                    // justifyContent: 'flex-start',
+                  },
+                  placeholderText: {
+                    fontSize: 17,
+                    color: '#4a4a4a',
+                    textAlign: 'left',
+                  },
+                  dateText: {
+                    fontSize: 17,
+                    textAlign: 'center',
+                    width: 150,
+                  },
+                }}
+                onDateChange={date => {
+                  this.setState({
+                    date,
+                    validationError: '',
+                    error: false,
+                  });
+                }}
+              />
+              <DatePicker
+                style={{ width: 80 }}
+                date={this.state.time}
+                mode="time"
+                placeholder="TIME*"
+                showIcon={false}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                is24Hour
+                customStyles={{
+                  dateInput: {
+                    borderTopWidth: 0,
+                    borderLeftWidth: 0,
+                    borderRightWidth: 0,
+                    borderBottomWidth: 2,
+                    borderBottomColor: '#979797',
+                    alignItems: 'flex-start',
+                  },
+                  placeholderText: {
+                    fontSize: 17,
+                    color: '#4a4a4a',
+                    textAlign: 'left',
+                  },
+                  dateText: {
+                    fontSize: 17,
+                    textAlign: 'center',
+                    width: 80,
+                  },
+                }}
+                onDateChange={time => {
+                  this.setState({
+                    time,
+                    validationError: '',
+                    error: false,
+                  });
+                }}
+              />
+            </View>
+          </LabelContainer>
+
+          <LabelContainer style={{ marginBottom: 20 }}>
+            <View style={{ width: 278 }}>
+              <PickerSelect
+                placeholder={{
+                  label: 'CITY*',
+                  value: null,
+                }}
+                items={cities}
                 value={this.state.city}
-                onChangeText={city =>
+                onValueChange={city =>
                   this.setState({
                     city,
                     validationError: '',
                     error: false,
                   })}
-                fontSize={18}
-                baseColor={'#4a4a4a'}
+                style={{ ...pickerSelectStyles }}
               />
             </View>
-          </View>
+          </LabelContainer>
 
           <LabelContainer>
             <LabelView>
@@ -307,26 +407,35 @@ class EventForm extends Component {
             style={{
               width: 278,
               marginTop: 40,
+              marginBottom: 10,
+              paddingLeft: 21,
               color: '#4a4a4a',
               fontSize: 18,
             }}
           >
             MIN. PARTICIPANTS
           </Text>
-          <View style={{ width: 278, marginTop: -20 }}>
-            <Dropdown
-              value="1"
-              data={minParticipantsData}
+          <View style={{ width: 278 }}>
+            <PickerSelect
+              items={minParticipantsData}
               value={this.state.minParticipants}
-              onChangeText={minParticipants =>
+              onValueChange={minParticipants =>
                 this.setState({
                   minParticipants,
+                  validationError: '',
+                  error: false,
                 })}
-              fontSize={18}
-              baseColor={'#4a4a4a'}
+              style={{ ...pickerSelectStyles }}
             />
           </View>
-          <Text style={{ width: 278, color: '#abaaaa', textAlign: 'center' }}>
+          <Text
+            style={{
+              width: 270,
+              color: '#abaaaa',
+              textAlign: 'center',
+              marginTop: 7,
+            }}
+          >
             * Hangout is considered off if less people
           </Text>
         </View>
@@ -342,26 +451,35 @@ class EventForm extends Component {
             style={{
               width: 278,
               marginTop: 40,
+              marginBottom: 10,
+              paddingLeft: 21,
               color: '#4a4a4a',
               fontSize: 18,
             }}
           >
             MAX. PARTICIPANTS
           </Text>
-          <View style={{ width: 278, marginTop: -20 }}>
-            <Dropdown
-              value="5"
-              data={maxParticipantsData}
-              fontSize={18}
-              baseColor={'#4a4a4a'}
+          <View style={{ width: 278 }}>
+            <PickerSelect
+              items={maxParticipantsData}
               value={this.state.maxParticipants}
-              onChangeText={maxParticipants =>
+              onValueChange={maxParticipants =>
                 this.setState({
                   maxParticipants,
+                  validationError: '',
+                  error: false,
                 })}
+              style={{ ...pickerSelectStyles }}
             />
           </View>
-          <Text style={{ width: 278, color: '#abaaaa', textAlign: 'center' }}>
+          <Text
+            style={{
+              width: 270,
+              color: '#abaaaa',
+              textAlign: 'center',
+              marginTop: 7,
+            }}
+          >
             * New joiners not accepted beyond this number
           </Text>
         </View>
@@ -403,7 +521,7 @@ class EventForm extends Component {
           </Text>
           <Text
             style={{
-              width: 278,
+              width: 270,
               color: '#abaaaa',
               textAlign: 'center',
               marginBottom: 50,
@@ -506,9 +624,10 @@ const LabelContainer = styled.View`
 `;
 
 const LabelView = styled.View`
-  width: 278;
+  width: 250;
   border-bottom-width: 2;
   border-bottom-color: #979797;
+  padding-bottom: 7;
 `;
 
 const BottomLabelWrapper = styled.View`
@@ -550,6 +669,18 @@ const PhotoBox = styled.TouchableOpacity`
 const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
 
 const RoundTabContainer = styled.View`margin-top: auto;`;
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 18,
+    paddingTop: 13,
+    paddingRight: 10,
+    paddingLeft: 20,
+    paddingBottom: 12,
+    borderRadius: 100,
+    backgroundColor: 'white',
+  },
+});
 
 const styles = StyleSheet.create({
   backButton: {
