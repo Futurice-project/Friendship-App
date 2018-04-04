@@ -75,16 +75,12 @@ const TabNavigatorConfig = {
 
 export default TabNavigator(
   {
-    Home: {
-      screen: HomeView,
-      navigationOptions: tabNavigationOptions('Home'),
-    },
-    Events: {
-      screen: EventsView,
-    },
     People: {
       screen: PeopleView,
       navigationOptions: tabNavigationOptions('People'),
+    },
+    Events: {
+      screen: EventsView,
     },
     Inbox: {
       screen: StackChat,

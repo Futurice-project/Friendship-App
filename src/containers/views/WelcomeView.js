@@ -122,6 +122,7 @@ const Connection = styled.View`
   flex-direction: row;
   background-color: #ff8a65;
   align-items: center;
+  padding-bottom: 20px;
 `;
 
 /* Container for each options */
