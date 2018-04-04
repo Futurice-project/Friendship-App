@@ -1,5 +1,5 @@
 import React from 'react';
-import { KeyboardAvoidingView } from 'react-native';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 import styled from 'styled-components/native';
 import { Padding, ViewContainer } from '../../../components/Layout/Layout';
 import DescriptionBubble from '../../../components/BubbleTextInput';
@@ -46,7 +46,12 @@ class SignUpMatching extends React.Component {
 
   render = () => {
     return (
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAvoidingView
+        behavior={Platform.select({
+          ios: () => 'position',
+          android: () => 'padding',
+        })()}
+      >
         <ViewContainer style={{ backgroundColor: '#e8e9e8' }}>
           <ProgressBar steps={MATCHING_AGREEMENT} />
           <Padding>
