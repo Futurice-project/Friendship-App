@@ -105,7 +105,7 @@ const LaunchingPageWrapper = styled.View`
 
 /* Container for the launching message of the app */
 const LaunchingMessage = styled.View`
-  flex: 2;
+  flex: 3;
   align-items: center;
   justify-content: center;
 `;
@@ -121,6 +121,7 @@ const Connection = styled.View`
   flex: 1;
   flex-direction: row;
   background-color: #ff8a65;
+  align-items: center;
 `;
 
 /* Container for each options */

@@ -84,8 +84,8 @@ const ProfileTopPart = props => {
   };
 
   return (
-    /*<Image style={styles.imageUser} source={srcImage}>*/
     <View>
+      <Image style={styles.imageUser} source={srcImage} />
       <View style={styles.backAndSettingsView}>
         <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
           <Text style={{ fontSize: 22 }}> {'<'} </Text>
@@ -104,44 +104,58 @@ const ProfileTopPart = props => {
           flex: 1,
         }}
       >
-        {/*<Image source={waveShape} style={styles.waveShape}>*/}
+        <Image source={waveShape} style={styles.waveShape} />
         <View
           style={{
             flex: 1,
-            flexDirection: 'row',
+            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: 25,
+            top: '25%',
+            left: '25%',
+            position: 'absolute',
           }}
         >
-          <UsernameText>
-            {username.length > 15 ? (
-              username.substr(0, 15).concat('…')
-            ) : (
-              username
-            )}
-          </UsernameText>
-          {myProfile ? (
-            <TouchableOpacity onPress={() => showEditForm()}>
-              <Image
-                source={require('../../../assets/edit.png')}
-                style={{ width: 38, height: 38 }}
-              />
-            </TouchableOpacity>
-          ) : null}
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <UsernameText>
+              {username.length > 15 ? (
+                username.substr(0, 15).concat('…')
+              ) : (
+                username
+              )}
+            </UsernameText>
+            {myProfile ? (
+              <TouchableOpacity onPress={() => showEditForm()}>
+                <Image
+                  source={require('../../../assets/edit.png')}
+                  style={{ width: 38, height: 38 }}
+                />
+              </TouchableOpacity>
+            ) : null}
+          </View>
+          <CompatibilityText
+            style={{
+              textAlign: 'center',
+              marginBottom: 0,
+            }}
+          >
+            {myProfile ? 'You have ' : null}
+            <YeahColor>
+              {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>
+            </YeahColor>
+            &
+            <NaahColor>
+              {' ' + numberOfNaah} <FrienshipFont> NAAHS </FrienshipFont>
+            </NaahColor>
+            {myProfile ? null : ' in common'}
+          </CompatibilityText>
         </View>
-        <CompatibilityText style={{ textAlign: 'center' }}>
-          {myProfile ? 'You have ' : null}
-          <YeahColor>
-            {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>
-          </YeahColor>
-          &
-          <NaahColor>
-            {' ' + numberOfNaah} <FrienshipFont> NAAHS </FrienshipFont>
-          </NaahColor>
-          {myProfile ? null : ' in common'}
-        </CompatibilityText>
-        {/*</Image>*/}
         <View style={{ backgroundColor: '#F9F6F1' }}>
           <Details>
             <LocationText>{location ? location : 'Narnia'}</LocationText>
@@ -151,7 +165,6 @@ const ProfileTopPart = props => {
         </View>
       </View>
     </View>
-    /*</Image>*/
   );
 };
 
@@ -178,6 +191,7 @@ const styles = StyleSheet.create({
   imageUser: {
     width: Dimensions.get('window').width,
     height: Platform.OS === 'android' ? 330 : 250,
+    position: 'absolute',
   },
   backAndSettingsView: {
     marginTop: 5,

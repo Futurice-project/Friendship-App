@@ -209,6 +209,7 @@ class SignInView extends React.Component {
                   returnKeyType={'next'}
                   placeholder="HELLO@FRIENDSHIP.COM"
                   backColor="#faf6f0"
+                  keyboardType={'email-address'}
                   onSubmitEditing={() => {
                     this._passwordInput.focus();
                   }}
