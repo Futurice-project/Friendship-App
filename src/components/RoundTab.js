@@ -42,8 +42,7 @@ export default class RoundTab extends React.Component {
   };
 
   render = () => (
-    //Image will render depending on the screen size -> Dimensions plugin
-    <ImageContainer
+    /*<ImageContainer
       tint={this.props.tint}
       style={{
         height: this.state.imageHeight,
@@ -52,21 +51,21 @@ export default class RoundTab extends React.Component {
       //tint color allows you to change the color of the object
       source={require('../../assets/img/roundTab/roundTab.png')}
       resizeMode="contain"
+    >*/
+    <TouchableOpacity
+      style={{
+        width: Dimensions.get('window').width,
+        height: this.state.imageHeight,
+        justifyContent: 'center',
+      }}
+      disabled={this.props.disabled}
+      onPress={this.props.onPress}
     >
-      <TouchableOpacity
-        style={{
-          width: Dimensions.get('window').width,
-          height: this.state.imageHeight,
-          justifyContent: 'center',
-        }}
-        disabled={this.props.disabled}
-        onPress={this.props.onPress}
-      >
-        {this.props.children}
-        <ButtonText style={{ color: this.props.titleColor }}>
-          {this.props.title}
-        </ButtonText>
-      </TouchableOpacity>
-    </ImageContainer>
+      {this.props.children}
+      <ButtonText style={{ color: this.props.titleColor }}>
+        {this.props.title}
+      </ButtonText>
+    </TouchableOpacity>
+    /*</ImageContainer>*/
   );
 }
