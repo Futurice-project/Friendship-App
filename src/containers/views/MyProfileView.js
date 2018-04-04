@@ -113,8 +113,6 @@ class MyProfile extends React.Component {
       },
     );
 
-    console.log(personalities);
-
     return (
       <Centered style={{ flexDirection: 'row', paddingVertical: 10 }}>
         {personalities.length > 0 ? (
