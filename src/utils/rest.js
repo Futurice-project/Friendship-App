@@ -2,6 +2,7 @@ import reduxApi, { transformers } from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
 import jwtDecode from 'jwt-decode';
 import { NavigationActions } from 'react-navigation';
+import { Platform } from 'react-native';
 
 // import { showError } from '../modules/ErrorSnackbar';
 
@@ -22,9 +23,15 @@ export const injectStore = _store => {
  */
 
 let apiRoot;
-
+/**
+ * If you want to test the app in your own phone, in case of an iPhone,
+ * change the IP Address here after.
+ * */
 if (process.env.NODE_ENV === 'development') {
-  apiRoot = 'http://localhost:3888';
+  apiRoot =
+    Platform.OS === 'ios'
+      ? 'http://192.168.4.103:3888'
+      : 'http://localhost:3888';
 } else {
   apiRoot = 'https://friendshipapp-backend.herokuapp.com';
 }
