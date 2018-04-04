@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
   emojiCircle: {
     alignSelf: 'flex-end',
     marginRight: 5,
+    marginTop: 80,
     width: 64,
     height: 64,
     borderRadius: 64,
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   backAndSettingsView: {
-    marginTop: 5,
+    marginTop: 10,
     marginRight: 5,
     marginLeft: 5,
     flex: 1,
