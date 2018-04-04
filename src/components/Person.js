@@ -98,8 +98,18 @@ class Person extends React.Component {
         onPress={() =>
           this.props.openProfile(this.props.data.id, this.props.data.username)}
       >
-        {/*  <Image style={styles.topPart} source={srcImage}>*/}
-        <View style={{ flex: 70, backgroundColor: 'rgba(96, 104, 109, 0.55)' }}>
+        <Image style={styles.topPart} source={srcImage} />
+        <View
+          style={{
+            flex: 70,
+            backgroundColor: 'rgba(96, 104, 109, 0.55)',
+            width: 220,
+            height: 220,
+            marginLeft: 20,
+            position: 'absolute',
+            top: 110,
+          }}
+        >
           <BoldDescription style={styles.topText}>
             {this.props.data.description}
           </BoldDescription>
@@ -144,7 +154,6 @@ class Person extends React.Component {
             </View>
           </View>
         </FlexRow>
-        {/* </Image> */}
       </TouchableOpacity>
     );
   };
