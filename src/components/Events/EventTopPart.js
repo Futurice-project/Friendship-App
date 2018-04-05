@@ -100,6 +100,7 @@ const EventTopPart = props => {
             {eventTitle}
           </EventTitleText>
           <View style={{ backgroundColor: '#F9F6F1' }}>
+            {renderDateAndTime()}
             <TouchableOpacity onPress={() => openMap(city, address)}>
               <Details>
                 <LocationText>

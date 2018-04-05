@@ -117,9 +117,8 @@ class EventForm extends Component {
       maxParticipants,
       participantsMix,
       hostId,
+      eventDate: `${date}T${time}:00.000Z`,
     };
-    const datetime = `${date}T${time}:00`;
-    console.log(datetime);
 
     if (!title || !city || !address) {
       return this.setState({

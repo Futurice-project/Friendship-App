@@ -124,11 +124,12 @@ const ProfileTopPart = props => {
             }}
           >
             <UsernameText>
-              {username.length > 15 ? (
+              {/* {username.length > 15 ? (
                 username.substr(0, 15).concat('…')
               ) : (
                 username
-              )}
+              )} */}
+              {username}
             </UsernameText>
             {myProfile ? (
               <TouchableOpacity onPress={() => showEditForm()}>
