@@ -76,7 +76,7 @@ class EventsDetail extends Component {
 const styles = StyleSheet.create({
   titleTextStyle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Bold',
   },
 });
 

@@ -98,63 +98,62 @@ class Person extends React.Component {
         onPress={() =>
           this.props.openProfile(this.props.data.id, this.props.data.username)}
       >
-        <Image style={styles.topPart} source={srcImage}>
-          <View
-            style={{ flex: 70, backgroundColor: 'rgba(96, 104, 109, 0.55)' }}
-          >
-            <BoldDescription style={styles.topText}>
-              {this.props.data.description}
-            </BoldDescription>
-            <LocationText style={{ textAlign: 'center', paddingTop: 20 }}>
-              {this.state.locations}
-            </LocationText>
-          </View>
-          <FlexRow style={styles.bottomPart}>
-            {/* with flex:1 long username don't go exceed the bottom part  */}
+        <Image style={styles.topPart} source={srcImage} />
+        <View
+          style={{
+            flex: 70,
+            backgroundColor: 'rgba(96, 104, 109, 0.55)',
+            width: 220,
+            height: 220,
+            marginLeft: 20,
+            position: 'absolute',
+            top: 110,
+          }}
+        >
+          <BoldDescription style={styles.topText}>
+            {this.props.data.description}
+          </BoldDescription>
+          <LocationText style={{ textAlign: 'center', paddingTop: 20 }}>
+            {this.state.locations}
+          </LocationText>
+        </View>
+        <FlexRow style={styles.bottomPart}>
+          {/* with flex:1 long username don't go exceed the bottom part  */}
 
-            <View style={styles.flexRow}>
-              <View style={styles.whiteCircle}>
-                <Text style={styles.emoji}>{this.props.data.emoji}</Text>
-              </View>
-              <View style={styles.viewBottom}>
-                <Text style={styles.textName}>{this.state.shortUser}</Text>
-                <Text style={styles.textDetails}>
-                  {this.state.age}
-                  {this.state.genders}
-                </Text>
-                <CompatibilityText style={{ marginBottom: 0, marginTop: 3 }}>
-                  <YeahColor>
-                    {this.props.data.loveCommon ? (
-                      this.props.data.loveCommon
-                    ) : (
-                      0
-                    )}
-                    <FrienshipFont> YEAH</FrienshipFont>
-                  </YeahColor>{' '}
-                  &{' '}
-                  <NaahColor>
-                    {this.props.data.hateCommon ? (
-                      this.props.data.hateCommon
-                    ) : (
-                      0
-                    )}
-                    <FrienshipFont> NAAH</FrienshipFont>
-                  </NaahColor>{' '}
-                </CompatibilityText>
-                <Text
-                  style={{
-                    flexWrap: 'wrap',
-                    fontSize: 12,
-                    color: '#4a4a4a',
-                    marginTop: -3,
-                  }}
-                >
-                  in common
-                </Text>
-              </View>
+          <View style={styles.flexRow}>
+            <View style={styles.whiteCircle}>
+              <Text style={styles.emoji}>{this.props.data.emoji}</Text>
             </View>
-          </FlexRow>
-        </Image>
+            <View style={styles.viewBottom}>
+              <Text style={styles.textName}>{this.state.shortUser}</Text>
+              <Text style={styles.textDetails}>
+                {this.state.age}
+                {this.state.genders}
+              </Text>
+              <CompatibilityText style={{ marginBottom: 0, marginTop: 3 }}>
+                <YeahColor>
+                  {this.props.data.loveCommon ? this.props.data.loveCommon : 0}
+                  <FrienshipFont> YEAH</FrienshipFont>
+                </YeahColor>{' '}
+                &{' '}
+                <NaahColor>
+                  {this.props.data.hateCommon ? this.props.data.hateCommon : 0}
+                  <FrienshipFont> NAAH</FrienshipFont>
+                </NaahColor>{' '}
+              </CompatibilityText>
+              <Text
+                style={{
+                  flexWrap: 'wrap',
+                  fontSize: 12,
+                  color: '#4a4a4a',
+                  marginTop: -3,
+                }}
+              >
+                in common
+              </Text>
+            </View>
+          </View>
+        </FlexRow>
       </TouchableOpacity>
     );
   };

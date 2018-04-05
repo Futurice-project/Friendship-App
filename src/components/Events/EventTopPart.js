@@ -64,12 +64,13 @@ const EventTopPart = props => {
   };
 
   return (
-    <Image style={styles.imageEvent} source={srcImage}>
+    <View>
+      <Image style={styles.imageEvent} source={srcImage} />
       <View style={styles.backAndSettingsView}>
         <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
           <Text style={{ fontSize: 22 }}> {'<'} </Text>
         </TouchableOpacity>
-        {props.isHost ? displaySettingsButton() : null}
+        {isHost ? displaySettingsButton() : null}
       </View>
 
       <View
@@ -77,25 +78,39 @@ const EventTopPart = props => {
           backgroundColor: 'transparent',
           justifyContent: 'flex-end',
           flex: 1,
+          position: 'absolute',
+          bottom: 0,
         }}
       >
-        <Image source={waveShape} style={styles.waveShape}>
+        <Image source={waveShape} style={styles.waveShape} />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: 70,
+            paddingBottom: 15,
+            top: '25%',
+            left: '35%',
+            position: 'absolute',
+          }}
+        >
           <EventTitleText style={styles.eventTitle}>
             {eventTitle}
           </EventTitleText>
-        </Image>
-        <View style={{ backgroundColor: '#F9F6F1' }}>
-          {renderDateAndTime(eventDate)}
-          <TouchableOpacity onPress={() => openMap(city, address)}>
-            <Details>
-              <LocationText>
-                {city && address ? `${city}, ${address}` : 'Narnia'}
-              </LocationText>
-            </Details>
-          </TouchableOpacity>
+          <View style={{ backgroundColor: '#F9F6F1' }}>
+            <TouchableOpacity onPress={() => openMap(city, address)}>
+              <Details>
+                <LocationText>
+                  {city && address ? `${city}, ${address}` : 'Narnia'}
+                </LocationText>
+              </Details>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </Image>
+    </View>
   );
 };
 
@@ -113,12 +128,13 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'android' ? 330 : 250,
   },
   backAndSettingsView: {
-    marginTop: 5,
-    marginRight: 5,
+    marginTop: 10,
     marginLeft: 5,
+    width: Dimensions.get('window').width - 10,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    position: 'absolute',
   },
   backButton: {
     backgroundColor: 'transparent',
