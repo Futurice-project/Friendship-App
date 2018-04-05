@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 
+import moment from 'moment';
 import { Details, LocationText, EventTitleText } from '../Layout/TextLayout';
 import waveShape from '../../../assets/img/roundTab/roundTab.png';
 import resolveAssetSource from 'resolveAssetSource';
@@ -25,6 +26,7 @@ const EventTopPart = props => {
     srcImage,
     navigateBack,
     isHost,
+    eventDate,
   } = props;
 
   const displaySettingsButton = () => {
@@ -46,6 +48,19 @@ const EventTopPart = props => {
         `http://maps.google.com/maps?address=${city}, ${address}`,
       );
     }
+  };
+
+  const renderDateAndTime = date => {
+    const eventTime = moment(new Date(date)).format('HH:mm');
+    let eventDate;
+    new Date().getMonth() === new Date(date).getMonth()
+      ? (eventDate = moment(new Date(date)).format('dddd Do'))
+      : (eventDate = moment(new Date(date)).format('dddd Do MMM'));
+    return (
+      <Details>
+        <LocationText>{`${eventDate}, ${eventTime}`}</LocationText>
+      </Details>
+    );
   };
 
   return (
@@ -70,6 +85,7 @@ const EventTopPart = props => {
           </EventTitleText>
         </Image>
         <View style={{ backgroundColor: '#F9F6F1' }}>
+          {renderDateAndTime(eventDate)}
           <TouchableOpacity onPress={() => openMap(city, address)}>
             <Details>
               <LocationText>

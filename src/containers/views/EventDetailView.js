@@ -114,6 +114,7 @@ class EventDetailView extends Component {
         description,
         city,
         address,
+        eventDate,
       } = this.props.eventDetails.data;
 
       // if there is no picture for the user we use a default image
@@ -134,6 +135,7 @@ class EventDetailView extends Component {
             showModal={this._showModal}
             srcImage={srcImage}
             navigateBack={this.navigateBack}
+            eventDate={eventDate}
             isHost={this.props.eventDetails.data.hostId === userId}
           />
           <DescriptionWrapper>

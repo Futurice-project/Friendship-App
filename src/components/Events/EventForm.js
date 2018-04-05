@@ -10,6 +10,7 @@ import {
   Image,
   Slider,
 } from 'react-native';
+import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
 import PickerSelect from 'react-native-picker-select';
@@ -103,6 +104,8 @@ class EventForm extends Component {
       participantsMix,
       eventImage,
       hostId,
+      date,
+      time,
     } = this.state;
 
     let eventData = {
@@ -115,6 +118,8 @@ class EventForm extends Component {
       participantsMix,
       hostId,
     };
+    const datetime = `${date}T${time}:00`;
+    console.log(datetime);
 
     if (!title || !city || !address) {
       return this.setState({
@@ -168,7 +173,6 @@ class EventForm extends Component {
   }
 
   render() {
-    console.log(this.props.eventDetails);
     const cities = this.props.locations.data.map(city => {
       return { label: city.name, value: city.name, key: city.name };
     });
@@ -208,6 +212,7 @@ class EventForm extends Component {
         key: 'Unlimited',
       },
     ];
+    console.log(this.state.date);
     return (
       <View>
         <View style={{ backgroundColor: '#f9f7f6' }}>
@@ -275,11 +280,11 @@ class EventForm extends Component {
               }}
             >
               <DatePicker
-                style={{ width: 150 }}
+                style={{ width: 165 }}
                 date={this.state.date}
                 mode="date"
                 placeholder="DATE*"
-                format="MMMM Do YYYY"
+                format="YYYY-MM-DD"
                 showIcon={false}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
@@ -301,7 +306,7 @@ class EventForm extends Component {
                   dateText: {
                     fontSize: 17,
                     textAlign: 'center',
-                    width: 150,
+                    width: 165,
                   },
                 }}
                 onDateChange={date => {
@@ -313,7 +318,7 @@ class EventForm extends Component {
                 }}
               />
               <DatePicker
-                style={{ width: 80 }}
+                style={{ width: 75 }}
                 date={this.state.time}
                 mode="time"
                 placeholder="TIME*"
@@ -338,7 +343,7 @@ class EventForm extends Component {
                   dateText: {
                     fontSize: 17,
                     textAlign: 'center',
-                    width: 80,
+                    width: 75,
                   },
                 }}
                 onDateChange={time => {
