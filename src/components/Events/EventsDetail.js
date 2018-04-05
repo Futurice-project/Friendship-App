@@ -35,11 +35,12 @@ class EventsDetail extends Component {
   };
 
   renderDateAndTime = date => {
-    const eventTime = moment(new Date(date)).format('HH:mm');
+    const eventTime = moment.utc(new Date(date)).format('HH:mm');
     let eventDate;
     new Date().getMonth() === new Date(date).getMonth()
-      ? (eventDate = moment(new Date(date)).format('dddd, Do'))
-      : (eventDate = moment(new Date(date)).format('dddd, Do MMM'));
+      ? (eventDate = moment.utc(new Date(date)).format('dddd, Do'))
+      : (eventDate = moment.utc(new Date(date)).format('dddd, Do MMM'));
+
     return (
       <CardSection>
         <Text>{eventDate}</Text>
@@ -51,8 +52,7 @@ class EventsDetail extends Component {
   render = () => {
     const { title, city, address, date, id } = this.props;
     const { titleTextStyle } = styles;
-    const eventDate = moment(new Date(date)).format('dddd, Do MMM');
-    const eventTime = moment(new Date(date)).format('HH:mm');
+
     return (
       <Card>
         {this.renderDateAndTime(date)}

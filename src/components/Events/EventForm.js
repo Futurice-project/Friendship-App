@@ -53,6 +53,13 @@ class EventForm extends Component {
     this.props.getLocations();
     this.setState({ hostId: this.props.hostId });
     if (this.props.edit) {
+      const eventTime = moment
+        .utc(new Date(this.props.eventDetails.eventDate))
+        .format('HH:mm');
+
+      const eventDate = moment
+        .utc(new Date(this.props.eventDetails.eventDate))
+        .format('YYYY-MM-DD');
       this.setState({
         title: this.props.eventDetails.title,
         description: this.props.eventDetails.description,
@@ -61,6 +68,8 @@ class EventForm extends Component {
         minParticipants: this.props.eventDetails.minParticipants,
         maxParticipants: this.props.eventDetails.maxParticipants,
         participantsMix: parseInt(this.props.eventDetails.participantsMix),
+        time: eventTime,
+        date: eventDate,
         eventImage:
           'data:image/png;base64,' + this.props.eventDetails.eventImage,
       });

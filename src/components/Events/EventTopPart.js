@@ -51,11 +51,14 @@ const EventTopPart = props => {
   };
 
   const renderDateAndTime = date => {
-    const eventTime = moment(new Date(date)).format('HH:mm');
+    console.log('EVENT DATE FROM FETCH', date);
+    const eventTime = moment.utc(date).format('HH:mm');
+    console.log('EVENT TOM FROM FETCH', eventTime);
+
     let eventDate;
     new Date().getMonth() === new Date(date).getMonth()
-      ? (eventDate = moment(new Date(date)).format('dddd Do'))
-      : (eventDate = moment(new Date(date)).format('dddd Do MMM'));
+      ? (eventDate = moment.utc(new Date(date)).format('dddd, Do'))
+      : (eventDate = moment.utc(new Date(date)).format('dddd, Do MMM'));
     return (
       <Details>
         <LocationText>{`${eventDate}, ${eventTime}`}</LocationText>
@@ -100,7 +103,7 @@ const EventTopPart = props => {
             {eventTitle}
           </EventTitleText>
           <View style={{ backgroundColor: '#F9F6F1' }}>
-            {renderDateAndTime()}
+            {renderDateAndTime(eventDate)}
             <TouchableOpacity onPress={() => openMap(city, address)}>
               <Details>
                 <LocationText>
