@@ -16,7 +16,7 @@ export default class EventBottomPart extends PureComponent {
   renderJoinButton() {
     if (this.props.participation.data.data === true) {
       return (
-        <View style={{ backgroundColor: '#ffffff' }}>
+        <View style={{ backgroundColor: '#ffffff', height: 100 }}>
           <ButtonOption>
             <TouchableOpacity
               onPress={this.props.onButtonPress}
@@ -29,7 +29,7 @@ export default class EventBottomPart extends PureComponent {
       );
     } else {
       return (
-        <View style={{ backgroundColor: '#ffffff' }}>
+        <View style={{ backgroundColor: '#ffffff', height: 100 }}>
           <ButtonOption>
             <TouchableOpacity
               onPress={this.props.onButtonPress}
