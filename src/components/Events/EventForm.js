@@ -10,6 +10,7 @@ import {
   Image,
   Slider,
 } from 'react-native';
+import _ from 'lodash';
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -70,9 +71,13 @@ class EventForm extends Component {
         participantsMix: parseInt(this.props.eventDetails.participantsMix),
         time: eventTime,
         date: eventDate,
-        eventImage:
-          'data:image/png;base64,' + this.props.eventDetails.eventImage,
       });
+      if (this.props.eventDetails.eventImage !== null) {
+        this.setState({
+          eventImage:
+            'data:image/png;base64,' + this.props.eventDetails.eventImage,
+        });
+      }
     }
   }
 
@@ -180,7 +185,14 @@ class EventForm extends Component {
     }
   }
 
+  deleteEventImage = () => {
+    if (this.state.eventImage) {
+      this.setState({ eventImage: '' });
+    }
+  };
+
   render() {
+    console.log(this.props.eventDetails);
     const cities = this.props.locations.data.map(city => {
       return { label: city.name, value: city.name, key: city.name };
     });
@@ -580,8 +592,32 @@ class EventForm extends Component {
             <ScrollViewPhoto
               contentContainerStyle={styles.scrollViewPhotoContainer}
               horizontal
+              style={{
+                paddingBottom: 12,
+              }}
             >
-              <PhotoBox onPress={this.openImageGallery}>
+              {this.state.eventImage ? (
+                <TouchableOpacity
+                  style={{
+                    height: 25,
+                    width: 25,
+                    borderRadius: 100,
+                    backgroundColor: '#6c6c85',
+                    position: 'absolute',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    right: 0,
+                    zIndex: 1,
+                  }}
+                  onPress={this.deleteEventImage}
+                >
+                  <Text style={{ color: 'white', fontWeight: 'bold' }}>X</Text>
+                </TouchableOpacity>
+              ) : null}
+              <PhotoBox
+                onPress={this.openImageGallery}
+                style={{ marginTop: 7 }}
+              >
                 {eventImage.uri ? (
                   <Image
                     style={{ width: 93, height: 93 }}
