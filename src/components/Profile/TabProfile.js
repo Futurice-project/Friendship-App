@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   textButtonStyle: {
     alignSelf: 'center',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Bold',
   },
   tagCategoriesLove: {
     marginTop: 45,

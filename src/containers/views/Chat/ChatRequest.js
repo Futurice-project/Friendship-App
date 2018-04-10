@@ -6,8 +6,13 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Platform,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import {
+  HideWithKeyboard,
+  ShowWithKeyboard,
+} from 'react-native-hide-with-keyboard';
 
 import rest from '../../../utils/rest';
 import RoundTab from '../../../components/RoundTab';
@@ -80,12 +85,22 @@ export class ChatRequest extends React.Component {
     const { username } = this.props.navigation.state.params.user;
     return (
       <View style={{ flex: 1, marginTop: 20 }}>
-        <Text
-          onPress={() => this.props.navigation.goBack()}
-          style={styles.cancelButton}
-        >
-          CANCEL
-        </Text>
+        <View style={styles.headerWrapper}>
+          <Text
+            onPress={() => this.props.navigation.goBack()}
+            style={styles.cancelButton}
+          >
+            CANCEL
+          </Text>
+          <ShowWithKeyboard>
+            <Text
+              onPress={() => this.createChatroom()}
+              style={styles.sendButtonHeader}
+            >
+              SEND
+            </Text>
+          </ShowWithKeyboard>
+        </View>
         <RoundTab tint="#fff" />
         <Text style={styles.inviteText}>
           {`Tell ${username} what you would like to talk about:`}
@@ -115,12 +130,30 @@ export class ChatRequest extends React.Component {
 }
 
 const styles = {
+  headerWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   cancelButton: {
     textDecorationLine: 'underline',
     fontSize: 13,
     color: '#3b3b3b',
     fontWeight: 'bold',
     margin: 18,
+  },
+  sendButtonHeader: {
+    ...Platform.select({
+      ios: {
+        display: 'none',
+      },
+      android: {
+        textDecorationLine: 'underline',
+        fontSize: 13,
+        color: '#3b3b3b',
+        fontWeight: 'bold',
+        margin: 18,
+      },
+    }),
   },
   inviteText: {
     backgroundColor: 'transparent',

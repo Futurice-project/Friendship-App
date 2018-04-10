@@ -254,7 +254,7 @@ class ChatView extends Component {
         style={{ flex: 1 }}
         behavior="padding"
         keyboardVerticalOffset={Platform.select({
-          ios: () => 65,
+          ios: () => 60,
           android: () => 80,
         })()}
       >

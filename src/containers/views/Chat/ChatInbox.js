@@ -27,7 +27,7 @@ export class ChatInbox extends React.Component {
     this.timer = setInterval(
       async () =>
         await this.props.chatRoomsWithUserId(this.props.currentUserId),
-      2000,
+      3000,
     );
   }
 

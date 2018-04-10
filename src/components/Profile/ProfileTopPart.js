@@ -84,7 +84,8 @@ const ProfileTopPart = props => {
   };
 
   return (
-    <Image style={styles.imageUser} source={srcImage}>
+    <View>
+      <Image style={styles.imageUser} source={srcImage} />
       <View style={styles.backAndSettingsView}>
         <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
           <Text style={{ fontSize: 22 }}> {'<'} </Text>
@@ -103,14 +104,23 @@ const ProfileTopPart = props => {
           flex: 1,
         }}
       >
-        <Image source={waveShape} style={styles.waveShape}>
+        <Image source={waveShape} style={styles.waveShape} />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            top: '25%',
+            left: '25%',
+            position: 'absolute',
+          }}
+        >
           <View
             style={{
-              flex: 1,
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: 25,
             }}
           >
             <UsernameText>
@@ -129,7 +139,12 @@ const ProfileTopPart = props => {
               </TouchableOpacity>
             ) : null}
           </View>
-          <CompatibilityText style={{ textAlign: 'center' }}>
+          <CompatibilityText
+            style={{
+              textAlign: 'center',
+              marginBottom: 0,
+            }}
+          >
             {myProfile ? 'You have ' : null}
             <YeahColor>
               {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>
@@ -140,7 +155,7 @@ const ProfileTopPart = props => {
             </NaahColor>
             {myProfile ? null : ' in common'}
           </CompatibilityText>
-        </Image>
+        </View>
         <View style={{ backgroundColor: '#F9F6F1' }}>
           <Details>
             <LocationText>{location ? location : 'Narnia'}</LocationText>
@@ -149,7 +164,7 @@ const ProfileTopPart = props => {
           </Details>
         </View>
       </View>
-    </Image>
+    </View>
   );
 };
 
@@ -157,6 +172,7 @@ const styles = StyleSheet.create({
   emojiCircle: {
     alignSelf: 'flex-end',
     marginRight: 5,
+    marginTop: 80,
     width: 64,
     height: 64,
     borderRadius: 64,
@@ -176,9 +192,10 @@ const styles = StyleSheet.create({
   imageUser: {
     width: Dimensions.get('window').width,
     height: Platform.OS === 'android' ? 330 : 250,
+    position: 'absolute',
   },
   backAndSettingsView: {
-    marginTop: 5,
+    marginTop: 10,
     marginRight: 5,
     marginLeft: 5,
     flex: 1,
