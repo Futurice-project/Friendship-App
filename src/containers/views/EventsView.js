@@ -61,7 +61,6 @@ class EventsView extends Component {
   };
 
   rightText = () => {
-    // return <Text>Recommended</Text>;
     let data = [
       { value: 'Default' },
       { value: 'By time' },
@@ -83,13 +82,26 @@ class EventsView extends Component {
     );
   };
 
+  _onRefresh = () => {
+    const userId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
+    this.props.fetchEvents(userId);
+  };
+
   renderContent = () => {
     const { events } = this.props;
     if (!this.state.initialOrder) {
       events.data.reverse();
     }
     if (!events.loading) {
-      return <EventsList events={events} />;
+      return (
+        <EventsList
+          events={events}
+          isFetching={this.props.events.loading}
+          onRefresh={this._onRefresh}
+        />
+      );
     }
 
     return <ActivityIndicator />;
@@ -101,6 +113,7 @@ class EventsView extends Component {
   };
 
   render = () => {
+    console.log(this.props.events);
     if (!this.props.auth.data.decoded) {
       return (
         <View style={{ marginTop: 30 }}>

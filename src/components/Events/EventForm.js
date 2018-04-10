@@ -10,6 +10,7 @@ import {
   Image,
   Slider,
 } from 'react-native';
+import _ from 'lodash';
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -40,7 +41,7 @@ class EventForm extends Component {
     address: '',
     minParticipants: '1',
     maxParticipants: '5',
-    participantsMix: 1,
+    participantsMix: 20,
     error: false,
     validationError: '',
     hostId: '',
@@ -67,12 +68,17 @@ class EventForm extends Component {
         address: this.props.eventDetails.address,
         minParticipants: this.props.eventDetails.minParticipants,
         maxParticipants: this.props.eventDetails.maxParticipants,
-        participantsMix: parseInt(this.props.eventDetails.participantsMix),
+        participantsMix:
+          100 - parseInt(this.props.eventDetails.participantsMix),
         time: eventTime,
         date: eventDate,
-        eventImage:
-          'data:image/png;base64,' + this.props.eventDetails.eventImage,
       });
+      if (this.props.eventDetails.eventImage !== null) {
+        this.setState({
+          eventImage:
+            'data:image/png;base64,' + this.props.eventDetails.eventImage,
+        });
+      }
     }
   }
 
@@ -128,6 +134,7 @@ class EventForm extends Component {
       hostId,
       eventDate: `${date}T${time}:00.000Z`,
     };
+    eventData.participantsMix = 100 - eventData.participantsMix;
 
     if (!title || !city || !address) {
       return this.setState({
@@ -167,20 +174,27 @@ class EventForm extends Component {
 
   renderPeopleMix(peopleMixValue) {
     switch (peopleMixValue) {
-      case 1:
-        return 'Diverse, open to all';
-      case 2:
-        return 'People mix num. 2';
-      case 3:
-        return 'People mix num. 3';
-      case 4:
+      case 20:
+        return 'Me and my twin sister';
+      case 40:
         return 'Me and my homies';
-      case 5:
-        return 'People mix num. 5';
+      case 60:
+        return 'People mix num. 3';
+      case 80:
+        return 'People mix num. 4';
+      case 100:
+        return 'Diverse, open to all';
     }
   }
 
+  deleteEventImage = () => {
+    if (this.state.eventImage) {
+      this.setState({ eventImage: '' });
+    }
+  };
+
   render() {
+    console.log(this.props.eventDetails);
     const cities = this.props.locations.data.map(city => {
       return { label: city.name, value: city.name, key: city.name };
     });
@@ -509,9 +523,9 @@ class EventForm extends Component {
           </Text>
           <View style={{ width: 278 }}>
             <Slider
-              maximumValue={5}
-              minimumValue={1}
-              step={1}
+              maximumValue={100}
+              minimumValue={20}
+              step={20}
               value={this.state.participantsMix}
               onValueChange={participantsMix =>
                 this.setState({
@@ -580,8 +594,32 @@ class EventForm extends Component {
             <ScrollViewPhoto
               contentContainerStyle={styles.scrollViewPhotoContainer}
               horizontal
+              style={{
+                paddingBottom: 12,
+              }}
             >
-              <PhotoBox onPress={this.openImageGallery}>
+              {this.state.eventImage ? (
+                <TouchableOpacity
+                  style={{
+                    height: 25,
+                    width: 25,
+                    borderRadius: 100,
+                    backgroundColor: '#6c6c85',
+                    position: 'absolute',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    right: 0,
+                    zIndex: 1,
+                  }}
+                  onPress={this.deleteEventImage}
+                >
+                  <Text style={{ color: 'white', fontWeight: 'bold' }}>X</Text>
+                </TouchableOpacity>
+              ) : null}
+              <PhotoBox
+                onPress={this.openImageGallery}
+                style={{ marginTop: 7 }}
+              >
                 {eventImage.uri ? (
                   <Image
                     style={{ width: 93, height: 93 }}

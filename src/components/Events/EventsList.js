@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 
 import EventsDetail from './EventsDetail';
 
-const EventsList = ({ events }) => {
+const EventsList = ({ events, onRefresh, isFetching }) => {
   const renderItem = ({ item }) => (
     <EventsDetail
       title={item.title}
@@ -21,8 +21,8 @@ const EventsList = ({ events }) => {
       data={events.data}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
-      refreshing={false}
-      onRefresh={renderItem}
+      refreshing={isFetching}
+      onRefresh={onRefresh}
     />
   );
 };

@@ -86,7 +86,6 @@ class EventDetailView extends Component {
     await this.props.fetchEventParticipants(eventId, userId);
     await this.props.fetchEventPersonalities(eventId);
     await this.props.fetchEventTags(eventId);
-    await this.props.fetchEventParticipation(eventId, userId);
   }
 
   navigateBack = () => {
@@ -95,7 +94,6 @@ class EventDetailView extends Component {
   };
 
   render() {
-    console.log(this.props.eventDetails);
     if (!this.props.auth.data.decoded) {
       return (
         <View style={{ marginTop: 30 }}>
@@ -143,6 +141,7 @@ class EventDetailView extends Component {
             <Description>{description}</Description>
           </DescriptionWrapper>
           <EventBottomPart
+            loaded={this.state.loaded}
             participants={this.props.eventParticipants}
             personalities={this.props.eventPersonalities}
             tags={this.props.eventTags}
