@@ -174,7 +174,6 @@ class EditForm extends React.Component {
         }
       }
     }
-    console.log(tempFormData);
     return tempFormData;
   }
 

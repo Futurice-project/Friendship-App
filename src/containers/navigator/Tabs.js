@@ -8,9 +8,16 @@ import PeopleView from '../views/PeopleView';
 import InboxView from '../views/Chat/ChatInbox';
 import MyProfile from '../views/MyProfileView';
 import EventsView from '../views/EventsView';
-
-import TabIcons from './TabIcons';
-import Svg, { Path } from 'react-native-svg';
+import {
+  Chat,
+  Events,
+  People,
+  Profile,
+  Chat_selected,
+  Events_selected,
+  People_selected,
+  Profile_selected,
+} from '../../../assets/tabIcons';
 
 const tabNavigationOptions = title => {
   switch (title) {
@@ -18,36 +25,28 @@ const tabNavigationOptions = title => {
       return {
         title,
         tabBarIcon: ({ focused, tintColor }) => (
-          <Svg width="20" height="19">
-            <Path d={TabIcons[2].path} fill={focused ? '#FF8A65' : null} />
-          </Svg>
+          <IconImage source={focused ? People_selected : People} />
         ),
       };
     case 'Inbox':
       return {
         title,
         tabBarIcon: ({ focused, tintColor }) => (
-          <Svg width="20" height="19">
-            <Path d={TabIcons[0].path} fill={focused ? '#FF8A65' : null} />
-          </Svg>
+          <IconImage source={focused ? Chat_selected : Chat} />
         ),
       };
     case 'Profile':
       return {
         title,
         tabBarIcon: ({ focused, tintColor }) => (
-          <Svg width="20" height="19">
-            <Path d={TabIcons[3].path} fill={focused ? '#FF8A65' : null} />
-          </Svg>
+          <IconImage source={focused ? Profile_selected : Profile} />
         ),
       };
     case 'Events':
       return {
         title,
         tabBarIcon: ({ focused, tintColor }) => (
-          <Svg width="20" height="19">
-            <Path d={TabIcons[1].path} fill={focused ? '#FF8A65' : null} />
-          </Svg>
+          <IconImage source={focused ? Events_selected : Events} />
         ),
       };
     default:
