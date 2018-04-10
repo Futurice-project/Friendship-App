@@ -1,12 +1,14 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-const EventsHeader = ({ headerText }) => {
-  const { textStyle, viewStyle } = styles;
+const EventsHeader = ({ headerText, rightText }) => {
+  const { textStyle, viewStyle, rightStyle, leftStyle } = styles;
 
   return (
     <View style={viewStyle}>
+      <Text style={leftStyle} />
       <Text style={textStyle}>{headerText}</Text>
+      <View style={rightStyle}>{rightText}</View>
     </View>
   );
 };
@@ -14,7 +16,8 @@ const EventsHeader = ({ headerText }) => {
 const styles = {
   viewStyle: {
     backgroundColor: '#F8F8F8',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     height: 60,
     paddingTop: 15,
@@ -26,6 +29,15 @@ const styles = {
   },
   textStyle: {
     fontSize: 20,
+    flex: 33,
+    justifyContent: 'center',
+    marginLeft: 40,
+  },
+  rightStyle: {
+    flex: 33,
+  },
+  leftStyle: {
+    flex: 33,
   },
 };
 

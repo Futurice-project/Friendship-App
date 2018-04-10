@@ -5,8 +5,10 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import { Dropdown } from 'react-native-material-dropdown';
 
 import rest from '../../utils/rest';
 import { connect } from 'react-redux';
@@ -33,7 +35,7 @@ class EventsView extends Component {
   static navigationOptions = {
     title: 'Events',
     header: {
-      visible: false,
+      visible: true,
     },
     tabBarIcon: ({ tintColor }) => (
       <IconImage
@@ -47,6 +49,7 @@ class EventsView extends Component {
     super();
     this.state = {
       initialOrder: true,
+      sorting: '',
     };
   }
 
@@ -55,6 +58,29 @@ class EventsView extends Component {
       ? this.props.auth.data.decoded.id
       : null;
     this.props.fetchEvents(userId);
+  };
+
+  rightText = () => {
+    // return <Text>Recommended</Text>;
+    let data = [
+      { value: 'Default' },
+      { value: 'By time' },
+      { value: 'Smallest first' },
+      { value: 'Closest first' },
+    ];
+    return (
+      <Dropdown
+        dropdownMargins={{ min: 5, max: 15 }}
+        dropdownPosition={0}
+        pickerStyle={{ width: 220 }}
+        containerStyle={{ top: -15, right: 10 }}
+        data={data}
+        value="Default"
+        onChangeText={value => {
+          this.setState({ sorting: value });
+        }}
+      />
+    );
   };
 
   renderContent = () => {
@@ -82,26 +108,14 @@ class EventsView extends Component {
         </View>
       );
     }
-
     return (
       <View style={{ flex: 1 }}>
-        <EventsHeader headerText="Events" />
+        <EventsHeader headerText="Events" rightText={this.rightText()} />
+        {console.log(this.state.sorting)}
         <TouchableOpacity
           onPress={() => this.changeSortOrder()}
           style={{ marginTop: 10, marginBottom: 10 }}
-        >
-          <Text
-            style={{
-              color: '#3a4e61',
-              fontWeight: 'bold',
-              textAlign: 'right',
-              paddingRight: 20,
-            }}
-          >
-            {' '}
-            Recommended{' '}
-          </Text>
-        </TouchableOpacity>
+        />
         {this.renderContent()}
         <TouchableOpacity
           activeOpacity={0.5}
