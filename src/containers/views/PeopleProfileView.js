@@ -27,6 +27,13 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.tagsForUser.get({ userId })),
   refreshPersonalitiesForUser: userId =>
     dispatch(rest.actions.personalitiesForUser.get({ userId })),
+  openChatRequest: (user, previousRoute) =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'ChatRequest',
+        params: { user, route: previousRoute },
+      }),
+    ),
 });
 
 class ProfileUser extends React.Component {
@@ -164,7 +171,12 @@ class ProfileUser extends React.Component {
         <View style={{ backgroundColor: '#faf5f0' }}>
           {this.renderPersonalities()}
         </View>
-        <TabProfile hate={hate} love={love} />
+        <TabProfile
+          onChatRequest={() =>
+            this.props.openChatRequest(this.props.userDetails.data, 'People')}
+          hate={hate}
+          love={love}
+        />
         <PopUpMenu
           isReportVisible={() =>
             this.props.navigation.navigate('Report', { data: Reportdata })}
