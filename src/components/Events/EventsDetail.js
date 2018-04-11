@@ -7,6 +7,8 @@ import {
   Linking,
   Platform,
   StyleSheet,
+  Image,
+  View,
 } from 'react-native';
 import moment from 'moment';
 
@@ -50,23 +52,51 @@ class EventsDetail extends Component {
   };
 
   render = () => {
-    const { title, city, address, date, id } = this.props;
+    const {
+      title,
+      description,
+      city,
+      address,
+      date,
+      id,
+      srcImage,
+    } = this.props;
     const { titleTextStyle } = styles;
+
+    console.log(srcImage);
+
+    // if there is no picture for the user we use a default image
+    const eventImage = srcImage
+      ? { uri: 'data:image/png;base64,' + srcImage }
+      : require('../../../assets/img/placeholder/grone.jpg');
 
     return (
       <Card>
-        {this.renderDateAndTime(date)}
-
         <CardSection>
           <TouchableOpacity onPress={() => this.props.openEvent(id)}>
-            <Text style={titleTextStyle}>{title}</Text>
+            <Image source={eventImage} style={{ width: 100, height: 200 }} />
           </TouchableOpacity>
         </CardSection>
 
         <CardSection>
-          <TouchableOpacity onPress={() => this.openMap(city, address)}>
-            <Text>{city && address ? `${city}, ${address}` : 'Narnia'}</Text>
+          <TouchableOpacity onPress={() => this.props.openEvent(id)}>
+            <Text style={titleTextStyle}>{title}</Text>
+            <Text numberOfLines={1}>{description}</Text>
           </TouchableOpacity>
+        </CardSection>
+
+        <CardSection>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{ flex: 1 }}>{this.renderDateAndTime(date)}</View>
+
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity onPress={() => this.openMap(city, address)}>
+                <Text style={{ textAlign: 'right' }}>
+                  {city ? `${city}` : 'Narnia'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </CardSection>
       </Card>
     );
