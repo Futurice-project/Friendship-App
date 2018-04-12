@@ -5530,6 +5530,10 @@ react-native-popup-menu@^0.12.2:
   version "0.12.3"
   resolved "https://registry.yarnpkg.com/react-native-popup-menu/-/react-native-popup-menu-0.12.3.tgz#547544e2f4606b907a338e3f9992495d67c76157"
 
+react-native-responsive-image@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-responsive-image/-/react-native-responsive-image-2.3.1.tgz#3f8d3882061a8eae389d70a960e3e6436da9e354"
+
 react-native-reversed-flat-list@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-reversed-flat-list/-/react-native-reversed-flat-list-1.0.2.tgz#390d2e90fa04ea08405ee91e75126d09a2cdbd35"

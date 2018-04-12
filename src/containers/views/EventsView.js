@@ -113,7 +113,6 @@ class EventsView extends Component {
   };
 
   render = () => {
-    console.log(this.props.events);
     if (!this.props.auth.data.decoded) {
       return (
         <View style={{ marginTop: 30 }}>
@@ -124,7 +123,6 @@ class EventsView extends Component {
     return (
       <View style={{ flex: 1 }}>
         <EventsHeader headerText="Events" rightText={this.rightText()} />
-        {console.log(this.state.sorting)}
         <TouchableOpacity
           onPress={() => this.changeSortOrder()}
           style={{ marginTop: 10, marginBottom: 10 }}

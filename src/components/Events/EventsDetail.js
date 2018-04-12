@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import ResponsiveImage from 'react-native-responsive-image';
 import {
   Text,
   TouchableOpacity,
@@ -63,8 +64,6 @@ class EventsDetail extends Component {
     } = this.props;
     const { titleTextStyle } = styles;
 
-    console.log(srcImage);
-
     // if there is no picture for the user we use a default image
     const eventImage = srcImage
       ? { uri: 'data:image/png;base64,' + srcImage }
@@ -73,9 +72,15 @@ class EventsDetail extends Component {
     return (
       <Card>
         <CardSection>
-          <TouchableOpacity onPress={() => this.props.openEvent(id)}>
-            <Image source={eventImage} style={{ width: 100, height: 200 }} />
-          </TouchableOpacity>
+          <View style={styles.imageContainer}>
+            <TouchableOpacity onPress={() => this.props.openEvent(id)}>
+              <ResponsiveImage
+                source={eventImage}
+                initWidth="390"
+                initHeight="230"
+              />
+            </TouchableOpacity>
+          </View>
         </CardSection>
 
         <CardSection>
@@ -105,8 +110,14 @@ class EventsDetail extends Component {
 
 const styles = StyleSheet.create({
   titleTextStyle: {
-    fontSize: 18,
+    fontSize: 22,
     fontFamily: 'NunitoSans-Bold',
+  },
+  imageContainer: {
+    flexGrow: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
