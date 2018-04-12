@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Dropdown } from 'react-native-material-dropdown';
+import _ from 'lodash';
 
 import rest from '../../utils/rest';
 import { connect } from 'react-redux';
@@ -49,7 +50,7 @@ class EventsView extends Component {
     super();
     this.state = {
       initialOrder: true,
-      sorting: '',
+      sorting: 'Default',
     };
   }
 
@@ -89,27 +90,55 @@ class EventsView extends Component {
     this.props.fetchEvents(userId);
   };
 
+  renderEvents = eventsOrder => {
+    return (
+      <EventsList
+        events={eventsOrder}
+        isFetching={this.props.events.loading}
+        onRefresh={this._onRefresh}
+      />
+    );
+  };
+
+  // render
   renderContent = () => {
     const { events } = this.props;
-    if (!this.state.initialOrder) {
-      events.data.reverse();
-    }
-    if (!events.loading) {
-      return (
-        <EventsList
-          events={events}
-          isFetching={this.props.events.loading}
-          onRefresh={this._onRefresh}
-        />
-      );
-    }
+    if (events.loading) {
+      return <ActivityIndicator />;
+    } else {
+      switch (this.state.sorting) {
+        case 'By time':
+          events.data = _.orderBy(events.data, ['dateIndex'], ['asc']);
+          console.log(events);
+          return this.renderEvents(events);
 
-    return <ActivityIndicator />;
+        case 'Smallest first':
+          events.data = _.orderBy(
+            events.data,
+            ['numberParticipantsIndex'],
+            ['asc'],
+          );
+          return this.renderEvents(events);
+
+        case 'Closest first':
+          events.data = _.orderBy(events.data, ['locationSortIndex'], ['asc']);
+          console.log(events);
+          return this.renderEvents(events);
+        default:
+          events.data = _.orderBy(
+            events.data,
+            ['reccomendationIndex'],
+            ['asc'],
+          );
+          console.log(events);
+          return this.renderEvents(events);
+      }
+    }
   };
-  // render
 
   changeSortOrder = () => {
-    this.setState({ initialOrder: false });
+    this.setState({ initialOrder: !this.state.initialOrder });
+    console.log(this.state.initialOrder);
   };
 
   render = () => {
@@ -123,10 +152,6 @@ class EventsView extends Component {
     return (
       <View style={{ flex: 1 }}>
         <EventsHeader headerText="Events" rightText={this.rightText()} />
-        <TouchableOpacity
-          onPress={() => this.changeSortOrder()}
-          style={{ marginTop: 10, marginBottom: 10 }}
-        />
         {this.renderContent()}
         <TouchableOpacity
           activeOpacity={0.5}

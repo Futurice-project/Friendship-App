@@ -18,7 +18,7 @@ const EventsList = ({ events, onRefresh, isFetching }) => {
     );
   };
 
-  const keyExtractor = event => event.id;
+  const keyExtractor = events => events.id;
 
   return (
     <FlatList
