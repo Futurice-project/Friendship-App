@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import ResponsiveImage from 'react-native-responsive-image';
 import {
   Text,
   TouchableOpacity,
   Linking,
   Platform,
   StyleSheet,
+  Image,
+  View,
 } from 'react-native';
 import moment from 'moment';
 
@@ -50,23 +53,55 @@ class EventsDetail extends Component {
   };
 
   render = () => {
-    const { title, city, address, date, id } = this.props;
+    const {
+      title,
+      description,
+      city,
+      address,
+      date,
+      id,
+      srcImage,
+    } = this.props;
     const { titleTextStyle } = styles;
+
+    // if there is no picture for the user we use a default image
+    const eventImage = srcImage
+      ? { uri: 'data:image/png;base64,' + srcImage }
+      : require('../../../assets/img/placeholder/grone.jpg');
 
     return (
       <Card>
-        {this.renderDateAndTime(date)}
+        <CardSection>
+          <View style={styles.imageContainer}>
+            <TouchableOpacity onPress={() => this.props.openEvent(id)}>
+              <ResponsiveImage
+                source={eventImage}
+                initWidth="390"
+                initHeight="230"
+              />
+            </TouchableOpacity>
+          </View>
+        </CardSection>
 
         <CardSection>
           <TouchableOpacity onPress={() => this.props.openEvent(id)}>
             <Text style={titleTextStyle}>{title}</Text>
+            <Text numberOfLines={1}>{description}</Text>
           </TouchableOpacity>
         </CardSection>
 
         <CardSection>
-          <TouchableOpacity onPress={() => this.openMap(city, address)}>
-            <Text>{city && address ? `${city}, ${address}` : 'Narnia'}</Text>
-          </TouchableOpacity>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{ flex: 1 }}>{this.renderDateAndTime(date)}</View>
+
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity onPress={() => this.openMap(city, address)}>
+                <Text style={{ textAlign: 'right' }}>
+                  {city ? `${city}` : 'Narnia'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </CardSection>
       </Card>
     );
@@ -75,8 +110,14 @@ class EventsDetail extends Component {
 
 const styles = StyleSheet.create({
   titleTextStyle: {
-    fontSize: 18,
+    fontSize: 22,
     fontFamily: 'NunitoSans-Bold',
+  },
+  imageContainer: {
+    flexGrow: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
