@@ -52,7 +52,7 @@ class EventsView extends Component {
     super();
     this.state = {
       initialOrder: true,
-      sorting: 'Default',
+      sorting: 'Recommended',
     };
   }
 
@@ -65,19 +65,20 @@ class EventsView extends Component {
 
   rightText = () => {
     let data = [
-      { value: 'Default' },
+      { value: 'Recommended' },
       { value: 'By time' },
       { value: 'Smallest first' },
       { value: 'Closest first' },
     ];
     return (
       <Dropdown
-        dropdownMargins={{ min: 5, max: 15 }}
+        dropdownMargins={{ min: 15, max: 20 }}
+        dropdownOffset={{ top: 20, left: 15 }}
         dropdownPosition={0}
-        pickerStyle={{ width: 220 }}
-        containerStyle={{ top: -15, right: 10 }}
+        pickerStyle={{ width: 150, marginTop: 12 }}
+        containerStyle={{ marginBottom: 10, right: 10 }}
         data={data}
-        value="Default"
+        value="Recommended"
         onChangeText={value => {
           this.setState({ sorting: value });
         }}
