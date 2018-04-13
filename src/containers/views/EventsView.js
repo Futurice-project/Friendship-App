@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Dropdown } from 'react-native-material-dropdown';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
 
 import rest from '../../utils/rest';
@@ -153,32 +155,18 @@ class EventsView extends Component {
       <View style={{ flex: 1 }}>
         <EventsHeader headerText="Events" rightText={this.rightText()} />
         {this.renderContent()}
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={this.props.openEventForm}
-          style={styles.TouchableOpacityStyle}
+        <ActionButton
+          buttonColor="#ff6e40"
+          degrees={0}
+          onPress={() => {
+            this.props.openEventForm();
+          }}
         >
-          <Text style={{ fontSize: 30 }}>{'+'}</Text>
-        </TouchableOpacity>
+          <Icon name="md-add" />
+        </ActionButton>
       </View>
     );
   };
 }
-
-const styles = StyleSheet.create({
-  TouchableOpacityStyle: {
-    position: 'absolute',
-    width: 60,
-    height: 60,
-    borderRadius: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 5,
-    bottom: 15,
-    borderStyle: 'solid',
-    borderWidth: 2,
-    backgroundColor: '#d8d8d8',
-  },
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsView);
