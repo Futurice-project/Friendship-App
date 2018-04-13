@@ -38,18 +38,38 @@ class EventsDetail extends Component {
   };
 
   renderDateAndTime = date => {
+    moment.updateLocale('en', {
+      calendar: {
+        lastDay: '[Yesterday]',
+        sameDay: '[Today]',
+        nextDay: '[Tomorrow]',
+        lastWeek: 'dddd, Do MMM',
+        nextWeek: 'dddd, Do MMM',
+        sameElse: 'dddd, Do MMM',
+      },
+    });
+
     const eventTime = moment.utc(new Date(date)).format('HH:mm');
     let eventDate;
     new Date().getMonth() === new Date(date).getMonth()
-      ? (eventDate = moment.utc(new Date(date)).format('dddd, Do'))
+      ? (eventDate = moment.utc(new Date(date)).calendar())
       : (eventDate = moment.utc(new Date(date)).format('dddd, Do MMM'));
 
-    return (
-      <CardSection>
-        <Text>{eventDate}</Text>
-        <Text style={{ marginLeft: 10 }}>{eventTime}</Text>
-      </CardSection>
-    );
+    if (eventDate == 'Today' || eventDate == 'Tomorrow') {
+      return (
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={{ fontWeight: 'bold' }}>{eventDate}</Text>
+          <Text style={{ marginLeft: 5 }}>{eventTime}</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ flexDirection: 'row' }}>
+          <Text>{eventDate}</Text>
+          <Text style={{ marginLeft: 5 }}>{eventTime}</Text>
+        </View>
+      );
+    }
   };
 
   render = () => {
@@ -87,6 +107,12 @@ class EventsDetail extends Component {
           <TouchableOpacity onPress={() => this.props.openEvent(id)}>
             <Text style={titleTextStyle}>{title}</Text>
             <Text numberOfLines={1}>{description}</Text>
+          </TouchableOpacity>
+        </CardSection>
+
+        <CardSection>
+          <TouchableOpacity onPress={() => this.props.openEvent(id)}>
+            <Text>abc</Text>
           </TouchableOpacity>
         </CardSection>
 
