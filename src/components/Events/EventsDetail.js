@@ -51,24 +51,23 @@ class EventsDetail extends Component {
 
     const eventTime = moment.utc(new Date(date)).format('HH:mm');
     let eventDate;
-    console.log(moment().calendar(eventDate));
     new Date().getMonth() === new Date(date).getMonth()
       ? (eventDate = moment.utc(new Date(date)).calendar())
       : (eventDate = moment.utc(new Date(date)).format('dddd, Do MMM'));
 
     if (eventDate == 'Today' || eventDate == 'Tomorrow') {
       return (
-        <CardSection>
+        <View style={{ flexDirection: 'row' }}>
           <Text style={{ fontWeight: 'bold' }}>{eventDate}</Text>
           <Text style={{ marginLeft: 5 }}>{eventTime}</Text>
-        </CardSection>
+        </View>
       );
     } else {
       return (
-        <CardSection>
+        <View style={{ flexDirection: 'row' }}>
           <Text>{eventDate}</Text>
           <Text style={{ marginLeft: 5 }}>{eventTime}</Text>
-        </CardSection>
+        </View>
       );
     }
   };
@@ -108,6 +107,12 @@ class EventsDetail extends Component {
           <TouchableOpacity onPress={() => this.props.openEvent(id)}>
             <Text style={titleTextStyle}>{title}</Text>
             <Text numberOfLines={1}>{description}</Text>
+          </TouchableOpacity>
+        </CardSection>
+
+        <CardSection>
+          <TouchableOpacity onPress={() => this.props.openEvent(id)}>
+            <Text>abc</Text>
           </TouchableOpacity>
         </CardSection>
 
