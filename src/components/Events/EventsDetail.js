@@ -38,18 +38,39 @@ class EventsDetail extends Component {
   };
 
   renderDateAndTime = date => {
+    moment.updateLocale('en', {
+      calendar: {
+        lastDay: '[Yesterday]',
+        sameDay: '[Today]',
+        nextDay: '[Tomorrow]',
+        lastWeek: 'dddd, Do MMM',
+        nextWeek: 'dddd, Do MMM',
+        sameElse: 'dddd, Do MMM',
+      },
+    });
+
     const eventTime = moment.utc(new Date(date)).format('HH:mm');
     let eventDate;
+    console.log(moment().calendar(eventDate));
     new Date().getMonth() === new Date(date).getMonth()
-      ? (eventDate = moment.utc(new Date(date)).format('dddd, Do'))
+      ? (eventDate = moment.utc(new Date(date)).calendar())
       : (eventDate = moment.utc(new Date(date)).format('dddd, Do MMM'));
 
-    return (
-      <CardSection>
-        <Text>{eventDate}</Text>
-        <Text style={{ marginLeft: 10 }}>{eventTime}</Text>
-      </CardSection>
-    );
+    if (eventDate == 'Today' || eventDate == 'Tomorrow') {
+      return (
+        <CardSection>
+          <Text style={{ fontWeight: 'bold' }}>{eventDate}</Text>
+          <Text style={{ marginLeft: 5 }}>{eventTime}</Text>
+        </CardSection>
+      );
+    } else {
+      return (
+        <CardSection>
+          <Text>{eventDate}</Text>
+          <Text style={{ marginLeft: 5 }}>{eventTime}</Text>
+        </CardSection>
+      );
+    }
   };
 
   render = () => {
