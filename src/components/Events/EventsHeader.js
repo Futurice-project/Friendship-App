@@ -2,11 +2,10 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 const EventsHeader = ({ headerText, rightText }) => {
-  const { textStyle, viewStyle, rightStyle, leftStyle } = styles;
+  const { textStyle, viewStyle, rightStyle } = styles;
 
   return (
     <View style={viewStyle}>
-      <Text style={leftStyle} />
       <Text style={textStyle}>{headerText}</Text>
       <View style={rightStyle}>{rightText}</View>
     </View>
@@ -29,15 +28,12 @@ const styles = {
   },
   textStyle: {
     fontSize: 20,
-    flex: 33,
+    flex: 60,
     justifyContent: 'center',
-    marginLeft: 40,
+    marginLeft: 20,
   },
   rightStyle: {
-    flex: 33,
-  },
-  leftStyle: {
-    flex: 33,
+    flex: 40,
   },
 };
 

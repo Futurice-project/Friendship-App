@@ -5407,6 +5407,12 @@ react-moment@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-moment/-/react-moment-0.7.0.tgz#9ccb5c87be683d08c253b48469167443f09c3d89"
 
+react-native-action-button@^2.8.4:
+  version "2.8.4"
+  resolved "https://registry.yarnpkg.com/react-native-action-button/-/react-native-action-button-2.8.4.tgz#6c5ef988f6dc129a1e2d65e964dc38373a653b4f"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-animatable@^1.2.3:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.2.4.tgz#b5fb7657e8f6edadbc26697057a327fb920b3039"
