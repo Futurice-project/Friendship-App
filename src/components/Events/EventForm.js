@@ -14,6 +14,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
+import Icon from 'react-native-vector-icons/Ionicons';
 import PickerSelect from 'react-native-picker-select';
 import { ImagePicker } from 'expo';
 import styled from 'styled-components/native';
@@ -238,11 +239,8 @@ class EventForm extends Component {
     return (
       <View>
         <View style={{ backgroundColor: '#f9f7f6' }}>
-          <TouchableOpacity
-            onPress={this.props.navigateBack}
-            style={styles.backButton}
-          >
-            <Text style={{ fontSize: 22 }}> {'<'} </Text>
+          <TouchableOpacity onPress={this.props.navigateBack}>
+            <Icon name="md-arrow-back" size={26} style={styles.backButton} />
           </TouchableOpacity>
           <Text style={styles.formTitle}>
             {this.props.edit ? 'EDIT EVENT' : 'NEW EVENT'}
@@ -735,8 +733,9 @@ const pickerSelectStyles = StyleSheet.create({
 
 const styles = StyleSheet.create({
   backButton: {
-    marginTop: 5,
-    marginLeft: 5,
+    paddingTop: 10,
+    paddingLeft: 10,
+    padding: 20,
     backgroundColor: 'transparent',
   },
   formTitle: {
