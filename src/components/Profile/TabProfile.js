@@ -86,6 +86,35 @@ export default class TabProfile extends Component {
           tabBarActiveTextColor={this.state.colorActif}
           tabBarInactiveTextColor={this.state.colorInactif}
         >
+          <View tabLabel="YEAH">
+            {yeahActivities.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesLove}>ACTIVITIES</Text>
+                <View style={styles.tagList}>
+                  {yeahActivities.map(tag => <Tag key={tag.id} data={tag} />)}
+                </View>
+              </View>
+            )}
+
+            {yeahInterests.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesLove}>INTERESTS</Text>
+                <View style={styles.tagList}>
+                  {yeahInterests.map(tag => <Tag key={tag.id} data={tag} />)}
+                </View>
+              </View>
+            )}
+
+            {yeahFriendship.length > 0 && (
+              <View>
+                <Text style={styles.tagCategoriesLove}>FRIENDSHIP</Text>
+                <View style={styles.tagList}>
+                  {yeahFriendship.map(tag => <Tag key={tag.id} data={tag} />)}
+                </View>
+              </View>
+            )}
+          </View>
+
           <View tabLabel="NAAHS">
             {naahsActivities.length > 0 && (
               <View>
@@ -116,35 +145,6 @@ export default class TabProfile extends Component {
                   {naahsFriendship.map(tag => (
                     <Tag key={tag.id} data={tag} dark />
                   ))}
-                </View>
-              </View>
-            )}
-          </View>
-
-          <View tabLabel="YEAH">
-            {yeahActivities.length > 0 && (
-              <View>
-                <Text style={styles.tagCategoriesLove}>ACTIVITIES</Text>
-                <View style={styles.tagList}>
-                  {yeahActivities.map(tag => <Tag key={tag.id} data={tag} />)}
-                </View>
-              </View>
-            )}
-
-            {yeahInterests.length > 0 && (
-              <View>
-                <Text style={styles.tagCategoriesLove}>INTERESTS</Text>
-                <View style={styles.tagList}>
-                  {yeahInterests.map(tag => <Tag key={tag.id} data={tag} />)}
-                </View>
-              </View>
-            )}
-
-            {yeahFriendship.length > 0 && (
-              <View>
-                <Text style={styles.tagCategoriesLove}>FRIENDSHIP</Text>
-                <View style={styles.tagList}>
-                  {yeahFriendship.map(tag => <Tag key={tag.id} data={tag} />)}
                 </View>
               </View>
             )}
