@@ -115,7 +115,6 @@ class EventsView extends Component {
 
   // render
   renderContent = () => {
-
     const { events, eventParticipantsNum } = this.props;
     if (events.loading || eventParticipantsNum.loading) {
       return <ActivityIndicator />;
@@ -149,8 +148,6 @@ class EventsView extends Component {
           console.log(events);
           return this.renderEvents(events);
       }
-    } else {
-      return <ActivityIndicator />;
     }
   };
 
