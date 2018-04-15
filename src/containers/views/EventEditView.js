@@ -16,12 +16,22 @@ const mapDispatchToProps = dispatch => ({
       ),
     ),
   deleteEvent: id => dispatch(rest.actions.deleteEvent({ id })),
+  fetchEvents: userId => dispatch(rest.actions.events.get({ userId })),
+});
+
+const mapStateToProps = state => ({
+  events: state.events,
 });
 
 class EventEditView extends Component {
   navigateBack = () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
+  };
+
+  deleteEvent = async id => {
+    await this.props.deleteEvent(id);
+    this.props.navigation.navigate('Events');
   };
 
   render() {
@@ -38,7 +48,10 @@ class EventEditView extends Component {
             eventDetails={this.props.navigation.state.params.eventDetails}
             navigateBack={this.navigateBack}
             updateEvent={this.props.updateEvent}
-            deleteEvent={this.props.deleteEvent}
+            deleteEvent={this.deleteEvent}
+            navigation={this.props.navigation}
+            events={this.props.events}
+            fetchEvents={this.props.fetchEvents}
           />
         </KeyboardAwareScrollView>
       </EventContainer>
@@ -46,4 +59,4 @@ class EventEditView extends Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(EventEditView);
+export default connect(mapStateToProps, mapDispatchToProps)(EventEditView);

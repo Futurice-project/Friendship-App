@@ -21,6 +21,7 @@ import EventsList from '../../components/Events/EventsList';
 
 const mapStateToProps = state => ({
   events: state.events,
+  eventParticipantsNum: state.eventParticipantsNum,
   auth: state.auth,
 });
 
@@ -32,6 +33,8 @@ const mapDispatchToProps = dispatch => ({
         routeName: 'EventCreateView',
       }),
     ),
+  fetchEventParticipantsNum: () =>
+    dispatch(rest.actions.eventParticipantsNum.get()),
 });
 
 class EventsView extends Component {
@@ -61,6 +64,7 @@ class EventsView extends Component {
       ? this.props.auth.data.decoded.id
       : null;
     this.props.fetchEvents(userId);
+    this.props.fetchEventParticipantsNum();
   };
 
   rightText = () => {
@@ -91,6 +95,7 @@ class EventsView extends Component {
       ? this.props.auth.data.decoded.id
       : null;
     this.props.fetchEvents(userId);
+    this.props.fetchEventParticipantsNum();
   };
 
   renderEvents = eventsOrder => {
@@ -99,21 +104,26 @@ class EventsView extends Component {
     return (
       <EventsList
         events={eventsOrder}
-        isFetching={this.props.events.loading}
+        isFetching={
+          this.props.events.loading || this.props.eventParticipantsNum.loading
+        }
         onRefresh={this._onRefresh}
+        eventParticipantsNum={this.props.eventParticipantsNum}
       />
     );
   };
 
   // render
   renderContent = () => {
-    const { events } = this.props;
-    console.log('WHEN LOADING ', events.loading);
-    if (!events.loading) {
+
+    const { events, eventParticipantsNum } = this.props;
+    if (events.loading || eventParticipantsNum.loading) {
+      return <ActivityIndicator />;
+    } else {
       switch (this.state.sorting) {
         case 'By time':
-          //  events.data = _.orderBy(events.data, ['dateIndex'], ['asc']);
-
+          //events.data = _.orderBy(events.data, ['dateIndex'], ['asc']);
+          console.log(events);
           return this.renderEvents(events);
 
         case 'Smallest first':
@@ -126,6 +136,8 @@ class EventsView extends Component {
 
         case 'Closest first':
           //events.data = _.orderBy(events.data, ['locationSortIndex'], ['asc']);
+          // events.data = _.orderBy(events.data, ['locationSortIndex'], ['asc']);
+          console.log(events);
           return this.renderEvents(events);
         default:
           // events.data = _.orderBy(
@@ -133,6 +145,8 @@ class EventsView extends Component {
           //   ['reccomendationIndex'],
           //   ['asc'],
           // );
+
+          console.log(events);
           return this.renderEvents(events);
       }
     } else {
