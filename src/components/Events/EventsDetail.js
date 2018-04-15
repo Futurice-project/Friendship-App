@@ -81,6 +81,7 @@ class EventsDetail extends Component {
       date,
       id,
       srcImage,
+      emojis,
     } = this.props;
     const { titleTextStyle } = styles;
 
@@ -88,6 +89,8 @@ class EventsDetail extends Component {
     const eventImage = srcImage
       ? { uri: 'data:image/png;base64,' + srcImage }
       : require('../../../assets/img/placeholder/grone.jpg');
+
+    console.log(emojis);
 
     return (
       <Card>
@@ -110,6 +113,7 @@ class EventsDetail extends Component {
           </TouchableOpacity>
         </CardSection>
 
+        {/* You can access participants avatars through "emojis" variable */}
         <CardSection>
           <TouchableOpacity onPress={() => this.props.openEvent(id)}>
             <Text>abc</Text>

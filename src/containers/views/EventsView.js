@@ -21,6 +21,7 @@ import EventsList from '../../components/Events/EventsList';
 
 const mapStateToProps = state => ({
   events: state.events,
+  eventParticipantsNum: state.eventParticipantsNum,
   auth: state.auth,
 });
 
@@ -32,6 +33,8 @@ const mapDispatchToProps = dispatch => ({
         routeName: 'EventCreateView',
       }),
     ),
+  fetchEventParticipantsNum: () =>
+    dispatch(rest.actions.eventParticipantsNum.get()),
 });
 
 class EventsView extends Component {
@@ -61,6 +64,7 @@ class EventsView extends Component {
       ? this.props.auth.data.decoded.id
       : null;
     this.props.fetchEvents(userId);
+    this.props.fetchEventParticipantsNum();
   };
 
   rightText = () => {
@@ -91,22 +95,26 @@ class EventsView extends Component {
       ? this.props.auth.data.decoded.id
       : null;
     this.props.fetchEvents(userId);
+    this.props.fetchEventParticipantsNum();
   };
 
   renderEvents = eventsOrder => {
     return (
       <EventsList
         events={eventsOrder}
-        isFetching={this.props.events.loading}
+        isFetching={
+          this.props.events.loading || this.props.eventParticipantsNum.loading
+        }
         onRefresh={this._onRefresh}
+        eventParticipantsNum={this.props.eventParticipantsNum}
       />
     );
   };
 
   // render
   renderContent = () => {
-    const { events } = this.props;
-    if (events.loading) {
+    const { events, eventParticipantsNum } = this.props;
+    if (events.loading || eventParticipantsNum.loading) {
       return <ActivityIndicator />;
     } else {
       switch (this.state.sorting) {
