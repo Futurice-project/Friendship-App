@@ -149,6 +149,7 @@ class EventDetailView extends Component {
             participation={this.props.eventParticipation}
             isHost={this.props.eventDetails.data.hostId === userId}
             currentUser={userId}
+            hostId={this.props.eventDetails.data.hostId}
           />
           <MyEventModal
             eventDetails={this.props.eventDetails.data}

@@ -51,7 +51,7 @@ class EventForm extends Component {
     address: '',
     minParticipants: '1',
     maxParticipants: '5',
-    participantsMix: 20,
+    participantsMix: 100,
     error: false,
     validationError: '',
     hostId: '',
@@ -146,7 +146,7 @@ class EventForm extends Component {
     };
     eventData.participantsMix = 100 - eventData.participantsMix;
 
-    if (!title || !city || !address) {
+    if (!title || !city || !address || !date) {
       return this.setState({
         validationError: 'Please enter all required fields',
       });
@@ -193,14 +193,12 @@ class EventForm extends Component {
 
   renderPeopleMix(peopleMixValue) {
     switch (peopleMixValue) {
-      case 20:
+      case 25:
         return 'Me and my twin sister';
-      case 40:
+      case 50:
         return 'Me and my homies';
-      case 60:
+      case 75:
         return 'People mix num. 3';
-      case 80:
-        return 'People mix num. 4';
       case 100:
         return 'Diverse, open to all';
     }
@@ -541,12 +539,13 @@ class EventForm extends Component {
           <View style={{ width: 278 }}>
             <Slider
               maximumValue={100}
-              minimumValue={20}
-              step={20}
+              minimumValue={25}
+              step={25}
               value={this.state.participantsMix}
               onValueChange={participantsMix =>
                 this.setState({
                   participantsMix,
+                  validationError: '',
                 })}
               minimumTrackTintColor="#e8e9e8"
               maximumTrackTintColor="#e8e9e8"
