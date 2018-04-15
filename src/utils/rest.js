@@ -212,6 +212,11 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
+  eventsParticipantsEmoji: {
+    url: `${apiRoot}/eventParticipantsNum`,
+    transformer: transformers.array,
+    crud: true,
+  },
   eventDetails: {
     url: `${apiRoot}/event/:eventId`,
     crud: true,

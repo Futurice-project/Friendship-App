@@ -3,7 +3,7 @@ import { FlatList, View, Text, StyleSheet } from 'react-native';
 
 import ParticipantDetail from './ParticipantDetail';
 
-const ParticipantList = ({ participants, currentUser }) => {
+const ParticipantList = ({ participants, currentUser, hostId }) => {
   const renderItem = ({ item, index }) => (
     <ParticipantDetail
       id={item.id}
@@ -13,6 +13,7 @@ const ParticipantList = ({ participants, currentUser }) => {
       loveCommon={item.loveCommon}
       index={index}
       currentUser={currentUser}
+      isHost={item.id === hostId}
     />
   );
 

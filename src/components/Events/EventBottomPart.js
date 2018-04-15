@@ -13,7 +13,18 @@ const ButtonOption = styled.View`
 `;
 
 export default class EventBottomPart extends PureComponent {
-  renderJoinButton() {
+  renderJoinButton(isHost) {
+    if (isHost === true) {
+      return (
+        <View style={{ backgroundColor: '#ffffff', height: 100 }}>
+          <ButtonOption>
+            <TouchableOpacity style={styles.buttonStyle}>
+              <Text style={styles.textButtonStyle}>Host Can't Leave</Text>
+            </TouchableOpacity>
+          </ButtonOption>
+        </View>
+      );
+    }
     if (this.props.participation.data.data === true) {
       return (
         <View style={{ backgroundColor: '#ffffff', height: 100 }}>
@@ -73,10 +84,11 @@ export default class EventBottomPart extends PureComponent {
 
     return (
       <View style={{ backgroundColor: '#ffffff' }}>
-        {!this.props.isHost ? this.renderJoinButton() : null}
+        {this.renderJoinButton(this.props.isHost)}
         <ParticipantList
           participants={this.props.participants}
           currentUser={this.props.currentUser}
+          hostId={this.props.hostId}
         />
         <Text style={styles.groupTextStyle}>GROUP PERSONALITIES</Text>
         <View style={styles.personalitiesView}>
@@ -94,7 +106,7 @@ export default class EventBottomPart extends PureComponent {
             <Tag key={index} data={tag} amount={tag.count} dark />
           ))}
         </View>
-        {!this.props.isHost ? this.renderJoinButton() : null}
+        {this.renderJoinButton(this.props.isHost)}
       </View>
     );
   };
