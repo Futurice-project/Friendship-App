@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import PickerSelect from 'react-native-picker-select';
 import { ImagePicker } from 'expo';
 import styled from 'styled-components/native';
+import { NavigationActions } from 'react-navigation';
 
 import { EventContainer } from '../Layout/Layout';
 import MultiSelect from '../../utils/react-native-multiple-select/lib/react-native-multi-select';
@@ -26,12 +27,20 @@ import rest from '../../utils/rest';
 
 const mapStateToProps = state => ({
   locations: state.locations,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
   getLocations: () => {
     dispatch(rest.actions.locations());
   },
+  openEvent: eventId =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'EventDetailView',
+        params: { eventId },
+      }),
+    ),
 });
 
 class EventForm extends Component {
@@ -109,7 +118,7 @@ class EventForm extends Component {
     }
   }
 
-  submit() {
+  async submit() {
     const {
       title,
       description,
@@ -144,10 +153,19 @@ class EventForm extends Component {
     }
 
     let formdata = this.createFormData(eventData, eventImage);
+    const userId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
     if (this.props.edit) {
-      this.props.updateEvent(this.props.eventDetails.id, formdata);
+      await this.props.updateEvent(this.props.eventDetails.id, formdata);
+      const id = this.props.events.data.data[0].id;
+      await this.props.navigation.navigate('Events');
+      this.props.openEvent(id);
     } else {
-      this.props.createEvent(formdata);
+      await this.props.createEvent(formdata);
+      const id = this.props.events.data.id;
+      await this.props.navigation.navigate('Events');
+      this.props.openEvent(id);
     }
   }
 
@@ -250,6 +268,7 @@ class EventForm extends Component {
           <LabelContainer>
             <LabelView>
               <TextInput
+                style={styles.input}
                 autoCorrect={false}
                 returnKeyType="next"
                 keyboardType="email-address"
@@ -273,6 +292,7 @@ class EventForm extends Component {
           <LabelContainer>
             <LabelView>
               <TextInput
+                style={styles.input}
                 autoCorrect={false}
                 returnKeyType="next"
                 keyboardType="email-address"
@@ -400,6 +420,7 @@ class EventForm extends Component {
           <LabelContainer>
             <LabelView>
               <TextInput
+                style={styles.input}
                 autoCorrect={false}
                 returnKeyType="next"
                 keyboardType="email-address"
@@ -453,16 +474,15 @@ class EventForm extends Component {
               style={{ ...pickerSelectStyles }}
             />
           </View>
-          <Text
+          <LabelTextHelper
             style={{
               width: 270,
-              color: '#abaaaa',
               textAlign: 'center',
               marginTop: 7,
             }}
           >
             * Hangout is considered off if less people
-          </Text>
+          </LabelTextHelper>
         </View>
 
         <View
@@ -497,16 +517,15 @@ class EventForm extends Component {
               style={{ ...pickerSelectStyles }}
             />
           </View>
-          <Text
+          <LabelTextHelper
             style={{
               width: 270,
-              color: '#abaaaa',
               textAlign: 'center',
               marginTop: 7,
             }}
           >
             * New joiners not accepted beyond this number
-          </Text>
+          </LabelTextHelper>
         </View>
 
         <View
@@ -544,19 +563,18 @@ class EventForm extends Component {
           >
             {this.renderPeopleMix(this.state.participantsMix)}
           </Text>
-          <Text
+          <LabelTextHelper
             style={{
               width: 270,
-              color: '#abaaaa',
               textAlign: 'center',
-              marginBottom: 50,
+              marginBottom: 40,
             }}
           >
             * This controls who can see and join the happening. It's based on
             profile personality types and number of shared Yeahs and Nahs
             between participants. Select what might work best for your
             happening.
-          </Text>
+          </LabelTextHelper>
         </View>
         <BottomLabelWrapper
           style={
@@ -582,7 +600,7 @@ class EventForm extends Component {
                 fontFamily: 'NunitoSans-SemiBold',
               }}
             >
-              ADD PHOTO
+              {this.props.edit ? 'CHANGE PHOTO' : 'ADD PHOTO'}
             </LabelText>
             <View style={{ width: 278, marginLeft: 30 }}>
               <LabelTextHelper>
@@ -743,6 +761,11 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: '#839297',
     marginBottom: 20,
+    fontFamily: 'NunitoSans-SemiBold',
+  },
+  input: {
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 18,
   },
   scrollViewPhotoContainer: {
     justifyContent: 'space-around',
