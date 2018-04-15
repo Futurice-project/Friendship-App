@@ -3,8 +3,20 @@ import { FlatList } from 'react-native';
 
 import EventsDetail from './EventsDetail';
 
-const EventsList = ({ events, onRefresh, isFetching }) => {
+const EventsList = ({
+  events,
+  onRefresh,
+  isFetching,
+  eventParticipantsNum,
+}) => {
   const renderItem = ({ item }) => {
+    const emojis = [];
+    eventParticipantsNum.data.data.map(emojiObject => {
+      if (emojiObject.eventId === item.id) {
+        emojis.push(emojiObject.emoji);
+      }
+    });
+
     return (
       <EventsDetail
         title={item.title}
@@ -14,6 +26,7 @@ const EventsList = ({ events, onRefresh, isFetching }) => {
         date={item.eventDate}
         id={item.id}
         srcImage={item.eventImage}
+        emojis={emojis}
       />
     );
   };

@@ -181,31 +181,16 @@ const rest = reduxApi({
     url: `${apiRoot}/events`,
     reducerName: 'events',
     options: { method: 'POST' },
-    postfetch: [
-      function({ dispatch }) {
-        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
-      },
-    ],
   },
   updateEvent: {
     url: `${apiRoot}/events/:id`,
     reducerName: 'events',
     options: { method: 'PATCH' },
-    postfetch: [
-      function({ dispatch }) {
-        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
-      },
-    ],
   },
   deleteEvent: {
     url: `${apiRoot}/events/:id`,
     reducerName: 'events',
     options: { method: 'DELETE' },
-    postfetch: [
-      function({ dispatch }) {
-        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
-      },
-    ],
   },
   events: {
     url: `${apiRoot}/events/:userId`,
@@ -231,6 +216,10 @@ const rest = reduxApi({
   },
   eventParticipation: {
     url: `${apiRoot}/eventParticipation/:eventId/:userId`,
+    crud: true,
+  },
+  eventParticipantsNum: {
+    url: `${apiRoot}/eventParticipantsNum`,
     crud: true,
   },
 })
