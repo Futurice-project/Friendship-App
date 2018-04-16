@@ -29,9 +29,7 @@ let apiRoot;
  * */
 if (process.env.NODE_ENV === 'development') {
   apiRoot =
-    Platform.OS === 'ios'
-      ? 'http://192.168.4.103:3888'
-      : 'http://localhost:3888';
+    Platform.OS === 'ios' ? 'http://localhost:3888' : 'http://localhost:3888';
 } else {
   apiRoot = 'https://friendshipapp-backend.herokuapp.com';
 }
@@ -183,34 +181,24 @@ const rest = reduxApi({
     url: `${apiRoot}/events`,
     reducerName: 'events',
     options: { method: 'POST' },
-    postfetch: [
-      function({ dispatch }) {
-        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
-      },
-    ],
   },
   updateEvent: {
     url: `${apiRoot}/events/:id`,
     reducerName: 'events',
     options: { method: 'PATCH' },
-    postfetch: [
-      function({ dispatch }) {
-        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
-      },
-    ],
   },
   deleteEvent: {
     url: `${apiRoot}/events/:id`,
     reducerName: 'events',
     options: { method: 'DELETE' },
-    postfetch: [
-      function({ dispatch }) {
-        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
-      },
-    ],
   },
   events: {
     url: `${apiRoot}/events/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  eventsParticipantsEmoji: {
+    url: `${apiRoot}/eventParticipantsNum`,
     transformer: transformers.array,
     crud: true,
   },
@@ -233,6 +221,10 @@ const rest = reduxApi({
   },
   eventParticipation: {
     url: `${apiRoot}/eventParticipation/:eventId/:userId`,
+    crud: true,
+  },
+  eventParticipantsNum: {
+    url: `${apiRoot}/eventParticipantsNum`,
     crud: true,
   },
 })

@@ -17,6 +17,8 @@ import {
   UsernameText,
   YeahColor,
 } from '../Layout/TextLayout';
+
+import Icon from 'react-native-vector-icons/Ionicons';
 import waveShape from '../../../assets/img/roundTab/roundTab.png';
 import resolveAssetSource from 'resolveAssetSource';
 
@@ -87,8 +89,8 @@ const ProfileTopPart = props => {
     <View>
       <Image style={styles.imageUser} source={srcImage} />
       <View style={styles.backAndSettingsView}>
-        <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
-          <Text style={{ fontSize: 22 }}> {'<'} </Text>
+        <TouchableOpacity onPress={navigateBack}>
+          <Icon name="md-arrow-back" size={26} style={styles.backButton} />
         </TouchableOpacity>
         {displaySettingsButton()}
       </View>
@@ -124,11 +126,12 @@ const ProfileTopPart = props => {
             }}
           >
             <UsernameText>
-              {username.length > 15 ? (
+              {/* {username.length > 15 ? (
                 username.substr(0, 15).concat('…')
               ) : (
                 username
-              )}
+              )} */}
+              {username}
             </UsernameText>
             {myProfile ? (
               <TouchableOpacity onPress={() => showEditForm()}>
@@ -203,6 +206,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   backButton: {
+    paddingTop: 10,
+    paddingLeft: 10,
+    padding: 20,
     backgroundColor: 'transparent',
   },
   settingsIcon: {

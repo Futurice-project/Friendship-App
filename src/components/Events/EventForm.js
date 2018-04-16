@@ -10,9 +10,15 @@ import {
   Image,
   Slider,
 } from 'react-native';
+import _ from 'lodash';
+import moment from 'moment';
+import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
+import Icon from 'react-native-vector-icons/Ionicons';
+import PickerSelect from 'react-native-picker-select';
 import { ImagePicker } from 'expo';
 import styled from 'styled-components/native';
+import { NavigationActions } from 'react-navigation';
 
 import { EventContainer } from '../Layout/Layout';
 import MultiSelect from '../../utils/react-native-multiple-select/lib/react-native-multi-select';
@@ -21,12 +27,20 @@ import rest from '../../utils/rest';
 
 const mapStateToProps = state => ({
   locations: state.locations,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
   getLocations: () => {
     dispatch(rest.actions.locations());
   },
+  openEvent: eventId =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'EventDetailView',
+        params: { eventId },
+      }),
+    ),
 });
 
 class EventForm extends Component {
@@ -37,16 +51,26 @@ class EventForm extends Component {
     address: '',
     minParticipants: '1',
     maxParticipants: '5',
-    participantsMix: 1,
+    participantsMix: 100,
     error: false,
     validationError: '',
     hostId: '',
+    cityTest: '',
+    date: '',
+    time: '',
   };
 
   componentWillMount() {
     this.props.getLocations();
     this.setState({ hostId: this.props.hostId });
     if (this.props.edit) {
+      const eventTime = moment
+        .utc(new Date(this.props.eventDetails.eventDate))
+        .format('HH:mm');
+
+      const eventDate = moment
+        .utc(new Date(this.props.eventDetails.eventDate))
+        .format('YYYY-MM-DD');
       this.setState({
         title: this.props.eventDetails.title,
         description: this.props.eventDetails.description,
@@ -54,10 +78,20 @@ class EventForm extends Component {
         address: this.props.eventDetails.address,
         minParticipants: this.props.eventDetails.minParticipants,
         maxParticipants: this.props.eventDetails.maxParticipants,
-        participantsMix: parseInt(this.props.eventDetails.participantsMix),
-        eventImage:
-          'data:image/png;base64,' + this.props.eventDetails.eventImage,
+        participantsMix: isNaN(
+          100 - parseInt(this.props.eventDetails.participantsMix),
+        )
+          ? 100
+          : 100 - parseInt(this.props.eventDetails.participantsMix),
+        time: eventTime,
+        date: eventDate,
       });
+      if (this.props.eventDetails.eventImage !== null) {
+        this.setState({
+          eventImage:
+            'data:image/png;base64,' + this.props.eventDetails.eventImage,
+        });
+      }
     }
   }
 
@@ -87,7 +121,7 @@ class EventForm extends Component {
     }
   }
 
-  submit() {
+  async submit() {
     const {
       title,
       description,
@@ -98,6 +132,8 @@ class EventForm extends Component {
       participantsMix,
       eventImage,
       hostId,
+      date,
+      time,
     } = this.state;
 
     let eventData = {
@@ -109,19 +145,31 @@ class EventForm extends Component {
       maxParticipants,
       participantsMix,
       hostId,
+      eventDate: `${date}T${time}:00.000Z`,
     };
+    eventData.participantsMix = 100 - eventData.participantsMix;
+    console.log('MIX TO SEND', eventData.participantsMix);
 
-    if (!title || !city || !address) {
+    if (!title || !city || !address || !date) {
       return this.setState({
         validationError: 'Please enter all required fields',
       });
     }
 
     let formdata = this.createFormData(eventData, eventImage);
+    const userId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
     if (this.props.edit) {
-      this.props.updateEvent(this.props.eventDetails.id, formdata);
+      await this.props.updateEvent(this.props.eventDetails.id, formdata);
+      const id = this.props.events.data.data[0].id;
+      await this.props.navigation.navigate('Events');
+      this.props.openEvent(id);
     } else {
-      this.props.createEvent(formdata);
+      await this.props.createEvent(formdata);
+      const id = this.props.events.data.id;
+      await this.props.navigation.navigate('Events');
+      this.props.openEvent(id);
     }
   }
 
@@ -149,55 +197,70 @@ class EventForm extends Component {
 
   renderPeopleMix(peopleMixValue) {
     switch (peopleMixValue) {
-      case 1:
-        return 'Diverse, open to all';
-      case 2:
-        return 'People mix num. 2';
-      case 3:
-        return 'People mix num. 3';
-      case 4:
+      case 25:
+        return 'Me and my twin sister';
+      case 50:
         return 'Me and my homies';
-      case 5:
-        return 'People mix num. 5';
+      case 75:
+        return 'People mix num. 3';
+      case 100:
+        return 'Diverse, open to all';
     }
   }
 
+  deleteEventImage = () => {
+    if (this.state.eventImage) {
+      this.setState({ eventImage: '' });
+    }
+  };
+
   render() {
+    console.log(this.props.eventDetails);
     const cities = this.props.locations.data.map(city => {
-      return { value: city.name };
+      return { label: city.name, value: city.name, key: city.name };
     });
     const eventImage = { uri: this.state.eventImage };
     this.renderStatus();
     const minParticipantsData = [
       {
+        label: '1',
         value: '1',
+        key: '1',
       },
       {
+        label: '5',
         value: '5',
+        key: '5',
       },
       {
+        label: '10',
         value: '10',
+        key: '10',
       },
     ];
     const maxParticipantsData = [
       {
+        label: '5',
         value: '5',
+        key: '5',
       },
       {
+        label: '10',
         value: '10',
+        key: '10',
       },
       {
+        label: 'Unlimited',
         value: 'Unlimited',
+        key: 'Unlimited',
       },
     ];
+    console.log(this.state.date);
     return (
       <View>
         <View style={{ backgroundColor: '#f9f7f6' }}>
-          <TouchableOpacity
-            onPress={this.props.navigateBack}
-            style={styles.backButton}
-          >
-            <Text style={{ fontSize: 22 }}> {'<'} </Text>
+          <TouchableOpacity onPress={this.props.navigateBack}>
+            <Icon name="md-arrow-back" size={26} style={styles.backButton} />
           </TouchableOpacity>
           <Text style={styles.formTitle}>
             {this.props.edit ? 'EDIT EVENT' : 'NEW EVENT'}
@@ -207,6 +270,7 @@ class EventForm extends Component {
           <LabelContainer>
             <LabelView>
               <TextInput
+                style={styles.input}
                 autoCorrect={false}
                 returnKeyType="next"
                 keyboardType="email-address"
@@ -230,6 +294,7 @@ class EventForm extends Component {
           <LabelContainer>
             <LabelView>
               <TextInput
+                style={styles.input}
                 autoCorrect={false}
                 returnKeyType="next"
                 keyboardType="email-address"
@@ -248,33 +313,116 @@ class EventForm extends Component {
             </LabelView>
           </LabelContainer>
 
-          <View
-            style={{
-              alignItems: 'center',
-              width: '100%',
-              backgroundColor: '#e8e9e8',
-            }}
-          >
-            <View style={{ width: 278, marginTop: -20 }}>
-              <Dropdown
-                label="CITY*"
-                data={cities}
+          <LabelContainer style={{ marginBottom: 10, marginTop: 10 }}>
+            <View
+              style={{
+                width: 250,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <DatePicker
+                style={{ width: 165 }}
+                date={this.state.date}
+                mode="date"
+                placeholder="DATE*"
+                format="YYYY-MM-DD"
+                showIcon={false}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateInput: {
+                    borderTopWidth: 0,
+                    borderLeftWidth: 0,
+                    borderRightWidth: 0,
+                    borderBottomWidth: 2,
+                    borderBottomColor: '#979797',
+                    alignItems: 'flex-start',
+                    // justifyContent: 'flex-start',
+                  },
+                  placeholderText: {
+                    fontSize: 17,
+                    color: '#4a4a4a',
+                    textAlign: 'left',
+                  },
+                  dateText: {
+                    fontSize: 17,
+                    textAlign: 'center',
+                    width: 165,
+                  },
+                }}
+                onDateChange={date => {
+                  this.setState({
+                    date,
+                    validationError: '',
+                    error: false,
+                  });
+                }}
+              />
+              <DatePicker
+                style={{ width: 75 }}
+                date={this.state.time}
+                mode="time"
+                placeholder="TIME*"
+                showIcon={false}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                is24Hour
+                customStyles={{
+                  dateInput: {
+                    borderTopWidth: 0,
+                    borderLeftWidth: 0,
+                    borderRightWidth: 0,
+                    borderBottomWidth: 2,
+                    borderBottomColor: '#979797',
+                    alignItems: 'flex-start',
+                  },
+                  placeholderText: {
+                    fontSize: 17,
+                    color: '#4a4a4a',
+                    textAlign: 'left',
+                  },
+                  dateText: {
+                    fontSize: 17,
+                    textAlign: 'center',
+                    width: 75,
+                  },
+                }}
+                onDateChange={time => {
+                  this.setState({
+                    time,
+                    validationError: '',
+                    error: false,
+                  });
+                }}
+              />
+            </View>
+          </LabelContainer>
+
+          <LabelContainer style={{ marginBottom: 20 }}>
+            <View style={{ width: 278 }}>
+              <PickerSelect
+                placeholder={{
+                  label: 'CITY*',
+                  value: null,
+                }}
+                items={cities}
                 value={this.state.city}
-                onChangeText={city =>
+                onValueChange={city =>
                   this.setState({
                     city,
                     validationError: '',
                     error: false,
                   })}
-                fontSize={18}
-                baseColor={'#4a4a4a'}
+                style={{ ...pickerSelectStyles }}
               />
             </View>
-          </View>
+          </LabelContainer>
 
           <LabelContainer>
             <LabelView>
               <TextInput
+                style={styles.input}
                 autoCorrect={false}
                 returnKeyType="next"
                 keyboardType="email-address"
@@ -307,28 +455,36 @@ class EventForm extends Component {
             style={{
               width: 278,
               marginTop: 40,
+              marginBottom: 10,
+              paddingLeft: 21,
               color: '#4a4a4a',
               fontSize: 18,
             }}
           >
             MIN. PARTICIPANTS
           </Text>
-          <View style={{ width: 278, marginTop: -20 }}>
-            <Dropdown
-              value="1"
-              data={minParticipantsData}
+          <View style={{ width: 278 }}>
+            <PickerSelect
+              items={minParticipantsData}
               value={this.state.minParticipants}
-              onChangeText={minParticipants =>
+              onValueChange={minParticipants =>
                 this.setState({
                   minParticipants,
+                  validationError: '',
+                  error: false,
                 })}
-              fontSize={18}
-              baseColor={'#4a4a4a'}
+              style={{ ...pickerSelectStyles }}
             />
           </View>
-          <Text style={{ width: 278, color: '#abaaaa', textAlign: 'center' }}>
+          <LabelTextHelper
+            style={{
+              width: 270,
+              textAlign: 'center',
+              marginTop: 7,
+            }}
+          >
             * Hangout is considered off if less people
-          </Text>
+          </LabelTextHelper>
         </View>
 
         <View
@@ -342,28 +498,36 @@ class EventForm extends Component {
             style={{
               width: 278,
               marginTop: 40,
+              marginBottom: 10,
+              paddingLeft: 21,
               color: '#4a4a4a',
               fontSize: 18,
             }}
           >
             MAX. PARTICIPANTS
           </Text>
-          <View style={{ width: 278, marginTop: -20 }}>
-            <Dropdown
-              value="5"
-              data={maxParticipantsData}
-              fontSize={18}
-              baseColor={'#4a4a4a'}
+          <View style={{ width: 278 }}>
+            <PickerSelect
+              items={maxParticipantsData}
               value={this.state.maxParticipants}
-              onChangeText={maxParticipants =>
+              onValueChange={maxParticipants =>
                 this.setState({
                   maxParticipants,
+                  validationError: '',
+                  error: false,
                 })}
+              style={{ ...pickerSelectStyles }}
             />
           </View>
-          <Text style={{ width: 278, color: '#abaaaa', textAlign: 'center' }}>
+          <LabelTextHelper
+            style={{
+              width: 270,
+              textAlign: 'center',
+              marginTop: 7,
+            }}
+          >
             * New joiners not accepted beyond this number
-          </Text>
+          </LabelTextHelper>
         </View>
 
         <View
@@ -378,13 +542,14 @@ class EventForm extends Component {
           </Text>
           <View style={{ width: 278 }}>
             <Slider
-              maximumValue={5}
-              minimumValue={1}
-              step={1}
+              maximumValue={100}
+              minimumValue={25}
+              step={25}
               value={this.state.participantsMix}
               onValueChange={participantsMix =>
                 this.setState({
                   participantsMix,
+                  validationError: '',
                 })}
               minimumTrackTintColor="#e8e9e8"
               maximumTrackTintColor="#e8e9e8"
@@ -401,19 +566,18 @@ class EventForm extends Component {
           >
             {this.renderPeopleMix(this.state.participantsMix)}
           </Text>
-          <Text
+          <LabelTextHelper
             style={{
-              width: 278,
-              color: '#abaaaa',
+              width: 270,
               textAlign: 'center',
-              marginBottom: 50,
+              marginBottom: 40,
             }}
           >
             * This controls who can see and join the happening. It's based on
             profile personality types and number of shared Yeahs and Nahs
             between participants. Select what might work best for your
             happening.
-          </Text>
+          </LabelTextHelper>
         </View>
         <BottomLabelWrapper
           style={
@@ -439,7 +603,7 @@ class EventForm extends Component {
                 fontFamily: 'NunitoSans-SemiBold',
               }}
             >
-              ADD PHOTO
+              {this.props.edit ? 'CHANGE PHOTO' : 'ADD PHOTO'}
             </LabelText>
             <View style={{ width: 278, marginLeft: 30 }}>
               <LabelTextHelper>
@@ -449,8 +613,32 @@ class EventForm extends Component {
             <ScrollViewPhoto
               contentContainerStyle={styles.scrollViewPhotoContainer}
               horizontal
+              style={{
+                paddingBottom: 12,
+              }}
             >
-              <PhotoBox onPress={this.openImageGallery}>
+              {this.state.eventImage ? (
+                <TouchableOpacity
+                  style={{
+                    height: 25,
+                    width: 25,
+                    borderRadius: 100,
+                    backgroundColor: '#6c6c85',
+                    position: 'absolute',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    right: 0,
+                    zIndex: 1,
+                  }}
+                  onPress={this.deleteEventImage}
+                >
+                  <Text style={{ color: 'white', fontWeight: 'bold' }}>X</Text>
+                </TouchableOpacity>
+              ) : null}
+              <PhotoBox
+                onPress={this.openImageGallery}
+                style={{ marginTop: 7 }}
+              >
                 {eventImage.uri ? (
                   <Image
                     style={{ width: 93, height: 93 }}
@@ -506,9 +694,10 @@ const LabelContainer = styled.View`
 `;
 
 const LabelView = styled.View`
-  width: 278;
+  width: 250;
   border-bottom-width: 2;
   border-bottom-color: #979797;
+  padding-bottom: 7;
 `;
 
 const BottomLabelWrapper = styled.View`
@@ -551,10 +740,23 @@ const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
 
 const RoundTabContainer = styled.View`margin-top: auto;`;
 
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 18,
+    paddingTop: 13,
+    paddingRight: 10,
+    paddingLeft: 20,
+    paddingBottom: 12,
+    borderRadius: 100,
+    backgroundColor: 'white',
+  },
+});
+
 const styles = StyleSheet.create({
   backButton: {
-    marginTop: 5,
-    marginLeft: 5,
+    paddingTop: 10,
+    paddingLeft: 10,
+    padding: 20,
     backgroundColor: 'transparent',
   },
   formTitle: {
@@ -562,6 +764,11 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: '#839297',
     marginBottom: 20,
+    fontFamily: 'NunitoSans-SemiBold',
+  },
+  input: {
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 18,
   },
   scrollViewPhotoContainer: {
     justifyContent: 'space-around',

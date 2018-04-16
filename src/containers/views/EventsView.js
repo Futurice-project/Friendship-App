@@ -5,8 +5,13 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import { Dropdown } from 'react-native-material-dropdown';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
+import _ from 'lodash';
 
 import rest from '../../utils/rest';
 import { connect } from 'react-redux';
@@ -16,6 +21,7 @@ import EventsList from '../../components/Events/EventsList';
 
 const mapStateToProps = state => ({
   events: state.events,
+  eventParticipantsNum: state.eventParticipantsNum,
   auth: state.auth,
 });
 
@@ -27,13 +33,29 @@ const mapDispatchToProps = dispatch => ({
         routeName: 'EventCreateView',
       }),
     ),
+  fetchEventParticipantsNum: () =>
+    dispatch(rest.actions.eventParticipantsNum.get()),
 });
 
 class EventsView extends Component {
+  static navigationOptions = {
+    title: 'Events',
+    header: {
+      visible: true,
+    },
+    tabBarIcon: ({ tintColor }) => (
+      <IconImage
+        source={require('../../../assets/eventsPicture.png')}
+        tintColor={tintColor}
+      />
+    ),
+  };
+
   constructor() {
     super();
     this.state = {
       initialOrder: true,
+      sorting: 'Recommended',
     };
   }
 
@@ -42,23 +64,97 @@ class EventsView extends Component {
       ? this.props.auth.data.decoded.id
       : null;
     this.props.fetchEvents(userId);
+    this.props.fetchEventParticipantsNum();
   };
 
-  renderContent = () => {
-    const { events } = this.props;
-    if (!this.state.initialOrder) {
-      events.data.reverse();
-    }
-    if (!events.loading) {
-      return <EventsList events={events} />;
-    }
-
-    return <ActivityIndicator />;
+  rightText = () => {
+    let data = [
+      { value: 'Recommended' },
+      { value: 'By time' },
+      { value: 'Smallest first' },
+      { value: 'Closest first' },
+    ];
+    return (
+      <Dropdown
+        dropdownMargins={{ min: 15, max: 20 }}
+        dropdownOffset={{ top: 20, left: 15 }}
+        dropdownPosition={0}
+        pickerStyle={{ width: 150, marginTop: 12 }}
+        containerStyle={{ marginBottom: 10, right: 10 }}
+        data={data}
+        value="Recommended"
+        onChangeText={value => {
+          this.setState({ sorting: value });
+        }}
+      />
+    );
   };
+
+  _onRefresh = () => {
+    const userId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
+    this.props.fetchEvents(userId);
+    this.props.fetchEventParticipantsNum();
+  };
+
+  renderEvents = eventsOrder => {
+    return (
+      <EventsList
+        events={eventsOrder}
+        isFetching={
+          this.props.events.loading || this.props.eventParticipantsNum.loading
+        }
+        onRefresh={this._onRefresh}
+        eventParticipantsNum={this.props.eventParticipantsNum}
+      />
+    );
+  };
+
   // render
+  renderContent = () => {
+    const { events, eventParticipantsNum } = this.props;
+    if (events.loading || eventParticipantsNum.loading) {
+      return <ActivityIndicator />;
+    } else if (events.data.id || events.data.data) {
+      return <ActivityIndicator />;
+    } else {
+      switch (this.state.sorting) {
+        case 'By time':
+          events.data = _.orderBy(events.data, ['dateIndex'], ['desc']);
+          //console.log(events);
+          return this.renderEvents(events);
+
+        case 'Smallest first':
+          events.data = _.orderBy(
+            events.data,
+            ['numberParticipantsIndex'],
+            ['acs'],
+          );
+          return this.renderEvents(events);
+
+        case 'Closest first':
+          events.data = _.orderBy(events.data, ['locationSortIndex'], ['desc']);
+          //console.log(events);
+          return this.renderEvents(events);
+        default:
+          console.log(events);
+          events.data = _.orderBy(
+            events.data,
+            ['reccomendationIndex'],
+            ['desc'],
+          );
+          console.log;
+
+        //console.log(events);
+      }
+      return this.renderEvents(events);
+    }
+  };
 
   changeSortOrder = () => {
-    this.setState({ initialOrder: false });
+    this.setState({ initialOrder: !this.state.initialOrder });
+    console.log(this.state.initialOrder);
   };
 
   render = () => {
@@ -69,53 +165,22 @@ class EventsView extends Component {
         </View>
       );
     }
-
     return (
       <View style={{ flex: 1 }}>
-        <EventsHeader headerText="Events" />
-        <TouchableOpacity
-          onPress={() => this.changeSortOrder()}
-          style={{ marginTop: 10, marginBottom: 10 }}
-        >
-          <Text
-            style={{
-              color: '#3a4e61',
-              fontWeight: 'bold',
-              textAlign: 'right',
-              paddingRight: 20,
-            }}
-          >
-            {' '}
-            Recommended{' '}
-          </Text>
-        </TouchableOpacity>
+        <EventsHeader headerText="Events" rightText={this.rightText()} />
         {this.renderContent()}
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={this.props.openEventForm}
-          style={styles.TouchableOpacityStyle}
+        <ActionButton
+          buttonColor="#ff6e40"
+          degrees={0}
+          onPress={() => {
+            this.props.openEventForm();
+          }}
         >
-          <Text style={{ fontSize: 30 }}>{'+'}</Text>
-        </TouchableOpacity>
+          <Icon name="md-add" />
+        </ActionButton>
       </View>
     );
   };
 }
-
-const styles = StyleSheet.create({
-  TouchableOpacityStyle: {
-    position: 'absolute',
-    width: 60,
-    height: 60,
-    borderRadius: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 5,
-    bottom: 15,
-    borderStyle: 'solid',
-    borderWidth: 2,
-    backgroundColor: '#d8d8d8',
-  },
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsView);

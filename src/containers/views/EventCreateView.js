@@ -16,10 +16,12 @@ const mapDispatchToProps = dispatch => ({
         { body: formData, headers: { 'Content-Type': 'multipart/form-data' } },
       ),
     ),
+  fetchEvents: userId => dispatch(rest.actions.events.get({ userId })),
 });
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  events: state.events,
 });
 
 class EventCreateView extends Component {
@@ -39,7 +41,7 @@ class EventCreateView extends Component {
   };
 
   render() {
-    console.log('Host Id', this.state.hostId);
+    console.log(this.props.events);
     return (
       <EventContainer>
         <KeyboardAwareScrollView
@@ -52,6 +54,9 @@ class EventCreateView extends Component {
             navigateBack={this.navigateBack}
             createEvent={this.props.createEvent}
             hostId={this.state.hostId}
+            events={this.props.events}
+            navigation={this.props.navigation}
+            fetchEvents={this.props.fetchEvents}
           />
         </KeyboardAwareScrollView>
       </EventContainer>
