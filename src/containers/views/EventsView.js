@@ -119,7 +119,7 @@ class EventsView extends Component {
     if (events.loading || eventParticipantsNum.loading) {
       return <ActivityIndicator />;
     } else if (events.data.id) {
-      return this.renderEvents(events);
+      return <ActivityIndicator />;
     } else {
       switch (this.state.sorting) {
         case 'By time':
