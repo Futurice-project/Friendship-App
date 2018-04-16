@@ -116,7 +116,18 @@ class EventsDetail extends Component {
         {/* You can access participants avatars through "emojis" variable */}
         <CardSection>
           <TouchableOpacity onPress={() => this.props.openEvent(id)}>
-            <Text>abc</Text>
+            <Text>
+              {emojis != '' ? emojis.length <= 5 ? (
+                emojis
+              ) : (
+                emojis.slice(0, 5).join('') +
+                ' + ' +
+                (emojis.length - 5) +
+                ' others'
+              ) : (
+                'No participants'
+              )}
+            </Text>
           </TouchableOpacity>
         </CardSection>
 
