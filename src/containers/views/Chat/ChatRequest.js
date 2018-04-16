@@ -44,11 +44,11 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
-  openChatView: (chatroomId, username, userEmoji, id) =>
+  openChatView: (chatroomId, username, userEmoji, id, previousRoute) =>
     dispatch(
       NavigationActions.navigate({
         routeName: 'ChatView',
-        params: { chatroomId, username, userEmoji, id },
+        params: { chatroomId, username, userEmoji, id, previousRoute },
       }),
     ),
 });
@@ -71,6 +71,7 @@ export class ChatRequest extends React.Component {
       username,
       emoji,
       this.props.navigation.state.params.user.id,
+      this.props.navigation.state.params.route,
     );
     this.props.sendMessage(
       chatroomId,
@@ -117,9 +118,13 @@ export class ChatRequest extends React.Component {
             onPress={() => this.createChatroom()}
           >
             <Text
-              style={{ fontSize: 20, color: '#faf5f0', fontWeight: 'bold' }}
+              style={{
+                fontSize: 20,
+                color: '#faf5f0',
+                fontFamily: 'NunitoSans-Bold',
+              }}
             >
-              send
+              Send
             </Text>
           </TouchableOpacity>
         </View>
@@ -137,7 +142,7 @@ const styles = {
     textDecorationLine: 'underline',
     fontSize: 13,
     color: '#3b3b3b',
-    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Bold',
     margin: 18,
   },
   sendButtonHeader: {
@@ -149,7 +154,7 @@ const styles = {
         textDecorationLine: 'underline',
         fontSize: 13,
         color: '#3b3b3b',
-        fontWeight: 'bold',
+        fontFamily: 'NunitoSans-Bold',
         margin: 18,
       },
     }),

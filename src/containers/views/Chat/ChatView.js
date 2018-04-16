@@ -68,7 +68,9 @@ class ChatView extends Component {
               index: 0,
               actions: [
                 NavigationActions.navigate({
-                  routeName: 'InboxView',
+                  routeName: navigation.state.params.previousRoute
+                    ? navigation.state.params.previousRoute
+                    : 'InboxView',
                 }),
               ],
             }),

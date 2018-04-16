@@ -8,7 +8,6 @@ import WelcomeView from '../views/WelcomeView';
 import PeopleView from '../views/PeopleView';
 import SignInView from '../views/SignIn/SignInView';
 import SignUpView from '../views/SignUp/SignUpView';
-import ProfileUser from '../views/PeopleProfileView';
 import SignUpMatching from '../views/SignUp/SignUpMatching';
 import SignUpLocation from '../views/SignUp/SignUpLocation';
 import SignUpPersonality from '../views/SignUp/SignUpPersonality';
@@ -19,7 +18,6 @@ import UsersForTagView from '../views/UsersForTagView';
 import EventDetailView from '../views/EventDetailView';
 import EventCreateView from '../views/EventCreateView';
 import EventEditView from '../views/EventEditView';
-import HomeView from '../views/HomeView';
 import Report from '../views/Report/Report';
 import Feedback from '../views/Feedback/Feedback';
 
@@ -78,10 +76,6 @@ export default StackNavigator(
       screen: UsersForTagView,
       navigationOptions: { title: 'Search page' },
     },
-    People: {
-      screen: PeopleView,
-      navigationOptions: { title: 'People page' },
-    },
     SignIn: {
       screen: SignInView,
       navigationOptions: { header: () => null },
@@ -92,10 +86,6 @@ export default StackNavigator(
     },
     SignUpPersonality: {
       screen: SignUpPersonality,
-      navigationOptions: { header: () => null },
-    },
-    ProfileUser: {
-      screen: ProfileUser,
       navigationOptions: { header: () => null },
     },
     ChatView: {
@@ -116,10 +106,6 @@ export default StackNavigator(
     EventEditView: {
       screen: EventEditView,
       navigationOptions: { header: () => null },
-    },
-    HomeView: {
-      screen: HomeView,
-      navigationOptions: { title: 'People page' },
     },
     Report: {
       screen: Report,

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
-import FeedbackListItem from '../../../components/Feedback/FeedbackListItem';
-import feedbackFields from '../../../components/Feedback/feedbackField'; //this is the json file
-import FeedbackContent from '../../../components/Feedback/FeedbackContent';
-import FeedbackStatus from '../../../components/Feedback/FeedbackStatus';
 import Icon from 'react-native-vector-icons/Ionicons';
-import FeedbackHeader from './../../../components/Feedback/FeedbackHeader';
+import {
+  FeedbackListItem,
+  feedbackFields,
+  FeedbackContent,
+  FeedbackStatus,
+  FeedbackHeader,
+} from '../../../components/Feedback';
 
 export default class Feedback extends Component {
   state = {

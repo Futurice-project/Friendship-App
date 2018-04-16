@@ -24,7 +24,7 @@ export default [
         },
       ],
       checkbox: [
-        { id: 1, text: 'Make one good friend' },
+        { id: 1, text: 'Make one good friend' }, // id here is defined by the database value. if database changes, this should be changed as well
         { id: 2, text: 'Find a friend group' },
         { id: 3, text: 'Find fun events' },
         { id: 4, text: 'Find friends to do specific activities with ' },
