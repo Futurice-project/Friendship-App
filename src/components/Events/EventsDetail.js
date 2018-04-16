@@ -90,7 +90,7 @@ class EventsDetail extends Component {
       ? { uri: 'data:image/png;base64,' + srcImage }
       : require('../../../assets/img/placeholder/grone.jpg');
 
-    console.log(emojis);
+    // console.log(emojis);
 
     return (
       <Card>

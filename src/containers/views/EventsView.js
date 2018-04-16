@@ -121,29 +121,29 @@ class EventsView extends Component {
     } else {
       switch (this.state.sorting) {
         case 'By time':
-          //events.data = _.orderBy(events.data, ['dateIndex'], ['asc']);
+          events.data = _.orderBy(events.data, ['dateIndex'], ['asc']);
           console.log(events);
           return this.renderEvents(events);
 
         case 'Smallest first':
-          // events.data = _.orderBy(
-          //   events.data,
-          //   ['numberParticipantsIndex'],
-          //   ['asc'],
-          // );
+          events.data = _.orderBy(
+            events.data,
+            ['numberParticipantsIndex'],
+            ['asc'],
+          );
           return this.renderEvents(events);
 
         case 'Closest first':
-          //events.data = _.orderBy(events.data, ['locationSortIndex'], ['asc']);
-          // events.data = _.orderBy(events.data, ['locationSortIndex'], ['asc']);
+          events.data = _.orderBy(events.data, ['locationSortIndex'], ['asc']);
+          events.data = _.orderBy(events.data, ['locationSortIndex'], ['asc']);
           console.log(events);
           return this.renderEvents(events);
         default:
-          // events.data = _.orderBy(
-          //   events.data,
-          //   ['reccomendationIndex'],
-          //   ['asc'],
-          // );
+          events.data = _.orderBy(
+            events.data,
+            ['reccomendationIndex'],
+            ['asc'],
+          );
 
           console.log(events);
           return this.renderEvents(events);
