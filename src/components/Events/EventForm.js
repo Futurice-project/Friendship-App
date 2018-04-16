@@ -78,8 +78,11 @@ class EventForm extends Component {
         address: this.props.eventDetails.address,
         minParticipants: this.props.eventDetails.minParticipants,
         maxParticipants: this.props.eventDetails.maxParticipants,
-        participantsMix:
+        participantsMix: isNaN(
           100 - parseInt(this.props.eventDetails.participantsMix),
+        )
+          ? 100
+          : 100 - parseInt(this.props.eventDetails.participantsMix),
         time: eventTime,
         date: eventDate,
       });
@@ -145,6 +148,7 @@ class EventForm extends Component {
       eventDate: `${date}T${time}:00.000Z`,
     };
     eventData.participantsMix = 100 - eventData.participantsMix;
+    console.log('MIX TO SEND', eventData.participantsMix);
 
     if (!title || !city || !address || !date) {
       return this.setState({
