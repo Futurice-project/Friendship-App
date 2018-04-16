@@ -41,7 +41,6 @@ class EventCreateView extends Component {
   };
 
   render() {
-    console.log(this.props.events);
     return (
       <EventContainer>
         <KeyboardAwareScrollView

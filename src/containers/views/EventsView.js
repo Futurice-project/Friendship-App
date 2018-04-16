@@ -122,7 +122,6 @@ class EventsView extends Component {
       switch (this.state.sorting) {
         case 'By time':
           events.data = _.orderBy(events.data, ['dateIndex'], ['desc']);
-          //console.log(events);
           return this.renderEvents(events);
 
         case 'Smallest first':
@@ -138,15 +137,11 @@ class EventsView extends Component {
           //console.log(events);
           return this.renderEvents(events);
         default:
-          console.log(events);
           events.data = _.orderBy(
             events.data,
             ['reccomendationIndex'],
             ['desc'],
           );
-          console.log;
-
-        //console.log(events);
       }
       return this.renderEvents(events);
     }
