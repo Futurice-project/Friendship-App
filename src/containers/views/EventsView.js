@@ -116,7 +116,7 @@ class EventsView extends Component {
     const { events, eventParticipantsNum } = this.props;
     if (events.loading || eventParticipantsNum.loading) {
       return <ActivityIndicator />;
-    } else if (events.data.id) {
+    } else if (events.data.id || events.data.data) {
       return <ActivityIndicator />;
     } else {
       switch (this.state.sorting) {
