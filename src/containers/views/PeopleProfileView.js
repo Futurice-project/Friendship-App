@@ -34,6 +34,13 @@ const mapDispatchToProps = dispatch => ({
         params: { user, route: previousRoute },
       }),
     ),
+  openChatInbox: (user, previousRoute) =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'ChatInbox',
+        params: { user, route: previousRoute },
+      }),
+    ),
 });
 
 class ProfileUser extends React.Component {
@@ -109,6 +116,13 @@ class ProfileUser extends React.Component {
   };
 
   render = () => {
+    const id = this.props.currentUserId;
+    const hello = rest.actions.chatRoomsWithUserId({
+      id,
+    }) /* === true
+        ? "heelo"
+        : "no"*/;
+    console.log(hello);
     const userLoggedIn = this.props.auth.data.decoded;
     const Reportdata = {
       id: this.props.userDetails.data.id,
