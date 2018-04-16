@@ -99,8 +99,6 @@ class EventsView extends Component {
   };
 
   renderEvents = eventsOrder => {
-    console.log('COMING TO RENDER ', eventsOrder);
-
     return (
       <EventsList
         events={eventsOrder}
@@ -123,7 +121,7 @@ class EventsView extends Component {
     } else {
       switch (this.state.sorting) {
         case 'By time':
-          events.data = _.orderBy(events.data, ['dateIndex'], ['asc']);
+          events.data = _.orderBy(events.data, ['dateIndex'], ['desc']);
           //console.log(events);
           return this.renderEvents(events);
 
@@ -131,13 +129,12 @@ class EventsView extends Component {
           events.data = _.orderBy(
             events.data,
             ['numberParticipantsIndex'],
-            ['asc'],
+            ['acs'],
           );
           return this.renderEvents(events);
 
         case 'Closest first':
-          events.data = _.orderBy(events.data, ['locationSortIndex'], ['asc']);
-          events.data = _.orderBy(events.data, ['locationSortIndex'], ['asc']);
+          events.data = _.orderBy(events.data, ['locationSortIndex'], ['desc']);
           //console.log(events);
           return this.renderEvents(events);
         default:
@@ -145,7 +142,7 @@ class EventsView extends Component {
           events.data = _.orderBy(
             events.data,
             ['reccomendationIndex'],
-            ['asc'],
+            ['desc'],
           );
           console.log;
 
