@@ -160,14 +160,11 @@ class ProfileUser extends React.Component {
       return this.renderNotLoggedIn();
     }
 
-    if (!this.state.loaded) {
+    if (!this.state.loaded || !this.props.chatrooms) {
       return <ActivityIndicator />;
     }
 
     let existingChatRoomId;
-    let receiverId;
-    let receiverEmoji;
-    let receiverUsername;
     // Load all existing chatrooms and check if one them has a matching users
     const allChatRooms = this.props.chatrooms.forEach(item => {
       if (
@@ -175,11 +172,8 @@ class ProfileUser extends React.Component {
         item.receiver.id === this.props.userDetails.data.id
       ) {
         existingChatRoomId = item.id;
-        receiverUsername = item.receiver.username;
       }
     });
-    //console.log(existingChatRoomId);
-    //console.log(existingChatRoomId);
 
     return (
       <ProfileContainer>
@@ -209,7 +203,7 @@ class ProfileUser extends React.Component {
           openChatView={() =>
             this.props.openChatView(
               existingChatRoomId,
-              receiverUsername,
+              this.props.userDetails.data.username,
               this.props.userDetails.data.emoji,
               this.props.userDetails.data.id,
               'People',

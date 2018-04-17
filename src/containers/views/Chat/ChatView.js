@@ -47,7 +47,6 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-//console.log(this.navigation);
 const mapStateToProps = state => ({
   auth: state.auth,
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
@@ -236,8 +235,6 @@ class ChatView extends Component {
           msgTime.toTimeString().split(' ')[0];
       }
     }
-
-    console.log(this.props.navigation);
     return (
       <View style={messageCardStyle}>
         <Text
