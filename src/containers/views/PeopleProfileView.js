@@ -179,7 +179,7 @@ class ProfileUser extends React.Component {
       }
     });
     //console.log(existingChatRoomId);
-    console.log(existingChatRoomId);
+    //console.log(existingChatRoomId);
 
     return (
       <ProfileContainer>

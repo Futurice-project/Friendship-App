@@ -98,7 +98,7 @@ class ChatView extends Component {
     this.setState({
       chatroomId: this.props.navigation.state.params.chatroomId
         ? this.props.navigation.state.params.chatroomId
-        : this.props.existingChatId,
+        : this.props.navigation.state.params.existingChatRoomId,
     });
     this.props.navigation.setParams({
       showReport: this.showReport,
@@ -108,7 +108,7 @@ class ChatView extends Component {
     this.props.chatRoomMessages(
       this.props.navigation.state.params.chatroomId
         ? this.props.navigation.state.params.chatroomId
-        : this.props.existingChatId,
+        : this.props.navigation.state.params.existingChatRoomId,
     );
     //update all unread messages after 3 seconds to make sure all the chatroom messages have been fetched
     setTimeout(() => this.getUnreadMessagesAndUpdateStatus(), 3000);
@@ -137,9 +137,7 @@ class ChatView extends Component {
 
   sendMessage = () => {
     //Keyboard.dismiss();
-    const chatroomId = this.props.navigation.state.params.chatroomId
-      ? this.props.navigation.state.params.chatroomId
-      : this.props.existingChatId;
+    const chatroomId = this.state.chatroomId;
     const textMessage = this.state.text;
     const userId = this.props.currentUserId;
 
@@ -239,7 +237,7 @@ class ChatView extends Component {
       }
     }
 
-    //console.log(this.props.currentUserId);
+    console.log(this.props.navigation);
     return (
       <View style={messageCardStyle}>
         <Text
