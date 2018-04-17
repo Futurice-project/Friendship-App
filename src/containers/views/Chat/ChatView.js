@@ -46,10 +46,8 @@ const mapDispatchToProps = dispatch => ({
     );
   },
 });
-/*const chatId = this.navigation.state.params.chatroomId
-  ? this.navigation.state.params.chatroomId
-  : this.props.existingChat;*/
-console.log(this.navigation);
+
+//console.log(this.navigation);
 const mapStateToProps = state => ({
   auth: state.auth,
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
@@ -98,7 +96,7 @@ class ChatView extends Component {
   };
   componentDidMount = () => {
     this.setState({
-      chatroomId: !this.props.existingChatId
+      chatroomId: this.props.navigation.state.params.chatroomId
         ? this.props.navigation.state.params.chatroomId
         : this.props.existingChatId,
     });
@@ -108,7 +106,7 @@ class ChatView extends Component {
       auth: this.props.auth.data.token,
     });
     this.props.chatRoomMessages(
-      !this.props.existingChatId
+      this.props.navigation.state.params.chatroomId
         ? this.props.navigation.state.params.chatroomId
         : this.props.existingChatId,
     );
@@ -139,13 +137,11 @@ class ChatView extends Component {
 
   sendMessage = () => {
     //Keyboard.dismiss();
-    const chatroomId = !this.props.existingChatId
+    const chatroomId = this.props.navigation.state.params.chatroomId
       ? this.props.navigation.state.params.chatroomId
       : this.props.existingChatId;
     const textMessage = this.state.text;
-    const userId = this.props.currentUserId
-      ? this.props.currentUserId
-      : this.props.receiverId;
+    const userId = this.props.currentUserId;
 
     this.props.sendMessage(chatroomId, textMessage, userId);
     this.setState({ text: '' });

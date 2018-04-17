@@ -178,6 +178,7 @@ class ProfileUser extends React.Component {
         receiverUsername = item.receiver.username;
       }
     });
+    //console.log(existingChatRoomId);
     console.log(existingChatRoomId);
 
     return (
@@ -215,7 +216,7 @@ class ProfileUser extends React.Component {
             )}
           hate={hate}
           love={love}
-          existingChatRoom={this.existingChatRoomId}
+          existingChatRoom={existingChatRoomId}
         />
         <PopUpMenu
           isReportVisible={() =>

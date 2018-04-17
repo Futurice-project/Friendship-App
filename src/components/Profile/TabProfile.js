@@ -40,17 +40,17 @@ export default class TabProfile extends Component {
   };
 
   renderSendMsg() {
+    const roomExists =
+      this.props.existingChatRoom !== undefined
+        ? this.props.openChatView
+        : this.props.onChatRequest;
+
     if (!this.props.myprofile) {
       return (
         <View style={{ backgroundColor: this.state.backcolor }}>
           <View style={styles.ButtonOption}>
             <TouchableOpacity
-              onPress={
-                /*!this.props.existingChatroom ? (
-                  this.props.onChatRequest
-                ) : (*/
-                this.props.openChatView
-              }
+              onPress={roomExists}
               style={[
                 styles.buttonStyle,
                 { backgroundColor: this.state.colorBackButton },
@@ -72,6 +72,7 @@ export default class TabProfile extends Component {
   }
 
   render = () => {
+    //console.log(typeof this.props.existingChatroom);
     const naahsActivities = this.props.hate.filter(e => e.category === 1);
     const naahsInterests = this.props.hate.filter(e => e.category === 2);
     const naahsFriendship = this.props.hate.filter(e => e.category === 3);
