@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import rest from '../../../utils/rest';
 import TwoPersonalities from '../../../components/SignUp/TwoPersonalities';
-import validate from '../../../components/SignUp/validate';
+import { validatePersonnalities } from '../../../components/SignUp/validate';
 import { Field, reduxForm, submit } from 'redux-form';
 import { PERSONALITIES } from '../../../components/SignUp/Constants';
 import SignupHeader from '../../../components/SignUp/SignupHeader';
@@ -168,7 +168,7 @@ export default reduxForm({
   form: 'signup',
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
-  onSubmit: validate,
+  onSubmit: validatePersonnalities,
   onSubmitSuccess: (result, dispatch, props) => {
     dispatch(props.onSubmitSucceeded);
   },
