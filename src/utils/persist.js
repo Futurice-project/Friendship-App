@@ -1,34 +1,11 @@
 import { AsyncStorage } from 'react-native';
 import { persistStore } from 'redux-persist';
-import rest from './rest';
 
 const persistConfig = {
   storage: AsyncStorage,
 
-  // blacklisted reducers, useful when debugging to recover from broken state
-  blacklist: [
-    'navigatorState',
-    'users',
-    'usersByPage',
-    'usersSearch',
-    'userDetails',
-    'tagsForUser',
-    'personalitiesForUser',
-    'currentUser',
-    'tagsForCurrentUser',
-    'personalitiesForCurrentUser',
-    'userlistForTag',
-    'chatRooms',
-    'chatRoomMessages',
-    'sendMessage',
-    'chatRoomsWithUserId',
-    'createChatRoom',
-    'personalities',
-    'locations',
-    'createUserPersonality',
-    'createUserPersonalities',
-    'createUserLocations',
-  ],
+  // whitelisted reducers, all the other reducer are not persisted
+  whitelist: ['auth'],
 };
 
 export default (store, callback) =>

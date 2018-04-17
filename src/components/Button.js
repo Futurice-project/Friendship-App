@@ -39,7 +39,7 @@ const TextWrapper = styled.View`
 
 /* Styling for button text */
 const ButtonText = styled.Text`
-  font-weight: bold;
+  font-family: 'NunitoSans-SemiBold'
   color: ${props => {
     switch (props.textColor) {
       case 'white':
