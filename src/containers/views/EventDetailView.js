@@ -86,7 +86,6 @@ class EventDetailView extends Component {
     await this.props.fetchEventParticipants(eventId, userId);
     await this.props.fetchEventPersonalities(eventId);
     await this.props.fetchEventTags(eventId);
-    await this.props.fetchEventParticipation(eventId, userId);
   }
 
   navigateBack = () => {
@@ -114,6 +113,7 @@ class EventDetailView extends Component {
         description,
         city,
         address,
+        eventDate,
       } = this.props.eventDetails.data;
 
       // if there is no picture for the user we use a default image
@@ -134,12 +134,14 @@ class EventDetailView extends Component {
             showModal={this._showModal}
             srcImage={srcImage}
             navigateBack={this.navigateBack}
+            eventDate={eventDate}
             isHost={this.props.eventDetails.data.hostId === userId}
           />
           <DescriptionWrapper>
             <Description>{description}</Description>
           </DescriptionWrapper>
           <EventBottomPart
+            loaded={this.state.loaded}
             participants={this.props.eventParticipants}
             personalities={this.props.eventPersonalities}
             tags={this.props.eventTags}
@@ -147,6 +149,7 @@ class EventDetailView extends Component {
             participation={this.props.eventParticipation}
             isHost={this.props.eventDetails.data.hostId === userId}
             currentUser={userId}
+            hostId={this.props.eventDetails.data.hostId}
           />
           <MyEventModal
             eventDetails={this.props.eventDetails.data}

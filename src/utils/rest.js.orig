@@ -29,7 +29,13 @@ let apiRoot;
  * */
 if (process.env.NODE_ENV === 'development') {
   apiRoot =
+<<<<<<< HEAD
+    Platform.OS === 'ios'
+      ? 'http://192.168.43.199:3888'
+      : 'http://localhost:3888';
+=======
     Platform.OS === 'ios' ? 'http://localhost:3888' : 'http://localhost:3888';
+>>>>>>> origin
 } else {
   apiRoot = 'https://friendshipapp-backend.herokuapp.com';
 }

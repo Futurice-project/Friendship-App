@@ -317,6 +317,9 @@ const styles = {
     margin: 10,
     marginRight: 20,
     marginLeft: 40,
+    backgroundColor: '#f79a6f',
+    borderRadius: 20,
+    alignSelf: 'flex-end',
   },
   ReceiveCard: {
     flex: 1,
@@ -325,6 +328,9 @@ const styles = {
     margin: 10,
     marginRight: 40,
     marginLeft: 20,
+    backgroundColor: '#e0dddb',
+    borderRadius: 20,
+    alignSelf: 'flex-start',
   },
 };
 
