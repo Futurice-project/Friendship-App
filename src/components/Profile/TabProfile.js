@@ -72,7 +72,6 @@ export default class TabProfile extends Component {
   }
 
   render = () => {
-    //console.log(typeof this.props.existingChatroom);
     const naahsActivities = this.props.hate.filter(e => e.category === 1);
     const naahsInterests = this.props.hate.filter(e => e.category === 2);
     const naahsFriendship = this.props.hate.filter(e => e.category === 3);
