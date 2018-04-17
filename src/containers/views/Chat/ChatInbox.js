@@ -24,11 +24,11 @@ export class ChatInbox extends React.Component {
   state = { showReport: false };
 
   componentDidMount() {
-    // this.timer = setInterval(
-    //   async () =>
-    //     await this.props.chatRoomsWithUserId(this.props.currentUserId),
-    //   3000,
-    // );
+    this.timer = setInterval(
+      async () =>
+        await this.props.chatRoomsWithUserId(this.props.currentUserId),
+      3000,
+    );
   }
 
   componentWillUnmount() {
