@@ -19,6 +19,7 @@ const mapStateToProps = state => ({
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
   personalitiesForUser: state.personalitiesForUser,
+  chatrooms: state.chatRoomsWithUserId.data.data,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -34,11 +35,17 @@ const mapDispatchToProps = dispatch => ({
         params: { user, route: previousRoute },
       }),
     ),
-  openChatInbox: (user, previousRoute) =>
+  openChatView: (existingChatRoomId, username, userEmoji, id, previousRoute) =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'ChatInbox',
-        params: { user, route: previousRoute },
+        routeName: 'ChatView',
+        params: {
+          existingChatRoomId,
+          username,
+          userEmoji,
+          id,
+          previousRoute,
+        },
       }),
     ),
 });
@@ -67,6 +74,7 @@ class ProfileUser extends React.Component {
     this.props.refreshUser(userId);
     this.props.refreshTagsForUser(userId);
     this.props.refreshPersonalitiesForUser(userId);
+    this.props.chatrooms;
   };
 
   navigateBack = () => {
@@ -116,13 +124,6 @@ class ProfileUser extends React.Component {
   };
 
   render = () => {
-    const id = this.props.currentUserId;
-    const hello = rest.actions.chatRoomsWithUserId({
-      id,
-    }) /* === true
-        ? "heelo"
-        : "no"*/;
-    console.log(hello);
     const userLoggedIn = this.props.auth.data.decoded;
     const Reportdata = {
       id: this.props.userDetails.data.id,
@@ -163,6 +164,22 @@ class ProfileUser extends React.Component {
       return <ActivityIndicator />;
     }
 
+    let existingChatRoomId;
+    let receiverId;
+    let receiverEmoji;
+    let receiverUsername;
+    // Load all existing chatrooms and check if one them has a matching users
+    const allChatRooms = this.props.chatrooms.forEach(item => {
+      if (
+        item.creator.id === this.props.auth.data.decoded.id &&
+        item.receiver.id === this.props.userDetails.data.id
+      ) {
+        existingChatRoomId = item.id;
+        receiverUsername = item.receiver.username;
+      }
+    });
+    console.log(existingChatRoomId);
+
     return (
       <ProfileContainer>
         <ProfileTopPart
@@ -188,8 +205,17 @@ class ProfileUser extends React.Component {
         <TabProfile
           onChatRequest={() =>
             this.props.openChatRequest(this.props.userDetails.data, 'People')}
+          openChatView={() =>
+            this.props.openChatView(
+              existingChatRoomId,
+              receiverUsername,
+              this.props.userDetails.data.emoji,
+              this.props.userDetails.data.id,
+              'People',
+            )}
           hate={hate}
           love={love}
+          existingChatRoom={this.existingChatRoomId}
         />
         <PopUpMenu
           isReportVisible={() =>

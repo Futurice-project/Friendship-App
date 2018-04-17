@@ -45,7 +45,12 @@ export default class TabProfile extends Component {
         <View style={{ backgroundColor: this.state.backcolor }}>
           <View style={styles.ButtonOption}>
             <TouchableOpacity
-              onPress={this.props.onChatRequest}
+              onPress={
+                /*!this.props.existingChatroom ? (
+                  this.props.onChatRequest
+                ) : (*/
+                this.props.openChatView
+              }
               style={[
                 styles.buttonStyle,
                 { backgroundColor: this.state.colorBackButton },

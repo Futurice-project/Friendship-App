@@ -46,7 +46,10 @@ const mapDispatchToProps = dispatch => ({
     );
   },
 });
-
+/*const chatId = this.navigation.state.params.chatroomId
+  ? this.navigation.state.params.chatroomId
+  : this.props.existingChat;*/
+console.log(this.navigation);
 const mapStateToProps = state => ({
   auth: state.auth,
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
@@ -93,17 +96,22 @@ class ChatView extends Component {
     description: '',
     isOptionsVisible: false,
   };
-
   componentDidMount = () => {
     this.setState({
-      chatroomId: this.props.navigation.state.params.chatroomId,
+      chatroomId: !this.props.existingChatId
+        ? this.props.navigation.state.params.chatroomId
+        : this.props.existingChatId,
     });
     this.props.navigation.setParams({
       showReport: this.showReport,
       currentUser: this.props.currentUserId,
       auth: this.props.auth.data.token,
     });
-    this.props.chatRoomMessages(this.props.navigation.state.params.chatroomId);
+    this.props.chatRoomMessages(
+      !this.props.existingChatId
+        ? this.props.navigation.state.params.chatroomId
+        : this.props.existingChatId,
+    );
     //update all unread messages after 3 seconds to make sure all the chatroom messages have been fetched
     setTimeout(() => this.getUnreadMessagesAndUpdateStatus(), 3000);
   };
@@ -131,9 +139,13 @@ class ChatView extends Component {
 
   sendMessage = () => {
     //Keyboard.dismiss();
-    const chatroomId = this.props.navigation.state.params.chatroomId;
+    const chatroomId = !this.props.existingChatId
+      ? this.props.navigation.state.params.chatroomId
+      : this.props.existingChatId;
     const textMessage = this.state.text;
-    const userId = this.props.currentUserId;
+    const userId = this.props.currentUserId
+      ? this.props.currentUserId
+      : this.props.receiverId;
 
     this.props.sendMessage(chatroomId, textMessage, userId);
     this.setState({ text: '' });
@@ -231,6 +243,7 @@ class ChatView extends Component {
       }
     }
 
+    //console.log(this.props.currentUserId);
     return (
       <View style={messageCardStyle}>
         <Text
