@@ -8,7 +8,7 @@ import SignupHeader from '../../../components/SignUp/SignupHeader';
 import MainInformations from '../../../components/SignUp/MainInformations';
 import AdditionalInformations from '../../../components/SignUp/AdditionalInformations';
 import PicturePicker from '../../../components/SignUp/PicturePicker';
-import validate from '../../../components/SignUp/validate';
+import { validateUserInformations } from '../../../components/SignUp/validate';
 
 /* The sign up process starts here with the user's information */
 class UserInformation extends React.Component {
@@ -40,7 +40,7 @@ export default reduxForm({
   form: 'signup',
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
-  onSubmit: validate,
+  onSubmit: validateUserInformations,
   onSubmitSuccess: (result, dispatch, props) => {
     dispatch(props.onSubmitSucceeded);
   },
