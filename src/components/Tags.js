@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => ({
@@ -18,12 +18,33 @@ class Tag extends React.Component {
   render() {
     let color = this.props.dark ? '#6eb1ea' : '#ff8a65';
     return (
-      <TouchableOpacity
-        style={[styles.rectangle, { backgroundColor: color }]}
-        onPress={() => this.props.openSearchTag(this.props.data.id)}
-      >
-        <Text style={styles.item}>{this.props.data.name}</Text>
-      </TouchableOpacity>
+      <View>
+        {this.props.amount && (
+          <View
+            style={{
+              height: 25,
+              width: 25,
+              borderRadius: 100,
+              backgroundColor: '#6c6c85',
+              position: 'absolute',
+              alignItems: 'center',
+              justifyContent: 'center',
+              right: 0,
+              zIndex: 1,
+            }}
+          >
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+              {this.props.amount}
+            </Text>
+          </View>
+        )}
+        <TouchableOpacity
+          style={[styles.rectangle, { backgroundColor: color }]}
+          onPress={() => this.props.openSearchTag(this.props.data.id)}
+        >
+          <Text style={styles.item}>{this.props.data.name}</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }

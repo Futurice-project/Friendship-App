@@ -104,7 +104,6 @@ export default class MultiSelect extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // console.log('Component Updating: ', nextProps.selectedItems);
     return true;
   }
 

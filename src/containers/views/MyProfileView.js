@@ -1,8 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, Text, View, StyleSheet } from 'react-native';
+import {
+  ActivityIndicator,
+  Text,
+  View,
+  StyleSheet,
+  BackHandler,
+} from 'react-native';
 import { NavigationActions } from 'react-navigation';
-
 import rest from '../../utils/rest';
 import {
   Centered,
@@ -14,6 +19,7 @@ import TabProfile from '../../components/Profile/TabProfile';
 import MyProfileModal from '../../components/Profile/MyProfileModal';
 import Personality from '../../components/SignUp/Personality';
 import ProfileTopPart from '../../components/Profile/ProfileTopPart';
+import EditForm from '../../components/Profile/EditForm';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -37,10 +43,19 @@ class MyProfile extends React.Component {
   state = {
     loaded: false,
     isModalVisible: false,
+    showEditForm: false,
   };
 
   componentDidMount() {
     this.fetchCurrentUserInfo();
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.setState({ showEditForm: false });
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,6 +84,15 @@ class MyProfile extends React.Component {
   _showModal = () => this.setState({ isModalVisible: true });
 
   _hideModal = () => this.setState({ isModalVisible: false });
+
+  onFeedback = () => {
+    const Feedbackdata = {
+      currentUser: this.props.auth.data.decoded.id,
+      auth: this.props.auth.data.token,
+    };
+    this._hideModal();
+    this.props.navigation.navigate('Feedback', { data: Feedbackdata });
+  };
 
   navigateBack = () => {
     const backAction = NavigationActions.back();
@@ -118,7 +142,6 @@ class MyProfile extends React.Component {
 
   render = () => {
     const userLoggedIn = this.props.auth.data.decoded;
-
     let love = this.props.tagsForCurrentUser.data.filter(tag => {
       return tag.love === true;
     });
@@ -147,6 +170,16 @@ class MyProfile extends React.Component {
       return <ActivityIndicator />;
     }
 
+    if (this.state.showEditForm) {
+      return (
+        <EditForm
+          userData={this.props.currentUser.data}
+          closeEditForm={() => this.setState({ showEditForm: false })}
+          onRefresh={() => this.fetchCurrentUserInfo()}
+        />
+      );
+    }
+
     return (
       <ProfileContainer>
         <ProfileTopPart
@@ -162,6 +195,7 @@ class MyProfile extends React.Component {
           myProfile
           birthyear={this.props.currentUser.data.birthyear}
           genderList={this.props.currentUser.data.genderlist}
+          showEditForm={() => this.setState({ showEditForm: true })}
         />
 
         <DescriptionWrapper>
@@ -179,6 +213,7 @@ class MyProfile extends React.Component {
           isModalVisible={this.state.isModalVisible}
           onPressButton={this._onPressButton}
           signOut={this.props.signOut}
+          onFeedback={this.onFeedback}
         />
       </ProfileContainer>
     );

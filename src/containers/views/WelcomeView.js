@@ -7,6 +7,7 @@ import LaunchingPageLogoAsset from '../../../assets/drawable-mdpi/friendship_log
 import PreviewLogoAsset from '../../../assets/drawable-mdpi/icon_preview.png';
 import Button from '../../components/Button';
 import RoundTab from '../../components/RoundTab';
+import rest from '../../utils/rest';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -15,9 +16,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   openPreview: () =>
     dispatch(
-      NavigationActions.navigate({
-        routeName: 'Tabs',
-      }),
+      rest.actions.updateReadMessages(
+        {},
+        { body: JSON.stringify({ messageIdArr: [1, 2, 3] }) },
+      ),
     ),
 
   openSignUp: () =>
@@ -42,7 +44,7 @@ const mapDispatchToProps = dispatch => ({
 
 /** Styled View for the launching page
  *  This view contains the different options a user can choose to navigate in the app.
- *  Depending on the user's choice, the app will go to either the navigationScreen, 
+ *  Depending on the user's choice, the app will go to either the navigationScreen,
  *  the LoginScreen or the SignupScreen
  */
 export class WelcomeView extends React.Component {
@@ -103,7 +105,7 @@ const LaunchingPageWrapper = styled.View`
 
 /* Container for the launching message of the app */
 const LaunchingMessage = styled.View`
-  flex: 2;
+  flex: 3;
   align-items: center;
   justify-content: center;
 `;
@@ -119,6 +121,8 @@ const Connection = styled.View`
   flex: 1;
   flex-direction: row;
   background-color: #ff8a65;
+  align-items: center;
+  padding-bottom: 20px;
 `;
 
 /* Container for each options */

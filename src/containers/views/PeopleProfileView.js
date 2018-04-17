@@ -2,7 +2,6 @@ import React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-
 import {
   Centered,
   DescriptionWrapper,
@@ -14,7 +13,6 @@ import TabProfile from '../../components/Profile/TabProfile';
 import PopUpMenu from '../../components/PopUpMenu';
 import Personality from '../../components/SignUp/Personality';
 import ProfileTopPart from '../../components/Profile/ProfileTopPart';
-import PeopleProfileReportModal from '../../components/Profile/PeopleProfileReportModal';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -29,14 +27,19 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.tagsForUser.get({ userId })),
   refreshPersonalitiesForUser: userId =>
     dispatch(rest.actions.personalitiesForUser.get({ userId })),
+  openChatRequest: (user, previousRoute) =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'ChatRequest',
+        params: { user, route: previousRoute },
+      }),
+    ),
 });
 
 class ProfileUser extends React.Component {
   state = {
     loaded: false,
     age: '',
-    isReportVisible: false,
-    reportDescription: '',
   };
 
   componentDidMount() {
@@ -62,30 +65,6 @@ class ProfileUser extends React.Component {
   navigateBack = () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
-  };
-
-  // Modal functions
-  showReport = () => {
-    const { isReportVisible } = this.state;
-    this.setState({ isReportVisible: !isReportVisible });
-  };
-
-  sendReport = () => {
-    const userId = this.props.userDetails.data.id;
-    const description = this.state.reportDescription;
-    const reported_by = this.props.auth.data.decoded.id;
-    fetch('http://localhost:3888/reports', {
-      method: 'post',
-      headers: {
-        Authorization: this.props.auth.data.token,
-      },
-      body: JSON.stringify({
-        userId,
-        description,
-        reported_by,
-      }),
-    });
-    this.setState({ isReportVisible: false });
   };
 
   renderPersonalities() {
@@ -131,7 +110,12 @@ class ProfileUser extends React.Component {
 
   render = () => {
     const userLoggedIn = this.props.auth.data.decoded;
-    let reportTitle = 'Report ' + this.props.userDetails.data.username;
+    const Reportdata = {
+      id: this.props.userDetails.data.id,
+      currentUser: this.props.auth.data.decoded.id,
+      auth: this.props.auth.data.token,
+    };
+
     let love = this.props.tagsForUser.data.filter(e => e.love === true);
     let hate = this.props.tagsForUser.data.filter(e => e.love === false);
 
@@ -179,7 +163,6 @@ class ProfileUser extends React.Component {
           navigateBack={this.navigateBack}
           birthyear={this.props.userDetails.data.birthyear}
           genderList={this.props.userDetails.data.genderlist}
-          showModal={this._showModal}
         />
 
         <DescriptionWrapper>
@@ -188,19 +171,16 @@ class ProfileUser extends React.Component {
         <View style={{ backgroundColor: '#faf5f0' }}>
           {this.renderPersonalities()}
         </View>
-        <TabProfile hate={hate} love={love} />
-
-        <PeopleProfileReportModal
-          fn_reportDescription={reportDescription =>
-            this.setState({ reportDescription })}
-          reportDescription={this.state.reportDescription}
-          reportTitle={reportTitle}
-          isReportVisible={this.state.isReportVisible}
-          showReport={this.showReport}
-          sendReport={this.sendReport}
-          hideModal={this._hideModal}
+        <TabProfile
+          onChatRequest={() =>
+            this.props.openChatRequest(this.props.userDetails.data, 'People')}
+          hate={hate}
+          love={love}
         />
-        <PopUpMenu isReportVisible={this.showReport} />
+        <PopUpMenu
+          isReportVisible={() =>
+            this.props.navigation.navigate('Report', { data: Reportdata })}
+        />
       </ProfileContainer>
     );
   };

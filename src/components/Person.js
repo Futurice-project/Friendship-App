@@ -93,8 +93,23 @@ class Person extends React.Component {
         }
       : require('../../assets/img/placeholder/grone.jpg');
     return (
-      <Image style={styles.topPart} source={srcImage}>
-        <View style={{ flex: 70, backgroundColor: 'rgba(96, 104, 109, 0.55)' }}>
+      <TouchableOpacity
+        style={styles.nameView}
+        onPress={() =>
+          this.props.openProfile(this.props.data.id, this.props.data.username)}
+      >
+        <Image style={styles.topPart} source={srcImage} />
+        <View
+          style={{
+            flex: 70,
+            backgroundColor: 'rgba(96, 104, 109, 0.55)',
+            width: 220,
+            height: 220,
+            marginLeft: 20,
+            position: 'absolute',
+            top: 110,
+          }}
+        >
           <BoldDescription style={styles.topText}>
             {this.props.data.description}
           </BoldDescription>
@@ -110,16 +125,7 @@ class Person extends React.Component {
               <Text style={styles.emoji}>{this.props.data.emoji}</Text>
             </View>
             <View style={styles.viewBottom}>
-              <TouchableOpacity
-                style={styles.nameView}
-                onPress={() =>
-                  this.props.openProfile(
-                    this.props.data.id,
-                    this.props.data.username,
-                  )}
-              >
-                <Text style={styles.textName}>{this.state.shortUser}</Text>
-              </TouchableOpacity>
+              <Text style={styles.textName}>{this.state.shortUser}</Text>
               <Text style={styles.textDetails}>
                 {this.state.age}
                 {this.state.genders}
@@ -148,7 +154,7 @@ class Person extends React.Component {
             </View>
           </View>
         </FlexRow>
-      </Image>
+      </TouchableOpacity>
     );
   };
 

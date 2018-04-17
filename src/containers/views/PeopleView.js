@@ -35,7 +35,7 @@ const mapDispatchToProps = dispatch => ({
     ),
 });
 
-export class SearchView extends React.Component {
+export class PeopleView extends React.Component {
   state = {
     userData: [],
     searchedUsername: '',
@@ -102,7 +102,7 @@ export class SearchView extends React.Component {
         <Centered style={{ paddingBottom: 45, backgroundColor: '#fff' }}>
           <FlatList
             data={data}
-            keyExtractor={item => item.id}
+            keyExtractor={(item, index) => index}
             renderItem={({ item }) => <Person box data={item} />}
             onEndReached={this.handleEnd}
             onEndReachedThreshold={0.4}
@@ -145,4 +145,4 @@ export class SearchView extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchView);
+export default connect(mapStateToProps, mapDispatchToProps)(PeopleView);

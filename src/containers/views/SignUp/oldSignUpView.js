@@ -137,7 +137,6 @@ class SignUpView extends React.Component {
         }
       }
     }
-
     return tempFormData;
   }
 

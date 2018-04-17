@@ -176,9 +176,6 @@ class YeahAndNaah extends React.Component {
   }
 
   resetChoice() {
-    console.log(
-      'Resetting choice ' + this.props.activityId + ' : Reset view as initial',
-    );
     this.setState({
       wrapperColor: 0,
       yeahButton: true,
@@ -195,7 +192,6 @@ class YeahAndNaah extends React.Component {
         <LoveAndHatePart>
           <LoveAndHateButton
             onPress={() => {
-              console.log('YEAH Button pressed');
               this.yeahActivity();
             }}
           >
@@ -212,7 +208,6 @@ class YeahAndNaah extends React.Component {
         <LoveAndHatePart>
           <LoveAndHateButton
             onPress={() => {
-              console.log('NAH Button pressed');
               this.nahActivity();
             }}
           >
@@ -231,7 +226,6 @@ class YeahAndNaah extends React.Component {
       <LoveAndHatePart textAligment={this.state.wrapperColor}>
         <LoveAndHateButton
           onPress={() => {
-            console.log('RESET Button pressed');
             this.resetChoice();
           }}
           style={{

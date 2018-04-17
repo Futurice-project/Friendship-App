@@ -5,9 +5,7 @@ import Header from './Header';
 // ## View Imports ##
 import Tabs from './Tabs';
 import WelcomeView from '../views/WelcomeView';
-import SearchView from '../views/SearchView';
 import SignInView from '../views/SignIn/SignInView';
-import ProfileUser from '../views/PeopleProfileView';
 import SignUpMatching from '../views/SignUp/SignUpMatching';
 import SignUpLocation from '../views/SignUp/SignUpLocation';
 import SignUpPersonality from '../views/SignUp/SignUpPersonality';
@@ -15,7 +13,11 @@ import ChatView from '../views/Chat/ChatView';
 import ChatRequest from '../views/Chat/ChatRequest';
 import SignUpYeahAndNaah from '../views/SignUp/SignUpYeahAndNaah';
 import UsersForTagView from '../views/UsersForTagView';
-import UserInformation from '../views/SignUp/UserInformation';
+import EventDetailView from '../views/EventDetailView';
+import EventCreateView from '../views/EventCreateView';
+import EventEditView from '../views/EventEditView';
+import Report from '../views/Report/Report';
+import Feedback from '../views/Feedback/Feedback';
 import Signup from '../views/SignUp/Signup';
 
 const StackNavigatorConfig = {
@@ -79,10 +81,6 @@ export default StackNavigator(
       screen: UsersForTagView,
       navigationOptions: { title: 'Search page' },
     },
-    People: {
-      screen: SearchView,
-      navigationOptions: { title: 'People page' },
-    },
     SignIn: {
       screen: SignInView,
       navigationOptions: { header: () => null },
@@ -91,15 +89,31 @@ export default StackNavigator(
       screen: SignUpPersonality,
       navigationOptions: { header: () => null },
     },
-    ProfileUser: {
-      screen: ProfileUser,
-      navigationOptions: { header: () => null },
-    },
     ChatView: {
       screen: ChatView,
     },
     ChatRequest: {
       screen: ChatRequest,
+      navigationOptions: { header: () => null },
+    },
+    EventDetailView: {
+      screen: EventDetailView,
+      navigationOptions: { header: () => null },
+    },
+    EventCreateView: {
+      screen: EventCreateView,
+      navigationOptions: { header: () => null },
+    },
+    EventEditView: {
+      screen: EventEditView,
+      navigationOptions: { header: () => null },
+    },
+    Report: {
+      screen: Report,
+      navigationOptions: { header: () => null },
+    },
+    Feedback: {
+      screen: Feedback,
       navigationOptions: { header: () => null },
     },
     // ## End StackNavigator Views ##

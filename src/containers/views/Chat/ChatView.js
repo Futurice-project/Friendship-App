@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'react-native-modal';
 import { NavigationActions } from 'react-navigation';
 import ReversedFlatList from 'react-native-reversed-flat-list';
 import styled from 'styled-components/native';
@@ -12,12 +11,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 import rest from '../../../utils/rest';
-import Button from '../../../components/Button';
 import PopUpMenu from '../../../components/PopUpMenu';
-
-// console.ignoredYellowBox = ['Setting a timer'];
 
 const mapDispatchToProps = dispatch => ({
   onViewProfile: profileId =>
@@ -29,6 +25,15 @@ const mapDispatchToProps = dispatch => ({
     ),
   chatRoomMessages: id => {
     dispatch(rest.actions.chatRoomMessages({ id }));
+  },
+  //update all messages that have been read
+  updateReadMessages: messageIdArr => {
+    dispatch(
+      rest.actions.updateReadMessages(
+        {},
+        { body: JSON.stringify({ messageIdArr: messageIdArr }) },
+      ),
+    );
   },
   sendMessage: (id, textMessage, userId) => {
     dispatch(
@@ -53,8 +58,32 @@ class ChatView extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: `${navigation.state.params.userEmoji} ${navigation.state.params
       .username}`,
+    headerLeft: (
+      <Icon
+        style={{ padding: 15, fontSize: 26 }}
+        name={'ios-arrow-back'}
+        onPress={() => {
+          navigation.dispatch(
+            NavigationActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({
+                  routeName: navigation.state.params.previousRoute
+                    ? navigation.state.params.previousRoute
+                    : 'InboxView',
+                }),
+              ],
+            }),
+          );
+        }}
+      />
+    ),
     headerRight: (
-      <PopUpMenu isReportVisible={navigation.state.params.showReport} chat />
+      <PopUpMenu
+        isReportVisible={() =>
+          navigation.navigate('Report', { data: navigation.state.params })}
+        chat
+      />
     ),
   });
 
@@ -63,21 +92,41 @@ class ChatView extends Component {
     text: '',
     description: '',
     isOptionsVisible: false,
-    isReportVisible: false,
   };
 
   componentDidMount = () => {
     this.setState({
       chatroomId: this.props.navigation.state.params.chatroomId,
     });
-    this.props.navigation.setParams({ showReport: this.showReport });
+    this.props.navigation.setParams({
+      showReport: this.showReport,
+      currentUser: this.props.currentUserId,
+      auth: this.props.auth.data.token,
+    });
     this.props.chatRoomMessages(this.props.navigation.state.params.chatroomId);
+    //update all unread messages after 3 seconds to make sure all the chatroom messages have been fetched
+    setTimeout(() => this.getUnreadMessagesAndUpdateStatus(), 3000);
   };
 
   componentWillReceiveProps = () => {
     if (this.props.chatroom) {
       this.props.navigation.setParams({ chatroom: this.props.chatroom });
     }
+  };
+
+  getUnreadMessagesAndUpdateStatus = () => {
+    //get an array of all the unread messages which have the 'read' field equals to 'false' and user_id not equals to current user id
+    let messageArr = this.props.chatRoom.messages
+      ? this.props.chatRoom.messages.filter(
+          message =>
+            message.read === false &&
+            message.user_id !== this.props.currentUserId,
+        )
+      : [];
+    //get an array of all the id of unread messages
+    let messageIdArr = messageArr.map(message => message.id);
+    //call the update function to change the 'read' field into 'true'
+    this.props.updateReadMessages(messageIdArr);
   };
 
   sendMessage = () => {
@@ -90,34 +139,7 @@ class ChatView extends Component {
     this.setState({ text: '' });
   };
 
-  // Modal functions
-  showReport = () => {
-    const { isReportVisible } = this.state;
-    this.setState({ isReportVisible: !isReportVisible });
-  };
-
-  sendReport = () => {
-    const creator = this.props.chatRoom.creator;
-    const receiver = this.props.chatRoom.receiver;
-    const userId =
-      this.props.currentUserId === creator.id ? receiver.id : creator.id;
-    const description = this.state.reportDescription;
-    const reported_by = this.props.currentUserId;
-    fetch(`http://localhost:3888/reports`, {
-      method: 'post',
-      headers: {
-        Authorization: this.props.auth.data.token,
-      },
-      body: JSON.stringify({
-        userId,
-        description,
-        reported_by,
-      }),
-    });
-    this.setState({ isReportVisible: false });
-  };
-
-  keyExtractor = item => item.id;
+  keyExtractor = (item, index) => index;
 
   renderItem = ({ item }) => {
     const textAlign =
@@ -227,13 +249,12 @@ class ChatView extends Component {
   };
 
   render() {
-    let reportTitle = 'Report ';
     return (
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior="padding"
         keyboardVerticalOffset={Platform.select({
-          ios: () => 65,
+          ios: () => 60,
           android: () => 80,
         })()}
       >
@@ -267,50 +288,6 @@ class ChatView extends Component {
             </TouchableOpacity>
           </ChatInputButtonCard>
         </TextInputCard>
-        <Modal
-          visible={this.state.isReportVisible}
-          animationIn="slideInUp"
-          animationInTiming={200}
-        >
-          <View
-            style={{
-              height: 200,
-              backgroundColor: '#eee',
-              borderRadius: 10,
-              paddingVertical: 10,
-            }}
-          >
-            <TextInput
-              autoCorrect={false}
-              autoCapitalize="none"
-              titleColor="#2d4359"
-              title={reportTitle}
-              placeholder="Description"
-              backColor="#faf6f0"
-              onChangeText={reportDescription =>
-                this.setState({ reportDescription })}
-              value={this.state.reportDescription}
-            />
-            <View style={{ flexDirection: 'row' }}>
-              <Button
-                title="Cancel"
-                primary
-                textColor="green"
-                size="half"
-                color="light"
-                onPress={this.showReport}
-              />
-              <Button
-                title="Report"
-                border
-                textColor="black"
-                size="half"
-                color="dark"
-                onPress={this.sendReport}
-              />
-            </View>
-          </View>
-        </Modal>
       </KeyboardAvoidingView>
     );
   }
@@ -333,19 +310,23 @@ const styles = {
     flex: 1,
     padding: 20,
     paddingBottom: 30,
-    backgroundColor: '#f1f1f3',
     margin: 10,
     marginRight: 20,
     marginLeft: 40,
+    backgroundColor: '#f79a6f',
+    borderRadius: 20,
+    alignSelf: 'flex-end',
   },
   ReceiveCard: {
     flex: 1,
     padding: 20,
     paddingBottom: 30,
-    backgroundColor: '#d8d8d8',
     margin: 10,
     marginRight: 40,
     marginLeft: 20,
+    backgroundColor: '#e0dddb',
+    borderRadius: 20,
+    alignSelf: 'flex-start',
   },
 };
 

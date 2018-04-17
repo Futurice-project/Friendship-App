@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
 import {
   CompatibilityText,
   Details,
@@ -18,6 +17,8 @@ import {
   UsernameText,
   YeahColor,
 } from '../Layout/TextLayout';
+
+import Icon from 'react-native-vector-icons/Ionicons';
 import waveShape from '../../../assets/img/roundTab/roundTab.png';
 import resolveAssetSource from 'resolveAssetSource';
 
@@ -37,8 +38,8 @@ const ProfileTopPart = props => {
     username,
     myProfile,
     genderList,
+    showEditForm,
   } = props;
-
   const getAge = () => {
     const parsedBirthYear = parseInt(birthyear);
     const now = new Date();
@@ -85,10 +86,11 @@ const ProfileTopPart = props => {
   };
 
   return (
-    <Image style={styles.imageUser} source={srcImage}>
+    <View>
+      <Image style={styles.imageUser} source={srcImage} />
       <View style={styles.backAndSettingsView}>
-        <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
-          <Text style={{ fontSize: 22 }}> {'<'} </Text>
+        <TouchableOpacity onPress={navigateBack}>
+          <Icon name="md-arrow-back" size={26} style={styles.backButton} />
         </TouchableOpacity>
         {displaySettingsButton()}
       </View>
@@ -104,9 +106,48 @@ const ProfileTopPart = props => {
           flex: 1,
         }}
       >
-        <Image source={waveShape} style={styles.waveShape}>
-          <UsernameText style={styles.username}>{username}</UsernameText>
-          <CompatibilityText style={{ textAlign: 'center' }}>
+        <Image source={waveShape} style={styles.waveShape} />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            top: '25%',
+            left: '25%',
+            position: 'absolute',
+          }}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <UsernameText>
+              {/* {username.length > 15 ? (
+                username.substr(0, 15).concat('…')
+              ) : (
+                username
+              )} */}
+              {username}
+            </UsernameText>
+            {myProfile ? (
+              <TouchableOpacity onPress={() => showEditForm()}>
+                <Image
+                  source={require('../../../assets/edit.png')}
+                  style={{ width: 38, height: 38 }}
+                />
+              </TouchableOpacity>
+            ) : null}
+          </View>
+          <CompatibilityText
+            style={{
+              textAlign: 'center',
+              marginBottom: 0,
+            }}
+          >
             {myProfile ? 'You have ' : null}
             <YeahColor>
               {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>
@@ -117,7 +158,7 @@ const ProfileTopPart = props => {
             </NaahColor>
             {myProfile ? null : ' in common'}
           </CompatibilityText>
-        </Image>
+        </View>
         <View style={{ backgroundColor: '#F9F6F1' }}>
           <Details>
             <LocationText>{location ? location : 'Narnia'}</LocationText>
@@ -126,7 +167,7 @@ const ProfileTopPart = props => {
           </Details>
         </View>
       </View>
-    </Image>
+    </View>
   );
 };
 
@@ -134,6 +175,7 @@ const styles = StyleSheet.create({
   emojiCircle: {
     alignSelf: 'flex-end',
     marginRight: 5,
+    marginTop: 80,
     width: 64,
     height: 64,
     borderRadius: 64,
@@ -145,9 +187,6 @@ const styles = StyleSheet.create({
     fontSize: Platform.OS === 'android' ? 30 : 40,
     paddingTop: 8,
   },
-  username: {
-    marginTop: 25,
-  },
   waveShape: {
     height: Dimensions.get('window').width * height / width,
     width: Dimensions.get('window').width,
@@ -156,9 +195,10 @@ const styles = StyleSheet.create({
   imageUser: {
     width: Dimensions.get('window').width,
     height: Platform.OS === 'android' ? 330 : 250,
+    position: 'absolute',
   },
   backAndSettingsView: {
-    marginTop: 5,
+    marginTop: 10,
     marginRight: 5,
     marginLeft: 5,
     flex: 1,
@@ -166,6 +206,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   backButton: {
+    paddingTop: 10,
+    paddingLeft: 10,
+    padding: 20,
     backgroundColor: 'transparent',
   },
   settingsIcon: {

@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import resolveAssetSource from 'resolveAssetSource';
 // Import personality images
 import placeholder from '../../../assets/img/personalities/personalityPlaceholder.png';
@@ -199,6 +199,25 @@ export default class Personality extends React.Component {
           style={{ height: this.state.imageHeight + 10 }}
           onPress={this.props.onPress}
         >
+          {this.props.amount && (
+            <View
+              style={{
+                height: 25,
+                width: 25,
+                borderRadius: 100,
+                backgroundColor: '#6c6c85',
+                position: 'absolute',
+                alignItems: 'center',
+                justifyContent: 'center',
+                right: 0,
+                zIndex: 1,
+              }}
+            >
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                {this.props.amount}
+              </Text>
+            </View>
+          )}
           <ImageContainer
             style={{
               height: this.state.imageHeight,

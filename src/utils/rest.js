@@ -2,6 +2,7 @@ import reduxApi, { transformers } from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
 import jwtDecode from 'jwt-decode';
 import { NavigationActions } from 'react-navigation';
+import { Platform } from 'react-native';
 
 // import { showError } from '../modules/ErrorSnackbar';
 
@@ -22,9 +23,13 @@ export const injectStore = _store => {
  */
 
 let apiRoot;
-
+/**
+ * If you want to test the app in your own phone, in case of an iPhone,
+ * change the IP Address here after.
+ * */
 if (process.env.NODE_ENV === 'development') {
-  apiRoot = 'http://localhost:3888';
+  apiRoot =
+    Platform.OS === 'ios' ? 'http://localhost:3888' : 'http://localhost:3888';
 } else {
   apiRoot = 'https://friendshipapp-backend.herokuapp.com';
 }
@@ -140,6 +145,11 @@ const rest = reduxApi({
       },
     ],
   },
+  updateReadMessages: {
+    url: `${apiRoot}/messages/read`,
+    options: { method: 'PUT' },
+    crud: true,
+  },
   createUserPersonality: {
     url: `${apiRoot}/user_personality`,
     options: { method: 'POST' },
@@ -174,6 +184,56 @@ const rest = reduxApi({
   createUserLocations: {
     url: `${apiRoot}/user_locations`,
     options: { method: 'POST' },
+  },
+  createEvent: {
+    url: `${apiRoot}/events`,
+    reducerName: 'events',
+    options: { method: 'POST' },
+  },
+  updateEvent: {
+    url: `${apiRoot}/events/:id`,
+    reducerName: 'events',
+    options: { method: 'PATCH' },
+  },
+  deleteEvent: {
+    url: `${apiRoot}/events/:id`,
+    reducerName: 'events',
+    options: { method: 'DELETE' },
+  },
+  events: {
+    url: `${apiRoot}/events/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  eventsParticipantsEmoji: {
+    url: `${apiRoot}/eventParticipantsNum`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  eventDetails: {
+    url: `${apiRoot}/event/:eventId`,
+    crud: true,
+  },
+  eventParticipants: {
+    url: `${apiRoot}/eventParticipants/:eventId/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  eventPersonalities: {
+    url: `${apiRoot}/eventPersonalities/:eventId`,
+    crud: true,
+  },
+  eventTags: {
+    url: `${apiRoot}/eventTopYeahsNahs/:eventId`,
+    crud: true,
+  },
+  eventParticipation: {
+    url: `${apiRoot}/eventParticipation/:eventId/:userId`,
+    crud: true,
+  },
+  eventParticipantsNum: {
+    url: `${apiRoot}/eventParticipantsNum`,
+    crud: true,
   },
 })
   .use('options', (url, params, getState) => {

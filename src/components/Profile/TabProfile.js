@@ -1,19 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
-import styled from 'styled-components/native';
 import Tag from '../Tags';
 
-const ButtonOption = styled.View`
-  flex: 1;
-  align-items: center;
-  marginBottom: 50;
-  marginTop: 20;
-`;
-
-export default class TabProfile extends PureComponent {
+export default class TabProfile extends Component {
   state = {
     backcolor: '#faf6f0',
     colorActif: '#6eb1ea',
@@ -51,9 +43,9 @@ export default class TabProfile extends PureComponent {
     if (!this.props.myprofile) {
       return (
         <View style={{ backgroundColor: this.state.backcolor }}>
-          <ButtonOption>
+          <View style={styles.ButtonOption}>
             <TouchableOpacity
-              onPress={this._onPressButton}
+              onPress={this.props.onChatRequest}
               style={[
                 styles.buttonStyle,
                 { backgroundColor: this.state.colorBackButton },
@@ -68,7 +60,7 @@ export default class TabProfile extends PureComponent {
                 Send Message
               </Text>
             </TouchableOpacity>
-          </ButtonOption>
+          </View>
         </View>
       );
     }
@@ -175,7 +167,7 @@ const styles = StyleSheet.create({
   textButtonStyle: {
     alignSelf: 'center',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Bold',
   },
   tagCategoriesLove: {
     marginTop: 45,
@@ -205,5 +197,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Friendship_version_2',
     fontSize: 30,
     letterSpacing: 3,
+  },
+  ButtonOption: {
+    flex: 1,
+    alignItems: 'center',
+    marginBottom: 50,
+    marginTop: 20,
   },
 });
