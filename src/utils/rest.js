@@ -1,9 +1,12 @@
 import reduxApi, { transformers } from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
 import jwtDecode from 'jwt-decode';
+import { NavigationActions } from 'react-navigation';
+import { Platform } from 'react-native';
 
 // import { showError } from '../modules/ErrorSnackbar';
 
+// don't delete this
 let store;
 
 export const injectStore = _store => {
@@ -20,14 +23,18 @@ export const injectStore = _store => {
  */
 
 let apiRoot;
-
+/**
+ * If you want to test the app in your own phone, in case of an iPhone,
+ * change the IP Address here after.
+ * */
 if (process.env.NODE_ENV === 'development') {
-  apiRoot = 'http://localhost:3888';
+  apiRoot =
+    Platform.OS === 'ios' ? 'http://localhost:3888' : 'http://localhost:3888';
 } else {
   apiRoot = 'https://friendshipapp-backend.herokuapp.com';
 }
 
-authTransformer = (data = {}) => {
+const authTransformer = (data = {}) => {
   if (data.token) {
     return {
       ...data,
@@ -48,10 +55,12 @@ const rest = reduxApi({
   },
   personalities: {
     url: `${apiRoot}/personalities`,
+    transformer: transformers.array,
     crud: true,
   },
   locations: {
     url: `${apiRoot}/locations`,
+    transformer: transformers.array,
     crud: true,
   },
   usersByPage: {
@@ -128,6 +137,11 @@ const rest = reduxApi({
       },
     ],
   },
+  updateReadMessages: {
+    url: `${apiRoot}/messages/read`,
+    options: { method: 'PUT' },
+    crud: true,
+  },
   createUserPersonality: {
     url: `${apiRoot}/user_personality`,
     options: { method: 'POST' },
@@ -135,12 +149,22 @@ const rest = reduxApi({
   createUserPersonalities: {
     url: `${apiRoot}/user_personalities`,
     options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(NavigationActions.navigate({ routeName: 'YeahAndNaah' }));
+      },
+    ],
   },
   register: {
     url: `${apiRoot}/users`,
     transformer: authTransformer,
     reducerName: 'auth',
     options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(NavigationActions.navigate({ routeName: 'SignUpLocation' }));
+      },
+    ],
   },
   auth: {
     url: `${apiRoot}/users/authenticate`,
@@ -152,6 +176,62 @@ const rest = reduxApi({
   createUserLocations: {
     url: `${apiRoot}/user_locations`,
     options: { method: 'POST' },
+  },
+  createEvent: {
+    url: `${apiRoot}/events`,
+    reducerName: 'events',
+    options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
+      },
+    ],
+  },
+  updateEvent: {
+    url: `${apiRoot}/events/:id`,
+    reducerName: 'events',
+    options: { method: 'PATCH' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
+      },
+    ],
+  },
+  deleteEvent: {
+    url: `${apiRoot}/events/:id`,
+    reducerName: 'events',
+    options: { method: 'DELETE' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
+      },
+    ],
+  },
+  events: {
+    url: `${apiRoot}/events/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  eventDetails: {
+    url: `${apiRoot}/event/:eventId`,
+    crud: true,
+  },
+  eventParticipants: {
+    url: `${apiRoot}/eventParticipants/:eventId/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  eventPersonalities: {
+    url: `${apiRoot}/eventPersonalities/:eventId`,
+    crud: true,
+  },
+  eventTags: {
+    url: `${apiRoot}/eventTopYeahsNahs/:eventId`,
+    crud: true,
+  },
+  eventParticipation: {
+    url: `${apiRoot}/eventParticipation/:eventId/:userId`,
+    crud: true,
   },
 })
   .use('options', (url, params, getState) => {

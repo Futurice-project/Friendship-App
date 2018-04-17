@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { reducers as restReducers } from '../utils/rest';
-
 // ## Reducer Imports ##
 import NavigatorStateReducer from '../state/navigator';
 import PersonalityStateReducer from '../state/personalities';
