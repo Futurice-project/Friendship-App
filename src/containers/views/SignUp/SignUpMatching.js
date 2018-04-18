@@ -3,42 +3,24 @@ import { KeyboardAvoidingView, Platform } from 'react-native';
 import styled from 'styled-components/native';
 import { Padding, ViewContainer } from '../../../components/Layout/Layout';
 import DescriptionBubble from '../../../components/BubbleTextInput';
-import Toggle from '../../../components/Toggle';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
 import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
-import rest from '../../../utils/rest';
-import { NavigationActions } from 'react-navigation';
-import { decrementProgress } from '../../../state/signup';
+import { MATCHING_AGREEMENT } from '../../../components/SignUp/Constants';
+import {
+  checkErrorMessage,
+  renderErrorMessage,
+  validateMatching,
+} from '../../../components/SignUp/validate';
+import { Field, reduxForm, submit } from 'redux-form';
+import Toggle from '../../../components/Toggle';
+import { FieldContainer } from '../../../components/Layout/SignupLayout';
 
 const mapStateToProps = state => ({
-  auth: state.auth,
-  signup: state.signup,
+  signup: state.form.signup,
 });
 
-const mapDispatchToProps = dispatch => ({
-  patchUser: (description, enableMatching, userId) => {
-    const details = {
-      description,
-      enableMatching,
-    };
-
-    dispatch(
-      rest.actions.userDetails.patch(
-        { userId },
-        { body: JSON.stringify(details) },
-      ),
-    ).then(() => {
-      dispatch(
-        NavigationActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
-        }),
-      );
-    });
-  },
-  decProgress: () => dispatch(decrementProgress()),
-});
+const mapDispatchToProps = dispatch => ({});
 
 class SignUpMatching extends React.Component {
   state = {
@@ -46,11 +28,13 @@ class SignUpMatching extends React.Component {
     description: '',
   };
 
-  componentWillUnmount() {
-    this.props.decProgress();
-  }
-
   render = () => {
+    const err = this.props.signup
+      ? checkErrorMessage(
+          this.props.signup.submitErrors,
+          'MATCHING_DESCRIPTION',
+        )
+      : null;
     return (
       <KeyboardAvoidingView
         behavior={Platform.select({
@@ -59,50 +43,59 @@ class SignUpMatching extends React.Component {
         })()}
       >
         <ViewContainer style={{ backgroundColor: '#e8e9e8' }}>
-          <ProgressBar steps={this.props.signup.signupProgress} />
+          <ProgressBar steps={MATCHING_AGREEMENT} />
           <Padding>
             <Title>FINDING THE RIGHT PEOPLE FOR YOU</Title>
             <P>Do you want to receive recommendation on people</P>
-            <Toggle
+            <Field
+              name={'enableMatching'}
+              component={Toggle}
               leftText="NO THANK YOU"
               rightText="YES, PLEASE"
-              value={this.state.enableMatching}
-              onPress={() => {
-                this.setState({ enableMatching: !this.state.enableMatching });
-              }}
+              toggled={this.state.enableMatching}
+              onPress={input =>
+                this.updateMatchingAgreement(input, !this.state.enableMatching)}
             />
-
             <InfoText>
               This means that your profile is public when you join an event or a
               group, but you won’t be recommended people near your location
             </InfoText>
 
             <SubTitle>WOULD YOU LIKE TO ADD A SMALL BIO?</SubTitle>
-            <DescriptionBubble
-              style={{ alignSelf: 'center' }}
+            <Field
+              name={'description'}
+              component={DescriptionBubble}
               text="ADD A DESCRIPTION"
-              value={this.state.description}
+              description={this.state.description}
               placeholder="You can tell your future friends about your interests, what you’re looking for or what you think friendship is…"
-              onChangeText={description => this.setState({ description })}
+              onChangeText={(input, newDescription) =>
+                this.updateDescription(input, newDescription)}
             />
+            <FieldContainer>
+              {err ? renderErrorMessage(err) : null}
+            </FieldContainer>
             <InfoText>You can always add and change this information</InfoText>
           </Padding>
           <RoundTab
             title="Next"
             tint="#2d4359"
             titleColor="#fff"
-            onPress={() => {
-              this.props.patchUser(
-                this.state.description,
-                this.state.enableMatching,
-                this.props.auth.data.decoded.id,
-              );
-            }}
+            onPress={() => this.props.dispatch(submit('signup'))}
           />
         </ViewContainer>
       </KeyboardAvoidingView>
     );
   };
+
+  updateMatchingAgreement(input, enableMatching) {
+    input.onChange(enableMatching);
+    this.setState({ enableMatching });
+  }
+
+  updateDescription(input, newDescription) {
+    input.onChange(newDescription);
+    this.setState({ description: newDescription });
+  }
 }
 
 const Title = styled.Text`
@@ -151,4 +144,12 @@ const InfoText = styled.Text`
   margin-bottom: 50;
 `;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpMatching);
+export default reduxForm({
+  form: 'signup',
+  destroyOnUnmount: false,
+  forceUnregisterOnUnmount: true,
+  onSubmit: validateMatching,
+  onSubmitSuccess: (result, dispatch, props) => {
+    dispatch(props.onSubmitSucceeded);
+  },
+})(connect(mapStateToProps, mapDispatchToProps)(SignUpMatching));

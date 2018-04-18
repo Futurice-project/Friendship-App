@@ -77,7 +77,6 @@ export function validatePersonnalities(values) {
 
 export function validateLoveAndHate(values) {
   console.log('Validating Love and Hate');
-  console.log(values);
   if (
     !values.yeahsAndNaahs ||
     (values.yeahsAndNaahs.yeahs.length <= 0 &&
@@ -85,6 +84,16 @@ export function validateLoveAndHate(values) {
   ) {
     throw new SubmissionError({
       personalities: 'Select at least one thing you like and dislike',
+      _error: 'Login failed !',
+    });
+  }
+}
+
+export function validateMatching(values) {
+  console.log('Validating Matching');
+  if (!values.description) {
+    throw new SubmissionError({
+      description: 'Enter a description',
       _error: 'Login failed !',
     });
   }
@@ -101,6 +110,8 @@ export function checkErrorMessage(submittedErrors, type) {
         return submittedErrors.pwd ? submittedErrors.pwd : null;
       case 'LOCATIONS':
         return submittedErrors.locations ? submittedErrors.locations : null;
+      case 'MATCHING_DESCRIPTION':
+        return submittedErrors.description ? submittedErrors.description : null;
       default:
         return null;
     }

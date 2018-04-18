@@ -55,8 +55,8 @@ export default class DescriptionBubble extends React.Component {
       <Title>{this.props.text}</Title>
       <Input
         placeholder={this.props.placeholder}
-        value={this.props.value}
-        onChangeText={this.props.onChangeText}
+        value={this.props.description}
+        onChangeText={text => this.props.onChangeText(this.props.input, text)}
       />
     </Bubble>
   );
