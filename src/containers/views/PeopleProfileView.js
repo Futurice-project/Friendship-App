@@ -19,6 +19,7 @@ const mapStateToProps = state => ({
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
   personalitiesForUser: state.personalitiesForUser,
+  chatrooms: state.chatRoomsWithUserId.data.data,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -32,6 +33,19 @@ const mapDispatchToProps = dispatch => ({
       NavigationActions.navigate({
         routeName: 'ChatRequest',
         params: { user, route: previousRoute },
+      }),
+    ),
+  openChatView: (existingChatRoomId, username, userEmoji, id, previousRoute) =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'ChatView',
+        params: {
+          existingChatRoomId,
+          username,
+          userEmoji,
+          id,
+          previousRoute,
+        },
       }),
     ),
 });
@@ -60,6 +74,7 @@ class ProfileUser extends React.Component {
     this.props.refreshUser(userId);
     this.props.refreshTagsForUser(userId);
     this.props.refreshPersonalitiesForUser(userId);
+    this.props.chatrooms;
   };
 
   navigateBack = () => {
@@ -145,9 +160,20 @@ class ProfileUser extends React.Component {
       return this.renderNotLoggedIn();
     }
 
-    if (!this.state.loaded) {
+    if (!this.state.loaded || !this.props.chatrooms) {
       return <ActivityIndicator />;
     }
+
+    let existingChatRoomId;
+    // Load all existing chatrooms and check if one them has a matching users
+    const allChatRooms = this.props.chatrooms.forEach(item => {
+      if (
+        item.creator.id === this.props.auth.data.decoded.id &&
+        item.receiver.id === this.props.userDetails.data.id
+      ) {
+        existingChatRoomId = item.id;
+      }
+    });
 
     return (
       <ProfileContainer>
@@ -174,8 +200,17 @@ class ProfileUser extends React.Component {
         <TabProfile
           onChatRequest={() =>
             this.props.openChatRequest(this.props.userDetails.data, 'People')}
+          openChatView={() =>
+            this.props.openChatView(
+              existingChatRoomId,
+              this.props.userDetails.data.username,
+              this.props.userDetails.data.emoji,
+              this.props.userDetails.data.id,
+              'People',
+            )}
           hate={hate}
           love={love}
+          existingChatRoom={existingChatRoomId}
         />
         <PopUpMenu
           isReportVisible={() =>
