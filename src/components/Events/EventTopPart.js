@@ -104,13 +104,26 @@ const EventTopPart = props => {
             {eventTitle}
           </EventTitleText>
           <View style={{ backgroundColor: '#F9F6F1' }}>
-            {renderDateAndTime(eventDate)}
-            <TouchableOpacity onPress={() => openMap(city, address)}>
-              <Details>
-                <LocationText>
-                  {city && address ? `${city}, ${address}` : 'Narnia'}
-                </LocationText>
+            <View style={styles.detailView}>
+              <Image
+                source={require('../../../assets/icon_calendar_dark.png')}
+              />
+              <Details style={{ marginLeft: 5 }}>
+                {renderDateAndTime(eventDate)}
               </Details>
+            </View>
+
+            <TouchableOpacity onPress={() => openMap(city, address)}>
+              <View style={styles.detailView}>
+                <Image
+                  source={require('../../../assets/icon_location_dark.png')}
+                />
+                <Details style={{ marginLeft: 5 }}>
+                  <LocationText>
+                    {city && address ? `${city}, ${address}` : 'Narnia'}
+                  </LocationText>
+                </Details>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -141,6 +154,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     position: 'absolute',
+  },
+  detailView: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   backButton: {
     paddingTop: 10,
