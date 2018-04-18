@@ -37,6 +37,7 @@ const renderUsernameField = submittedErrors => {
       component={SignUpTextInput}
       placeholder={'(NICK)NAME*'}
       texthelper={'(visible)'}
+      ref={component => (this._username = component)}
       err={checkErrorMessage(submittedErrors, 'USERNAME')}
     />
   );
@@ -51,6 +52,7 @@ const renderEmailField = submittedErrors => {
       hinttext
       texthelper={'(private)'}
       keyboardType={'email-address'}
+      ref={component => (this._email = component)}
       err={checkErrorMessage(submittedErrors, 'EMAIL')}
       style={{ marginTop: 15 }}
     />
@@ -63,6 +65,8 @@ const renderPwdField = submittedErrors => {
       name={'pwd'}
       component={SignUpTextInput}
       placeholder={'PASSWORD*'}
+      secureTextEntry
+      ref={component => (this._password = component)}
       err={checkErrorMessage(submittedErrors, 'PASSWORD')}
     />
   );

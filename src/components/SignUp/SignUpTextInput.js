@@ -13,6 +13,7 @@ export default class SignUpTextInput extends React.Component {
           autoCorrect={false}
           returnKeyType="next"
           keyboardType={this.props.keyboardType}
+          secureTextEntry={this.props.secureTextEntry}
           underlineColorAndroid="transparent"
           placeholderTextColor="#4a4a4a"
           placeholder={this.props.placeholder}

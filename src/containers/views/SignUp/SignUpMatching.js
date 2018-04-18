@@ -15,12 +15,47 @@ import {
 import { Field, reduxForm, submit } from 'redux-form';
 import Toggle from '../../../components/Toggle';
 import { FieldContainer } from '../../../components/Layout/SignupLayout';
+import rest from '../../../utils/rest';
 
 const mapStateToProps = state => ({
   signup: state.form.signup,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  signUp: formData => {
+    dispatch(
+      rest.actions.register(
+        {},
+        { body: formData, headers: { 'Content-Type': 'multipart/form-data' } },
+      ),
+    );
+  },
+});
+
+function createUser(dispatch, formValues) {
+  console.log(formValues);
+  let formdata = createFormData(formValues);
+  console.log(formdata);
+  //this.props.signUp(formdata);
+}
+
+function createFormData(formValues) {
+  let tempFormData = new FormData();
+
+  if (formValues.picture) {
+    tempFormData.append('image', {
+      uri: formValues.picture.uri,
+      name: 'image.png',
+      type: 'multipart/form-data',
+    });
+  }
+
+  if (formValues.gender) {
+    tempFormData.append('genders', JSON.stringify(formValues.genders));
+  }
+
+  return tempFormData;
+}
 
 class SignUpMatching extends React.Component {
   state = {
@@ -150,6 +185,6 @@ export default reduxForm({
   forceUnregisterOnUnmount: true,
   onSubmit: validateMatching,
   onSubmitSuccess: (result, dispatch, props) => {
-    dispatch(props.onSubmitSucceeded);
+    createUser(dispatch, props.values);
   },
 })(connect(mapStateToProps, mapDispatchToProps)(SignUpMatching));

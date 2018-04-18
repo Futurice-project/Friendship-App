@@ -18,6 +18,7 @@ export default class SignupField extends React.Component {
             component={this.props.component}
             placeholder={this.props.placeholder}
             keyboardType={this.props.keyboardType}
+            secureTextEntry={this.props.secureTextEntry}
           />
         </FieldWrapper>
         {this.props.hinttext ? (
