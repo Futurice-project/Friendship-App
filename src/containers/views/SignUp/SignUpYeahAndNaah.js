@@ -1,21 +1,16 @@
 import React from 'react';
 import rest from '../../../utils/rest';
 import { Text } from '../../../components/Layout/TextLayout';
-import {
-  Centered,
-  Padding,
-  ViewContainer,
-} from '../../../components/Layout/Layout';
-import YeahAndNaah from '../../../components/SignUp/YeahAndNaah';
+import { Padding, ViewContainer } from '../../../components/Layout/Layout';
 import styled from 'styled-components/native';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
 import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
 import { INTERESTS } from '../../../components/SignUp/Constants';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, submit } from 'redux-form';
 import YeahAndNaahList from '../../../components/SignUp/YeahAndNaahList';
-import validate from '../../../components/SignUp/validate';
+import { validateLoveAndHate } from '../../../components/SignUp/validate';
 
 const mapStateToProps = state => ({
   yeahs: state.yeahs,
@@ -36,9 +31,9 @@ export class SignUpLoveAndHate extends React.Component {
     super(props);
     this.state = {
       index: 0,
+      category: 1,
       selectedYeahs: [],
       selectedNahs: [],
-      category: 1,
     };
   }
 
@@ -47,60 +42,44 @@ export class SignUpLoveAndHate extends React.Component {
     this.props.getNahs();
   }
 
-  renderFiveLoveAndHateActivities = () => {
-    if (!this.props.yeahs.data.data) {
-      return;
+  updateYeahsAndNahs(state, input, actionType, tag) {
+    let yeahs = this.state.selectedYeahs;
+    let nahs = this.state.selectedNahs;
+
+    switch (actionType) {
+      case 'YEAH':
+        yeahs.push(tag);
+        break;
+      case 'NAH':
+        nahs.push(tag);
+        break;
+      default:
+        let pos = yeahs.indexOf(tag);
+        if (pos > -1) {
+          yeahs.splice(pos, 1);
+        } else {
+          pos = nahs.indexOf(tag);
+          nahs.splice(pos, 1);
+        }
+        break;
     }
-
-    let activities = [];
-
-    console.log(this.state.index);
-    console.log(this.props.yeahs.data.data.length);
-
-    for (
-      let i = this.state.index;
-      i <= this.props.yeahs.data.data.length - 1 && i < this.state.index + 5;
-      i++
-    ) {
-      activities.push(
-        <YeahAndNaah
-          key={this.props.yeahs.data.data[i].id}
-          activityName={this.props.yeahs.data.data[i].name}
-          activityId={this.props.yeahs.data.data[i].id}
-        />,
-      );
-    }
-
-    return <Activities>{activities}</Activities>;
-  };
+    input.onChange({ yeahs, nahs });
+    this.setState({ yeahs, nahs });
+  }
 
   renderPage() {
-    if (!this.props.yeahs.data.data) {
-      return;
-    }
-
-    const yeahsAndNaahs =
-      this.state.category === 1
-        ? this.props.yeahs.data.data
-        : this.props.nahs.data.data;
-    let array = [];
-
-    for (
-      let i = this.state.index;
-      i <= yeahsAndNaahs.length - 1 && i < this.state.index + 5;
-      i++
-    ) {
-      array.push(
-        <YeahAndNaah
-          key={yeahsAndNaahs[i].id}
-          activityName={yeahsAndNaahs[i].name}
-          activityId={yeahsAndNaahs[i].id}
-        />,
-      );
-    }
+    let tags =
+      this.state.category === 1 ? this.props.yeahs.data : this.props.nahs.data;
+    tags = tags.slice(this.state.index, this.state.index + 4);
 
     return (
-      <Field name={'yeahsAndNaahs'} component={YeahAndNaahList} list={array} />
+      <Field
+        name={'yeahsAndNaahs'}
+        component={YeahAndNaahList}
+        tags={tags}
+        updateYeahsAndNahs={(input, actionType, tag) =>
+          this.updateYeahsAndNahs(this.state, input, actionType, tag)}
+      />
     );
   }
 
@@ -111,7 +90,7 @@ export class SignUpLoveAndHate extends React.Component {
   handleClick = () => {
     switch (this.state.category) {
       case 1:
-        if (this.state.index + 5 <= this.props.yeahs.data.data.length - 1) {
+        if (this.state.index + 5 <= this.props.yeahs.data.length - 1) {
           console.log('Continuing cat 1');
           this.setState(prevState => ({ index: prevState.index + 5 }));
         } else {
@@ -123,11 +102,12 @@ export class SignUpLoveAndHate extends React.Component {
         }
         break;
       case 2:
-        if (this.state.index + 5 <= this.props.nahs.data.data.length - 1) {
+        if (this.state.index + 5 <= this.props.nahs.data.length - 1) {
           console.log('Continuing cat 2');
           this.setState(prevState => ({ index: prevState.index + 5 }));
         } else {
           console.log('Submit');
+          this.props.dispatch(submit('signup'));
         }
         break;
       default:
@@ -136,6 +116,15 @@ export class SignUpLoveAndHate extends React.Component {
   };
 
   render() {
+    if (
+      !this.props.yeahs.sync ||
+      this.props.yeahs.loading ||
+      !this.props.nahs.sync ||
+      this.props.nahs.loading
+    ) {
+      return <ActivityIndicator />;
+    }
+
     return (
       <View>
         <ViewContainer>
@@ -202,7 +191,7 @@ export default reduxForm({
   form: 'signup',
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
-  onSubmit: validate,
+  onSubmit: validateLoveAndHate,
   onSubmitSuccess: (result, dispatch, props) => {
     dispatch(props.onSubmitSucceeded);
   },
