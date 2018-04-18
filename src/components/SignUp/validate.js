@@ -77,11 +77,11 @@ export function validatePersonnalities(values) {
 
 export function validateLoveAndHate(values) {
   console.log('Validating Love and Hate');
+  console.log(values);
   if (
-    !values.yeahs ||
-    values.yeahs.length <= 0 ||
-    !values.nahs ||
-    values.nahs.length <= 0
+    !values.yeahsAndNaahs ||
+    (values.yeahsAndNaahs.yeahs.length <= 0 &&
+      values.yeahsAndNaahs.nahs.length <= 0)
   ) {
     throw new SubmissionError({
       personalities: 'Select at least one thing you like and dislike',
