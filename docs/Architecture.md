@@ -1,14 +1,14 @@
 # Friendship App Architecture
 
 ### Table of Contents
-**[Welcome View](#Welcome View)**<br>
-**[Sign In](#Sign In)**<br>
-**[Sign Up](#Sign Up)**<br>
-**[Search View](#Search View)**<br>
-**[People Profile](#People Profile)**<br>
+**[Welcome View](#welcome-view)**<br>
+**[Sign In](#sign-in)**<br>
+**[Sign Up](#sign-up)**<br>
+**[Search View](#search-view)**<br>
+**[People Profile](#people-profile)**<br>
 **[Chat](#Chat)**<br>
-**[User's Profile](#User's Profile)**<br>
-**[Component](#Component)**<br>
+**[User's Profile](#user's-profile)**<br>
+**[Components](#components)**<br>
 
 ### Welcome View
 ### Sign In
