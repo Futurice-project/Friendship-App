@@ -21,26 +21,25 @@ const mapStateToProps = state => ({
   signup: state.form.signup,
 });
 
-const mapDispatchToProps = dispatch => ({
-  signUp: formData => {
-    dispatch(
-      rest.actions.register(
-        {},
-        { body: formData, headers: { 'Content-Type': 'multipart/form-data' } },
-      ),
-    );
-  },
-});
-
-function createUser(dispatch, formValues) {
-  console.log(formValues);
-  let formdata = createFormData(formValues);
-  console.log(formdata);
-  //this.props.signUp(formdata);
+async function createUser(dispatch, formValues) {
+  let formData = await createFormData(formValues);
+  dispatch(
+    rest.actions.register(
+      {},
+      { body: formData, headers: { 'Content-Type': 'multipart/form-data' } },
+    ),
+  );
 }
 
 function createFormData(formValues) {
   let tempFormData = new FormData();
+
+  tempFormData.append('username', formValues.username);
+  tempFormData.append('email', formValues.email);
+  tempFormData.append('pwd', formValues.pwd);
+  tempFormData.append('birthyear', formValues.birthDate);
+  tempFormData.append('enableMatching', formValues.enableMatching);
+  tempFormData.append('description', formValues.description);
 
   if (formValues.picture) {
     tempFormData.append('image', {
@@ -51,7 +50,33 @@ function createFormData(formValues) {
   }
 
   if (formValues.gender) {
-    tempFormData.append('genders', JSON.stringify(formValues.genders));
+    tempFormData.append('genders', JSON.stringify(formValues.gender));
+  }
+
+  if (formValues.locations) {
+    tempFormData.append('locations', JSON.stringify(formValues.locations));
+  }
+
+  if (formValues.personalities) {
+    tempFormData.append(
+      'personalities',
+      JSON.stringify(formValues.personalities),
+    );
+  }
+
+  if (formValues.yeahsAndNaahs) {
+    if (formValues.yeahsAndNaahs.yeahs) {
+      tempFormData.append(
+        'yeahs',
+        JSON.stringify(formValues.yeahsAndNaahs.yeahs),
+      );
+    }
+    if (formValues.yeahsAndNaahs.nahs) {
+      tempFormData.append(
+        'nahs',
+        JSON.stringify(formValues.yeahsAndNaahs.nahs),
+      );
+    }
   }
 
   return tempFormData;
@@ -179,12 +204,31 @@ const InfoText = styled.Text`
   margin-bottom: 50;
 `;
 
+const mockUp = {
+  emoji: null,
+  picture: null,
+  enableMatching: false,
+  description: 'Hgf',
+  username: 'Fhdgsf',
+  email: 'L@ligkuzfjtdhrg.vhn',
+  pwd: 'juhrtg',
+  birthDate: '1234',
+  gender: [2, 3],
+  locations: [2, 4, 7],
+  personalities: [1, 3, 5, 7],
+  yeahsAndNaahs: {
+    yeahs: [1, 2],
+    nahs: [3, 4],
+  },
+};
+
 export default reduxForm({
   form: 'signup',
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
+  initialValues: mockUp,
   onSubmit: validateMatching,
   onSubmitSuccess: (result, dispatch, props) => {
     createUser(dispatch, props.values);
   },
-})(connect(mapStateToProps, mapDispatchToProps)(SignUpMatching));
+})(connect(mapStateToProps, null)(SignUpMatching));

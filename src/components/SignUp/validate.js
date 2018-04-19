@@ -1,6 +1,7 @@
 import { SubmissionError } from 'redux-form';
 import React from 'react';
 import { ErrorText } from '../Layout/SignupLayout';
+import moment from 'moment';
 
 export function validateUserInformations(values) {
   console.log('Validating User informations ...');
@@ -33,10 +34,19 @@ export function validateUserInformations(values) {
     };
   }
 
+  function checkAge(birthDate) {
+    return moment().year() - birthDate >= 18;
+  }
+
   if (!values.birthDate) {
     err = {
       ...err,
       birthDate: 'Enter a valid birth year',
+    };
+  } else if (!checkAge(values.birthDate)) {
+    err = {
+      ...err,
+      birthDate: 'User should be at least 18',
     };
   }
 

@@ -36,16 +36,18 @@ class UserInformation extends React.Component {
   }
 }
 
+const initial = {
+  emoji: null,
+  picture: null,
+  enableMatching: false,
+  description: '',
+};
+
 export default reduxForm({
   form: 'signup',
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
-  initialValues: {
-    emoji: null,
-    picture: null,
-    enableMatching: false,
-    description: '',
-  },
+  initialValues: initial,
   onSubmit: validateUserInformations,
   onSubmitSuccess: (result, dispatch, props) => {
     dispatch(props.onSubmitSucceeded);

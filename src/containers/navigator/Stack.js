@@ -57,22 +57,6 @@ export default StackNavigator(
       screen: WelcomeView,
       navigationOptions: { header: () => null },
     },
-    SignUpLocation: {
-      screen: SignUpLocation,
-      title: 'SignUpLocation',
-      navigationOptions: { header: () => null },
-    },
-    SignUpMatching: {
-      screen: SignUpMatching,
-      title: 'Matching',
-      navigationOptions: { header: () => null },
-    },
-    YeahAndNaah: {
-      screen: SignUpYeahAndNaah,
-      navigationOptions: {
-        header: () => null,
-      },
-    },
     Tabs: {
       screen: Tabs,
       navigationOptions: { header: () => null },

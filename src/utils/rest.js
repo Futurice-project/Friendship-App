@@ -168,7 +168,7 @@ const rest = reduxApi({
     options: { method: 'POST' },
     postfetch: [
       function({ dispatch }) {
-        dispatch(NavigationActions.navigate({ routeName: 'SignUpLocation' }));
+        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
       },
     ],
   },
