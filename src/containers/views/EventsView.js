@@ -81,6 +81,10 @@ class EventsView extends Component {
         dropdownPosition={0}
         pickerStyle={{ width: 150, marginTop: 12 }}
         containerStyle={{ marginBottom: 10, right: 10 }}
+        textColor={'#000000'}
+        itemColor={'#000000'}
+        selectedItemColor={'#ff6e40'}
+        baseColor={'#ff6e40'}
         data={data}
         value="Recommended"
         onChangeText={value => {
@@ -145,11 +149,6 @@ class EventsView extends Component {
       }
       return this.renderEvents(events);
     }
-  };
-
-  changeSortOrder = () => {
-    this.setState({ initialOrder: !this.state.initialOrder });
-    console.log(this.state.initialOrder);
   };
 
   render = () => {
