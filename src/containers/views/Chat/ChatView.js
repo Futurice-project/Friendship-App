@@ -68,7 +68,9 @@ class ChatView extends Component {
               index: 0,
               actions: [
                 NavigationActions.navigate({
-                  routeName: 'InboxView',
+                  routeName: navigation.state.params.previousRoute
+                    ? navigation.state.params.previousRoute
+                    : 'InboxView',
                 }),
               ],
             }),
@@ -91,17 +93,22 @@ class ChatView extends Component {
     description: '',
     isOptionsVisible: false,
   };
-
   componentDidMount = () => {
     this.setState({
-      chatroomId: this.props.navigation.state.params.chatroomId,
+      chatroomId: this.props.navigation.state.params.chatroomId
+        ? this.props.navigation.state.params.chatroomId
+        : this.props.navigation.state.params.existingChatRoomId,
     });
     this.props.navigation.setParams({
       showReport: this.showReport,
       currentUser: this.props.currentUserId,
       auth: this.props.auth.data.token,
     });
-    this.props.chatRoomMessages(this.props.navigation.state.params.chatroomId);
+    this.props.chatRoomMessages(
+      this.props.navigation.state.params.chatroomId
+        ? this.props.navigation.state.params.chatroomId
+        : this.props.navigation.state.params.existingChatRoomId,
+    );
     //update all unread messages after 3 seconds to make sure all the chatroom messages have been fetched
     setTimeout(() => this.getUnreadMessagesAndUpdateStatus(), 3000);
   };
@@ -129,7 +136,7 @@ class ChatView extends Component {
 
   sendMessage = () => {
     //Keyboard.dismiss();
-    const chatroomId = this.props.navigation.state.params.chatroomId;
+    const chatroomId = this.state.chatroomId;
     const textMessage = this.state.text;
     const userId = this.props.currentUserId;
 
@@ -228,7 +235,6 @@ class ChatView extends Component {
           msgTime.toTimeString().split(' ')[0];
       }
     }
-
     return (
       <View style={messageCardStyle}>
         <Text
@@ -311,6 +317,9 @@ const styles = {
     margin: 10,
     marginRight: 20,
     marginLeft: 40,
+    backgroundColor: '#f79a6f',
+    borderRadius: 20,
+    alignSelf: 'flex-end',
   },
   ReceiveCard: {
     flex: 1,
@@ -319,6 +328,9 @@ const styles = {
     margin: 10,
     marginRight: 40,
     marginLeft: 20,
+    backgroundColor: '#e0dddb',
+    borderRadius: 20,
+    alignSelf: 'flex-start',
   },
 };
 

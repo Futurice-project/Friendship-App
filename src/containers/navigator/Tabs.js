@@ -2,53 +2,51 @@ import React from 'react';
 import { TabNavigator } from 'react-navigation';
 import { IconImage } from '../../components/Layout/Layout';
 
-import StackChat from './StackChat';
+import InboxChat from './InboxChat';
+import PeopleChat from './PeopleChat';
 import PeopleView from '../views/PeopleView';
 import InboxView from '../views/Chat/ChatInbox';
 import MyProfile from '../views/MyProfileView';
 import EventsView from '../views/EventsView';
-import HomeView from '../views/HomeView';
+import {
+  Chat,
+  Events,
+  People,
+  Profile,
+  Chat_selected,
+  Events_selected,
+  People_selected,
+  Profile_selected,
+} from '../../../assets/tabIcons';
 
 const tabNavigationOptions = title => {
   switch (title) {
-    case 'Home':
-      return {
-        title,
-        tabBarIcon: ({ tintColor }) => (
-          <IconImage
-            source={require('../../../assets/tab-icon-home.png')}
-            tintColor={tintColor}
-          />
-        ),
-      };
     case 'People':
       return {
         title,
-        tabBarIcon: ({ tintColor }) => (
-          <IconImage
-            source={require('../../../assets/tab-icon-people.png')}
-            tintColor={tintColor}
-          />
+        tabBarIcon: ({ focused, tintColor }) => (
+          <IconImage source={focused ? People_selected : People} />
         ),
       };
     case 'Inbox':
       return {
         title,
-        tabBarIcon: ({ tintColor }) => (
-          <IconImage
-            source={require('../../../assets/tab-icon-inbox.png')}
-            tintColor={tintColor}
-          />
+        tabBarIcon: ({ focused, tintColor }) => (
+          <IconImage source={focused ? Chat_selected : Chat} />
         ),
       };
     case 'Profile':
       return {
         title,
-        tabBarIcon: ({ tintColor }) => (
-          <IconImage
-            source={require('../../../assets/tab-icon-myprofile.png')}
-            tintColor={tintColor}
-          />
+        tabBarIcon: ({ focused, tintColor }) => (
+          <IconImage source={focused ? Profile_selected : Profile} />
+        ),
+      };
+    case 'Events':
+      return {
+        title,
+        tabBarIcon: ({ focused, tintColor }) => (
+          <IconImage source={focused ? Events_selected : Events} />
         ),
       };
     default:
@@ -76,14 +74,15 @@ const TabNavigatorConfig = {
 export default TabNavigator(
   {
     People: {
-      screen: PeopleView,
+      screen: PeopleChat,
       navigationOptions: tabNavigationOptions('People'),
     },
     Events: {
       screen: EventsView,
+      navigationOptions: tabNavigationOptions('Events'),
     },
     Inbox: {
-      screen: StackChat,
+      screen: InboxChat,
       navigationOptions: tabNavigationOptions('Inbox'),
     },
     MyProfile: {

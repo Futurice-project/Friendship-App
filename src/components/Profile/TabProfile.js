@@ -40,12 +40,17 @@ export default class TabProfile extends Component {
   };
 
   renderSendMsg() {
+    const roomExists =
+      this.props.existingChatRoom !== undefined
+        ? this.props.openChatView
+        : this.props.onChatRequest;
+
     if (!this.props.myprofile) {
       return (
         <View style={{ backgroundColor: this.state.backcolor }}>
           <View style={styles.ButtonOption}>
             <TouchableOpacity
-              onPress={this._onPressButton}
+              onPress={roomExists}
               style={[
                 styles.buttonStyle,
                 { backgroundColor: this.state.colorBackButton },

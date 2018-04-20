@@ -99,8 +99,6 @@ class EventsView extends Component {
   };
 
   renderEvents = eventsOrder => {
-    console.log('COMING TO RENDER ', eventsOrder);
-
     return (
       <EventsList
         events={eventsOrder}
@@ -118,36 +116,34 @@ class EventsView extends Component {
     const { events, eventParticipantsNum } = this.props;
     if (events.loading || eventParticipantsNum.loading) {
       return <ActivityIndicator />;
+    } else if (events.data.id || events.data.data) {
+      return <ActivityIndicator />;
     } else {
       switch (this.state.sorting) {
         case 'By time':
-          events.data = _.orderBy(events.data, ['dateIndex'], ['asc']);
-          console.log(events);
+          events.data = _.orderBy(events.data, ['dateIndex'], ['desc']);
           return this.renderEvents(events);
 
         case 'Smallest first':
           events.data = _.orderBy(
             events.data,
             ['numberParticipantsIndex'],
-            ['asc'],
+            ['acs'],
           );
           return this.renderEvents(events);
 
         case 'Closest first':
-          events.data = _.orderBy(events.data, ['locationSortIndex'], ['asc']);
-          events.data = _.orderBy(events.data, ['locationSortIndex'], ['asc']);
-          console.log(events);
+          events.data = _.orderBy(events.data, ['locationSortIndex'], ['desc']);
+          //console.log(events);
           return this.renderEvents(events);
         default:
           events.data = _.orderBy(
             events.data,
             ['reccomendationIndex'],
-            ['asc'],
+            ['desc'],
           );
-
-          console.log(events);
-          return this.renderEvents(events);
       }
+      return this.renderEvents(events);
     }
   };
 
