@@ -166,7 +166,7 @@ class ProfileUser extends React.Component {
 
     let existingChatRoomId;
     // Load all existing chatrooms and check if one them has a matching users
-    const allChatRooms = this.props.chatrooms.forEach(item => {
+    this.props.chatrooms.forEach(item => {
       if (
         item.creator.id === this.props.auth.data.decoded.id &&
         item.receiver.id === this.props.userDetails.data.id

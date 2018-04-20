@@ -115,7 +115,11 @@ export class ChatRequest extends React.Component {
           />
           <TouchableOpacity
             style={styles.sendButton}
-            onPress={() => this.createChatroom()}
+            onPress={() => {
+              if (this.state.text !== '') {
+                this.createChatroom();
+              }
+            }}
           >
             <Text
               style={{
