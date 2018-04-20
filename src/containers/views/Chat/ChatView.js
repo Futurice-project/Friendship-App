@@ -278,7 +278,13 @@ class ChatView extends Component {
             onSubmitEditing={() => this.sendMessage()}
           />
           <ChatInputButtonCard>
-            <TouchableOpacity onPress={() => this.sendMessage()}>
+            <TouchableOpacity
+              onPress={() => {
+                if (this.state.text !== '') {
+                  this.sendMessage();
+                }
+              }}
+            >
               <Text
                 style={{
                   fontWeight: 'normal',
