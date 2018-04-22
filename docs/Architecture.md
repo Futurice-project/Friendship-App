@@ -1,5 +1,3 @@
-[welcome-view]: ./images/welcomeView.png "Welcome View"
-
 # Friendship App Architecture
 
 ### Table of Contents
@@ -14,11 +12,22 @@
 
 ### Welcome View
 
-<div style="text-align:center">
-    <img src="./images/welcomeView.png" width="300" height="500"/>
-</div>
+<img src="./images/welcomeView.png" width="300" height="500"/>
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+**Path**
+
+> src/containers/views/WelcomeView.js
+
+**Component Imported**
+
+> * src/components/Button.js
+> * src/components/RoundTab.js
+
+**Functionality**
+
+> * Preview button: redirect the user to PeopleView
+> * Join button: redirect the user to SignUpView
+> * Log in button: redirect the user to the SignInView
 
 ### Sign In
 
