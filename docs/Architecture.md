@@ -49,7 +49,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 ### Inbox view (entry point)
 
-<img src="./images/inboxView.png" width="300" height="500"/>
+<img src="./images/chat/inboxView.png" width="300" height="500"/>
 
 **Path**
 
@@ -69,12 +69,27 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 > * Suggestion list:   
 >> * Show all the suggested profiles.
->> * Click/Touch on each profile directs user to a chat request view.
+>> * Click/Touch on each profile directs user to a [chat request view](#chat-request-view).
 > * Chats list:  
 >> * Show all the chat conversations with last message and its datetime, name and emoji of the other person, sorted by the latest to the oldest.
 >> * Click/Touch on each conversations directs user to a chat view of that conversation.
 
 ### Chat request view
+
+<img src="./images/chat/chatRequestView.png" width="300" height="500"/>
+
+**Path**
+
+> src/containers/views/Chat/ChatRequest.js
+
+**Component Imported**
+
+> * src/components/RoundTab.js
+
+**Functionality**
+
+> * Text input: allow user to type a new message to open the conversation.  
+> * "Send" button: direct user to a newly created chatroom with the other person.
 
 ### Chat view
 
