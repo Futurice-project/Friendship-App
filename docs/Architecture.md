@@ -72,7 +72,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 >> * Click/Touch on each profile directs user to a [chat request view](#chat-request-view).
 > * Chats list:  
 >> * Show all the chat conversations with last message and its datetime, name and emoji of the other person, sorted by the latest to the oldest.
->> * Click/Touch on each conversations directs user to a chat view of that conversation.
+>> * Click/Touch on each conversations directs user to a [chat view of that conversation](#chat-view).
 
 ### Chat request view
 
@@ -92,6 +92,22 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 > * "Send" button: direct user to a newly created chatroom with the other person.
 
 ### Chat view
+
+<img src="./images/chat/chatView.png" width="300" height="500"/>
+
+**Path**
+
+> src/containers/views/Chat/ChatView.js
+
+**Component Imported**
+
+> * src/components/PopUpMenu.js
+
+**Functionality**
+
+> * Top right corner "3 dots" button: drop down menu of several selections related to chat and the other user.
+> * Text input: allow user to type a new message.  
+> * "Send" button: Send a new message to the other person.
 
 ## User's Profile
 
