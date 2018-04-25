@@ -641,7 +641,7 @@ class EventForm extends Component {
               >
                 {eventImage.uri ? (
                   <Image
-                    style={{ width: 93, height: 93 }}
+                    style={{ width: 83, height: 83 }}
                     source={eventImage}
                   />
                 ) : (
@@ -651,17 +651,15 @@ class EventForm extends Component {
             </ScrollViewPhoto>
           </View>
           {this.props.edit ? (
-            <View style={{ backgroundColor: '#f9f7f6' }}>
-              <ButtonOption>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.deleteEvent(this.props.eventDetails.id)}
-                  style={styles.buttonStyle}
-                >
-                  <Text style={styles.textButtonStyle}>Cancel Event</Text>
-                </TouchableOpacity>
-              </ButtonOption>
-            </View>
+            <ButtonOption>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.deleteEvent(this.props.eventDetails.id)}
+                style={styles.buttonStyle}
+              >
+                <Text style={styles.textButtonStyle}>Cancel Event</Text>
+              </TouchableOpacity>
+            </ButtonOption>
           ) : null}
           <RoundTabContainer>
             <RoundTab
@@ -681,8 +679,8 @@ class EventForm extends Component {
 const ButtonOption = styled.View`
   flex: 1;
   align-items: center;
-  marginBottom: 30;
-  marginTop: 30;
+  marginBottom: 10;
+  marginTop: 15;
 `;
 
 const LabelContainer = styled.View`
@@ -772,23 +770,23 @@ const styles = StyleSheet.create({
   },
   scrollViewPhotoContainer: {
     justifyContent: 'space-around',
-    height: 93,
+    height: 100,
     paddingLeft: 30,
   },
 
   textButtonStyle: {
     alignSelf: 'center',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Bold',
     color: '#ffffff',
   },
   buttonStyle: {
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    width: 241,
-    height: 47,
-    borderRadius: 34,
+    width: 150,
+    height: 40,
+    borderRadius: 35,
     backgroundColor: '#eb7a63',
   },
 });
