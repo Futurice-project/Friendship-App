@@ -4,8 +4,6 @@ import { ErrorText } from '../Layout/SignupLayout';
 import moment from 'moment';
 
 export function validateUserInformations(values) {
-  console.log('Validating User informations ...');
-
   let err = null;
 
   if (!values.username) {
@@ -66,7 +64,6 @@ export function validateUserInformations(values) {
 }
 
 export function validateLocations(values) {
-  console.log('Validating locations ...');
   if (!values.locations || values.locations.length <= 0) {
     throw new SubmissionError({
       locations: 'Select at least a location',
@@ -76,7 +73,6 @@ export function validateLocations(values) {
 }
 
 export function validatePersonnalities(values) {
-  console.log('Validating personalities');
   if (!values.personalities || values.personalities.length <= 0) {
     throw new SubmissionError({
       personalities: 'Something went wrong. Sorry for the inconvenience.',
@@ -86,7 +82,6 @@ export function validatePersonnalities(values) {
 }
 
 export function validateLoveAndHate(values) {
-  console.log('Validating Love and Hate');
   if (
     !values.yeahsAndNaahs ||
     (values.yeahsAndNaahs.yeahs.length <= 0 &&
@@ -100,7 +95,6 @@ export function validateLoveAndHate(values) {
 }
 
 export function validateMatching(values) {
-  console.log('Validating Matching');
   if (!values.description) {
     throw new SubmissionError({
       description: 'Enter a description',
