@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import React from 'react';
 import { ImagePicker } from 'expo';
-import { Image } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 export default class PhotoBox extends React.Component {
   state = {
@@ -22,7 +22,7 @@ export default class PhotoBox extends React.Component {
   };
 
   renderPicture() {
-    if (this.state.selected && this.state.picture) {
+    if (this.state.picture) {
       return (
         <Image style={{ width: 93, height: 93 }} source={this.state.picture} />
       );
@@ -30,13 +30,38 @@ export default class PhotoBox extends React.Component {
     return <PlusSignText>+</PlusSignText>;
   }
 
+  deletePicture(input) {
+    input.onChange({});
+    this.setState({ picture: '' });
+  }
+
   render() {
     const { input } = this.props;
 
     return (
-      <Photo onPress={() => this.openImageGallery(input)}>
-        {this.renderPicture()}
-      </Photo>
+      <View>
+        {this.state.picture ? (
+          <TouchableOpacity
+            style={{
+              height: 25,
+              width: 25,
+              borderRadius: 100,
+              backgroundColor: '#6c6c85',
+              position: 'absolute',
+              alignItems: 'center',
+              justifyContent: 'center',
+              left: 80,
+              zIndex: 1,
+            }}
+            onPress={() => this.deletePicture(input)}
+          >
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>X</Text>
+          </TouchableOpacity>
+        ) : null}
+        <Photo onPress={() => this.openImageGallery(input)}>
+          {this.renderPicture()}
+        </Photo>
+      </View>
     );
   }
 }
@@ -46,6 +71,7 @@ const Photo = styled.TouchableOpacity`
   height: 93;
   background-color: #e8e9e8;
   margin-right: 15;
+  margin-top: 15;
   border-width: 1;
   border-color: #839297;
   justify-content: center;

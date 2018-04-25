@@ -8,7 +8,7 @@ import {
   LabelTextHelper,
   Part,
 } from '../Layout/SignupLayout';
-import { View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Field } from 'redux-form';
 import styled from 'styled-components/native/index';
 
@@ -30,12 +30,12 @@ export default class PicturePicker extends React.Component {
               </LabelTextHelper>
             </HintWrapper>
             <View style={{ width: 278 }}>
-              <ScrollViewPhoto
+              <Field name="image" component={PhotoBox} />
+              {/*<ScrollViewPhoto
                 contentContainerStyle={styles.scrollViewPhotoContainer}
                 horizontal
               >
-                <Field name="image" component={PhotoBox} />
-              </ScrollViewPhoto>
+              </ScrollViewPhoto>*/}
             </View>
           </FieldContainer>
         </Part>
