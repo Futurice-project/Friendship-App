@@ -27,10 +27,10 @@ export function validateUserInformations(values) {
     };
   }
 
-  if (!values.pwd) {
+  if (!values.password) {
     err = {
       ...err,
-      pwd: 'Enter a valid password',
+      password: 'Enter a valid password',
     };
   }
 
@@ -38,15 +38,15 @@ export function validateUserInformations(values) {
     return moment().year() - birthDate >= 18;
   }
 
-  if (!values.birthDate) {
+  if (!values.birthyear) {
     err = {
       ...err,
-      birthDate: 'Enter a valid birth year',
+      birthyear: 'Enter a valid birth year',
     };
-  } else if (!checkAge(values.birthDate)) {
+  } else if (!checkAge(values.birthyear)) {
     err = {
       ...err,
-      birthDate: 'User should be at least 18',
+      birthyear: 'User should be at least 18',
     };
   }
 
@@ -117,7 +117,11 @@ export function checkErrorMessage(submittedErrors, type) {
       case 'EMAIL':
         return submittedErrors.email ? submittedErrors.email : null;
       case 'PASSWORD':
-        return submittedErrors.pwd ? submittedErrors.pwd : null;
+        return submittedErrors.password ? submittedErrors.password : null;
+      case 'BIRTHYEAR':
+        return submittedErrors.birthyear ? submittedErrors.birthyear : null;
+      case 'GENDERS':
+        return submittedErrors.gender ? submittedErrors.gender : null;
       case 'LOCATIONS':
         return submittedErrors.locations ? submittedErrors.locations : null;
       case 'MATCHING_DESCRIPTION':

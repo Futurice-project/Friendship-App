@@ -9,7 +9,7 @@ export default [
           title: 'What about the app has made finding one good friend easy?',
           name: 'easy',
           subtitle:
-            'Tell us anything you liked! For example: Was the app easy to use? Was the matching algorithm effective? Did you find it easy to connect through yeahs and naahs?',
+            'Tell us anything you liked! For example: Was the app easy to use? Was the matching algorithm effective? Did you find it easy to connect through activities and naahs?',
         },
         {
           title: 'What about the app has made finding one good friend hard?',

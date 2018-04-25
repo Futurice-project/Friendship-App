@@ -21,8 +21,8 @@ const mapStateToProps = state => ({
   signup: state.form.signup,
 });
 
-async function createUser(dispatch, formValues) {
-  let formData = await createFormData(formValues);
+function createUser(dispatch, formValues) {
+  let formData = createFormData(formValues);
   dispatch(
     rest.actions.register(
       {},
@@ -204,29 +204,10 @@ const InfoText = styled.Text`
   margin-bottom: 50;
 `;
 
-const mockUp = {
-  emoji: null,
-  image: null,
-  enableMatching: false,
-  description: 'Hgf',
-  username: 'Dumsfqcvmy',
-  email: 'test4@tdhrg.vhn',
-  password: 'juhrdfastdddg',
-  birthyear: 1234,
-  gender: [2, 3],
-  locations: [2, 4, 7],
-  personalities: [1, 3, 5, 7],
-  yeahsAndNaahs: {
-    yeahs: [1, 2],
-    nahs: [3, 4],
-  },
-};
-
 export default reduxForm({
   form: 'signup',
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
-  initialValues: mockUp,
   onSubmit: validateMatching,
   onSubmitSuccess: (result, dispatch, props) => {
     createUser(dispatch, props.values);

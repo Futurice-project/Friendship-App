@@ -45,13 +45,13 @@ const authTransformer = (data = {}) => {
 };
 
 const rest = reduxApi({
-  yeahs: {
-    url: `${apiRoot}/yeahs`,
+  activities: {
+    url: `${apiRoot}/activities`,
     transformer: transformers.array,
     crud: true,
   },
-  nahs: {
-    url: `${apiRoot}/nahs`,
+  interests: {
+    url: `${apiRoot}/interests`,
     transformer: transformers.array,
     crud: true,
   },

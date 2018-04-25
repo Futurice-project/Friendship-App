@@ -37,8 +37,8 @@ class UserInformation extends React.Component {
 }
 
 const initial = {
-  emoji: null,
-  picture: null,
+  emoji: '',
+  image: '',
   enableMatching: false,
   description: '',
 };

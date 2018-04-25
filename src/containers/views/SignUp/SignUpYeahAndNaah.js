@@ -13,16 +13,16 @@ import YeahAndNaahList from '../../../components/SignUp/YeahAndNaahList';
 import { validateLoveAndHate } from '../../../components/SignUp/validate';
 
 const mapStateToProps = state => ({
-  yeahs: state.yeahs,
-  nahs: state.nahs,
+  activities: state.activities,
+  interests: state.interests,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getYeahs: () => {
-    dispatch(rest.actions.yeahs()).catch(err => console.log(err));
+  getActivities: () => {
+    dispatch(rest.actions.activities()).catch(err => console.log(err));
   },
-  getNahs: () => {
-    dispatch(rest.actions.nahs()).catch(err => console.log(err));
+  getInterests: () => {
+    dispatch(rest.actions.interests()).catch(err => console.log(err));
   },
 });
 
@@ -31,6 +31,7 @@ export class SignUpLoveAndHate extends React.Component {
     super(props);
     this.state = {
       index: 0,
+      page: 1,
       category: 1,
       selectedYeahs: [],
       selectedNahs: [],
@@ -38,8 +39,8 @@ export class SignUpLoveAndHate extends React.Component {
   }
 
   componentWillMount() {
-    this.props.getYeahs();
-    this.props.getNahs();
+    this.props.getActivities();
+    this.props.getInterests();
   }
 
   updateYeahsAndNahs(state, input, actionType, tag) {
@@ -64,12 +65,14 @@ export class SignUpLoveAndHate extends React.Component {
         break;
     }
     input.onChange({ yeahs, nahs });
-    this.setState({ yeahs, nahs });
+    this.setState({ selectedYeahs: yeahs, selectedNahs: nahs });
   }
 
   renderPage() {
     let tags =
-      this.state.category === 1 ? this.props.yeahs.data : this.props.nahs.data;
+      this.state.category === 1
+        ? this.props.activities.data
+        : this.props.interests.data;
     tags = tags.slice(this.state.index, this.state.index + 4);
 
     return (
@@ -84,29 +87,37 @@ export class SignUpLoveAndHate extends React.Component {
   }
 
   renderTitle() {
-    return this.state.category + '/2 Activities';
+    return (
+      this.state.page +
+      '/ ' +
+      this.getNumberOfPages() +
+      (this.state.category === 1 ? ' Activities' : ' Interests')
+    );
   }
 
   handleClick = () => {
     switch (this.state.category) {
       case 1:
-        if (this.state.index + 5 <= this.props.yeahs.data.length - 1) {
-          console.log('Continuing cat 1');
-          this.setState(prevState => ({ index: prevState.index + 5 }));
+        if (this.state.index + 5 <= this.props.activities.data.length - 1) {
+          this.setState(prevState => ({
+            index: prevState.index + 5,
+            page: prevState.page + 1,
+          }));
         } else {
-          console.log('Changing cat');
           this.setState(prevState => ({
             index: 0,
             category: prevState.category + 1,
+            page: 1,
           }));
         }
         break;
       case 2:
-        if (this.state.index + 5 <= this.props.nahs.data.length - 1) {
-          console.log('Continuing cat 2');
-          this.setState(prevState => ({ index: prevState.index + 5 }));
+        if (this.state.index + 5 <= this.props.interests.data.length - 1) {
+          this.setState(prevState => ({
+            index: prevState.index + 5,
+            page: prevState.page + 1,
+          }));
         } else {
-          console.log('Submit');
           this.props.dispatch(submit('signup'));
         }
         break;
@@ -117,10 +128,10 @@ export class SignUpLoveAndHate extends React.Component {
 
   render() {
     if (
-      !this.props.yeahs.sync ||
-      this.props.yeahs.loading ||
-      !this.props.nahs.sync ||
-      this.props.nahs.loading
+      !this.props.activities.sync ||
+      this.props.activities.loading ||
+      !this.props.interests.sync ||
+      this.props.interests.loading
     ) {
       return <ActivityIndicator />;
     }
@@ -165,6 +176,15 @@ export class SignUpLoveAndHate extends React.Component {
         </ViewContainer>
       </View>
     );
+  }
+
+  getNumberOfPages() {
+    switch (this.state.category) {
+      case 1:
+        return Math.floor(this.props.activities.data.length / 5) + 1;
+      case 2:
+        return Math.floor(this.props.interests.data.length / 5) + 1;
+    }
   }
 }
 

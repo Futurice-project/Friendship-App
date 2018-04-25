@@ -12,7 +12,7 @@ import {
 import Field from 'redux-form/es/Field';
 import React from 'react';
 import { View } from 'react-native';
-import { renderErrorMessage } from './validate';
+import { checkErrorMessage, renderErrorMessage } from './validate';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
@@ -33,8 +33,8 @@ const renderBirthYearField = submittedErrors => {
       <HintWrapper>
         <LabelTextHelper>(This will be displayed as age range)</LabelTextHelper>
       </HintWrapper>
-      {submittedErrors && submittedErrors.birthDate ? (
-        renderErrorMessage(submittedErrors.birthDate)
+      {checkErrorMessage(submittedErrors, 'BIRTHYEAR') ? (
+        renderErrorMessage(submittedErrors.birthyear)
       ) : null}
     </FieldContainer>
   );
@@ -51,7 +51,7 @@ const renderGenderPicker = submittedErrors => {
       </HintWrapper>
       <Field name="gender" component={Genders} />
       <View style={{ paddingTop: 10 }}>
-        {submittedErrors && submittedErrors.gender ? (
+        {checkErrorMessage(submittedErrors, 'GENDERS') ? (
           renderErrorMessage(submittedErrors.gender)
         ) : null}
       </View>
