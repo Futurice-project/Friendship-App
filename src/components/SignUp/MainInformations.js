@@ -62,7 +62,7 @@ const renderEmailField = submittedErrors => {
 const renderPwdField = submittedErrors => {
   return (
     <SignupField
-      name={'pwd'}
+      name={'password'}
       component={SignUpTextInput}
       placeholder={'PASSWORD*'}
       secureTextEntry

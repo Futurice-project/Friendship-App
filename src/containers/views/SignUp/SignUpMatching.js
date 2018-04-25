@@ -36,8 +36,8 @@ function createFormData(formValues) {
 
   tempFormData.append('username', formValues.username);
   tempFormData.append('email', formValues.email);
-  tempFormData.append('pwd', formValues.pwd);
-  tempFormData.append('birthyear', formValues.birthDate);
+  tempFormData.append('password', formValues.password);
+  tempFormData.append('birthyear', formValues.birthyear);
   tempFormData.append('enableMatching', formValues.enableMatching);
   tempFormData.append('description', formValues.description);
 
@@ -206,13 +206,13 @@ const InfoText = styled.Text`
 
 const mockUp = {
   emoji: null,
-  picture: null,
+  image: null,
   enableMatching: false,
   description: 'Hgf',
-  username: 'Fhdgsf',
-  email: 'L@ligkuzfjtdhrg.vhn',
-  pwd: 'juhrtg',
-  birthDate: '1234',
+  username: 'Dumsfqcvmy',
+  email: 'test4@tdhrg.vhn',
+  password: 'juhrdfastdddg',
+  birthyear: 1234,
   gender: [2, 3],
   locations: [2, 4, 7],
   personalities: [1, 3, 5, 7],

@@ -24,7 +24,7 @@ const renderBirthYearField = submittedErrors => {
     <FieldContainer style={{ marginTop: 19 }}>
       <FieldWrapper>
         <Field
-          name="birthDate"
+          name="birthyear"
           component={SignUpTextInput}
           placeholder="BIRTH YEAR*"
           keyboardType="numeric"

@@ -34,7 +34,7 @@ export default class PicturePicker extends React.Component {
                 contentContainerStyle={styles.scrollViewPhotoContainer}
                 horizontal
               >
-                <Field name="picture" component={PhotoBox} />
+                <Field name="image" component={PhotoBox} />
               </ScrollViewPhoto>
             </View>
           </FieldContainer>
