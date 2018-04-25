@@ -1,3 +1,6 @@
+/**
+ * TODOs: Go to the EventDetail and make some changes: When user click on Join Now, change userIsJoining to true
+ */
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
@@ -70,6 +73,7 @@ class EventsView extends Component {
   rightText = () => {
     let data = [
       { value: 'Recommended' },
+      { value: 'My Events' },
       { value: 'By time' },
       { value: 'Smallest first' },
       { value: 'Closest first' },
@@ -79,7 +83,11 @@ class EventsView extends Component {
         dropdownMargins={{ min: 15, max: 20 }}
         dropdownOffset={{ top: 20, left: 15 }}
         dropdownPosition={0}
-        pickerStyle={{ width: 150, marginTop: 12 }}
+        pickerStyle={{
+          width: 150,
+          marginTop: 12,
+          height: 'auto',
+        }}
         containerStyle={{ marginBottom: 10, right: 10 }}
         textColor={'#000000'}
         itemColor={'#000000'}
@@ -124,6 +132,23 @@ class EventsView extends Component {
       return <ActivityIndicator />;
     } else {
       switch (this.state.sorting) {
+        case 'My Events':
+          console.log(events.data);
+          let userEvents = _.find(events.data, ['userIsJoining', true]);
+          console.log(userEvents);
+          if (!userEvents) {
+            return (
+              <Text
+                style={{ alignSelf: 'center', fontSize: 14, marginTop: 20 }}
+              >
+                You have no events
+              </Text>
+            );
+          } else {
+            // events.data = userEvents;
+            return this.renderEvents(userEvents);
+          }
+
         case 'By time':
           events.data = _.orderBy(events.data, ['dateIndex'], ['desc']);
           return this.renderEvents(events);
@@ -146,8 +171,8 @@ class EventsView extends Component {
             ['reccomendationIndex'],
             ['desc'],
           );
+          return this.renderEvents(events);
       }
-      return this.renderEvents(events);
     }
   };
 

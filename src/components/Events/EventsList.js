@@ -9,7 +9,7 @@ const EventsList = ({
   isFetching,
   eventParticipantsNum,
 }) => {
-  console.log('Events list', events);
+  // console.log('Events list', events);
   const renderItem = ({ item }) => {
     const emojis = [];
     eventParticipantsNum.data.data.map(emojiObject => {
