@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import PeopleView from './PeopleView';
+import PeopleView from '../PeopleView';
 
 describe('PeopleView', () => {
   const mockStore = configureMockStore([thunk]);

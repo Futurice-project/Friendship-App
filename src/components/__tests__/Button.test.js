@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { ButtonWrapper } from './Button';
+import { ButtonWrapper } from '../Button';
 
 describe('ButtonWrapper', () => {
   test('renders correctly', () => {

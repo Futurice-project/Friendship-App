@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import ParticipantList from './ParticipantList';
+import ParticipantList from '../ParticipantList';
 
 describe('ParticipantList', () => {
   const props = {
