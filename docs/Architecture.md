@@ -68,11 +68,11 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 **Functionality**
 
 > * Suggestion list:   
->> * Show all the suggested profiles.
->> * Click/Touch on each profile directs user to a [chat request view](#chat-request-view).
+>  * Show all the suggested profiles.
+>  * Click/Touch on each profile directs user to a [chat request view](#chat-request-view).
 > * Chats list:  
->> * Show all the chat conversations with last message and its datetime, name and emoji of the other person, sorted by the latest to the oldest.
->> * Click/Touch on each conversations directs user to a [chat view of that conversation](#chat-view).
+>  * Show all the chat conversations with last message and its datetime, name and emoji of the other person, sorted by the latest to the oldest.
+>  * Click/Touch on each conversations directs user to a [chat view of that conversation](#chat-view).
 
 ### Chat request view
 
