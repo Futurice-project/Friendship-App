@@ -30,12 +30,17 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchEvents: userId => dispatch(rest.actions.events.get({ userId })),
-  openEventForm: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'EventCreateView',
-      }),
-    ),
+  openEventForm: () => {
+    if (!this.touchableInactive) {
+      this.touchableInactive = true;
+      dispatch(
+        NavigationActions.navigate({
+          routeName: 'EventCreateView',
+        }),
+      );
+    }
+  },
+
   fetchEventParticipantsNum: () =>
     dispatch(rest.actions.eventParticipantsNum.get()),
 });
@@ -56,6 +61,7 @@ class EventsView extends Component {
 
   constructor() {
     super();
+    this.touchableInactive = false;
     this.state = {
       initialOrder: true,
       sorting: 'Recommended',
@@ -178,6 +184,7 @@ class EventsView extends Component {
   };
 
   render = () => {
+    touchableInactive = false;
     if (!this.props.auth.data.decoded) {
       return (
         <View style={{ marginTop: 30 }}>

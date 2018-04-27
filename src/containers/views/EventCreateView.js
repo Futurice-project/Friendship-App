@@ -35,9 +35,13 @@ class EventCreateView extends Component {
     this.setState({ hostId });
   };
 
-  navigateBack = () => {
+  navigateBack = async () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
+    const userId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
+    await this.props.fetchEvents(userId);
   };
 
   render() {
