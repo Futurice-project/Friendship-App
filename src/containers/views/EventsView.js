@@ -133,10 +133,10 @@ class EventsView extends Component {
     } else {
       switch (this.state.sorting) {
         case 'My Events':
-          console.log(events.data);
-          let userEvents = _.find(events.data, ['userIsJoining', true]);
-          console.log(userEvents);
-          if (!userEvents) {
+          let userEvents = events.data.filter(
+            event => event.userIsJoining === true,
+          );
+          if (userEvents.length === 0) {
             return (
               <Text
                 style={{ alignSelf: 'center', fontSize: 14, marginTop: 20 }}
@@ -145,13 +145,14 @@ class EventsView extends Component {
               </Text>
             );
           } else {
-            // events.data = userEvents;
+            // events.data = userEvents
+            console.log('My Events:', userEvents);
             return this.renderEvents(userEvents);
           }
 
         case 'By time':
           events.data = _.orderBy(events.data, ['dateIndex'], ['desc']);
-          return this.renderEvents(events);
+          return this.renderEvents(events.data);
 
         case 'Smallest first':
           events.data = _.orderBy(
@@ -159,19 +160,19 @@ class EventsView extends Component {
             ['numberParticipantsIndex'],
             ['acs'],
           );
-          return this.renderEvents(events);
+          return this.renderEvents(events.data);
 
         case 'Closest first':
           events.data = _.orderBy(events.data, ['locationSortIndex'], ['desc']);
           //console.log(events);
-          return this.renderEvents(events);
+          return this.renderEvents(events.data);
         default:
           events.data = _.orderBy(
             events.data,
             ['reccomendationIndex'],
             ['desc'],
           );
-          return this.renderEvents(events);
+          return this.renderEvents(events.data);
       }
     }
   };

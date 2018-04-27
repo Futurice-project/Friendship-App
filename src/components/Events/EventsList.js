@@ -36,7 +36,7 @@ const EventsList = ({
 
   return (
     <FlatList
-      data={events.data}
+      data={events}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       refreshing={isFetching}
