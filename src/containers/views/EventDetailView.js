@@ -20,6 +20,8 @@ const mapStateToProps = state => ({
   eventPersonalities: state.eventPersonalities,
   eventTags: state.eventTags,
   eventParticipation: state.eventParticipation,
+  events: state.events,
+  eventParticipantsNum: state.eventParticipantsNum,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -35,6 +37,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.eventParticipation.post({ eventId, userId })),
   leaveEvent: (eventId, userId) =>
     dispatch(rest.actions.eventParticipation.delete({ eventId, userId })),
+  fetchEventParticipantsNum: () =>
+    dispatch(rest.actions.eventParticipantsNum.get()),
+  fetchEvents: userId => dispatch(rest.actions.events.get({ userId })),
 });
 
 class EventDetailView extends Component {
@@ -88,9 +93,14 @@ class EventDetailView extends Component {
     await this.props.fetchEventTags(eventId);
   }
 
-  navigateBack = () => {
+  navigateBack = async () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
+    const userId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
+    await this.props.fetchEvents(userId);
+    await this.props.fetchEventParticipantsNum();
   };
 
   render() {
