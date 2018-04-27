@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 /* Styling for button wrapper */
-const ButtonWrapper = styled.TouchableOpacity`
+export const ButtonWrapper = styled.TouchableOpacity`
   ${props => {
     if (props.primary) {
       return (
