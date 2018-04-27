@@ -40,30 +40,21 @@ const MyEventModal = ({
       isVisible={isModalVisible}
     >
       <View style={{ flex: 1 }}>
-        <TouchableOpacity
-          onPress={hideModal}
-          style={{
-            alignSelf: 'flex-end',
-            marginRight: -10,
-            marginTop: 7,
-          }}
-        >
-          <Image
-            source={require('../../../assets/settingsIcon.png')}
-            style={{
-              width: 24,
-              height: 24,
-              tintColor: '#4A4A4A',
-            }}
-          />
-        </TouchableOpacity>
-
         <ButtonOption>
           <TouchableOpacity
             style={styles.buttonStyle}
             onPress={() => openEventEditForm(eventDetails)}
           >
             <Text style={styles.buttonTextStyle}>Edit</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={hideModal}
+            style={{
+              marginTop: 15,
+            }}
+          >
+            <Text style={styles.buttonTextStyle}>Close</Text>
           </TouchableOpacity>
         </ButtonOption>
       </View>

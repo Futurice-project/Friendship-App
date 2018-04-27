@@ -131,7 +131,6 @@ class EventDetailView extends Component {
             eventTitle={title}
             address={address}
             city={city}
-            showModal={this._showModal}
             srcImage={srcImage}
             navigateBack={this.navigateBack}
             eventDate={eventDate}
@@ -145,9 +144,11 @@ class EventDetailView extends Component {
             participants={this.props.eventParticipants}
             personalities={this.props.eventPersonalities}
             tags={this.props.eventTags}
+            showModal={this._showModal}
             onButtonPress={() => this.handleButtonPress(eventId, userId)}
             participation={this.props.eventParticipation}
             isHost={this.props.eventDetails.data.hostId === userId}
+            eventFull={this.props.eventDetails.data.maxParticipantNumberExceed}
             currentUser={userId}
             hostId={this.props.eventDetails.data.hostId}
           />
