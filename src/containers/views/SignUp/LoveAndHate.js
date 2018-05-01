@@ -7,10 +7,10 @@ import { ActivityIndicator, View } from 'react-native';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
 import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
-import { INTERESTS } from '../../../components/SignUp/Constants';
+import { INTERESTS } from '../../../components/SignUp/ProgressSteps';
 import { Field, reduxForm, submit } from 'redux-form';
 import YeahAndNaahList from '../../../components/SignUp/YeahAndNaahList';
-import { validateLoveAndHate } from '../../../components/SignUp/validate';
+import { validateLoveAndHate } from '../../../state/validate';
 
 const mapStateToProps = state => ({
   activities: state.activities,

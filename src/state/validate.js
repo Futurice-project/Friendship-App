@@ -1,6 +1,6 @@
 import { SubmissionError } from 'redux-form';
 import React from 'react';
-import { ErrorText } from '../Layout/SignupLayout';
+import { ErrorText } from '../components/Layout/SignupLayout';
 import moment from 'moment';
 
 export function validateUserInformations(values) {

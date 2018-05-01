@@ -16,10 +16,10 @@ import { ViewContainer } from '../Layout/Layout';
 import RoundTab from '../RoundTab';
 import ProgressBar from '../SignUp/ProgressBar';
 import GenderBox from '../SignUp/GenderBox';
-import SignUpEmoji from '../SignUp/SignUpEmoji';
+import SignUpEmoji from '../SignUp/Avatar';
 import LoadingIndicator from '../LoadingIndicator';
 import { emojis } from '../../../assets/misc/emojis';
-import { YOUR_PROFILE } from '../SignUp/Constants';
+import { YOUR_PROFILE } from '../SignUp/ProgressSteps';
 import Modal from 'react-native-modal';
 
 const mapStateToProps = state => ({

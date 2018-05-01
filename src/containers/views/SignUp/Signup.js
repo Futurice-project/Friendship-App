@@ -1,9 +1,9 @@
 import React from 'react';
 import UserInformation from './UserInformation';
-import SignUpPersonality from './SignUpPersonality';
-import SignUpLocation from './SignUpLocation';
-import SignUpYeahAndNaah from './SignUpYeahAndNaah';
-import SignUpMatching from './SignUpMatching';
+import Locations from './Locations';
+import Personalities from './Personalities';
+import LoveAndHate from './LoveAndHate';
+import MatchingAgreement from './MatchingAgreement';
 
 class Signup extends React.Component {
   constructor(props) {
@@ -29,25 +29,25 @@ class Signup extends React.Component {
         );
       case 2:
         return (
-          <SignUpLocation
+          <Locations
             previousPage={this.previousPage}
             onSubmitSucceeded={() => this.nextPage(this.state.page)}
           />
         );
       case 3:
         return (
-          <SignUpPersonality
+          <Personalities
             onSubmitSucceeded={() => this.nextPage(this.state.page)}
           />
         );
       case 4:
         return (
-          <SignUpYeahAndNaah
+          <LoveAndHate
             onSubmitSucceeded={() => this.nextPage(this.state.page)}
           />
         );
       case 5:
-        return <SignUpMatching />;
+        return <MatchingAgreement />;
     }
   }
 }

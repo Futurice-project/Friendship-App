@@ -6,12 +6,12 @@ import DescriptionBubble from '../../../components/BubbleTextInput';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
 import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
-import { MATCHING_AGREEMENT } from '../../../components/SignUp/Constants';
+import { MATCHING_AGREEMENT } from '../../../components/SignUp/ProgressSteps';
 import {
   checkErrorMessage,
   renderErrorMessage,
   validateMatching,
-} from '../../../components/SignUp/validate';
+} from '../../../state/validate';
 import { Field, reduxForm, submit } from 'redux-form';
 import Toggle from '../../../components/Toggle';
 import { FieldContainer } from '../../../components/Layout/SignupLayout';

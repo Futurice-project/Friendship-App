@@ -6,7 +6,7 @@ import {
 } from '../Layout/SignupLayout';
 import { Field } from 'redux-form';
 import React from 'react';
-import { renderErrorMessage } from './validate';
+import { renderErrorMessage } from '../../state/validate';
 
 export default class SignupField extends React.Component {
   render() {

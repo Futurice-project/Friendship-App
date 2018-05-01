@@ -1,5 +1,5 @@
 import Genders from './Genders';
-import SignUpTextInput from './SignUpTextInput';
+import SignUpTextInput from './TextInput';
 import {
   Container,
   FieldContainer,
@@ -12,7 +12,7 @@ import {
 import Field from 'redux-form/es/Field';
 import React from 'react';
 import { View } from 'react-native';
-import { checkErrorMessage, renderErrorMessage } from './validate';
+import { checkErrorMessage, renderErrorMessage } from '../../state/validate';
 import { connect } from 'react-redux';
 import { hide } from '../../state/keyboard';
 

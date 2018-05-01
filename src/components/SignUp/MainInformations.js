@@ -1,10 +1,10 @@
 import React from 'react';
-import Emoji from './Emoji';
-import SignUpTextInput from './SignUpTextInput';
+import Emoji from './AvatarList';
+import SignUpTextInput from './TextInput';
 import { Field } from 'redux-form';
 import { Container, LabelText, Part } from '../Layout/SignupLayout';
 import { connect } from 'react-redux';
-import { checkErrorMessage } from './validate';
+import { checkErrorMessage } from '../../state/validate';
 import SignupField from './SignupField';
 
 const mapStateToProps = state => ({

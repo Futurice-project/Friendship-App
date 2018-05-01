@@ -1,14 +1,14 @@
 import React from 'react';
-import { LOCATION } from '../../../components/SignUp/Constants';
+import { LOCATION } from '../../../components/SignUp/ProgressSteps';
 import {
   checkErrorMessage,
   renderErrorMessage,
   validateLocations,
-} from '../../../components/SignUp/validate';
+} from '../../../state/validate';
 import { Field, reduxForm } from 'redux-form';
 import LocationList from '../../../components/SignUp/LocationList';
 import { View } from 'react-native';
-import SignupHeader from '../../../components/SignUp/SignupHeader';
+import SignupHeader from '../../../components/SignUp/Header';
 import {
   Container,
   FieldContainer,

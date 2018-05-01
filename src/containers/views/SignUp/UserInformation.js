@@ -3,12 +3,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { ViewContainer } from '../../../components/Layout/Layout';
 import { reduxForm } from 'redux-form';
 import Footer from '../../../components/SignUp/Footer';
-import { YOUR_PROFILE } from '../../../components/SignUp/Constants';
-import SignupHeader from '../../../components/SignUp/SignupHeader';
+import { YOUR_PROFILE } from '../../../components/SignUp/ProgressSteps';
+import SignupHeader from '../../../components/SignUp/Header';
 import MainInformations from '../../../components/SignUp/MainInformations';
 import AdditionalInformations from '../../../components/SignUp/AdditionalInformations';
 import PicturePicker from '../../../components/SignUp/PicturePicker';
-import { validateUserInformations } from '../../../components/SignUp/validate';
+import { validateUserInformations } from '../../../state/validate';
 
 /* The sign up process starts here with the user's information */
 class UserInformation extends React.Component {

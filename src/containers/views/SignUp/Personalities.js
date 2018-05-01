@@ -3,11 +3,11 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import rest from '../../../utils/rest';
-import TwoPersonalities from '../../../components/SignUp/TwoPersonalities';
-import { validatePersonnalities } from '../../../components/SignUp/validate';
+import TwoPersonalities from '../../../components/SignUp/PersonalityList';
+import { validatePersonnalities } from '../../../state/validate';
 import { Field, reduxForm, submit } from 'redux-form';
-import { PERSONALITIES } from '../../../components/SignUp/Constants';
-import SignupHeader from '../../../components/SignUp/SignupHeader';
+import { PERSONALITIES } from '../../../components/SignUp/ProgressSteps';
+import SignupHeader from '../../../components/SignUp/Header';
 import {
   Container,
   LabelText,

@@ -1,7 +1,7 @@
 import { emojis } from '../../../assets/misc/emojis';
 import styled from 'styled-components/native/index';
 import React from 'react';
-import SignUpEmoji from './SignUpEmoji';
+import SignUpEmoji from './Avatar';
 
 export default class Emoji extends React.Component {
   state = {
