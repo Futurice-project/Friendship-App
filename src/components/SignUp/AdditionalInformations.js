@@ -14,6 +14,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { checkErrorMessage, renderErrorMessage } from './validate';
 import { connect } from 'react-redux';
+import { hide } from '../../state/keyboard';
 
 const mapStateToProps = state => ({
   signup: state.form.signup,
@@ -25,9 +26,12 @@ const renderBirthYearField = submittedErrors => {
       <FieldWrapper>
         <Field
           name="birthyear"
+          returnKeyType={'done'}
           component={SignUpTextInput}
           placeholder="BIRTH YEAR*"
           keyboardType="numeric"
+          focusRef={component => (this._birthyear = component)}
+          onEnter={hide}
         />
       </FieldWrapper>
       <HintWrapper>

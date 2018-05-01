@@ -2,17 +2,9 @@ import React from 'react';
 import Emoji from './Emoji';
 import SignUpTextInput from './SignUpTextInput';
 import { Field } from 'redux-form';
-import {
-  Container,
-  FieldContainer,
-  FieldWrapper,
-  HintWrapper,
-  LabelText,
-  LabelTextHelper,
-  Part,
-} from '../Layout/SignupLayout';
+import { Container, LabelText, Part } from '../Layout/SignupLayout';
 import { connect } from 'react-redux';
-import { checkErrorMessage, renderErrorMessage } from './validate';
+import { checkErrorMessage } from './validate';
 import SignupField from './SignupField';
 
 const mapStateToProps = state => ({
@@ -37,7 +29,10 @@ const renderUsernameField = submittedErrors => {
       component={SignUpTextInput}
       placeholder={'(NICK)NAME*'}
       texthelper={'(visible)'}
-      ref={component => (this._username = component)}
+      returnKeyType={'next'}
+      onEnter={() => {
+        this._email.focus();
+      }}
       err={checkErrorMessage(submittedErrors, 'USERNAME')}
     />
   );
@@ -49,10 +44,13 @@ const renderEmailField = submittedErrors => {
       name={'email'}
       component={SignUpTextInput}
       placeholder={'EMAIL*'}
-      hinttext
       texthelper={'(private)'}
       keyboardType={'email-address'}
-      ref={component => (this._email = component)}
+      returnKeyType={'next'}
+      focusRef={component => (this._email = component)}
+      onEnter={() => {
+        this._password.focus();
+      }}
       err={checkErrorMessage(submittedErrors, 'EMAIL')}
       style={{ marginTop: 15 }}
     />
@@ -65,8 +63,13 @@ const renderPwdField = submittedErrors => {
       name={'password'}
       component={SignUpTextInput}
       placeholder={'PASSWORD*'}
+      texthelper={'(private)'}
       secureTextEntry
-      ref={component => (this._password = component)}
+      returnKeyType={'next'}
+      focusRef={component => (this._password = component)}
+      onEnter={() => {
+        this._birthyear.focus();
+      }}
       err={checkErrorMessage(submittedErrors, 'PASSWORD')}
     />
   );

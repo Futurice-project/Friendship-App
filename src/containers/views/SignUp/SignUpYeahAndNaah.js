@@ -179,11 +179,17 @@ export class SignUpLoveAndHate extends React.Component {
   }
 
   getNumberOfPages() {
+    let nbOfPage;
+    let remainder;
     switch (this.state.category) {
       case 1:
-        return Math.floor(this.props.activities.data.length / 5) + 1;
+        remainder = this.props.activities.data.length % 5;
+        nbOfPage = Math.floor(this.props.activities.data.length / 5);
+        return remainder > 0 ? nbOfPage + 1 : nbOfPage;
       case 2:
-        return Math.floor(this.props.interests.data.length / 5) + 1;
+        remainder = this.props.interests.data.length % 5;
+        nbOfPage = Math.floor(this.props.interests.data.length / 5);
+        return remainder > 0 ? nbOfPage + 1 : nbOfPage;
     }
   }
 }
