@@ -9,7 +9,7 @@ import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
 import { INTERESTS } from '../../../components/SignUp/ProgressSteps';
 import { Field, reduxForm, submit } from 'redux-form';
-import YeahAndNaahList from '../../../components/SignUp/YeahAndNaahList';
+import YeahAndNaahList from '../../../components/SignUp/TagsList';
 import { validateLoveAndHate } from '../../../state/validate';
 
 const mapStateToProps = state => ({

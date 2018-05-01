@@ -1,7 +1,7 @@
 import { Centered } from '../Layout/Layout';
 import React from 'react';
 import styled from 'styled-components/native/index';
-import YeahAndNaah from './YeahAndNaah';
+import YeahAndNaah from './Tag';
 
 export default class YeahAndNaahList extends React.Component {
   render() {

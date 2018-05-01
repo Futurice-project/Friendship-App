@@ -8,9 +8,8 @@ import {
   LabelTextHelper,
   Part,
 } from '../Layout/SignupLayout';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import { Field } from 'redux-form';
-import styled from 'styled-components/native/index';
 
 /**
  * Renders the picture picker so that the user can add his/her own picture
@@ -31,11 +30,6 @@ export default class PicturePicker extends React.Component {
             </HintWrapper>
             <View style={{ width: 278 }}>
               <Field name="image" component={PhotoBox} />
-              {/*<ScrollViewPhoto
-                contentContainerStyle={styles.scrollViewPhotoContainer}
-                horizontal
-              >
-              </ScrollViewPhoto>*/}
             </View>
           </FieldContainer>
         </Part>
@@ -43,15 +37,3 @@ export default class PicturePicker extends React.Component {
     );
   }
 }
-
-const ScrollViewPhoto = styled.ScrollView`
-  margin-top: 11;
-  align-self: flex-start;
-`;
-
-const styles = {
-  scrollViewPhotoContainer: {
-    justifyContent: 'space-around',
-    height: 93,
-  },
-};
