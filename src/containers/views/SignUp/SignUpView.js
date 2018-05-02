@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
-import { ImagePicker } from 'expo';
+import { ImagePicker, Permissions } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
 
@@ -46,13 +46,47 @@ class SignUpView extends React.Component {
     this.setState({ error: true });
   }
 
+  askPermissionsAsync = async () => {
+    await Permissions.askAsync(Permissions.CAMERA);
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  };
+
   openImageGallery = async () => {
+    await this.askPermissionsAsync();
+
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
 
     if (!result.cancelled) {
+      fetch(
+        `http://localhost:3888/sign-s3?file-name=image.jpg&file-type=${result.type}`,
+      )
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(myJson) {
+          const { signedRequest, url } = myJson;
+          console.log(url);
+          const xhr = new XMLHttpRequest();
+          xhr.open('PUT', signedRequest);
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                console.log('Image successfully uploaded to S3');
+              } else {
+                console.log('Error while sending the image to S3');
+              }
+            }
+          };
+          xhr.setRequestHeader('Content-Type', 'image/jpeg');
+          xhr.send({
+            uri: result.uri,
+            type: 'image/jpeg',
+            name: 'myimage.jpg',
+          });
+        });
       this.setState({ image: result.uri, error: false });
     }
   };
@@ -101,34 +135,6 @@ class SignUpView extends React.Component {
 
   createFormData(userData, image, genders) {
     let tempFormData = new FormData();
-
-    if (image) {
-      tempFormData.append('image', {
-        uri: image,
-        name: 'image.jpg',
-        type: 'image/jpeg',
-      });
-    }
-
-    fetch(
-      `http://localhost:3888/sign-s3?file-name=image.jpg&file-type=multipart/form-data`,
-    )
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(myJson) {
-        const { signedRequest, url } = myJson;
-        console.log(myJson);
-        console.log(tempFormData);
-
-        fetch(signedRequest, {
-          method: 'PUT',
-          body: tempFormData,
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }).then(res => {
-          console.log(res);
-        });
-      });
 
     if (genders) {
       tempFormData.append('genders', JSON.stringify(genders));

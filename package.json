@@ -38,16 +38,16 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
-    "test":
-      "node node_modules/jest/bin/jest.js  && echo \"Full report in browser: file://${PWD}/coverage/index.html \" ",
-    "test-watch":
-      "node node_modules/jest/bin/jest.js  --watch && echo \"Full report in browser: file://${PWD}/coverage/index.html \" ",
+    "test": "node node_modules/jest/bin/jest.js  && echo \"Full report in browser: file://${PWD}/coverage/index.html \" ",
+    "test-watch": "node node_modules/jest/bin/jest.js  --watch && echo \"Full report in browser: file://${PWD}/coverage/index.html \" ",
     "precommit": "lint-staged",
-    "prettier":
-      "prettier --single-quote --trailing-comma all --write \"{,!(android|ios|node_modules)/**/}*.js\""
+    "prettier": "prettier --single-quote --trailing-comma all --write \"{,!(android|ios|node_modules)/**/}*.js\""
   },
   "lint-staged": {
-    "*.js": ["prettier --single-quote --trailing-comma all --write", "git add"]
+    "*.js": [
+      "prettier --single-quote --trailing-comma all --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "babel-preset-expo": "^4.0.0",
