@@ -33,7 +33,7 @@ export class SuggestionList extends React.Component {
   //   this.props.usersByPage(0);
   // }
 
-  keyExtractor = (item, index) => index;
+  keyExtractor = (item, index) => 'list-item-' + index;
   renderItem = ({ item }) => {
     return (
       <TouchableOpacity

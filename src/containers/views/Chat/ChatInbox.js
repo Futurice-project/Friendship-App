@@ -35,7 +35,7 @@ export class ChatInbox extends React.Component {
     clearInterval(this.timer);
   }
 
-  keyExtractor = (item, index) => index;
+  keyExtractor = (item, index) => 'list-item-' + index;
 
   renderItem = ({ item }) => {
     return <InboxCard data={item} />;

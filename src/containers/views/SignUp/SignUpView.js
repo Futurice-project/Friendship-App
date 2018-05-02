@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
-import { ImagePicker } from 'expo';
+import { ImagePicker, Permissions } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
 
@@ -46,7 +46,15 @@ class SignUpView extends React.Component {
     this.setState({ error: true });
   }
 
+  askPermissionsAsync = async () => {
+    // you would probably do something to verify that permissions
+    // are actually granted, but I’m skipping that for brevity
+  };
+
   openImageGallery = async () => {
+    //await this.askPermissionsAsync();
+    await Permissions.askAsync(Permissions.CAMERA);
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
