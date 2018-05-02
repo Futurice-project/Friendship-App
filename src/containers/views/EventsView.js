@@ -1,3 +1,6 @@
+/**
+ * TODOs: Go to the EventDetail and make some changes: When user click on Join Now, change userIsJoining to true
+ */
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
@@ -27,12 +30,17 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchEvents: userId => dispatch(rest.actions.events.get({ userId })),
-  openEventForm: () =>
-    dispatch(
-      NavigationActions.navigate({
-        routeName: 'EventCreateView',
-      }),
-    ),
+  openEventForm: () => {
+    if (!this.touchableInactive) {
+      this.touchableInactive = true;
+      dispatch(
+        NavigationActions.navigate({
+          routeName: 'EventCreateView',
+        }),
+      );
+    }
+  },
+
   fetchEventParticipantsNum: () =>
     dispatch(rest.actions.eventParticipantsNum.get()),
 });
@@ -53,6 +61,7 @@ class EventsView extends Component {
 
   constructor() {
     super();
+    this.touchableInactive = false;
     this.state = {
       initialOrder: true,
       sorting: 'Recommended',
@@ -70,6 +79,7 @@ class EventsView extends Component {
   rightText = () => {
     let data = [
       { value: 'Recommended' },
+      { value: 'My Events' },
       { value: 'By time' },
       { value: 'Smallest first' },
       { value: 'Closest first' },
@@ -79,8 +89,16 @@ class EventsView extends Component {
         dropdownMargins={{ min: 15, max: 20 }}
         dropdownOffset={{ top: 20, left: 15 }}
         dropdownPosition={0}
-        pickerStyle={{ width: 150, marginTop: 12 }}
+        pickerStyle={{
+          width: 150,
+          marginTop: 12,
+          height: 'auto',
+        }}
         containerStyle={{ marginBottom: 10, right: 10 }}
+        textColor={'#000000'}
+        itemColor={'#000000'}
+        selectedItemColor={'#ff6e40'}
+        baseColor={'#ff6e40'}
         data={data}
         value="Recommended"
         onChangeText={value => {
@@ -120,9 +138,27 @@ class EventsView extends Component {
       return <ActivityIndicator />;
     } else {
       switch (this.state.sorting) {
+        case 'My Events':
+          let userEvents = events.data.filter(
+            event => event.userIsJoining === true,
+          );
+          if (userEvents.length === 0) {
+            return (
+              <Text
+                style={{ alignSelf: 'center', fontSize: 14, marginTop: 20 }}
+              >
+                You have no events
+              </Text>
+            );
+          } else {
+            // events.data = userEvents
+            console.log('My Events:', userEvents);
+            return this.renderEvents(userEvents);
+          }
+
         case 'By time':
           events.data = _.orderBy(events.data, ['dateIndex'], ['desc']);
-          return this.renderEvents(events);
+          return this.renderEvents(events.data);
 
         case 'Smallest first':
           events.data = _.orderBy(
@@ -130,29 +166,25 @@ class EventsView extends Component {
             ['numberParticipantsIndex'],
             ['acs'],
           );
-          return this.renderEvents(events);
+          return this.renderEvents(events.data);
 
         case 'Closest first':
           events.data = _.orderBy(events.data, ['locationSortIndex'], ['desc']);
           //console.log(events);
-          return this.renderEvents(events);
+          return this.renderEvents(events.data);
         default:
           events.data = _.orderBy(
             events.data,
             ['reccomendationIndex'],
             ['desc'],
           );
+          return this.renderEvents(events.data);
       }
-      return this.renderEvents(events);
     }
   };
 
-  changeSortOrder = () => {
-    this.setState({ initialOrder: !this.state.initialOrder });
-    console.log(this.state.initialOrder);
-  };
-
   render = () => {
+    touchableInactive = false;
     if (!this.props.auth.data.decoded) {
       return (
         <View style={{ marginTop: 30 }}>

@@ -49,7 +49,6 @@ class EventForm extends Component {
     description: '',
     city: '',
     address: '',
-    minParticipants: '1',
     maxParticipants: '5',
     participantsMix: 100,
     error: false,
@@ -127,7 +126,6 @@ class EventForm extends Component {
       description,
       city,
       address,
-      minParticipants,
       maxParticipants,
       participantsMix,
       eventImage,
@@ -141,7 +139,6 @@ class EventForm extends Component {
       description,
       city,
       address,
-      minParticipants,
       maxParticipants,
       participantsMix,
       hostId,
@@ -150,7 +147,7 @@ class EventForm extends Component {
     eventData.participantsMix = 100 - eventData.participantsMix;
     console.log('MIX TO SEND', eventData.participantsMix);
 
-    if (!title || !city || !address || !date) {
+    if (!title || !city || !address || !date || !maxParticipants) {
       return this.setState({
         validationError: 'Please enter all required fields',
       });
@@ -221,23 +218,7 @@ class EventForm extends Component {
     });
     const eventImage = { uri: this.state.eventImage };
     this.renderStatus();
-    const minParticipantsData = [
-      {
-        label: '1',
-        value: '1',
-        key: '1',
-      },
-      {
-        label: '5',
-        value: '5',
-        key: '5',
-      },
-      {
-        label: '10',
-        value: '10',
-        key: '10',
-      },
-    ];
+
     const maxParticipantsData = [
       {
         label: '5',
@@ -461,50 +442,7 @@ class EventForm extends Component {
               fontSize: 18,
             }}
           >
-            MIN. PARTICIPANTS
-          </Text>
-          <View style={{ width: 278 }}>
-            <PickerSelect
-              items={minParticipantsData}
-              value={this.state.minParticipants}
-              onValueChange={minParticipants =>
-                this.setState({
-                  minParticipants,
-                  validationError: '',
-                  error: false,
-                })}
-              style={{ ...pickerSelectStyles }}
-            />
-          </View>
-          <LabelTextHelper
-            style={{
-              width: 270,
-              textAlign: 'center',
-              marginTop: 7,
-            }}
-          >
-            * Hangout is considered off if less people
-          </LabelTextHelper>
-        </View>
-
-        <View
-          style={{
-            alignItems: 'center',
-            width: '100%',
-            backgroundColor: '#f9f7f6',
-          }}
-        >
-          <Text
-            style={{
-              width: 278,
-              marginTop: 40,
-              marginBottom: 10,
-              paddingLeft: 21,
-              color: '#4a4a4a',
-              fontSize: 18,
-            }}
-          >
-            MAX. PARTICIPANTS
+            MAX. PARTICIPANTS *
           </Text>
           <View style={{ width: 278 }}>
             <PickerSelect
@@ -641,7 +579,7 @@ class EventForm extends Component {
               >
                 {eventImage.uri ? (
                   <Image
-                    style={{ width: 93, height: 93 }}
+                    style={{ width: 83, height: 83 }}
                     source={eventImage}
                   />
                 ) : (
@@ -651,17 +589,15 @@ class EventForm extends Component {
             </ScrollViewPhoto>
           </View>
           {this.props.edit ? (
-            <View style={{ backgroundColor: '#f9f7f6' }}>
-              <ButtonOption>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.deleteEvent(this.props.eventDetails.id)}
-                  style={styles.buttonStyle}
-                >
-                  <Text style={styles.textButtonStyle}>Cancel Event</Text>
-                </TouchableOpacity>
-              </ButtonOption>
-            </View>
+            <ButtonOption>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.deleteEvent(this.props.eventDetails.id)}
+                style={styles.buttonStyle}
+              >
+                <Text style={styles.textButtonStyle}>Cancel Event</Text>
+              </TouchableOpacity>
+            </ButtonOption>
           ) : null}
           <RoundTabContainer>
             <RoundTab
@@ -681,8 +617,8 @@ class EventForm extends Component {
 const ButtonOption = styled.View`
   flex: 1;
   align-items: center;
-  marginBottom: 30;
-  marginTop: 30;
+  marginBottom: 10;
+  marginTop: 15;
 `;
 
 const LabelContainer = styled.View`
@@ -772,23 +708,23 @@ const styles = StyleSheet.create({
   },
   scrollViewPhotoContainer: {
     justifyContent: 'space-around',
-    height: 93,
+    height: 100,
     paddingLeft: 30,
   },
 
   textButtonStyle: {
     alignSelf: 'center',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Bold',
     color: '#ffffff',
   },
   buttonStyle: {
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    width: 241,
-    height: 47,
-    borderRadius: 34,
+    width: 150,
+    height: 40,
+    borderRadius: 35,
     backgroundColor: '#eb7a63',
   },
 });
