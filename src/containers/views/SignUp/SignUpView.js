@@ -88,15 +88,15 @@ class SignUpView extends React.Component {
     } = this.state;
     let userData = { email, password, username, birthyear, emoji };
 
-    if (!email || !password || !username || !birthyear) {
-      return this.setState({
-        validationError: 'Please enter all required fields',
-      });
-    }
+    // if (!email || !password || !username || !birthyear) {
+    //   return this.setState({
+    //     validationError: 'Please enter all required fields',
+    //   });
+    // }
 
     let formdata = this.createFormData(userData, image, genders);
 
-    this.props.signUp(formdata);
+    // this.props.signUp(formdata);
   }
 
   createFormData(userData, image, genders) {
@@ -105,10 +105,30 @@ class SignUpView extends React.Component {
     if (image) {
       tempFormData.append('image', {
         uri: image,
-        name: 'image.png',
-        type: 'multipart/form-data',
+        name: 'image.jpg',
+        type: 'image/jpeg',
       });
     }
+
+    fetch(
+      `http://localhost:3888/sign-s3?file-name=image.jpg&file-type=multipart/form-data`,
+    )
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        const { signedRequest, url } = myJson;
+        console.log(myJson);
+        console.log(tempFormData);
+
+        fetch(signedRequest, {
+          method: 'PUT',
+          body: tempFormData,
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }).then(res => {
+          console.log(res);
+        });
+      });
 
     if (genders) {
       tempFormData.append('genders', JSON.stringify(genders));
