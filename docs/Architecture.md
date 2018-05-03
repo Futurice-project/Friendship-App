@@ -9,8 +9,12 @@
 **[Chat](#Chat)**<br>
 **[User's Profile](#user's-profile)**<br>
 **[Events](#events)**<br>
+<<<<<<< HEAD
 **[Event Details](#event-details)**<br>
 **[Event Create/Edit](#event-create/edit)**<br>
+=======
+**[Event Details](#event-Details)**<br>
+>>>>>>> goldenEvents-frontend
 **[Components](#components)**<br>
 ## Welcome View
 
