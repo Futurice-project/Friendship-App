@@ -2,6 +2,13 @@
   "expo": {
     "sdkVersion": "27.0.0",
     "privacy": "unlisted",
-    "orientation": "portrait"
+    "slug": "friendship",
+    "orientation": "portrait",
+    "splash": {
+      "image": "https://s3.eu-west-3.amazonaws.com/friendship-image-storage/images/index.png"
+    },
+    "android" : {
+      "icon": "https://s3.eu-west-3.amazonaws.com/friendship-image-storage/images/index.png"
+    }
   }
 }
