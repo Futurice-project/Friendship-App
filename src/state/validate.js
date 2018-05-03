@@ -2,6 +2,36 @@ import { SubmissionError } from 'redux-form';
 import React from 'react';
 import { ErrorText } from '../components/Layout/SignupLayout';
 import moment from 'moment';
+import { Platform } from 'react-native';
+
+let apiRoot;
+/**
+ * If you want to test the app in your own phone, in case of an iPhone,
+ * change the IP Address here after.
+ * */
+if (process.env.NODE_ENV === 'development') {
+  apiRoot =
+    Platform.OS === 'ios' ? 'http://10.3.1.174:3888' : 'http://10.3.1.174:3888';
+} else {
+  apiRoot = 'https://friendshipapp-backend.herokuapp.com';
+}
+
+export const isUsernameAvailable = values => {
+  fetch(`${apiRoot}/users/validate/${values.username}`)
+    .then(users => users.json())
+    .then(usersWithSameUsername => {
+      console.log(usersWithSameUsername.length);
+      return usersWithSameUsername.length <= 0;
+    });
+};
+
+export const isEmailAvailable = values => {
+  fetch(`${apiRoot}/users/validate/email/${values.email}`)
+    .then(users => users.json())
+    .then(usersWithSameEmail => {
+      return usersWithSameEmail.length <= 0;
+    });
+};
 
 export function validateUserInformations(values) {
   let err = null;
@@ -22,6 +52,11 @@ export function validateUserInformations(values) {
     err = {
       ...err,
       email: 'Enter a valid email (ex. foo@bar.com)',
+    };
+  } else if (!isEmailAvailable(values.email)) {
+    err = {
+      ...err,
+      email: `That email is already used : ${values.email}`,
     };
   }
 
