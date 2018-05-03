@@ -9,7 +9,8 @@
 **[Chat](#Chat)**<br>
 **[User's Profile](#user's-profile)**<br>
 **[Events](#events)**<br>
-**[Event Details](#eventDetails)**<br>
+**[Event Details](#event-details)**<br>
+**[Event Create/Edit](#event-create/edit)**<br>
 **[Components](#components)**<br>
 ## Welcome View
 
@@ -115,6 +116,44 @@ common personalitites and common yeah&nahs.
 > * "Top Yeahs" & "Top Naahs" contains  information about the top yeahs and top naahs for this event based on the participant preferances. Circle shows the number of each tag for event. 
 > * In case when you are the host of the event, instead of  "Join"&"Leave" buttons the button "Manage event" available. 
 > * By pressing this button the modal which which allows user to open the Edit Page will be opened. 
+> * If event is full (Number of maximum participants exceed), then user is not able to click the join button. 
+> * In the participants list there are no common yeahs & naahs circles with your own user. 
+
+
+## Event Create/Edit 
+
+<img src="./images/EventCreate1.png" width="300" height="500"/>
+<img src="./images/EventCreate2.png" width="300" height="500"/>
+<img src="./images/Modal.png" width="300" height="500"/>
+<img src="./images/Edit1.png" width="300" height="500"/>
+<img src="./images/Edit2.png" width="300" height="500"/>
+
+**Path**
+
+> src/containers/views/EventCreateView.js
+> src/containers/views/EventEditView.js
+
+**Component Imported**
+
+> * src/components/Events/EventForm.js
+
+**Functionality**
+
+> * For Creating the new one and modifying the existing event there are two containers are user. EventCreateView and EventEditView use the same EventForm component which taking  different props based on the mode. 
+> * Create Page can be opened by pressing the big "+" circle in the Events List page. 
+> * On the New Event page user should specify all required information for the creation of the event. 
+> * Required fields in the form are marked with star.
+> * "Maximum Participants" section specify the maximum number of participants which can join the event. After this number is exceed, users are not able anymore to join the event. 
+> * "People Mix" feature contains the information how diverse the event is. 
+> * Diversity of the event is calculated based on partipants information, perconalities and tags. It is calculated in the beackend as the percentage of the similarity between host and user who viewing the event. 
+> * In case when the users similarity is less then diversity value specified by host, then event is not shown for the user. 
+> * Picture can be added on the Bottom of the page and it will be an event picture on the backgroung. 
+> * After "Create" button is pressed, event is inserted to the database and user is redirected to the Event Detail Page. 
+> * After user created an event it is automatically joining it and it's not possible to leave event anyhow. 
+> * For Editing the event the button "Manage Event" and then "Edit" should be pressed. 
+> * On the "Edit Event" page user will get all information about the event populated to the corresponding fields. 
+> * It's possible to modify all fields of the event. 
+> * On the bottom part there is "Cancel Event" button which will delete the event from the database and redirect user to Events List page.
 
 ## Components
 
