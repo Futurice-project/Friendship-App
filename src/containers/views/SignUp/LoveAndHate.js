@@ -26,16 +26,18 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
+const initialState = {
+  index: 0,
+  page: 1,
+  category: 1,
+  selectedYeahs: [],
+  selectedNahs: [],
+};
+
 export class SignUpLoveAndHate extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      index: 0,
-      page: 1,
-      category: 1,
-      selectedYeahs: [],
-      selectedNahs: [],
-    };
+    this.state = initialState;
   }
 
   componentWillMount() {
@@ -73,7 +75,7 @@ export class SignUpLoveAndHate extends React.Component {
       this.state.category === 1
         ? this.props.activities.data
         : this.props.interests.data;
-    tags = tags.slice(this.state.index, this.state.index + 4);
+    tags = tags.slice(this.state.index, this.state.index + 5);
 
     return (
       <Field
@@ -98,33 +100,47 @@ export class SignUpLoveAndHate extends React.Component {
   handleClick = () => {
     switch (this.state.category) {
       case 1:
-        if (this.state.index + 5 <= this.props.activities.data.length - 1) {
-          this.setState(prevState => ({
-            index: prevState.index + 5,
-            page: prevState.page + 1,
-          }));
-        } else {
-          this.setState(prevState => ({
-            index: 0,
-            category: prevState.category + 1,
-            page: 1,
-          }));
-        }
+        this.state.index + 5 <= this.props.activities.data.length - 1
+          ? this.updateBookmarks()
+          : this.changeTagsCategory();
         break;
       case 2:
-        if (this.state.index + 5 <= this.props.interests.data.length - 1) {
-          this.setState(prevState => ({
-            index: prevState.index + 5,
-            page: prevState.page + 1,
-          }));
-        } else {
-          this.props.dispatch(submit('signup'));
-        }
+        this.state.index + 5 <= this.props.interests.data.length - 1
+          ? this.updateBookmarks()
+          : this.selectedTags()
+            ? this.props.dispatch(submit('signup'))
+            : this.rollback();
         break;
       default:
         console.log('DEFAULT ...');
     }
   };
+
+  selectedTags() {
+    return (
+      this.state.selectedYeahs.length > 0 || this.state.selectedNahs.length > 0
+    );
+  }
+
+  rollback() {
+    alert('Please, select at least 1 activity or interest');
+    this.setState(initialState);
+  }
+
+  changeTagsCategory() {
+    this.setState(prevState => ({
+      index: 0,
+      category: prevState.category + 1,
+      page: 1,
+    }));
+  }
+
+  updateBookmarks() {
+    this.setState(prevState => ({
+      index: prevState.index + 5,
+      page: prevState.page + 1,
+    }));
+  }
 
   render() {
     if (
@@ -220,8 +236,5 @@ export default reduxForm({
   onSubmit: validateLoveAndHate,
   onSubmitSuccess: (result, dispatch, props) => {
     dispatch(props.onSubmitSucceeded);
-  },
-  onSubmitFail: (result, dispatch, props) => {
-    console.log('FAIL ...');
   },
 })(connect(mapStateToProps, mapDispatchToProps)(SignUpLoveAndHate));
