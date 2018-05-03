@@ -9,7 +9,7 @@
 **[Chat](#Chat)**<br>
 **[User's Profile](#user's-profile)**<br>
 **[Events](#events)**<br>
-**[Event Details](#eventDetails)**<br>
+**[Event Details](#event-Details)**<br>
 **[Components](#components)**<br>
 ## Welcome View
 
