@@ -96,7 +96,7 @@ class EventsDetail extends Component {
           <TouchableOpacity onPress={() => this.props.openEvent(id)}>
             <ResponsiveImage
               source={eventImage}
-              initWidth="400"
+              initWidth="380"
               initHeight="230"
             />
           </TouchableOpacity>
