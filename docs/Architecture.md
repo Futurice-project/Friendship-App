@@ -149,11 +149,11 @@ common personalitites and common yeah&nahs.
 > * In case when the users similarity is less then diversity value specified by host, then event is not shown for the user. 
 > * Picture can be added on the Bottom of the page and it will be an event picture on the backgroung. 
 > * After "Create" button is pressed, event is inserted to the database and user is redirected to the Event Detail Page. 
-> * After user created an event it is automatically joining it and it's not possible to leave event anyhow. 
-> * For Editing the event the button "Manage Event" and then "Edit" should be pressed. 
+> * After user creates an event, it is automatically joining it and it's not possible to leave event anyhow for the host. 
+> * For Editing the event, the button "Manage Event" and then "Edit" should be pressed. 
 > * On the "Edit Event" page user will get all information about the event populated to the corresponding fields. 
 > * It's possible to modify all fields of the event. 
-> * On the bottom part there is "Cancel Event" button which will delete the event from the database and redirect user to Events List page.
+> * On the bottom part, there is "Cancel Event" button which will delete the event from the database and redirect user to Events List page.
 
 ## Components
 
