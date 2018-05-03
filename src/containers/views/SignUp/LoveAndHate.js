@@ -221,4 +221,7 @@ export default reduxForm({
   onSubmitSuccess: (result, dispatch, props) => {
     dispatch(props.onSubmitSucceeded);
   },
+  onSubmitFail: (result, dispatch, props) => {
+    console.log('FAIL ...');
+  },
 })(connect(mapStateToProps, mapDispatchToProps)(SignUpLoveAndHate));

@@ -25,10 +25,11 @@ export const isUsernameAvailable = values => {
     });
 };
 
-export const isEmailAvailable = values => {
-  fetch(`${apiRoot}/users/validate/email/${values.email}`)
+export const isEmailAvailable = async email => {
+  await fetch(`${apiRoot}/users/validate/email/${email}`)
     .then(users => users.json())
     .then(usersWithSameEmail => {
+      console.log(usersWithSameEmail.length <= 0);
       return usersWithSameEmail.length <= 0;
     });
 };
@@ -56,7 +57,7 @@ export function validateUserInformations(values) {
   } else if (!isEmailAvailable(values.email)) {
     err = {
       ...err,
-      email: `That email is already used : ${values.email}`,
+      email: `This email is already used : ${values.email}`,
     };
   }
 
