@@ -20,7 +20,7 @@ export default class SignUpEmoji extends React.Component {
   }
 }
 
-const MoodContainer = styled.View`
+export const MoodContainer = styled.View`
   height: 70;
   width: 70;
   background-color: #ffffff;
