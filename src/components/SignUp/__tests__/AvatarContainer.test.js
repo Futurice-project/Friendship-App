@@ -14,18 +14,18 @@ describe('MoodContainer', () => {
 
     console.log(
       'Props of a selected Avatar : ',
-      selectedAvatar.props().children.props.style.backgroundColor,
+      selectedAvatar.find('Styled(Component)').props().style.backgroundColor,
     );
     console.log(
       'Props of an option Avatar : ',
       optionAvatar.props().children.props.style.backgroundColor,
     );
 
-    expect(selectedAvatar.props().children.props.style.backgroundColor).toBe(
-      '#ff8a65',
-    );
-    expect(optionAvatar.props().children.props.style.backgroundColor).toBe(
-      '#ffffff',
-    );
+    expect(
+      selectedAvatar.find('Styled(Component)').props().style.backgroundColor,
+    ).toBe('#ff8a65');
+    expect(
+      optionAvatar.find('Styled(Component)').props().style.backgroundColor,
+    ).toBe('#ffffff');
   });
 });

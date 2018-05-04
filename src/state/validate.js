@@ -11,7 +11,9 @@ let apiRoot;
  * */
 if (process.env.NODE_ENV === 'development') {
   apiRoot =
-    Platform.OS === 'ios' ? 'http://10.3.1.174:3888' : 'http://10.3.1.174:3888';
+    Platform.OS === 'ios'
+      ? 'http://10.213.106.139:3888'
+      : 'http://10.213.106.139:3888';
 } else {
   apiRoot = 'https://friendshipapp-backend.herokuapp.com';
 }
@@ -26,15 +28,14 @@ export const isUsernameAvailable = values => {
 };
 
 export const isEmailAvailable = async email => {
-  await fetch(`${apiRoot}/users/validate/email/${email}`)
-    .then(users => users.json())
-    .then(usersWithSameEmail => {
-      console.log(usersWithSameEmail.length <= 0);
-      return usersWithSameEmail.length <= 0;
-    });
+  let usersWithSameEmail = await fetch(
+    `${apiRoot}/users/validate/email/${email}`,
+  );
+  usersWithSameEmail = await usersWithSameEmail.json();
+  return usersWithSameEmail.length <= 0;
 };
 
-export function validateUserInformations(values) {
+export async function validateUserInformations(values) {
   let err = null;
 
   if (!values.username) {
@@ -54,7 +55,7 @@ export function validateUserInformations(values) {
       ...err,
       email: 'Enter a valid email (ex. foo@bar.com)',
     };
-  } else if (!isEmailAvailable(values.email)) {
+  } else if (!await isEmailAvailable(values.email)) {
     err = {
       ...err,
       email: `This email is already used : ${values.email}`,
