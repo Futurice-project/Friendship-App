@@ -30,4 +30,4 @@ yarn-error.log*
 coverage/
 
 # Ignore test snapshots
-*/__snapshots__/*
+**/__snapshots__/*
