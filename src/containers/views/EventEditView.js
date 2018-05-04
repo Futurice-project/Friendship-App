@@ -34,18 +34,18 @@ class EventEditView extends Component {
     await this.props.deleteEvent(id);
     this.props.navigation.navigate('Events');
   };
-  componentWillMount() {
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      this.navigateBack();
-      return true;
-    });
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler);
   }
+
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', () => {
-      this.navigateBack();
-      return true;
-    });
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
   }
+
+  backHandler = () => {
+    this.navigateBack();
+    return true;
+  };
 
   render() {
     return (

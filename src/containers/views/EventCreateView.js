@@ -33,18 +33,21 @@ class EventCreateView extends Component {
       ? this.props.auth.data.decoded.id
       : null;
     this.setState({ hostId });
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      this.navigateBack();
-      return true;
-    });
   };
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', () => {
-      this.navigateBack();
-      return true;
-    });
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
+  }
+
+  backHandler = () => {
+    this.navigateBack();
+    return true;
+  };
+
   navigateBack = () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);

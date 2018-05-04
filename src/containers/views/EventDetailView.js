@@ -56,21 +56,18 @@ class EventDetailView extends Component {
     this.props.fetchEventPersonalities(eventId);
     this.props.fetchEventTags(eventId);
     this.props.fetchEventParticipation(eventId, userId);
+
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler);
   };
 
-  componentWillMount() {
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      this.navigateBack();
-      return true;
-    });
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
   }
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', () => {
-      this.navigateBack();
-      return true;
-    });
-  }
+  backHandler = () => {
+    this.navigateBack();
+    return true;
+  };
 
   componentWillReceiveProps(nextProps) {
     // render the event details when we have the data.

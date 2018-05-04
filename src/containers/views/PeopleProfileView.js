@@ -58,20 +58,17 @@ class ProfileUser extends React.Component {
 
   componentDidMount() {
     this.fetchUserInfo();
-  }
-  componentWillMount() {
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      this.navigateBack();
-      return true;
-    });
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler);
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', () => {
-      this.navigateBack();
-      return true;
-    });
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
   }
+
+  backHandler = () => {
+    this.navigateBack();
+    return true;
+  };
 
   componentWillReceiveProps(nextProps) {
     // render the profile user when we have the data.
