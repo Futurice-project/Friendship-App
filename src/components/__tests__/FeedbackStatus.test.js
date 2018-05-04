@@ -18,10 +18,16 @@ describe('FeedbackStatus', () => {
     const feedbackStatus = shallow(<FeedbackStatus data={data} />);
     expect(feedbackStatus).toMatchSnapshot();
     expect(
-      feedbackStatus.props().children[1].props.children[0].props.children,
+      feedbackStatus
+        .find('Text')
+        .first()
+        .props().children,
     ).toEqual('Test title');
     expect(
-      feedbackStatus.props().children[1].props.children[1].props.children,
+      feedbackStatus
+        .find('Text')
+        .at(1)
+        .props().children,
     ).toEqual('Test subtitle');
   });
 });
