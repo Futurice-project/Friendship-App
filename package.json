@@ -39,7 +39,7 @@
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
     "test":
-      "node node_modules/jest/bin/jest.js  && echo \"Full report in browser: file://${PWD}/coverage/index.html \" ",
+      "node node_modules/jest/bin/jest.js -u && echo \"Full report in browser: file://${PWD}/coverage/index.html \" ",
     "test-watch":
       "node node_modules/jest/bin/jest.js  --watch && echo \"Full report in browser: file://${PWD}/coverage/index.html \" ",
     "precommit": "lint-staged",

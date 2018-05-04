@@ -4,9 +4,6 @@ npm-debug.*
 .eslintrc
 .eslintrc.*
 
-# Ignore test coverage
-coverage/
-
 # Ignore JetBrain files
 .idea
 *.iml
@@ -28,3 +25,9 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Ignore test coverage
+coverage/
+
+# Ignore test snapshots
+*/__snapshots__/*
