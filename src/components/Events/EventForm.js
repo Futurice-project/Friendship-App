@@ -297,13 +297,13 @@ class EventForm extends Component {
           <LabelContainer style={{ marginBottom: 10, marginTop: 10 }}>
             <View
               style={{
-                width: 250,
+                width: 300,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}
             >
               <DatePicker
-                style={{ width: 165 }}
+                style={{ width: 185 }}
                 date={this.state.date}
                 mode="date"
                 placeholder="DATE*"
@@ -329,7 +329,7 @@ class EventForm extends Component {
                   dateText: {
                     fontSize: 17,
                     textAlign: 'center',
-                    width: 165,
+                    width: 185,
                   },
                 }}
                 onDateChange={date => {
@@ -341,7 +341,7 @@ class EventForm extends Component {
                 }}
               />
               <DatePicker
-                style={{ width: 75 }}
+                style={{ width: 100 }}
                 date={this.state.time}
                 mode="time"
                 placeholder="TIME*"
@@ -366,7 +366,7 @@ class EventForm extends Component {
                   dateText: {
                     fontSize: 17,
                     textAlign: 'center',
-                    width: 75,
+                    width: 100,
                   },
                 }}
                 onDateChange={time => {
@@ -381,7 +381,7 @@ class EventForm extends Component {
           </LabelContainer>
 
           <LabelContainer style={{ marginBottom: 20 }}>
-            <View style={{ width: 278 }}>
+            <View style={{ width: 300 }}>
               <PickerSelect
                 placeholder={{
                   label: 'CITY*',
@@ -434,7 +434,7 @@ class EventForm extends Component {
         >
           <Text
             style={{
-              width: 278,
+              width: 300,
               marginTop: 40,
               marginBottom: 10,
               paddingLeft: 21,
@@ -444,7 +444,7 @@ class EventForm extends Component {
           >
             MAX. PARTICIPANTS *
           </Text>
-          <View style={{ width: 278 }}>
+          <View style={{ width: 300 }}>
             <PickerSelect
               items={maxParticipantsData}
               value={this.state.maxParticipants}
@@ -475,10 +475,19 @@ class EventForm extends Component {
             backgroundColor: '#f9f7f6',
           }}
         >
-          <Text style={{ color: '#2e4358', marginTop: 40, fontSize: 21 }}>
+          <Text
+            style={{
+              width: 300,
+              marginTop: 40,
+              marginBottom: 10,
+              paddingLeft: 21,
+              color: '#4a4a4a',
+              fontSize: 18,
+            }}
+          >
             PEOPLE MIX
           </Text>
-          <View style={{ width: 278 }}>
+          <View style={{ width: 300 }}>
             <Slider
               maximumValue={100}
               minimumValue={25}
@@ -495,7 +504,7 @@ class EventForm extends Component {
           </View>
           <Text
             style={{
-              width: 278,
+              width: 300,
               marginBottom: 20,
               marginTop: 10,
               color: '#2e4358',
@@ -630,7 +639,7 @@ const LabelContainer = styled.View`
 `;
 
 const LabelView = styled.View`
-  width: 250;
+  width: 300;
   border-bottom-width: 2;
   border-bottom-color: #979797;
   padding-bottom: 7;
