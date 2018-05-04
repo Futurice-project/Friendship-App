@@ -1,6 +1,3 @@
-/**
- * TODOs: Go to the EventDetail and make some changes: When user click on Join Now, change userIsJoining to true
- */
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
@@ -85,26 +82,31 @@ class EventsView extends Component {
       { value: 'Closest first' },
     ];
     return (
-      <Dropdown
-        dropdownMargins={{ min: 15, max: 20 }}
-        dropdownOffset={{ top: 20, left: 15 }}
-        dropdownPosition={0}
-        pickerStyle={{
-          width: 150,
-          marginTop: 12,
-          height: 'auto',
-        }}
-        containerStyle={{ marginBottom: 10, right: 10 }}
-        textColor={'#000000'}
-        itemColor={'#000000'}
-        selectedItemColor={'#ff6e40'}
-        baseColor={'#ff6e40'}
-        data={data}
-        value="Recommended"
-        onChangeText={value => {
-          this.setState({ sorting: value });
-        }}
-      />
+      <View>
+        <Dropdown
+          dropdownMargins={{ min: 15, max: 20 }}
+          dropdownOffset={{ top: 20, left: 15 }}
+          dropdownPosition={0}
+          pickerStyle={{
+            width: 'auto',
+            marginTop: 12,
+            height: 'auto',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          containerStyle={{ marginBottom: 10, right: 10 }}
+          textColor={'#000000'}
+          itemColor={'#000000'}
+          itemCount={5}
+          selectedItemColor={'#ff6e40'}
+          baseColor={'#ff6e40'}
+          data={data}
+          value="Recommended"
+          onChangeText={value => {
+            this.setState({ sorting: value });
+          }}
+        />
+      </View>
     );
   };
 
