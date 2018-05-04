@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import {
+  ScrollView,
+  View,
+  Text,
+  TouchableOpacity,
+  BackHandler,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
   FeedbackListItem,
@@ -8,6 +14,7 @@ import {
   FeedbackStatus,
   FeedbackHeader,
 } from '../../../components/Feedback';
+import { NavigationActions } from 'react-navigation';
 
 export default class Report extends Component {
   state = {
@@ -15,6 +22,22 @@ export default class Report extends Component {
     content: '', // the report category the user has chosen.
     text: '', // the report input field
     showReportStatus: false,
+  };
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
+  }
+
+  backHandler = () => {
+    this.navigateBack();
+    return true;
+  };
+  navigateBack = () => {
+    const backAction = NavigationActions.back();
+    this.props.navigation.dispatch(backAction);
   };
 
   renderReportList() {
