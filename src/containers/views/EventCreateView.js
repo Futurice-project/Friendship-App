@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -33,8 +33,18 @@ class EventCreateView extends Component {
       ? this.props.auth.data.decoded.id
       : null;
     this.setState({ hostId });
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.navigateBack();
+      return true;
+    });
   };
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', () => {
+      this.navigateBack();
+      return true;
+    });
+  }
   navigateBack = () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);

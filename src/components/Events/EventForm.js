@@ -215,7 +215,6 @@ class EventForm extends Component {
   };
 
   render() {
-    console.log(this.props.eventDetails);
     const cities = this.props.locations.data.map(city => {
       return { label: city.name, value: city.name, key: city.name };
     });

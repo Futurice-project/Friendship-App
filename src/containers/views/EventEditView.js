@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { BackHandler } from 'react-native';
 
 import EventForm from '../../components/Events/EventForm';
 import rest from '../../utils/rest';
@@ -33,6 +34,18 @@ class EventEditView extends Component {
     await this.props.deleteEvent(id);
     this.props.navigation.navigate('Events');
   };
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.navigateBack();
+      return true;
+    });
+  }
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', () => {
+      this.navigateBack();
+      return true;
+    });
+  }
 
   render() {
     return (

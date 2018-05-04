@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Button,
+  BackHandler,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -65,6 +66,11 @@ class EventsView extends Component {
       : null;
     this.props.fetchEvents(userId);
     this.props.fetchEventParticipantsNum();
+
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.navigateBack();
+      return false;
+    });
   };
 
   rightText = () => {

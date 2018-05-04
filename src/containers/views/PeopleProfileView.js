@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import {
@@ -58,6 +58,19 @@ class ProfileUser extends React.Component {
 
   componentDidMount() {
     this.fetchUserInfo();
+  }
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.navigateBack();
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', () => {
+      this.navigateBack();
+      return true;
+    });
   }
 
   componentWillReceiveProps(nextProps) {
