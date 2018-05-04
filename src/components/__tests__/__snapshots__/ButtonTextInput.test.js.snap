@@ -1,0 +1,297 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Bubble bubble render correctly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Styled(View) />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "children": undefined,
+      "style": Array [
+        Object {
+          "alignSelf": "center",
+          "backgroundColor": "#fff",
+          "borderRadius": 33,
+          "flexDirection": "column",
+          "marginBottom": 10,
+          "minHeight": 132,
+          "overflow": "hidden",
+          "width": 320,
+        },
+        undefined,
+      ],
+    },
+    "ref": [Function],
+    "rendered": null,
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": undefined,
+        "style": Array [
+          Object {
+            "alignSelf": "center",
+            "backgroundColor": "#fff",
+            "borderRadius": 33,
+            "flexDirection": "column",
+            "marginBottom": 10,
+            "minHeight": 132,
+            "overflow": "hidden",
+            "width": 320,
+          },
+          undefined,
+        ],
+      },
+      "ref": [Function],
+      "rendered": null,
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;
+
+exports[`Bubble props render correctly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Styled(View) />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "children": undefined,
+      "style": Array [
+        Object {
+          "alignSelf": "center",
+          "backgroundColor": "#fff",
+          "borderRadius": 33,
+          "flexDirection": "column",
+          "marginBottom": 10,
+          "minHeight": 132,
+          "overflow": "hidden",
+          "width": 320,
+        },
+        undefined,
+      ],
+    },
+    "ref": [Function],
+    "rendered": null,
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": undefined,
+        "style": Array [
+          Object {
+            "alignSelf": "center",
+            "backgroundColor": "#fff",
+            "borderRadius": 33,
+            "flexDirection": "column",
+            "marginBottom": 10,
+            "minHeight": 132,
+            "overflow": "hidden",
+            "width": 320,
+          },
+          undefined,
+        ],
+      },
+      "ref": [Function],
+      "rendered": null,
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;
+
+exports[`Bubble render correctly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Styled(View) />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "children": undefined,
+      "style": Array [
+        Object {
+          "alignSelf": "center",
+          "backgroundColor": "#fff",
+          "borderRadius": 33,
+          "flexDirection": "column",
+          "marginBottom": 10,
+          "minHeight": 132,
+          "overflow": "hidden",
+          "width": 320,
+        },
+        undefined,
+      ],
+    },
+    "ref": [Function],
+    "rendered": null,
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": undefined,
+        "style": Array [
+          Object {
+            "alignSelf": "center",
+            "backgroundColor": "#fff",
+            "borderRadius": 33,
+            "flexDirection": "column",
+            "marginBottom": 10,
+            "minHeight": 132,
+            "overflow": "hidden",
+            "width": 320,
+          },
+          undefined,
+        ],
+      },
+      "ref": [Function],
+      "rendered": null,
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;
+
+exports[`Tittle tittle render correctly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Styled(Text) />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "accessible": true,
+      "allowFontScaling": true,
+      "children": undefined,
+      "ellipsizeMode": "tail",
+      "style": Array [
+        Object {
+          "color": "#2d4359",
+          "fontFamily": "NunitoSans-Regular",
+          "fontSize": 16,
+          "fontWeight": "600",
+          "height": 25,
+          "letterSpacing": 1.5,
+          "paddingLeft": 20,
+          "textAlign": "left",
+          "width": "100%",
+        },
+        undefined,
+      ],
+    },
+    "ref": [Function],
+    "rendered": null,
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "accessible": true,
+        "allowFontScaling": true,
+        "children": undefined,
+        "ellipsizeMode": "tail",
+        "style": Array [
+          Object {
+            "color": "#2d4359",
+            "fontFamily": "NunitoSans-Regular",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "height": 25,
+            "letterSpacing": 1.5,
+            "paddingLeft": 20,
+            "textAlign": "left",
+            "width": "100%",
+          },
+          undefined,
+        ],
+      },
+      "ref": [Function],
+      "rendered": null,
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;

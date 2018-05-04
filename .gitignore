@@ -4,6 +4,9 @@ npm-debug.*
 .eslintrc
 .eslintrc.*
 
+# Ignore test coverage
+coverage/
+
 # Ignore JetBrain files
 .idea
 *.iml
