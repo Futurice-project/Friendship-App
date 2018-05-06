@@ -4,6 +4,7 @@ import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
 import Tag from '../Tags';
+import KeyboardAwareScrollView from 'react-native-keyboard-aware-scroll-view/lib/KeyboardAwareScrollView';
 
 export default class TabProfile extends Component {
   state = {

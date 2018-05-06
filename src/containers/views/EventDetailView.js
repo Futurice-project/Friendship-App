@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View, BackHandler } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 import rest from '../../utils/rest';
@@ -61,6 +61,17 @@ class EventDetailView extends Component {
     this.props.fetchEventPersonalities(eventId);
     this.props.fetchEventTags(eventId);
     this.props.fetchEventParticipation(eventId, userId);
+
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler);
+  };
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
+  }
+
+  backHandler = () => {
+    this.navigateBack();
+    return true;
   };
 
   componentWillReceiveProps(nextProps) {
