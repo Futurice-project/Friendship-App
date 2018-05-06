@@ -1,6 +1,6 @@
 const config = {
   preset: 'jest-expo',
-  transformIgnorePatterns: ['node_modules/(?!react-native|react-navigation)'],
+  //  transformIgnorePatterns: ['node_modules/(?!react-native|react-navigation)'],
   setupFiles: ['./enzyme.config.js'],
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.js'],
