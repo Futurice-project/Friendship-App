@@ -8,8 +8,9 @@
 **[People Profile](#people-profile)**<br>
 **[Chat](#Chat)**<br>
 **[User's Profile](#user's-profile)**<br>
+**[Events](#events)**<br>
+**[Event Details](#event-Details)**<br>
 **[Components](#components)**<br>
-
 ## Welcome View
 
 <img src="./images/welcomeView.png" width="300" height="500"/>
@@ -52,6 +53,68 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 ## User's Profile
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+## Events 
+
+<img src="./images/EventsView.png" width="300" height="500"/>
+
+**Path**
+
+> src/containers/views/EventsView.js
+
+**Component Imported**
+
+> * src/components/Events/EventsHeader.js
+> * src/components/Events/EventsList.js
+
+**Functionality**
+
+> * Events (Beer) button: redirect the user to Events View container
+> * On the page there is a list of all avaialble events loaded. Two Get requests are sent to the database in order to get the list of events as well as list of participants for each event
+> * In the top right corner there is a sorting dropdown available. 
+> * Sorting contains 5 different options : 
+"Recommended" is calculated with utilizing event location, number of participants, 
+common personalitites and common yeah&nahs. 
+"By Time" sorted by closest by time.
+"Smallest first" event with a minumum numbert of participant is shown at the first place.
+"Closes first" closest event by location is first. (Location is calculated with google maps API.(Only distance to city is counted)).
+"My events" is working not like sorting, but like a filter. It means that it's showing only events which you are joining.
+> *  Each event card contains a picture of the event and basic information about the event like title, description, participant emojis and date&time
+> * By pressing on the Location section the standard map app will be opened with the direction to the event location. 
+> * Event Date is highlighted if it's "Today" or "Tomorrow". In all other cases event date is shown as a day of the week. 
+
+
+## Event Details
+
+<img src="./images/EventDetails1.png" width="300" height="500"/>
+<img src="./images/EventDetails2.png" width="300" height="500"/>
+
+
+**Path**
+
+> src/containers/views/EventDetailView.js
+
+**Component Imported**
+
+> * src/components/Events/EventTopPart.js
+> * src/components/Events/EventBottomPart.js
+> * src/components/Events/MyEventModal.js
+
+**Functionality**
+
+> * Event Detail page is opened after pressing one of the event from the list 
+> * The page mainly consist of two main parts. Top Part and Bottom. 
+> * Top Part contains the basic information about the event like Title, Description, Date, Time and Location. With help of styles it has a wave shape and contains the picture of the event as well.
+> * In order to fetch all required information in the container there are several requests to the backend are done. 
+> * On the Top and Bottom of the page user is able to press the button 'Join this', or 'Leave this' in case already joined. 
+> * After user joins the event, the page is reloaded and user is added to the participants list under the host. 
+> * Host of the event has a specific markup and it is always in the first place.
+> * The user profile page can be accessed by pressing the particiapant row.  
+> * The Bottom part of the page contains 4 Different Sections.
+> * "Group Participants" contains all users which are joining event. Red and Blue balls are showing the number of your common yeahs and nahs with the user. 
+> * "Group Perconalities" contains  information about the personalitites of the event based on the personalitites of the users who join. Circle in the top part shows the number of the each personalitity for event. 
+> * "Top Yeahs" & "Top Naahs" contains  information about the top yeahs and top naahs for this event based on the participant preferances. Circle shows the number of each tag for event. 
+> * In case when you are the host of the event, instead of  "Join"&"Leave" buttons the button "Manage event" available. 
+> * By pressing this button the modal which which allows user to open the Edit Page will be opened. 
 
 ## Components
 

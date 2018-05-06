@@ -7,7 +7,10 @@ const CardSection = ({ children }) => {
 
 const styles = {
   containerStyle: {
-    padding: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 6,
+    paddingBottom: 6,
     backgroundColor: '#fff',
     justifyContent: 'flex-start',
     flexDirection: 'row',

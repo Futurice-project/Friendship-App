@@ -32,6 +32,7 @@ if (process.env.NODE_ENV === 'development') {
     Platform.OS === 'ios'
       ? 'http://localhost:3888'
       : 'http://localhost:3888';
+
 } else {
   apiRoot = 'https://friendshipapp-backend.herokuapp.com';
 }

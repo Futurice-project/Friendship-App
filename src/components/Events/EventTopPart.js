@@ -22,23 +22,11 @@ const EventTopPart = props => {
     eventTitle,
     city,
     address,
-    showModal,
     srcImage,
     navigateBack,
     isHost,
     eventDate,
   } = props;
-
-  const displaySettingsButton = () => {
-    return (
-      <TouchableOpacity onPress={showModal} style={styles.settings}>
-        <Image
-          style={styles.settingsIcon}
-          source={require('../../../assets/settingsIcon.png')}
-        />
-      </TouchableOpacity>
-    );
-  };
 
   const openMap = (city, address) => {
     if (Platform.OS === 'ios') {
@@ -73,7 +61,6 @@ const EventTopPart = props => {
         <TouchableOpacity onPress={navigateBack}>
           <Icon name="md-arrow-back" size={26} style={styles.backButton} />
         </TouchableOpacity>
-        {isHost ? displaySettingsButton() : null}
       </View>
 
       <View

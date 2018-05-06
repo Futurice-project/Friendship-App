@@ -20,6 +20,8 @@ import EventCreateView from '../views/EventCreateView';
 import EventEditView from '../views/EventEditView';
 import Report from '../views/Report/Report';
 import Feedback from '../views/Feedback/Feedback';
+import PeopleProfileView from '../views/PeopleProfileView';
+import MyProfileView from '../views/MyProfileView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -113,6 +115,14 @@ export default StackNavigator(
     },
     Feedback: {
       screen: Feedback,
+      navigationOptions: { header: () => null },
+    },
+    PeopleProfileView: {
+      screen: PeopleProfileView,
+      navigationOptions: { header: () => null },
+    },
+    MyProfileView: {
+      screen: MyProfileView,
       navigationOptions: { header: () => null },
     },
     // ## End StackNavigator Views ##
