@@ -1,26 +1,27 @@
 import React from 'react';
-import { Platform, StatusBar } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
 import Header from './Header';
-
 // ## View Imports ##
 import Tabs from './Tabs';
-import SettingsView from '../views/Settings';
-import WelcomeView from '../views/Welcome';
-import PeopleView from './../views/PeopleView';
-import SignInView from '../views/SignInView';
-import SignUpView from '../views/SignUpView';
-import SignOutView from '../views/SignOutView';
-import ProfileUser from './../views/ProfileUser';
-import SearchList from './../views/Search';
-import EmojiPickerView from './../views/EmojiPicker';
-import LookingFor from './../views/LookingFor';
-import SignUpMatching from './../views/SignUpMatching';
-import SignUpLocation from '../views/SignUpLocation';
-import SignUpPersonality from '../views/SignUpPersonality';
-import ChatView from './../views/ChatView';
-import ChatRequest from './../views/ChatRequest';
-import SignUpLoveAndHate from '../views/SignUpLoveAndHate';
+import WelcomeView from '../views/WelcomeView';
+import PeopleView from '../views/PeopleView';
+import SignInView from '../views/SignIn/SignInView';
+import SignUpView from '../views/SignUp/SignUpView';
+import SignUpMatching from '../views/SignUp/SignUpMatching';
+import SignUpLocation from '../views/SignUp/SignUpLocation';
+import SignUpPersonality from '../views/SignUp/SignUpPersonality';
+import ChatView from '../views/Chat/ChatView';
+import ChatRequest from '../views/Chat/ChatRequest';
+import SignUpYeahAndNaah from '../views/SignUp/SignUpYeahAndNaah';
+import UsersForTagView from '../views/UsersForTagView';
+import EventDetailView from '../views/EventDetailView';
+import EventCreateView from '../views/EventCreateView';
+import EventEditView from '../views/EventEditView';
+import Report from '../views/Report/Report';
+import Feedback from '../views/Feedback/Feedback';
+import PeopleProfileView from '../views/PeopleProfileView';
+import MyProfileView from '../views/MyProfileView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -31,6 +32,20 @@ const StackNavigatorConfig = {
     },
     headerTintColor: '#ff8a65',
   },
+  transitionConfig: () => ({
+    screenInterpolator: screenProps => {
+      // Disable the transition animation when resetting to the welcome screen.
+      if (
+        screenProps.index === 0 &&
+        screenProps.scene.route.routeName !== 'Welcome' &&
+        screenProps.scenes.length > 2
+      ) {
+        return null;
+      }
+      // Otherwise, use the usual horizontal animation.
+      return CardStackStyleInterpolator.forHorizontal(screenProps);
+    },
+  }),
 };
 
 export default StackNavigator(
@@ -44,59 +59,35 @@ export default StackNavigator(
       title: 'SignUpLocation',
       navigationOptions: { header: () => null },
     },
-    LookingFor: {
-      screen: LookingFor,
-      title: 'LookingFor',
-      navigationOptions: { header: () => null },
-    },
     SignUpMatching: {
       screen: SignUpMatching,
       title: 'Matching',
       navigationOptions: { header: () => null },
     },
-    LoveAndHate: { screen: SignUpLoveAndHate },
+    YeahAndNaah: {
+      screen: SignUpYeahAndNaah,
+      navigationOptions: {
+        header: () => null,
+      },
+    },
     Tabs: {
       screen: Tabs,
       navigationOptions: { header: () => null },
     },
-    EmojiPicker: {
-      screen: EmojiPickerView,
-      navigationOptins: { title: 'Emoji Picker' },
-    },
-    People: {
-      screen: PeopleView,
-      navigationOptions: { title: 'People page' },
-    },
-    SearchList: {
-      screen: SearchList,
+    UsersForTag: {
+      screen: UsersForTagView,
       navigationOptions: { title: 'Search page' },
-    },
-    Settings: {
-      screen: SettingsView,
-      navigationOptions: { title: 'Setting page' },
     },
     SignIn: {
       screen: SignInView,
-      navigationOptions: { title: 'SignIn Page' },
+      navigationOptions: { header: () => null },
     },
     SignUp: {
       screen: SignUpView,
-      navigationOptions: { title: 'SignUp Page' },
-    },
-    SignUpLocation: {
-      screen: SignUpLocation,
-      navigationOptions: { title: 'SignUpLocation Page' },
+      navigationOptions: { header: () => null },
     },
     SignUpPersonality: {
       screen: SignUpPersonality,
-      navigationOptions: { title: 'SignUpLocation Page' },
-    },
-    SignOut: {
-      screen: SignOutView,
-      navigationOptions: { title: 'SignOut Page' },
-    },
-    ProfileUser: {
-      screen: ProfileUser,
       navigationOptions: { header: () => null },
     },
     ChatView: {
@@ -104,6 +95,34 @@ export default StackNavigator(
     },
     ChatRequest: {
       screen: ChatRequest,
+      navigationOptions: { header: () => null },
+    },
+    EventDetailView: {
+      screen: EventDetailView,
+      navigationOptions: { header: () => null },
+    },
+    EventCreateView: {
+      screen: EventCreateView,
+      navigationOptions: { header: () => null },
+    },
+    EventEditView: {
+      screen: EventEditView,
+      navigationOptions: { header: () => null },
+    },
+    Report: {
+      screen: Report,
+      navigationOptions: { header: () => null },
+    },
+    Feedback: {
+      screen: Feedback,
+      navigationOptions: { header: () => null },
+    },
+    PeopleProfileView: {
+      screen: PeopleProfileView,
+      navigationOptions: { header: () => null },
+    },
+    MyProfileView: {
+      screen: MyProfileView,
       navigationOptions: { header: () => null },
     },
     // ## End StackNavigator Views ##

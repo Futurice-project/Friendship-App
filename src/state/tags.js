@@ -1,6 +1,5 @@
 export const UPDATE_TAGS = 'UPDATE_TAGS';
 export const RESET_TAGS = 'RESET_TAGS';
-import React from 'react';
 
 /**
  * Reset tag state to initial values

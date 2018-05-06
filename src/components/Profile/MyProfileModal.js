@@ -14,6 +14,7 @@ const MyProfileModal = ({
   isModalVisible,
   onPressButton,
   signOut,
+  onFeedback,
 }) => {
   return (
     <Modal
@@ -47,7 +48,7 @@ const MyProfileModal = ({
         </ButtonOption>
 
         <ButtonOption>
-          <TouchableOpacity onPress={onPressButton} style={styles.buttonStyle}>
+          <TouchableOpacity onPress={onFeedback} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Send Feedback</Text>
           </TouchableOpacity>
         </ButtonOption>

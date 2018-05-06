@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore, compose } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import enhancers from './enhancers';
 import middleware from './middleware';
 import reducer from './reducer';
