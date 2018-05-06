@@ -5,7 +5,6 @@ import FeedbackHeader from '../Feedback/FeedbackHeader';
 describe('FeedbackHeader', () => {
   test('renders correctly', () => {
     const wrapper = shallow(<FeedbackHeader />);
-
     expect(wrapper).toMatchSnapshot();
   });
 });

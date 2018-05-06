@@ -3,10 +3,23 @@ import { shallow } from 'enzyme';
 import FeedbackListItem from '../Feedback/FeedbackListItem';
 
 describe('FeedbackListItem', () => {
-  test('renders correctly', () => {
-    const data = { title: 'This title' };
-    const wrapper = shallow(<FeedbackListItem data={data} />);
+  const data = {
+    title: 'This title',
+  };
 
+  test('renders correctly', () => {
+    const wrapper = shallow(<FeedbackListItem data={data} />);
     expect(wrapper).toMatchSnapshot();
+  });
+
+  test('feedbacklistitem recieve props correctly', () => {
+    const feedbackListitem = shallow(<FeedbackListItem data={data} />);
+    expect(feedbackListitem).toMatchSnapshot();
+    expect(
+      feedbackListitem
+        .find('Text')
+        .first()
+        .props().children,
+    ).toEqual('This title');
   });
 });
