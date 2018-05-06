@@ -277,13 +277,18 @@ class ChatView extends Component {
             value={this.state.text}
             onSubmitEditing={() => this.sendMessage()}
           />
+
           <ChatInputButtonCard>
-            <TouchableOpacity onPress={() => this.sendMessage()}>
+            <TouchableOpacity
+              onPress={() => this.sendMessage()}
+              disabled={!this.state.text.trim().length > 0}
+            >
               <Text
                 style={{
                   fontWeight: 'normal',
                   fontSize: 16,
-                  color: '#ff8a65',
+                  color:
+                    !this.state.text.trim().length > 0 ? 'gray' : '#ff8a65',
                   paddingRight: 15,
                 }}
               >

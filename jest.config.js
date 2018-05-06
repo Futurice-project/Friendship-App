@@ -12,5 +12,4 @@ const config = {
     '^[@./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|png|svg)$': 'RelativeImageStub',
   },
 };
-
 module.exports = config;
