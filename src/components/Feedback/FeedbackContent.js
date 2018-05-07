@@ -227,9 +227,9 @@ export default class FeedbackContent extends React.Component {
               {data.content.inputForm[0].title}
             </Text>
             <SurveyQuestion
-              subtitle={data.content.inputForm[0].subtitle}
-              onChange={onEasyChange}
-              value={findFriendEasy}
+              subtitle={console.log(typeof data.content.inputForm[0].subtitle)}
+              onChange={console.log(typeof onEasyChange)}
+              value={console.log(typeof findFriendEasy)}
             />
           </View>
           <View style={{ marginBottom: 30 }}>
