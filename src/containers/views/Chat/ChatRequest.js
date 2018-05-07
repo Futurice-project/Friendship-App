@@ -83,6 +83,7 @@ export class ChatRequest extends React.Component {
 
   render() {
     const { username } = this.props.navigation.state.params.user;
+    console.log(this.props);
     return (
       <View style={{ flex: 1, marginTop: 20 }}>
         <View style={styles.headerWrapper}>

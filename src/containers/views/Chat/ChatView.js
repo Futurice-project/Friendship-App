@@ -253,6 +253,8 @@ class ChatView extends Component {
   };
 
   render() {
+    console.log(this.props);
+
     return (
       <KeyboardAvoidingView
         style={{ flex: 1 }}
