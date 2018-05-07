@@ -19,7 +19,7 @@ const mapStateToProps = state => ({
   userDetails: state.userDetails,
   tagsForUser: state.tagsForUser,
   personalitiesForUser: state.personalitiesForUser,
-  chatrooms: state.chatRoomsWithUserId.data.data,
+  chatrooms: state.chatRoomsWithUserId.data,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -28,6 +28,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.tagsForUser.get({ userId })),
   refreshPersonalitiesForUser: userId =>
     dispatch(rest.actions.personalitiesForUser.get({ userId })),
+  fetchUserChatrooms: userId =>
+    dispatch(rest.actions.chatRoomsWithUserId.get({ userId })),
   openChatRequest: (user, previousRoute) =>
     dispatch(
       NavigationActions.navigate({
@@ -56,7 +58,7 @@ class ProfileUser extends React.Component {
     age: '',
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.fetchUserInfo();
   }
 
@@ -74,7 +76,7 @@ class ProfileUser extends React.Component {
     this.props.refreshUser(userId);
     this.props.refreshTagsForUser(userId);
     this.props.refreshPersonalitiesForUser(userId);
-    this.props.chatrooms;
+    this.props.fetchUserChatrooms(userId);
   };
 
   navigateBack = () => {
@@ -124,29 +126,27 @@ class ProfileUser extends React.Component {
   };
 
   render = () => {
+    if (!this.state.loaded) {
+      return <ActivityIndicator />;
+    }
+
     const userLoggedIn = this.props.auth.data.decoded;
+
     const Reportdata = {
       id: this.props.userDetails.data.id,
       currentUser: this.props.auth.data.decoded.id,
       auth: this.props.auth.data.token,
     };
-
     let love = this.props.tagsForUser.data.filter(e => e.love === true);
-    let hate = this.props.tagsForUser.data.filter(e => e.love === false);
 
+    let hate = this.props.tagsForUser.data.filter(e => e.love === false);
     let loveCommon = this.props.userDetails.data.loveCommon
       ? this.props.userDetails.data.loveCommon
       : 0;
+
     let hateCommon = this.props.userDetails.data.hateCommon
       ? this.props.userDetails.data.hateCommon
       : 0;
-
-    // if there is no picture for the user we use a default image
-    const srcImage = this.props.userDetails.data.image
-      ? {
-          uri: 'data:image/png;base64,' + this.props.userDetails.data.image,
-        }
-      : require('../../../assets/img/placeholder/grone.jpg');
 
     const location = this.props.userDetails.data.locations
       ? this.props.userDetails.data.locations.join(',')
@@ -155,18 +155,13 @@ class ProfileUser extends React.Component {
     const genders = this.props.userDetails.data.genderlist
       ? this.props.userDetails.data.genderlist.join(' and ')
       : null;
-
     if (!userLoggedIn) {
       return this.renderNotLoggedIn();
     }
 
-    if (!this.state.loaded || !this.props.chatrooms) {
-      return <ActivityIndicator />;
-    }
-
     let existingChatRoomId;
     // Load all existing chatrooms and check if one them has a matching users
-    const allChatRooms = this.props.chatrooms.forEach(item => {
+    this.props.chatrooms.forEach(item => {
       if (
         item.creator.id === this.props.auth.data.decoded.id &&
         item.receiver.id === this.props.userDetails.data.id
@@ -179,7 +174,7 @@ class ProfileUser extends React.Component {
       <ProfileContainer>
         <ProfileTopPart
           username={this.props.userDetails.data.username}
-          srcImage={srcImage}
+          srcImage={this.props.userDetails.data.image}
           location={location}
           age={this.state.age}
           genders={genders}

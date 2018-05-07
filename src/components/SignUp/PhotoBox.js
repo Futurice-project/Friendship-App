@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import React from 'react';
-import { ImagePicker } from 'expo';
+import { ImagePicker, Permissions } from 'expo';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 export default class PhotoBox extends React.Component {
@@ -9,7 +9,14 @@ export default class PhotoBox extends React.Component {
     picture: null,
   };
 
+  askPermissionsAsync = async () => {
+    await Permissions.askAsync(Permissions.CAMERA);
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  };
+
   openImageGallery = async input => {
+    await this.askPermissionsAsync();
+
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],

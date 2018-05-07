@@ -2,9 +2,7 @@ import reduxApi, { transformers } from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
 import jwtDecode from 'jwt-decode';
 import { NavigationActions } from 'react-navigation';
-import { Platform } from 'react-native';
-
-// import { showError } from '../modules/ErrorSnackbar';
+import apiRoot from './api.config';
 
 // don't delete this
 let store;
@@ -21,18 +19,6 @@ export const injectStore = _store => {
  Result of request can be found in: `state.teams.data`
  Information about request: `state.teams.error`, `state.teams.sync`, `state.teams.error`...
  */
-
-let apiRoot;
-/**
- * If you want to test the app in your own phone, in case of an iPhone,
- * change the IP Address here after.
- * */
-if (process.env.NODE_ENV === 'development') {
-  apiRoot =
-    Platform.OS === 'ios' ? 'http://10.3.1.174:3888' : 'http://10.3.1.174:3888';
-} else {
-  apiRoot = 'https://friendshipapp-backend.herokuapp.com';
-}
 
 const authTransformer = (data = {}) => {
   if (data.token) {
@@ -124,6 +110,7 @@ const rest = reduxApi({
   },
   chatRoomsWithUserId: {
     url: `${apiRoot}/chatrooms/userid/:id`,
+    transformer: transformers.array,
     crud: true,
   },
   chatRoomMessages: {

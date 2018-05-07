@@ -148,11 +148,11 @@ class MyProfile extends React.Component {
     let hate = this.props.tagsForCurrentUser.data.filter(tag => {
       return tag.love === false;
     });
-
+    /*
     // if there is no picture for the user we use a default image
     const srcImage = this.props.currentUser.data.image
       ? { uri: 'data:image/png;base64,' + this.props.currentUser.data.image }
-      : require('../../../assets/img/placeholder/grone.jpg');
+      : require('../../../assets/img/placeholder/grone.jpg');*/
 
     const location = this.props.currentUser.data.locations
       ? this.props.currentUser.data.locations.join(',')
@@ -184,7 +184,7 @@ class MyProfile extends React.Component {
       <ProfileContainer>
         <ProfileTopPart
           username={this.props.currentUser.data.username}
-          srcImage={srcImage}
+          srcImage={this.props.currentUser.data.image}
           location={location}
           genders={genders}
           showModal={this._showModal}

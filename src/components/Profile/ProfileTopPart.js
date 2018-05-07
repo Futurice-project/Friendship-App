@@ -40,6 +40,7 @@ const ProfileTopPart = props => {
     genderList,
     showEditForm,
   } = props;
+
   const getAge = () => {
     const parsedBirthYear = parseInt(birthyear);
     const now = new Date();
@@ -87,7 +88,7 @@ const ProfileTopPart = props => {
 
   return (
     <View>
-      <Image style={styles.imageUser} source={srcImage} />
+      <Image style={styles.imageUser} source={{ uri: srcImage }} />
       <View style={styles.backAndSettingsView}>
         <TouchableOpacity onPress={navigateBack}>
           <Icon name="md-arrow-back" size={26} style={styles.backButton} />

@@ -21,8 +21,9 @@ const mapStateToProps = state => ({
   signup: state.form.signup,
 });
 
-function createUser(dispatch, formValues) {
-  let formData = createFormData(formValues);
+async function createUser(dispatch, formValues) {
+  let formData = await createFormData(formValues);
+  console.log(formData);
   dispatch(
     rest.actions.register(
       {},
@@ -32,54 +33,82 @@ function createUser(dispatch, formValues) {
 }
 
 function createFormData(formValues) {
-  let tempFormData = new FormData();
+  return fetch(
+    `http://localhost:3888/sign-s3?file-name=profile/${formValues.username}.jpg&file-type=${formValues
+      .image.type}`,
+  )
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      const { signedRequest, url } = myJson;
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', signedRequest);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            console.log('Image successfully uploaded to S3');
+          } else {
+            console.log('Error while sending the image to S3');
+          }
+        }
+      };
+      xhr.setRequestHeader('Content-Type', 'image/jpeg');
+      xhr.send({
+        uri: formValues.image.uri,
+        type: 'image/jpeg',
+        name: `${formValues.username}.jpg`,
+      });
+      return url;
+    })
+    .then(url => {
+      let tempFormData = new FormData();
 
-  tempFormData.append('username', formValues.username);
-  tempFormData.append('email', formValues.email);
-  tempFormData.append('password', formValues.password);
-  tempFormData.append('birthyear', formValues.birthyear);
-  tempFormData.append('enableMatching', formValues.enableMatching);
-  tempFormData.append('description', formValues.description);
+      tempFormData.append('username', formValues.username);
+      tempFormData.append('email', formValues.email);
+      tempFormData.append('password', formValues.password);
+      tempFormData.append('birthyear', formValues.birthyear);
+      tempFormData.append('enableMatching', formValues.enableMatching);
+      tempFormData.append('description', formValues.description);
+      tempFormData.append('image', url);
 
-  if (formValues.picture) {
-    tempFormData.append('image', {
-      uri: formValues.picture.uri,
-      name: 'image.png',
-      type: 'multipart/form-data',
+      console.log(tempFormData);
+
+      if (formValues.gender) {
+        tempFormData.append('genders', JSON.stringify(formValues.gender));
+      }
+
+      if (formValues.locations) {
+        tempFormData.append('locations', JSON.stringify(formValues.locations));
+      }
+
+      if (formValues.personalities) {
+        tempFormData.append(
+          'personalities',
+          JSON.stringify(formValues.personalities),
+        );
+      }
+
+      if (formValues.yeahsAndNaahs) {
+        if (formValues.yeahsAndNaahs.yeahs) {
+          tempFormData.append(
+            'yeahs',
+            JSON.stringify(formValues.yeahsAndNaahs.yeahs),
+          );
+        }
+        if (formValues.yeahsAndNaahs.nahs) {
+          tempFormData.append(
+            'nahs',
+            JSON.stringify(formValues.yeahsAndNaahs.nahs),
+          );
+        }
+      }
+
+      return tempFormData;
+    })
+    .catch(e => {
+      console.error(e);
     });
-  }
-
-  if (formValues.gender) {
-    tempFormData.append('genders', JSON.stringify(formValues.gender));
-  }
-
-  if (formValues.locations) {
-    tempFormData.append('locations', JSON.stringify(formValues.locations));
-  }
-
-  if (formValues.personalities) {
-    tempFormData.append(
-      'personalities',
-      JSON.stringify(formValues.personalities),
-    );
-  }
-
-  if (formValues.yeahsAndNaahs) {
-    if (formValues.yeahsAndNaahs.yeahs) {
-      tempFormData.append(
-        'yeahs',
-        JSON.stringify(formValues.yeahsAndNaahs.yeahs),
-      );
-    }
-    if (formValues.yeahsAndNaahs.nahs) {
-      tempFormData.append(
-        'nahs',
-        JSON.stringify(formValues.yeahsAndNaahs.nahs),
-      );
-    }
-  }
-
-  return tempFormData;
 }
 
 class SignUpMatching extends React.Component {

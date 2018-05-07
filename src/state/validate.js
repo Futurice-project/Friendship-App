@@ -2,34 +2,19 @@ import { SubmissionError } from 'redux-form';
 import React from 'react';
 import { ErrorText } from '../components/Layout/SignupLayout';
 import moment from 'moment';
-import { Platform } from 'react-native';
+import apiRoot from '../utils/api.config';
 
-let apiRoot;
-/**
- * If you want to test the app in your own phone, in case of an iPhone,
- * change the IP Address here after.
- * */
-if (process.env.NODE_ENV === 'development') {
-  apiRoot =
-    Platform.OS === 'ios'
-      ? 'http://10.213.106.139:3888'
-      : 'http://10.213.106.139:3888';
-} else {
-  apiRoot = 'https://friendshipapp-backend.herokuapp.com';
-}
-
-export const isUsernameAvailable = values => {
-  fetch(`${apiRoot}/users/validate/${values.username}`)
-    .then(users => users.json())
-    .then(usersWithSameUsername => {
-      console.log(usersWithSameUsername.length);
-      return usersWithSameUsername.length <= 0;
-    });
+export const isUsernameAvailable = async username => {
+  let usersWithSameUsername = await fetch(
+    `${apiRoot}/users/validate/username?username=${username}`,
+  );
+  usersWithSameUsername = await usersWithSameUsername.json();
+  return usersWithSameUsername.length <= 0;
 };
 
 export const isEmailAvailable = async email => {
   let usersWithSameEmail = await fetch(
-    `${apiRoot}/users/validate/email/${email}`,
+    `${apiRoot}/users/validate/email?email=${email}`,
   );
   usersWithSameEmail = await usersWithSameEmail.json();
   return usersWithSameEmail.length <= 0;
@@ -42,6 +27,11 @@ export async function validateUserInformations(values) {
     err = {
       ...err,
       username: 'Enter a valid username',
+    };
+  } else if (!isUsernameAvailable(values.username)) {
+    err = {
+      ...err,
+      username: `That username is already taken : ${values.username}`,
     };
   }
 

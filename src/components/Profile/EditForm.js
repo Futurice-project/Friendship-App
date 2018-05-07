@@ -436,9 +436,15 @@ class EditForm extends React.Component {
             >
               <PhotoBox onPress={this.openImageGallery}>
                 {image.uri ? (
-                  <Image style={{ width: 93, height: 93 }} source={image} />
+                  <Image
+                    style={{ width: 93, height: 93 }}
+                    source={{ uri: this.props.userData.image }}
+                  />
                 ) : (
-                  <Image style={{ width: 93, height: 93 }} source={srcImage} />
+                  <Image
+                    style={{ width: 93, height: 93 }}
+                    source={{ uri: this.props.userData.image }}
+                  />
                 )}
               </PhotoBox>
             </ScrollViewPhoto>

@@ -79,6 +79,7 @@ class Person extends React.Component {
       : 'Narnia';
     this.setState({ locations });
   };
+
   cutNames = () => {
     const shortUser =
       this.props.data.username.length > 8
@@ -86,19 +87,15 @@ class Person extends React.Component {
         : this.props.data.username;
     this.setState({ shortUser });
   };
+
   renderBox = () => {
-    const srcImage = this.props.data.image
-      ? {
-          uri: 'data:image/png;base64,' + this.props.currentUser.data.image,
-        }
-      : require('../../assets/img/placeholder/grone.jpg');
     return (
       <TouchableOpacity
         style={styles.nameView}
         onPress={() =>
           this.props.openProfile(this.props.data.id, this.props.data.username)}
       >
-        <Image style={styles.topPart} source={srcImage} />
+        <Image style={styles.topPart} source={{ uri: this.props.data.image }} />
         <View
           style={{
             flex: 70,
@@ -158,17 +155,6 @@ class Person extends React.Component {
     );
   };
 
-  renderSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: '100%',
-          backgroundColor: '#CED0CE',
-        }}
-      />
-    );
-  };
   renderLine = () => (
     <FlexRow style={styles.listItem}>
       <View>
