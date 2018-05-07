@@ -53,8 +53,12 @@ describe('ChatRequest'),
 
     test('renders correctly', () => {
       const store = mockStore(initialState);
-      const wrapper = shallow(<ChatRequest store={store} />);
+      const wrapper = shallow(
+        <ChatRequest store={store} />,
+        (state = { text: '' }),
+      );
 
+      console.log(wrapper.props);
       expect(wrapper).toMatchSnapshot();
     });
   };
