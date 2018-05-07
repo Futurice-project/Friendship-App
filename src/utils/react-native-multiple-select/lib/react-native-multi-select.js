@@ -350,7 +350,7 @@ export default class MultiSelect extends Component {
         <FlatList
           data={renderItems}
           extraData={selectedItems}
-          keyExtractor={item => item[uniqueKey]}
+          keyExtractor={item => `loc_${item[uniqueKey]}`}
           renderItem={rowData => this._getRow(rowData.item)}
         />
       );
