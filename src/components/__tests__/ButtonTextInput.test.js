@@ -13,7 +13,7 @@ describe('Bubble', () => {
   test('styles render correctly', () => {
     const bubble = shallow(<Bubble />);
 
-    console.log('bubble styles: ', bubble.props().style[0]);
+    // console.log('bubble styles: ', bubble.props().style[0]);
 
     expect(bubble.props().style[0].backgroundColor).toBe('#fff');
     expect(bubble.props().style[0].width).toBe(320);
@@ -30,7 +30,7 @@ describe('Tittle', () => {
   test('styles render correctly', () => {
     const title = shallow(<Title />);
 
-    console.log('title styles: ', title.props().style[0]);
+    // console.log('title styles: ', title.props().style[0]);
 
     expect(title.props().style[0].width).toBe('100%');
     expect(title.props().style[0].textAlign).toBe('left');

@@ -12,14 +12,14 @@ describe('MoodContainer', () => {
     const selectedAvatar = shallow(<MoodContainer selected />);
     const optionAvatar = shallow(<MoodContainer />);
 
-    console.log(
+    /*console.log(
       'Props of a selected Avatar : ',
       selectedAvatar.find('Styled(Component)').props().style.backgroundColor,
     );
     console.log(
       'Props of an option Avatar : ',
       optionAvatar.props().children.props.style.backgroundColor,
-    );
+    );*/
 
     expect(
       selectedAvatar.find('Styled(Component)').props().style.backgroundColor,

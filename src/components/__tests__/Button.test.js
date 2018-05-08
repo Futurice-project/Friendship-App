@@ -20,12 +20,12 @@ describe('ButtonWrapper', () => {
 
     // see: http://airbnb.io/enzyme/docs/api/ShallowWrapper/debug.html
     // console.log(button.debug());
-    console.log(buttonPrimary.debug());
+    // console.log(buttonPrimary.debug());
 
     // you can see in the console that the backgroundColor is different for each of them
     // console.log('button props:', button.props());
-    console.log('buttonPrimary props:', buttonPrimary.props());
-    console.log('buttonPrimaryLight props', buttonPrimaryLight.props());
+    // console.log('buttonPrimary props:', buttonPrimary.props());
+    // console.log('buttonPrimaryLight props', buttonPrimaryLight.props());
     // console.log('buttonBorder props', buttonBorder.props());
 
     // console.log('button state: ', button.state());
@@ -33,8 +33,8 @@ describe('ButtonWrapper', () => {
     // console.log('buttonPrimaryLight state:', buttonPrimaryLight.state());
 
     // console.log(button.props().style[0].backgroundColor);
-    console.log(buttonPrimary.props().style[0].backgroundColor);
-    console.log(buttonPrimaryLight.props().style[0].backgroundColor);
+    // console.log(buttonPrimary.props().style[0].backgroundColor);
+    // console.log(buttonPrimaryLight.props().style[0].backgroundColor);
 
     expect(button.props().style[0].backgroundColor).toBe(undefined);
     expect(buttonPrimary.props().style[0].backgroundColor).toBe(

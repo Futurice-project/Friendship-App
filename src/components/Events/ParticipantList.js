@@ -17,7 +17,7 @@ const ParticipantList = ({ participants, currentUser, hostId }) => {
     />
   );
 
-  const keyExtractor = participant => participant.id;
+  const keyExtractor = participant => `participant-${participant.id}`;
 
   return (
     <View>
