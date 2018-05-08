@@ -6,7 +6,7 @@ import Header from './Header';
 import Tabs from './Tabs';
 import WelcomeView from '../views/WelcomeView';
 import SignInView from '../views/SignIn/SignInView';
-import SignUpPersonality from '../views/SignUp/Personalities';
+import SignUpPersonality from '../views/SignUp/SignUpPersonality';
 import ChatView from '../views/Chat/ChatView';
 import ChatRequest from '../views/Chat/ChatRequest';
 import UsersForTagView from '../views/UsersForTagView';
@@ -15,9 +15,6 @@ import EventCreateView from '../views/EventCreateView';
 import EventEditView from '../views/EventEditView';
 import Report from '../views/Report/Report';
 import Feedback from '../views/Feedback/Feedback';
-import Signup from '../views/SignUp/Signup';
-import PeopleProfileView from '../views/PeopleProfileView';
-import MyProfileView from '../views/MyProfileView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
