@@ -287,7 +287,7 @@ class ChatView extends Component {
             >
               <Text
                 style={{
-                  fontWeight: 'normal',
+                  fontFamily: 'NunitoSans-Regular',
                   fontSize: 16,
                   color:
                     !this.state.text.trim().length > 0 ? 'gray' : '#ff8a65',
