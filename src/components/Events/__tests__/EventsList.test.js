@@ -52,7 +52,7 @@ describe('render', () => {
       .props()
       .renderItem({ item: props.events.data[0] }).props;
 
-    expect(wrapper.find('FlatList').props().data.length).toBe(1);
+    expect(wrapper.find('FlatList').props().data.data.length).toBe(1);
     expect(itemProps).toEqual({
       title: 'Test title',
       description: 'Test description',
