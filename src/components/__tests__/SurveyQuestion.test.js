@@ -21,7 +21,6 @@ describe('SurveyQuestion', () => {
       />,
     );
     const surveyQuestion = wrapper.find('TextInput');
-    console.log(surveyQuestion.props());
     expect(surveyQuestion.props().placeholder).toEqual(
       'Tell us anything you like!',
     );
