@@ -110,7 +110,7 @@ class ChatView extends Component {
         : this.props.navigation.state.params.existingChatRoomId,
     );
     //update all unread messages after 3 seconds to make sure all the chatroom messages have been fetched
-    //setTimeout(() => this.getUnreadMessagesAndUpdateStatus(), 3000);
+    setTimeout(() => this.getUnreadMessagesAndUpdateStatus(), 200);
   };
 
   componentWillReceiveProps = () => {
@@ -253,8 +253,6 @@ class ChatView extends Component {
   };
 
   render() {
-    console.log(this.props);
-
     return (
       <KeyboardAvoidingView
         style={{ flex: 1 }}
