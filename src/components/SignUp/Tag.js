@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import styled from 'styled-components/native';
 import {
   LayoutAnimation,
@@ -10,7 +9,6 @@ import {
 } from 'react-native';
 import YeahButtonAsset from '../../../assets/img/loveAndHate/yeah_200.png';
 import NahButtonAsset from '../../../assets/img/loveAndHate/naah_200.png';
-import * as tags from '../../state/tags';
 
 const LoveAndHateWrapper = styled.View`
   width: 100%;
@@ -82,7 +80,8 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
 });
-var CustomLayoutSpring = {
+
+const CustomLayoutSpring = {
   duration: 400,
   create: {
     type: LayoutAnimation.Types.spring,
@@ -95,23 +94,10 @@ var CustomLayoutSpring = {
   },
 };
 
-const mapDispatchToProps = dispatch => ({
-  /**
-   * Change state
-   * @param dispatch
-   */
-  updateTags: tagList => {
-    dispatch(tags.update(tagList));
-  },
-});
-
-const mapStateToProps = state => ({
-  tagState: state.tagState,
-});
 /**
  * @param {String} activity - name of the activity
  */
-class YeahAndNaah extends React.Component {
+export default class YeahAndNaah extends React.Component {
   constructor() {
     super();
     //The following code must be set to use LayoutAnimation
@@ -120,6 +106,7 @@ class YeahAndNaah extends React.Component {
         UIManager.setLayoutAnimationEnabledExperimental(true);
     }
   }
+
   state = {
     status: 0,
     yeahButton: true,
@@ -127,69 +114,52 @@ class YeahAndNaah extends React.Component {
     wrapperColor: 0,
   };
 
-  /**
-   * Add tag
-   * @param {integer} tagId
-   * @param {boolean} love
-   */
-  addTag(tagId, love) {
-    const tagList = [...this.props.tagState.chosenTags, { tagId, love }];
-    this.props.updateTags(tagList);
-  }
+  yeahActivity(updateYeahsAndNahs) {
+    const { activityId } = this.props;
 
-  /**
-   * Remove tag from list
-   * @param {integer} tagId
-   */
-  removeTag(tagId) {
-    const tagList = [...this.props.tagState.chosenTags];
-    for (let i = 0; i < tagList.length; i++) {
-      if (tagList[i].tagId === tagId) {
-        tagList.splice(i, 1);
-      }
-    }
-    this.props.updateTags(tagList);
-  }
+    updateYeahsAndNahs('YEAH', activityId);
 
-  yeahActivity() {
     this.setState({
       wrapperColor: -1,
       yeahButton: false,
       nahButton: false,
     });
-
-    this.addTag(this.props.activityId, true);
     LayoutAnimation.configureNext(CustomLayoutSpring);
   }
 
-  nahActivity() {
+  nahActivity(updateYeahsAndNahs) {
+    const { activityId } = this.props;
+
+    updateYeahsAndNahs('NAH', activityId);
+
     this.setState({
       wrapperColor: 1,
       yeahButton: false,
       nahButton: false,
     });
-
-    this.addTag(this.props.activityId, false);
     LayoutAnimation.configureNext(CustomLayoutSpring);
   }
 
-  resetChoice() {
+  resetChoice(updateYeahsAndNahs) {
+    const { activityId } = this.props;
+
+    updateYeahsAndNahs('RESET', activityId);
+
     this.setState({
       wrapperColor: 0,
       yeahButton: true,
       nahButton: true,
     });
-
-    this.removeTag(this.props.activityId);
     LayoutAnimation.configureNext(CustomLayoutSpring);
   }
-  renderYeah() {
+
+  renderYeah(updateYeahsAndNahs) {
     if (this.state.yeahButton) {
       return (
         <LoveAndHatePart>
           <LoveAndHateButton
             onPress={() => {
-              this.yeahActivity();
+              this.yeahActivity(updateYeahsAndNahs);
             }}
           >
             <YeahLogo />
@@ -198,13 +168,14 @@ class YeahAndNaah extends React.Component {
       );
     }
   }
-  renderNah() {
+
+  renderNah(updateYeahsAndNahs) {
     if (this.state.nahButton) {
       return (
         <LoveAndHatePart>
           <LoveAndHateButton
             onPress={() => {
-              this.nahActivity();
+              this.nahActivity(updateYeahsAndNahs);
             }}
           >
             <NahLogo />
@@ -213,30 +184,34 @@ class YeahAndNaah extends React.Component {
       );
     }
   }
-  render = () => (
-    <LoveAndHateWrapper wrapperColor={this.state.wrapperColor}>
-      {/* Left part of the component. Contain the button to Yeah the activity */}
-      {this.renderYeah()}
-      {/* Middle part of the component. Contain the button to Reset the choice Yeah or Nah */}
-      <LoveAndHatePart textAligment={this.state.wrapperColor}>
-        <LoveAndHateButton
-          onPress={() => {
-            this.resetChoice();
-          }}
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          position={this.state.wrapperColor}
-        >
-          <Text style={styles.activity}>{this.props.activityName}</Text>
-        </LoveAndHateButton>
-      </LoveAndHatePart>
 
-      {/* Right part of the component. Contain the button to Nah the activity */}
-      {this.renderNah()}
-    </LoveAndHateWrapper>
-  );
+  render = () => {
+    const { updateYeahsAndNahs } = this.props;
+
+    return (
+      <LoveAndHateWrapper wrapperColor={this.state.wrapperColor}>
+        {/* Left part of the component. Contain the button to Yeah the activity */}
+        {this.renderYeah(updateYeahsAndNahs)}
+        {/* Middle part of the component. Contain the button to Reset the choice Yeah or Nah */}
+        <LoveAndHatePart textAligment={this.state.wrapperColor}>
+          <LoveAndHateButton
+            onPress={() => {
+              this.resetChoice(updateYeahsAndNahs);
+            }}
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            position={this.state.wrapperColor}
+          >
+            <Text style={styles.activity}>{this.props.activityName}</Text>
+          </LoveAndHateButton>
+        </LoveAndHatePart>
+
+        {/* Right part of the component. Contain the button to Nah the activity */}
+        {this.renderNah(updateYeahsAndNahs)}
+      </LoveAndHateWrapper>
+    );
+  };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(YeahAndNaah);

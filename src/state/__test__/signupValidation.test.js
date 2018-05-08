@@ -1,0 +1,1 @@
+import { validateUserInformations } from './';

@@ -53,12 +53,8 @@ export default class Personality extends React.Component {
     imageWidth: 0,
   };
 
-  /**
-   * When the component is mounting we switch images based on the set text name
-   * in this.props.image
-   */
-  componentWillMount() {
-    switch (this.props.image) {
+  checkPersonality(image) {
+    switch (image) {
       case 'relaxed': {
         const { width, height } = resolveAssetSource(
           this.props.profile ? relaxedSmall : relaxed,
@@ -156,6 +152,18 @@ export default class Personality extends React.Component {
         });
       }
     }
+  }
+
+  /**
+   * When the component is mounting we switch images based on the set text name
+   * in this.props.image
+   */
+  componentDidMount() {
+    this.checkPersonality(this.props.image);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.checkPersonality(nextProps.image);
   }
 
   /**

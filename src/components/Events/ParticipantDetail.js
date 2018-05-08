@@ -1,10 +1,29 @@
 import React from 'react';
-import { Text, View, StyleSheet, Platform } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
+import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 import styled from 'styled-components/native';
 
 import TagCircle from './TagCircle';
 
-const ParticipantWrapper = styled.View`
+const mapStateToProps = () => ({});
+const mapDispatchToProps = dispatch => ({
+  openProfile: (personId, personName) =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'PeopleProfileView',
+        params: { personId, personName },
+      }),
+    ),
+  openMyProfile: () =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'MyProfileView',
+      }),
+    ),
+});
+
+const ParticipantWrapper = styled.TouchableOpacity`
   width: 100%;
   height: 90;
   background-color: ${props => {
@@ -28,6 +47,8 @@ const ParticipantDetail = ({
   id,
   currentUser,
   isHost,
+  openProfile,
+  openMyProfile,
 }) => {
   const {
     emojiCircle,
@@ -45,7 +66,16 @@ const ParticipantDetail = ({
   }
 
   return (
-    <ParticipantWrapper wrapperColor={index % 2 === 1 ? 1 : ''}>
+    <ParticipantWrapper
+      onPress={
+        currentUser === id ? (
+          () => openMyProfile()
+        ) : (
+          () => openProfile(id, username)
+        )
+      }
+      wrapperColor={index % 2 === 1 ? 1 : ''}
+    >
       <View style={emojiCircle}>
         <Text style={styles.emoji}>{emoji ? emoji : '✌️'}</Text>
       </View>
@@ -101,4 +131,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ParticipantDetail;
+export default connect(mapStateToProps, mapDispatchToProps)(ParticipantDetail);

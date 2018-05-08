@@ -5,7 +5,7 @@ export default class CheckBoxs extends React.Component {
   state = { check: false };
 
   _handlePress() {
-    this.props.onIconPress();
+    //this.props.onIconPress();
     if (!this.state.check) {
       return this.setState({ check: true });
     }

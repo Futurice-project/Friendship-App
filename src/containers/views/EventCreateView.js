@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -13,10 +13,20 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       rest.actions.createEvent(
         {},
-        { body: formData, headers: { 'Content-Type': 'multipart/form-data' } },
+        {
+          body: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
       ),
     ),
-  fetchEvents: userId => dispatch(rest.actions.events.get({ userId })),
+  fetchEvents: userId =>
+    dispatch(
+      rest.actions.events.get({
+        userId,
+      }),
+    ),
 });
 
 const mapStateToProps = state => ({
@@ -32,12 +42,31 @@ class EventCreateView extends Component {
     const hostId = this.props.auth.data.decoded
       ? this.props.auth.data.decoded.id
       : null;
-    this.setState({ hostId });
+    this.setState({
+      hostId,
+    });
   };
 
-  navigateBack = () => {
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
+  }
+
+  backHandler = () => {
+    this.navigateBack();
+    return true;
+  };
+
+  navigateBack = async () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
+    const userId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
+    await this.props.fetchEvents(userId);
   };
 
   render() {

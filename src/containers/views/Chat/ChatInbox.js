@@ -10,7 +10,7 @@ import Report from '../Report/Report';
 
 const mapStateToProps = state => ({
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
-  chatrooms: state.chatRoomsWithUserId.data.data,
+  chatrooms: state.chatRoomsWithUserId.data,
   chatroomRefreshState: state.chatRoomsWithUserId,
 });
 
@@ -35,7 +35,7 @@ export class ChatInbox extends React.Component {
     clearInterval(this.timer);
   }
 
-  keyExtractor = (item, index) => index;
+  keyExtractor = (item, index) => 'list-item-' + index;
 
   renderItem = ({ item }) => {
     return <InboxCard data={item} />;

@@ -2,16 +2,15 @@ import React from 'react';
 import {
   Dimensions,
   Image,
+  Linking,
   Platform,
   StyleSheet,
-  Text,
-  Linking,
   TouchableOpacity,
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
-import { Details, LocationText, EventTitleText } from '../Layout/TextLayout';
+import { Details, EventTitleText, LocationText } from '../Layout/TextLayout';
 import waveShape from '../../../assets/img/roundTab/roundTab.png';
 import resolveAssetSource from 'resolveAssetSource';
 
@@ -22,23 +21,11 @@ const EventTopPart = props => {
     eventTitle,
     city,
     address,
-    showModal,
     srcImage,
     navigateBack,
     isHost,
     eventDate,
   } = props;
-
-  const displaySettingsButton = () => {
-    return (
-      <TouchableOpacity onPress={showModal} style={styles.settings}>
-        <Image
-          style={styles.settingsIcon}
-          source={require('../../../assets/settingsIcon.png')}
-        />
-      </TouchableOpacity>
-    );
-  };
 
   const openMap = (city, address) => {
     if (Platform.OS === 'ios') {
@@ -51,9 +38,7 @@ const EventTopPart = props => {
   };
 
   const renderDateAndTime = date => {
-    console.log('EVENT DATE FROM FETCH', date);
     const eventTime = moment.utc(date).format('HH:mm');
-    console.log('EVENT TOM FROM FETCH', eventTime);
 
     let eventDate;
     new Date().getMonth() === new Date(date).getMonth()
@@ -73,7 +58,6 @@ const EventTopPart = props => {
         <TouchableOpacity onPress={navigateBack}>
           <Icon name="md-arrow-back" size={26} style={styles.backButton} />
         </TouchableOpacity>
-        {isHost ? displaySettingsButton() : null}
       </View>
 
       <View

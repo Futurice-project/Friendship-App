@@ -13,13 +13,27 @@ const ButtonOption = styled.View`
 `;
 
 export default class EventBottomPart extends PureComponent {
-  renderJoinButton(isHost) {
+  renderJoinButton(isHost, eventFull) {
     if (isHost === true) {
       return (
         <View style={{ backgroundColor: '#ffffff', height: 100 }}>
           <ButtonOption>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={this.props.showModal}
+            >
+              <Text style={styles.textButtonStyle}>Manage Event</Text>
+            </TouchableOpacity>
+          </ButtonOption>
+        </View>
+      );
+    }
+    if (eventFull === true) {
+      return (
+        <View style={{ backgroundColor: '#ffffff', height: 100 }}>
+          <ButtonOption>
             <TouchableOpacity style={styles.buttonStyle}>
-              <Text style={styles.textButtonStyle}>Host Can't Leave</Text>
+              <Text style={styles.textButtonStyle}>Event Is Full</Text>
             </TouchableOpacity>
           </ButtonOption>
         </View>
@@ -84,7 +98,7 @@ export default class EventBottomPart extends PureComponent {
 
     return (
       <View style={{ backgroundColor: '#ffffff' }}>
-        {this.renderJoinButton(this.props.isHost)}
+        {this.renderJoinButton(this.props.isHost, this.props.eventFull)}
         <ParticipantList
           participants={this.props.participants}
           currentUser={this.props.currentUser}
@@ -142,7 +156,7 @@ const styles = StyleSheet.create({
   textButtonStyle: {
     alignSelf: 'center',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Bold',
     color: '#2d4359',
   },
   buttonStyle: {

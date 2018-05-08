@@ -1,6 +1,19 @@
 {
   "expo": {
-    "sdkVersion": "24.0.0",
-    "privacy": "unlisted"
+    "version": "1.0.0",
+    "sdkVersion": "27.0.0",
+    "privacy": "unlisted",
+    "slug": "friendship",
+    "icon": "https://s3.eu-west-3.amazonaws.com/friendship-image-storage/images/index.png",
+    "orientation": "portrait",
+    "splash": {
+      "image": "https://s3.eu-west-3.amazonaws.com/friendship-image-storage/images/index.png"
+    },
+    "android": {
+      "package": "com.friendship.friendshipapp"
+    },
+    "ios": {
+      "bundleIdentifier": "com.friendship.friendshipapp"
+    }
   }
 }

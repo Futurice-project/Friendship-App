@@ -110,7 +110,7 @@ class ChatView extends Component {
         : this.props.navigation.state.params.existingChatRoomId,
     );
     //update all unread messages after 3 seconds to make sure all the chatroom messages have been fetched
-    setTimeout(() => this.getUnreadMessagesAndUpdateStatus(), 3000);
+    //setTimeout(() => this.getUnreadMessagesAndUpdateStatus(), 3000);
   };
 
   componentWillReceiveProps = () => {
@@ -144,7 +144,7 @@ class ChatView extends Component {
     this.setState({ text: '' });
   };
 
-  keyExtractor = (item, index) => index;
+  keyExtractor = (item, index) => `msg-${index}`;
 
   renderItem = ({ item }) => {
     const textAlign =
@@ -253,6 +253,8 @@ class ChatView extends Component {
   };
 
   render() {
+    console.log(this.props);
+
     return (
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -277,13 +279,18 @@ class ChatView extends Component {
             value={this.state.text}
             onSubmitEditing={() => this.sendMessage()}
           />
+
           <ChatInputButtonCard>
-            <TouchableOpacity onPress={() => this.sendMessage()}>
+            <TouchableOpacity
+              onPress={() => this.sendMessage()}
+              disabled={!this.state.text.trim().length > 0}
+            >
               <Text
                 style={{
-                  fontWeight: 'normal',
+                  fontFamily: 'NunitoSans-Regular',
                   fontSize: 16,
-                  color: '#ff8a65',
+                  color:
+                    !this.state.text.trim().length > 0 ? 'gray' : '#ff8a65',
                   paddingRight: 15,
                 }}
               >

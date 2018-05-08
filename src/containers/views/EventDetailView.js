@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View, BackHandler } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 import rest from '../../utils/rest';
@@ -20,6 +20,8 @@ const mapStateToProps = state => ({
   eventPersonalities: state.eventPersonalities,
   eventTags: state.eventTags,
   eventParticipation: state.eventParticipation,
+  events: state.events,
+  eventParticipantsNum: state.eventParticipantsNum,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -35,6 +37,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.eventParticipation.post({ eventId, userId })),
   leaveEvent: (eventId, userId) =>
     dispatch(rest.actions.eventParticipation.delete({ eventId, userId })),
+  fetchEventParticipantsNum: () =>
+    dispatch(rest.actions.eventParticipantsNum.get()),
+  fetchEvents: userId => dispatch(rest.actions.events.get({ userId })),
 });
 
 class EventDetailView extends Component {
@@ -56,6 +61,17 @@ class EventDetailView extends Component {
     this.props.fetchEventPersonalities(eventId);
     this.props.fetchEventTags(eventId);
     this.props.fetchEventParticipation(eventId, userId);
+
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler);
+  };
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
+  }
+
+  backHandler = () => {
+    this.navigateBack();
+    return true;
   };
 
   componentWillReceiveProps(nextProps) {
@@ -88,9 +104,14 @@ class EventDetailView extends Component {
     await this.props.fetchEventTags(eventId);
   }
 
-  navigateBack = () => {
+  navigateBack = async () => {
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
+    const userId = this.props.auth.data.decoded
+      ? this.props.auth.data.decoded.id
+      : null;
+    await this.props.fetchEvents(userId);
+    await this.props.fetchEventParticipantsNum();
   };
 
   render() {
@@ -131,7 +152,6 @@ class EventDetailView extends Component {
             eventTitle={title}
             address={address}
             city={city}
-            showModal={this._showModal}
             srcImage={srcImage}
             navigateBack={this.navigateBack}
             eventDate={eventDate}
@@ -145,9 +165,11 @@ class EventDetailView extends Component {
             participants={this.props.eventParticipants}
             personalities={this.props.eventPersonalities}
             tags={this.props.eventTags}
+            showModal={this._showModal}
             onButtonPress={() => this.handleButtonPress(eventId, userId)}
             participation={this.props.eventParticipation}
             isHost={this.props.eventDetails.data.hostId === userId}
+            eventFull={this.props.eventDetails.data.maxParticipantNumberExceed}
             currentUser={userId}
             hostId={this.props.eventDetails.data.hostId}
           />

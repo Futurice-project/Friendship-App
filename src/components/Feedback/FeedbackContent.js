@@ -229,7 +229,7 @@ export default class FeedbackContent extends React.Component {
             <SurveyQuestion
               subtitle={data.content.inputForm[0].subtitle}
               onChange={onEasyChange}
-              value={findFriendEasy}
+              value={indFriendEasy}
             />
           </View>
           <View style={{ marginBottom: 30 }}>

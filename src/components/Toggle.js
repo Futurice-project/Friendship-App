@@ -70,7 +70,7 @@ export const TextWrapper = styled.View`
 	* @param {string} leftText - Sets the text of the left side of the switch
  */
 
-var CustomLayoutAnimation = {
+const CustomLayoutAnimation = {
   duration: 300,
   create: {
     type: LayoutAnimation.Types.spring,
@@ -97,29 +97,31 @@ export default class Toggle extends React.Component {
         UIManager.setLayoutAnimationEnabledExperimental(true);
     }
   }
-  render = () => (
-    <ContainerView style={{ marginBottom: 28 }}>
-      <TextWrapper>
-        <ToggleRightText value={this.props.value}>
-          {this.props.leftText}
-        </ToggleRightText>
-      </TextWrapper>
-      <TouchableWithoutFeedback
-        style={{ flex: 1 }}
-        onPress={() => {
-          LayoutAnimation.configureNext(CustomLayoutAnimation);
-          this.props.onPress();
-        }}
-      >
-        <ToggleView value={this.props.value}>
-          <ToggleSwitch value={this.props.value} />
-        </ToggleView>
-      </TouchableWithoutFeedback>
-      <TextWrapper>
-        <ToggleLeftText value={this.props.value}>
-          {this.props.rightText}
-        </ToggleLeftText>
-      </TextWrapper>
-    </ContainerView>
-  );
+  render = () => {
+    return (
+      <ContainerView style={{ marginBottom: 28 }}>
+        <TextWrapper>
+          <ToggleRightText value={this.props.toggled}>
+            {this.props.leftText}
+          </ToggleRightText>
+        </TextWrapper>
+        <TouchableWithoutFeedback
+          style={{ flex: 1 }}
+          onPress={() => {
+            LayoutAnimation.configureNext(CustomLayoutAnimation);
+            this.props.onPress(this.props.input);
+          }}
+        >
+          <ToggleView value={this.props.toggled}>
+            <ToggleSwitch value={this.props.toggled} />
+          </ToggleView>
+        </TouchableWithoutFeedback>
+        <TextWrapper>
+          <ToggleLeftText value={this.props.toggled}>
+            {this.props.rightText}
+          </ToggleLeftText>
+        </TextWrapper>
+      </ContainerView>
+    );
+  };
 }

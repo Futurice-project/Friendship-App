@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatInbox renders correctly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Connect(ChatInbox)
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "chatRoomsWithUserId": [Function],
+      "chatroomRefreshState": Object {
+        "data": Object {
+          "data": Array [
+            Object {
+              "creator": Object {
+                "emoji": "��🇭",
+                "id": 1,
+                "username": "testCreator",
+              },
+              "id": 26,
+              "message": Array [
+                Object {
+                  "chat_time": "2018-05-04T08:50:22.793+03:00",
+                  "chatroom_id": 26,
+                  "id": 10,
+                  "read": false,
+                  "text_message": "hi",
+                  "user_id": 1,
+                },
+              ],
+              "receiver": Object {
+                "emoji": "��🇭",
+                "id": 2,
+                "username": "testReceiver",
+              },
+            },
+          ],
+        },
+      },
+      "chatrooms": Array [
+        Object {
+          "creator": Object {
+            "emoji": "��🇭",
+            "id": 1,
+            "username": "testCreator",
+          },
+          "id": 26,
+          "message": Array [
+            Object {
+              "chat_time": "2018-05-04T08:50:22.793+03:00",
+              "chatroom_id": 26,
+              "id": 10,
+              "read": false,
+              "text_message": "hi",
+              "user_id": 1,
+            },
+          ],
+          "receiver": Object {
+            "emoji": "��🇭",
+            "id": 2,
+            "username": "testReceiver",
+          },
+        },
+      ],
+      "currentUserId": 1,
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "storeSubscription": Subscription {
+        "listeners": Object {
+          "clear": [Function],
+          "get": [Function],
+          "notify": [Function],
+          "subscribe": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": [Function],
+      },
+    },
+    "ref": null,
+    "rendered": null,
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "chatRoomsWithUserId": [Function],
+        "chatroomRefreshState": Object {
+          "data": Object {
+            "data": Array [
+              Object {
+                "creator": Object {
+                  "emoji": "��🇭",
+                  "id": 1,
+                  "username": "testCreator",
+                },
+                "id": 26,
+                "message": Array [
+                  Object {
+                    "chat_time": "2018-05-04T08:50:22.793+03:00",
+                    "chatroom_id": 26,
+                    "id": 10,
+                    "read": false,
+                    "text_message": "hi",
+                    "user_id": 1,
+                  },
+                ],
+                "receiver": Object {
+                  "emoji": "��🇭",
+                  "id": 2,
+                  "username": "testReceiver",
+                },
+              },
+            ],
+          },
+        },
+        "chatrooms": Array [
+          Object {
+            "creator": Object {
+              "emoji": "��🇭",
+              "id": 1,
+              "username": "testCreator",
+            },
+            "id": 26,
+            "message": Array [
+              Object {
+                "chat_time": "2018-05-04T08:50:22.793+03:00",
+                "chatroom_id": 26,
+                "id": 10,
+                "read": false,
+                "text_message": "hi",
+                "user_id": 1,
+              },
+            ],
+            "receiver": Object {
+              "emoji": "��🇭",
+              "id": 2,
+              "username": "testReceiver",
+            },
+          },
+        ],
+        "currentUserId": 1,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "storeSubscription": Subscription {
+          "listeners": Object {
+            "clear": [Function],
+            "get": [Function],
+            "notify": [Function],
+            "subscribe": [Function],
+          },
+          "onStateChange": [Function],
+          "parentSub": undefined,
+          "store": Object {
+            "clearActions": [Function],
+            "dispatch": [Function],
+            "getActions": [Function],
+            "getState": [Function],
+            "replaceReducer": [Function],
+            "subscribe": [Function],
+          },
+          "unsubscribe": [Function],
+        },
+      },
+      "ref": null,
+      "rendered": null,
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;

@@ -92,23 +92,25 @@ class EventsDetail extends Component {
 
     return (
       <Card>
-        <CardSection>
-          <View style={styles.imageContainer}>
-            <TouchableOpacity onPress={() => this.props.openEvent(id)}>
-              <ResponsiveImage
-                source={eventImage}
-                initWidth="390"
-                initHeight="230"
-              />
-            </TouchableOpacity>
-          </View>
-        </CardSection>
+        <View style={styles.imageContainer}>
+          <TouchableOpacity onPress={() => this.props.openEvent(id)}>
+            <ResponsiveImage
+              source={eventImage}
+              initWidth="380"
+              initHeight="230"
+            />
+          </TouchableOpacity>
+        </View>
 
         <CardSection>
-          <TouchableOpacity onPress={() => this.props.openEvent(id)}>
-            <Text style={titleTextStyle}>{title}</Text>
-            <Text numberOfLines={1}>{description}</Text>
-          </TouchableOpacity>
+          <View style={{ paddingTop: 9 }}>
+            <TouchableOpacity onPress={() => this.props.openEvent(id)}>
+              <Text style={titleTextStyle}>{title}</Text>
+              <Text numberOfLines={1} style={styles.descriptionTextStyle}>
+                {description}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </CardSection>
 
         {/* You can access participants avatars through "emojis" variable */}
@@ -116,10 +118,10 @@ class EventsDetail extends Component {
           <TouchableOpacity onPress={() => this.props.openEvent(id)}>
             <Text>
               {emojis != '' ? emojis.length <= 5 ? (
-                emojis
+                emojis.join(' ')
               ) : (
-                emojis.slice(0, 5).join('') +
-                ' + ' +
+                emojis.slice(0, 5).join(' ') +
+                '  and  ' +
                 (emojis.length - 5) +
                 ' others'
               ) : (
@@ -130,7 +132,7 @@ class EventsDetail extends Component {
         </CardSection>
 
         <CardSection>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
+          <View style={{ flex: 1, flexDirection: 'row', paddingBottom: 9 }}>
             <View style={{ flex: 1 }}>{this.renderDateAndTime(date)}</View>
 
             <View style={{ flex: 1 }}>
@@ -157,6 +159,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  descriptionTextStyle: {
+    fontFamily: 'NunitoSans-Bold',
+    fontSize: 17,
+    color: '#9d9fa9',
   },
 });
 

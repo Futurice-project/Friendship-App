@@ -1,3 +1,4 @@
+coverage/
 node_modules/
 .expo/
 npm-debug.*
@@ -25,3 +26,9 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Ignore test coverage
+coverage/
+
+# Ignore test snapshots
+**/__snapshots__/*

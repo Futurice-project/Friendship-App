@@ -5,21 +5,19 @@ import Header from './Header';
 // ## View Imports ##
 import Tabs from './Tabs';
 import WelcomeView from '../views/WelcomeView';
-import PeopleView from '../views/PeopleView';
 import SignInView from '../views/SignIn/SignInView';
-import SignUpView from '../views/SignUp/SignUpView';
-import SignUpMatching from '../views/SignUp/SignUpMatching';
-import SignUpLocation from '../views/SignUp/SignUpLocation';
-import SignUpPersonality from '../views/SignUp/SignUpPersonality';
+import SignUpPersonality from '../views/SignUp/Personalities';
 import ChatView from '../views/Chat/ChatView';
 import ChatRequest from '../views/Chat/ChatRequest';
-import SignUpYeahAndNaah from '../views/SignUp/SignUpYeahAndNaah';
 import UsersForTagView from '../views/UsersForTagView';
 import EventDetailView from '../views/EventDetailView';
 import EventCreateView from '../views/EventCreateView';
 import EventEditView from '../views/EventEditView';
 import Report from '../views/Report/Report';
 import Feedback from '../views/Feedback/Feedback';
+import Signup from '../views/SignUp/Signup';
+import PeopleProfileView from '../views/PeopleProfileView';
+import MyProfileView from '../views/MyProfileView';
 
 const StackNavigatorConfig = {
   navigationOptions: {
@@ -52,21 +50,11 @@ export default StackNavigator(
       screen: WelcomeView,
       navigationOptions: { header: () => null },
     },
-    SignUpLocation: {
-      screen: SignUpLocation,
-      title: 'SignUpLocation',
+    /* First view of the sign up process
+     * Basic information about the user are asked in that view */
+    SignUp: {
+      screen: Signup,
       navigationOptions: { header: () => null },
-    },
-    SignUpMatching: {
-      screen: SignUpMatching,
-      title: 'Matching',
-      navigationOptions: { header: () => null },
-    },
-    YeahAndNaah: {
-      screen: SignUpYeahAndNaah,
-      navigationOptions: {
-        header: () => null,
-      },
     },
     Tabs: {
       screen: Tabs,
@@ -78,10 +66,6 @@ export default StackNavigator(
     },
     SignIn: {
       screen: SignInView,
-      navigationOptions: { header: () => null },
-    },
-    SignUp: {
-      screen: SignUpView,
       navigationOptions: { header: () => null },
     },
     SignUpPersonality: {
@@ -113,6 +97,14 @@ export default StackNavigator(
     },
     Feedback: {
       screen: Feedback,
+      navigationOptions: { header: () => null },
+    },
+    PeopleProfileView: {
+      screen: PeopleProfileView,
+      navigationOptions: { header: () => null },
+    },
+    MyProfileView: {
+      screen: MyProfileView,
       navigationOptions: { header: () => null },
     },
     // ## End StackNavigator Views ##
