@@ -55,7 +55,7 @@ class EventsDetail extends Component {
       ? (eventDate = moment.utc(new Date(date)).calendar())
       : (eventDate = moment.utc(new Date(date)).format('dddd, Do MMM'));
 
-    if (eventDate == 'Today' || eventDate == 'Tomorrow') {
+    if (eventDate === 'Today' || eventDate === 'Tomorrow') {
       return (
         <View style={{ flexDirection: 'row' }}>
           <Text style={{ fontWeight: 'bold' }}>{eventDate}</Text>
@@ -81,7 +81,7 @@ class EventsDetail extends Component {
       date,
       id,
       srcImage,
-      emojis,
+      avatars,
     } = this.props;
     const { titleTextStyle } = styles;
 
@@ -113,21 +113,33 @@ class EventsDetail extends Component {
           </View>
         </CardSection>
 
-        {/* You can access participants avatars through "emojis" variable */}
+        {/* You can access participants avatars through "avatars" variable */}
         <CardSection>
           <TouchableOpacity onPress={() => this.props.openEvent(id)}>
-            <Text>
-              {emojis != '' ? emojis.length <= 5 ? (
-                emojis.join(' ')
+            {/*<Text>
+              {avatars != '' ? avatars.length <= 5 ? (
+                avatars.join(' ')
               ) : (
-                emojis.slice(0, 5).join(' ') +
+                avatars.slice(0, 5).join(' ') +
                 '  and  ' +
-                (emojis.length - 5) +
+                (avatars.length - 5) +
                 ' others'
               ) : (
                 'No participants'
               )}
-            </Text>
+            </Text>*/}
+            <View style={{ flexDirection: 'row' }}>
+              {avatars.slice(0, 5).map(avatar => avatar)}
+              <Text>
+                {avatars.length > 0 ? avatars.length > 5 ? (
+                  `and ${avatars.length - 5} more`
+                ) : (
+                  ''
+                ) : (
+                  'No participants'
+                )}
+              </Text>
+            </View>
           </TouchableOpacity>
         </CardSection>
 

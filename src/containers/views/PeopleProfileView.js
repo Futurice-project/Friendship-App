@@ -188,7 +188,7 @@ class ProfileUser extends React.Component {
           location={location}
           age={this.state.age}
           genders={genders}
-          emoji={this.props.userDetails.data.emoji}
+          avatar={this.props.userDetails.data.avatar}
           numberOfYeah={loveCommon}
           numberOfNaah={hateCommon}
           navigateBack={this.navigateBack}
@@ -209,7 +209,7 @@ class ProfileUser extends React.Component {
             this.props.openChatView(
               existingChatRoomId,
               this.props.userDetails.data.username,
-              this.props.userDetails.data.emoji,
+              this.props.userDetails.data.avatar,
               this.props.userDetails.data.id,
               'People',
             )}

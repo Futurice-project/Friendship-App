@@ -105,7 +105,9 @@ class SignUpPersonality extends React.Component {
           color: '#efebe9',
         }}
       >
-        {this.state.index / 2 + 1}/{this.props.personalities.data.length / 2}
+        {this.state.index / 2 + 1}/{this.props.personalities.data.length /
+          2}{' '}
+        Lifestyle
       </Text>
     );
   }
@@ -130,19 +132,9 @@ class SignUpPersonality extends React.Component {
               style={{ marginTop: 21, marginLeft: 30, marginRight: 30 }}
             >
               {this.renderProgress()}
-              <Text
-                style={{
-                  fontFamily: 'NunitoSans-Regular',
-                  fontSize: 20,
-                  color: '#efebe9',
-                }}
-              >
-                {' '}
-                Lifestyle
-              </Text>
             </LabelText>
           </Part>
-          <Part style={{ flex: 15, backgroundColor: '#2a343c' }}>
+          <Part style={{ flex: 10, backgroundColor: '#2a343c' }}>
             <Text
               style={{
                 fontFamily: 'NunitoSans-Light',

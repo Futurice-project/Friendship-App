@@ -51,7 +51,6 @@ export const UsernameText = styled.Text`
   font-family: 'NunitoSans-Bold';
   font-size: 20;
   font-weight: bold;
-  letter-spacing: 2.44;
   text-align: center;
   color: #60686d;
 `;

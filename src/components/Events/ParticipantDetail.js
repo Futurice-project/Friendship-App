@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import styled from 'styled-components/native';
@@ -40,7 +40,7 @@ const ParticipantWrapper = styled.TouchableOpacity`
 
 const ParticipantDetail = ({
   username,
-  emoji,
+  avatar,
   hateCommon,
   loveCommon,
   index,
@@ -51,7 +51,7 @@ const ParticipantDetail = ({
   openMyProfile,
 }) => {
   const {
-    emojiCircle,
+    avatarCircle,
     usernameContentStyle,
     usernameTextStyle,
     commonNaahsAndYeahs,
@@ -76,9 +76,7 @@ const ParticipantDetail = ({
       }
       wrapperColor={index % 2 === 1 ? 1 : ''}
     >
-      <View style={emojiCircle}>
-        <Text style={styles.emoji}>{emoji ? emoji : '✌️'}</Text>
-      </View>
+      <Image source={{ uri: avatar }} style={avatarCircle} />
       <View style={usernameContentStyle}>
         <Text style={usernameTextStyle}>{username}</Text>
         {!(currentUser === id) ? (
@@ -101,18 +99,14 @@ const styles = StyleSheet.create({
   commonNaahsAndYeahs: {
     flexDirection: 'row',
   },
-  emojiCircle: {
+  avatarCircle: {
     width: 66,
     height: 66,
-    borderRadius: 132 / 2,
-    backgroundColor: 'white',
-    alignItems: 'center',
     marginLeft: 17,
     marginRight: 15,
     marginTop: 12,
-    justifyContent: 'flex-start',
   },
-  emoji: {
+  avatar: {
     backgroundColor: 'transparent',
     alignSelf: 'center',
     fontSize: Platform.OS === 'android' ? 30 : 40,

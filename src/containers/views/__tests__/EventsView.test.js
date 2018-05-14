@@ -100,19 +100,23 @@ describe('EventsView', () => {
         data: [
           {
             eventId: 1,
-            emoji: '😘',
+            avatar:
+              'https://friendship-app.s3.amazonaws.com/avatars/avatar1.png',
           },
           {
             eventId: 2,
-            emoji: '😘',
+            avatar:
+              'https://friendship-app.s3.amazonaws.com/avatars/avatar1.png',
           },
           {
             eventId: 2,
-            emoji: '😘',
+            avatar:
+              'https://friendship-app.s3.amazonaws.com/avatars/avatar1.png',
           },
           {
             eventId: 3,
-            emoji: '😘',
+            avatar:
+              'https://friendship-app.s3.amazonaws.com/avatars/avatar1.png',
           },
         ],
       },

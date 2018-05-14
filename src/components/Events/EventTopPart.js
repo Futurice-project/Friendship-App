@@ -145,9 +145,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   backButton: {
-    paddingTop: 10,
     paddingLeft: 10,
-    padding: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
     backgroundColor: 'transparent',
   },
   settingsIcon: {

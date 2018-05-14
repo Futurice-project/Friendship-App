@@ -53,28 +53,14 @@ export class ChatInbox extends React.Component {
         })
       : [];
     return (
-      <View style={{ flex: 1 }}>
-        <Text
-          style={{
-            fontSize: 12,
-            textAlign: 'center',
-            color: '#60686d',
-            marginTop: 30,
-            fontWeight: 'bold',
-          }}
-        >
-          SUGGESTIONS
-        </Text>
-        <SuggestionList existingChatRooms={this.props.chatrooms} />
-        <View style={{ flex: 10 }}>
-          <RoundTab tint="#ffffff" title="CHATS" fontSize="12" />
-          <FlatList
-            data={sortedChatrooms}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderItem}
-            style={{ flex: 1, backgroundColor: 'white', minHeight: 300 }}
-          />
-        </View>
+      <View style={{ flex: 1, paddingTop: 20 }}>
+        <RoundTab tint="#ffffff" title="CHATS" fontSize="12" />
+        <FlatList
+          data={sortedChatrooms}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+          style={{ flex: 1, backgroundColor: 'white', minHeight: 300 }}
+        />
       </View>
     );
   }

@@ -64,7 +64,7 @@ export class ChatRequest extends React.Component {
 
   openChatView = chatroomId => {
     Keyboard.dismiss();
-    const { username, emoji } = this.props.navigation.state.params.user;
+    const { username, avatar } = this.props.navigation.state.params.user;
 
     this.props.openChatView(
       chatroomId,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Image } from 'react-native';
 
 import EventsDetail from './EventsDetail';
 
@@ -9,12 +9,18 @@ const EventsList = ({
   isFetching,
   eventParticipantsNum,
 }) => {
-  // console.log('Events list', events);
+  let index = 0;
   const renderItem = ({ item }) => {
-    const emojis = [];
-    eventParticipantsNum.data.data.map(emojiObject => {
-      if (emojiObject.eventId === item.id) {
-        emojis.push(emojiObject.emoji);
+    const avatars = [];
+    eventParticipantsNum.data.data.map(participant => {
+      if (participant.eventId === item.id) {
+        avatars.push(
+          <Image
+            source={{ uri: participant.avatar }}
+            style={{ width: 15, height: 15, marginRight: 2 }}
+            key={`avatar-${index++}`}
+          />,
+        );
       }
     });
 
@@ -27,7 +33,7 @@ const EventsList = ({
         date={item.eventDate}
         id={item.id}
         srcImage={item.eventImage}
-        emojis={emojis}
+        avatars={avatars}
       />
     );
   };

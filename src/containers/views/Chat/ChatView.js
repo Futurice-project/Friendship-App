@@ -4,6 +4,7 @@ import { NavigationActions } from 'react-navigation';
 import ReversedFlatList from 'react-native-reversed-flat-list';
 import styled from 'styled-components/native';
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   Text,
@@ -55,37 +56,48 @@ const mapStateToProps = state => ({
 });
 
 class ChatView extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.userEmoji} ${navigation.state.params
-      .username}`,
-    headerLeft: (
-      <Icon
-        style={{ padding: 15, fontSize: 26 }}
-        name={'ios-arrow-back'}
-        onPress={() => {
-          navigation.dispatch(
-            NavigationActions.reset({
-              index: 0,
-              actions: [
-                NavigationActions.navigate({
-                  routeName: navigation.state.params.previousRoute
-                    ? navigation.state.params.previousRoute
-                    : 'InboxView',
-                }),
-              ],
-            }),
-          );
-        }}
-      />
-    ),
-    headerRight: (
-      <PopUpMenu
-        isReportVisible={() =>
-          navigation.navigate('Report', { data: navigation.state.params })}
-        chat
-      />
-    ),
-  });
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image
+            source={{ uri: navigation.state.params.userEmoji }}
+            style={{ width: 35, height: 35, marginRight: 5 }}
+          />
+          <Text style={{ fontFamily: 'NunitoSans-Regular', fontSize: 15 }}>
+            {navigation.state.params.username}
+          </Text>
+        </View>
+      ),
+      headerLeft: (
+        <Icon
+          style={{ paddingLeft: 15, fontSize: 26 }}
+          name={'ios-arrow-back'}
+          onPress={() => {
+            navigation.dispatch(
+              NavigationActions.reset({
+                index: 0,
+                actions: [
+                  NavigationActions.navigate({
+                    routeName: navigation.state.params.previousRoute
+                      ? navigation.state.params.previousRoute
+                      : 'InboxView',
+                  }),
+                ],
+              }),
+            );
+          }}
+        />
+      ),
+      headerRight: (
+        <PopUpMenu
+          isReportVisible={() =>
+            navigation.navigate('Report', { data: navigation.state.params })}
+          chat
+        />
+      ),
+    };
+  };
 
   state = {
     chatroomId: '',

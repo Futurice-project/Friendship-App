@@ -231,6 +231,7 @@ class SignInView extends React.Component {
                   onChangeText={email =>
                     this.setState({ email, validationError: '', error: false })}
                   value={this.state.email}
+                  autoCapitalize={'none'}
                 />
                 <TextInput
                   ref={component => (this._passwordInput = component)}

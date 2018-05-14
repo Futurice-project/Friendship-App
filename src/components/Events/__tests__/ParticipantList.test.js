@@ -11,7 +11,8 @@ describe('ParticipantList', () => {
           rows: [
             {
               id: 5,
-              emoji: '��',
+              avatar:
+                'https://friendship-app.s3.amazonaws.com/avatars/avatar1.png',
               username: 'test',
               hateCommon: '1',
               loveCommon: '2',
@@ -39,7 +40,7 @@ describe('ParticipantList', () => {
     expect(wrapper.find('FlatList').props().data.length).toBe(1);
     expect(itemProps).toEqual({
       currentUser: undefined,
-      emoji: '��',
+      avatar: '��',
       hateCommon: '1',
       id: 5,
       index: 0,

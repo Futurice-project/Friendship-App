@@ -66,7 +66,7 @@ export default function(state = initialState, action) {
       state.signupProgress--;
       break;
     case UPDATE_EMOJI:
-      state.userInfos.emoji = action.payload;
+      state.userInfos.avatar = action.payload;
       break;
     case UPDATE_USERNAME:
       state.userInfos.username = action.payload;

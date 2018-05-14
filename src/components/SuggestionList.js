@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 
 import rest from '../utils/rest';
@@ -22,7 +23,7 @@ const styles = {
     width: 50,
     height: 50,
     borderRadius: 50,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -41,7 +42,10 @@ export class SuggestionList extends React.Component {
         onPress={() => this.props.openChatRequest(item)}
       >
         <View style={styles.iconWrapper}>
-          <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
+          <Image
+            source={{ uri: item.avatar }}
+            style={{ width: 50, height: 50 }}
+          />
         </View>
         <Text style={{ fontSize: 12, color: '#4a4a4a', margin: 2 }}>
           {item.username}

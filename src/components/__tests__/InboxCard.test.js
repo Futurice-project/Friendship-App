@@ -15,12 +15,12 @@ describe('InboxCard', () => {
       creator: {
         id: 1,
         username: 'testCreator',
-        emoji: '��🇭',
+        avatar: 'https://friendship-app.s3.amazonaws.com/avatars/avatar1.png',
       },
       receiver: {
         id: 2,
         username: 'testReceiver',
-        emoji: '��🇭',
+        avatar: 'https://friendship-app.s3.amazonaws.com/avatars/avatar1.png',
       },
       messages: [
         {

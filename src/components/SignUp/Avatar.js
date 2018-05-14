@@ -1,26 +1,26 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { TouchableOpacity } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 
-export default class SignUpEmoji extends React.Component {
+export default class Avatar extends React.Component {
   render() {
     return (
       <TouchableOpacity
-        onPress={() => this.props.updateEmoji(this.props.emoji)}
+        onPress={() => this.props.updateAvatar(this.props.avatar)}
       >
-        <MoodContainer
+        <AvatarContainer
           style={{
             backgroundColor: this.props.selected ? '#ff8a65' : '#ffffff',
           }}
         >
-          <Emoji>{this.props.emoji}</Emoji>
-        </MoodContainer>
+          <Image source={{ uri: this.props.avatar }} style={styles.avatars} />
+        </AvatarContainer>
       </TouchableOpacity>
     );
   }
 }
 
-export const MoodContainer = styled.View`
+export const AvatarContainer = styled.View`
   height: 70;
   width: 70;
   background-color: #ffffff;
@@ -30,4 +30,9 @@ export const MoodContainer = styled.View`
   margin-right: 12;
 `;
 
-const Emoji = styled.Text`font-size: 30;`;
+const styles = {
+  avatars: {
+    height: 60,
+    width: 60,
+  },
+};

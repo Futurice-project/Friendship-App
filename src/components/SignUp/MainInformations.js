@@ -1,5 +1,5 @@
 import React from 'react';
-import Emoji from './AvatarList';
+import AvatarList from './AvatarList';
 import SignUpTextInput from './TextInput';
 import { Field } from 'redux-form';
 import { Container, LabelText, Part } from '../Layout/SignupLayout';
@@ -11,13 +11,13 @@ const mapStateToProps = state => ({
   signup: state.form.signup,
 });
 
-const renderEmojiField = () => {
+const renderAvatarField = () => {
   return (
     <Part backgroundStyle={'light'}>
       <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
         PICK YOUR MOOD
       </LabelText>
-      <Field name="emoji" component={Emoji} />
+      <Field name="avatar" component={AvatarList} />
     </Part>
   );
 };
@@ -85,7 +85,7 @@ class MainInformations extends React.Component {
   render() {
     return (
       <Container>
-        {renderEmojiField()}
+        {renderAvatarField()}
         <Part>
           {renderUsernameField(
             this.props.signup ? this.props.signup.submitErrors : null,

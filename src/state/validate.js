@@ -6,15 +6,16 @@ import apiRoot from '../utils/api.config';
 
 export const isUsernameAvailable = async username => {
   let usersWithSameUsername = await fetch(
-    `${apiRoot}/users/validate/username?username=${username}`,
+    `${apiRoot}/users/validate/username?username=${username.toLowerCase()}`,
   );
   usersWithSameUsername = await usersWithSameUsername.json();
-  return usersWithSameUsername.length <= 0;
+  const res = usersWithSameUsername.length <= 0;
+  return res;
 };
 
 export const isEmailAvailable = async email => {
   let usersWithSameEmail = await fetch(
-    `${apiRoot}/users/validate/email?email=${email}`,
+    `${apiRoot}/users/validate/email?email=${email.toLowerCase()}`,
   );
   usersWithSameEmail = await usersWithSameEmail.json();
   return usersWithSameEmail.length <= 0;
@@ -28,7 +29,7 @@ export async function validateUserInformations(values) {
       ...err,
       username: 'Enter a valid username',
     };
-  } else if (!isUsernameAvailable(values.username)) {
+  } else if (!await isUsernameAvailable(values.username)) {
     err = {
       ...err,
       username: `That username is already taken : ${values.username}`,
@@ -60,7 +61,7 @@ export async function validateUserInformations(values) {
   }
 
   function checkAge(birthDate) {
-    return moment().year() - birthDate >= 18;
+    return moment().year() - birthDate >= 16;
   }
 
   if (!values.birthyear) {
@@ -71,7 +72,7 @@ export async function validateUserInformations(values) {
   } else if (!checkAge(values.birthyear)) {
     err = {
       ...err,
-      birthyear: 'User should be at least 18',
+      birthyear: 'User should be at least 16',
     };
   }
 

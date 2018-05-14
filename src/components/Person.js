@@ -119,7 +119,10 @@ class Person extends React.Component {
 
           <View style={styles.flexRow}>
             <View style={styles.whiteCircle}>
-              <Text style={styles.emoji}>{this.props.data.emoji}</Text>
+              <Image
+                source={{ uri: this.props.data.avatar }}
+                style={{ width: 64, height: 64 }}
+              />
             </View>
             <View style={styles.viewBottom}>
               <Text style={styles.textName}>{this.state.shortUser}</Text>
@@ -158,7 +161,10 @@ class Person extends React.Component {
   renderLine = () => (
     <FlexRow style={styles.listItem}>
       <View>
-        <Text style={styles.listEmoji}>{this.props.data.emoji}</Text>
+        <Image
+          source={{ uri: this.props.data.avatar }}
+          style={styles.listEmoji}
+        />
       </View>
 
       <TouchableOpacity
@@ -222,13 +228,13 @@ const styles = StyleSheet.create({
     width: 66,
     height: 66,
     borderRadius: 132 / 2,
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     alignItems: 'center',
     marginRight: 10,
     marginTop: 8,
     justifyContent: 'flex-start',
   },
-  emoji: {
+  avatar: {
     backgroundColor: 'transparent',
     marginTop: 7,
     fontSize: Platform.OS === 'android' ? 35 : 45,
@@ -249,12 +255,12 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   listEmoji: {
-    backgroundColor: 'transparent',
     margin: 5,
     marginHorizontal: 10,
     alignSelf: 'center',
-    fontSize: Platform.OS === 'android' ? 35 : 45,
     alignItems: 'center',
+    height: 40,
+    width: 40,
   },
 });
 

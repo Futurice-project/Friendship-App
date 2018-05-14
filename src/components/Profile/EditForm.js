@@ -2,10 +2,10 @@ import React from 'react';
 import {
   Alert,
   Image,
-  View,
-  TextInput,
   Text,
+  TextInput,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { ImagePicker } from 'expo';
@@ -14,16 +14,15 @@ import styled from 'styled-components/native';
 import rest from '../../utils/rest';
 import { ViewContainer } from '../Layout/Layout';
 import RoundTab from '../RoundTab';
-import ProgressBar from '../SignUp/ProgressBar';
 import GenderBox from '../SignUp/GenderBox';
-import SignUpEmoji from '../SignUp/Avatar';
+import Avatar from '../SignUp/Avatar';
 import LoadingIndicator from '../LoadingIndicator';
-import { emojis } from '../../../assets/misc/emojis';
-import { YOUR_PROFILE } from '../SignUp/ProgressSteps';
 import Modal from 'react-native-modal';
+import apiRoot from '../../utils/api.config';
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  avatars: state.avatars,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -35,6 +34,7 @@ const mapDispatchToProps = dispatch => ({
       ),
     );
   },
+  fetchAvatars: () => dispatch(rest.actions.avatars()),
 });
 
 class EditForm extends React.Component {
@@ -49,8 +49,13 @@ class EditForm extends React.Component {
     validationError: '',
     exsitingGenders: '', // get the exsitingGenders that the users have
     image: '',
-    isModalVisible: false, //for error handling
+    isModalVisible: false, //for error handling,
   };
+
+  componentWillMount() {
+    this.props.fetchAvatars();
+  }
+
   componentDidMount() {
     if (this.props.userData) {
       this.setState({
@@ -58,7 +63,7 @@ class EditForm extends React.Component {
         username: this.props.userData.username,
         birthyear: this.props.userData.birthyear.toString(),
         genderArr: this.getGendersById(this.props.userData.genderlist),
-        emoji: this.props.userData.emoji,
+        avatarUri: this.props.userData.avatar,
       });
     }
   }
@@ -94,7 +99,6 @@ class EditForm extends React.Component {
     });
 
     if (!result.cancelled) {
-      console.log(result.uri);
       this.setState({ image: result.uri, error: false });
     }
   };
@@ -119,7 +123,7 @@ class EditForm extends React.Component {
   }
 
   updateProfile = (id, formData) => {
-    fetch(`http://localhost:3888/users/${id}`, {
+    fetch(`${apiRoot}/users/${id}`, {
       method: 'PATCH',
       headers: {
         Authorization: this.props.auth.data.token,
@@ -139,9 +143,9 @@ class EditForm extends React.Component {
       birthyear,
       genderArr,
       image,
-      emoji,
+      avatarUri,
     } = this.state;
-    let userData = { email, password, birthyear, username, emoji };
+    let userData = { email, password, birthyear, username, avatar: avatarUri };
 
     if (!email || !username || !birthyear) {
       return this.setState({
@@ -174,11 +178,9 @@ class EditForm extends React.Component {
         }
       }
     }
-    return tempFormData;
-  }
 
-  selectEmoji(emoji) {
-    this.setState({ emoji });
+    console.log(tempFormData);
+    return tempFormData;
   }
 
   updateGenders(value) {
@@ -193,22 +195,25 @@ class EditForm extends React.Component {
     });
   }
 
-  updateEmoji(emoji) {
-    if (emoji === this.state.emoji) {
-      return this.setState({ emoji: '', error: false });
+  updateAvatar(avatarUri) {
+    if (avatarUri === this.state.avatarUri) {
+      return this.setState({ avatarUri: '', error: false });
     }
-    return this.setState({ emoji, error: false });
+    return this.setState({ avatarUri, error: false });
   }
 
-  renderEmojis() {
-    return emojis.map(emoji => (
-      <SignUpEmoji
-        updateEmoji={() => this.updateEmoji(emoji)}
-        selectedEmoji={this.state.emoji}
-        key={emoji}
-        emoji={emoji}
-      />
-    ));
+  renderAvatars() {
+    return this.props.avatars.data.map(avatar => {
+      let sel = this.state.avatarUri === avatar.uri;
+      return (
+        <Avatar
+          updateAvatar={avatarUri => this.updateAvatar(avatarUri)}
+          selected={sel}
+          key={avatar.id}
+          avatar={avatar.uri}
+        />
+      );
+    });
   }
 
   renderLoadingIndicator() {
@@ -246,9 +251,6 @@ class EditForm extends React.Component {
               <TouchableOpacity onPress={() => this.props.closeEditForm()}>
                 <Text style={styles.headerText}>Cancel</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.onSubmit()}>
-                <Text style={styles.headerText}>SAVE</Text>
-              </TouchableOpacity>
             </View>
             <SignUpTitle>EDIT PROFILE</SignUpTitle>
             <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
@@ -261,7 +263,7 @@ class EditForm extends React.Component {
               horizontal
               style={{ height: 70, marginTop: 22 }}
             >
-              {this.renderEmojis()}
+              {this.renderAvatars()}
             </ScrollViewPhoto>
             <LabelContainer>
               <LabelView>

@@ -17,10 +17,21 @@ import Toggle from '../../../components/Toggle';
 import { FieldContainer } from '../../../components/Layout/SignupLayout';
 import rest from '../../../utils/rest';
 import apiRoot from '../../../utils/api.config';
+import { getPreSignedUrl } from '../../../utils/aws';
 
 const mapStateToProps = state => ({
   signup: state.form.signup,
 });
+
+const fields = [
+  'username',
+  'email',
+  'birthyear',
+  'enableMatching',
+  'description',
+  'avatar',
+  'password',
+];
 
 async function createUser(dispatch, formValues) {
   let formData = await createFormData(formValues);
@@ -32,80 +43,59 @@ async function createUser(dispatch, formValues) {
   );
 }
 
-function createFormData(formValues) {
-  return fetch(
-    `${apiRoot}/sign-s3?file-name=profile/${formValues.username}.jpg&file-type=${formValues
-      .image.type}`,
-  )
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(myJson) {
-      const { signedRequest, url } = myJson;
-      const xhr = new XMLHttpRequest();
-      xhr.open('PUT', signedRequest);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            console.log('Image successfully uploaded to S3');
-          } else {
-            console.log('Error while sending the image to S3');
-          }
-        }
-      };
-      xhr.setRequestHeader('Content-Type', 'image/jpeg');
-      xhr.send({
-        uri: formValues.image.uri,
-        type: 'image/jpeg',
-        name: `${formValues.username}.jpg`,
-      });
-      return url;
-    })
-    .then(url => {
-      let tempFormData = new FormData();
+function appendFieldToFormdata(formValues, url = '') {
+  let tempFormData = new FormData();
 
-      tempFormData.append('username', formValues.username);
-      tempFormData.append('email', formValues.email);
-      tempFormData.append('password', formValues.password);
-      tempFormData.append('birthyear', formValues.birthyear);
-      tempFormData.append('enableMatching', formValues.enableMatching);
-      tempFormData.append('description', formValues.description);
-      tempFormData.append('image', url);
+  fields.map(field => {
+    if (formValues[field]) {
+      tempFormData.append(field, formValues[field]);
+    }
+  });
 
-      console.log(tempFormData);
+  if (formValues.gender) {
+    tempFormData.append('genders', JSON.stringify(formValues.gender));
+  }
 
-      if (formValues.gender) {
-        tempFormData.append('genders', JSON.stringify(formValues.gender));
-      }
+  if (formValues.locations) {
+    tempFormData.append('locations', JSON.stringify(formValues.locations));
+  }
 
-      if (formValues.locations) {
-        tempFormData.append('locations', JSON.stringify(formValues.locations));
-      }
+  if (formValues.personalities) {
+    tempFormData.append(
+      'personalities',
+      JSON.stringify(formValues.personalities),
+    );
+  }
 
-      if (formValues.personalities) {
-        tempFormData.append(
-          'personalities',
-          JSON.stringify(formValues.personalities),
-        );
-      }
+  if (formValues.yeahsAndNaahs) {
+    if (formValues.yeahsAndNaahs.yeahs) {
+      tempFormData.append(
+        'yeahs',
+        JSON.stringify(formValues.yeahsAndNaahs.yeahs),
+      );
+    }
+    if (formValues.yeahsAndNaahs.nahs) {
+      tempFormData.append(
+        'nahs',
+        JSON.stringify(formValues.yeahsAndNaahs.nahs),
+      );
+    }
+  }
 
-      if (formValues.yeahsAndNaahs) {
-        if (formValues.yeahsAndNaahs.yeahs) {
-          tempFormData.append(
-            'yeahs',
-            JSON.stringify(formValues.yeahsAndNaahs.yeahs),
-          );
-        }
-        if (formValues.yeahsAndNaahs.nahs) {
-          tempFormData.append(
-            'nahs',
-            JSON.stringify(formValues.yeahsAndNaahs.nahs),
-          );
-        }
-      }
+  if (url) {
+    tempFormData.append('image', url);
+  }
 
-      return tempFormData;
-    })
+  return tempFormData;
+}
+
+async function createFormData(formValues) {
+  if (!formValues.image) {
+    return appendFieldToFormdata(formValues);
+  }
+
+  return await getPreSignedUrl(formValues)
+    .then(url => appendFieldToFormdata(formValues, url))
     .catch(e => {
       console.error(e);
     });

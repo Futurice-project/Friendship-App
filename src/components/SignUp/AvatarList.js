@@ -1,15 +1,29 @@
 import { emojis } from '../../../assets/misc/emojis';
 import styled from 'styled-components/native/index';
 import React from 'react';
-import SignUpEmoji from './Avatar';
+import Avatar from './Avatar';
+import rest from '../../utils/rest';
+import { connect } from 'react-redux';
 
-export default class Emoji extends React.Component {
+const mapDispatchToProps = dispatch => ({
+  getAvatars: () => dispatch(rest.actions.avatars()),
+});
+
+const mapStateToProps = state => ({
+  avatars: state.avatars,
+});
+
+class AvatarList extends React.Component {
   state = {
-    emoji: '',
+    avatar: '',
   };
 
-  updateEmoji = newEmoji => {
-    this.setState({ emoji: newEmoji });
+  componentWillMount() {
+    this.props.getAvatars();
+  }
+
+  updateAvatar = newAvatar => {
+    this.setState({ avatar: newAvatar });
   };
 
   render() {
@@ -21,27 +35,29 @@ export default class Emoji extends React.Component {
         horizontal
         style={{ height: 70, marginTop: 22 }}
       >
-        {this.renderEmojis(input)}
+        {this.renderAvatars(input)}
       </ScrollViewPhoto>
     );
   }
 
-  checkEmoji(e) {
-    return e === this.state.emoji ? '' : e;
+  checkAvatar(e) {
+    return e === this.state.avatar ? '' : e;
   }
 
-  renderEmojis(input) {
-    return emojis.map(emoji => (
-      <SignUpEmoji
-        updateEmoji={e => {
-          let result = this.checkEmoji(e);
+  _keyExtractor = (item, index) => `avatarList-${item.id}`;
+
+  renderAvatars(input) {
+    return this.props.avatars.data.map(avatar => (
+      <Avatar
+        updateAvatar={newAvatar => {
+          let result = this.checkAvatar(newAvatar);
           input.onChange(result);
-          this.updateEmoji(result);
+          this.updateAvatar(result);
         }}
-        selectedEmoji={input.emoji}
-        key={emoji}
-        emoji={emoji}
-        selected={this.state.emoji === emoji}
+        selectedAvatar={input.avatar}
+        key={this._keyExtractor(avatar)}
+        avatar={avatar.uri}
+        selected={this.state.avatar === avatar.uri}
       />
     ));
   }
@@ -57,3 +73,5 @@ const styles = {
     paddingLeft: 23,
   },
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(AvatarList);
