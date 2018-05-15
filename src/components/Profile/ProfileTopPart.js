@@ -101,7 +101,10 @@ const ProfileTopPart = props => {
         }}
       >
         <View style={styles.backAndSettingsView}>
-          <TouchableOpacity onPress={navigateBack}>
+          <TouchableOpacity
+            onPress={navigateBack}
+            style={{ shadowColor: '#fff', shadowOpacity: 0.5, elevation: 5 }}
+          >
             <Icon name="md-arrow-back" size={26} style={styles.backButton} />
           </TouchableOpacity>
           {displaySettingsButton()}
@@ -148,7 +151,7 @@ const ProfileTopPart = props => {
                   <TouchableOpacity onPress={() => showEditForm()}>
                     <Image
                       source={require('../../../assets/edit.png')}
-                      style={{ width: 38, height: 38 }}
+                      style={{ width: 38, height: 38, tintColor: '#000' }}
                     />
                   </TouchableOpacity>
                 ) : null}
@@ -219,7 +222,12 @@ const styles = StyleSheet.create({
   settingsIcon: {
     width: 24,
     height: 24,
-    tintColor: '#4A4A4A',
+    tintColor: '#000',
+  },
+  settings: {
+    shadowColor: '#fff',
+    shadowOpacity: 0.5,
+    elevation: 5,
   },
 });
 
