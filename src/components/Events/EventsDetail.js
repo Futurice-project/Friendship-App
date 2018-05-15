@@ -57,14 +57,14 @@ class EventsDetail extends Component {
 
     if (eventDate === 'Today' || eventDate === 'Tomorrow') {
       return (
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', paddingTop: 5 }}>
           <Text style={{ fontWeight: 'bold' }}>{eventDate}</Text>
           <Text style={{ marginLeft: 5 }}>{eventTime}</Text>
         </View>
       );
     } else {
       return (
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', paddingTop: 5 }}>
           <Text>{eventDate}</Text>
           <Text style={{ marginLeft: 5 }}>{eventTime}</Text>
         </View>
@@ -91,70 +91,46 @@ class EventsDetail extends Component {
       : require('../../../assets/img/placeholder/grone.jpg');
 
     return (
-      <Card>
-        <View style={styles.imageContainer}>
-          <TouchableOpacity onPress={() => this.props.openEvent(id)}>
-            <ResponsiveImage
-              source={eventImage}
-              initWidth="380"
-              initHeight="230"
-            />
-          </TouchableOpacity>
-        </View>
+      <Card onPress={() => this.props.openEvent(id)}>
+        <Image
+          source={eventImage}
+          style={{ width: '100%', height: 250 }}
+          resizeMode="stretch"
+        />
 
         <CardSection>
           <View style={{ paddingTop: 9 }}>
-            <TouchableOpacity onPress={() => this.props.openEvent(id)}>
-              <Text style={titleTextStyle}>{title}</Text>
-              <Text numberOfLines={1} style={styles.descriptionTextStyle}>
-                {description}
-              </Text>
-            </TouchableOpacity>
+            <Text style={titleTextStyle}>{title}</Text>
+            <Text numberOfLines={1} style={styles.descriptionTextStyle}>
+              {description}
+            </Text>
           </View>
         </CardSection>
 
         {/* You can access participants avatars through "avatars" variable */}
         <CardSection>
-          <TouchableOpacity onPress={() => this.props.openEvent(id)}>
-            {/*<Text>
-              {avatars != '' ? avatars.length <= 5 ? (
-                avatars.join(' ')
+          <View style={{ flexDirection: 'row' }}>
+            {avatars.slice(0, 5).map(avatar => avatar)}
+            <Text>
+              {avatars.length > 0 ? avatars.length > 5 ? (
+                `and ${avatars.length - 5} more`
               ) : (
-                avatars.slice(0, 5).join(' ') +
-                '  and  ' +
-                (avatars.length - 5) +
-                ' others'
+                ''
               ) : (
                 'No participants'
               )}
-            </Text>*/}
-            <View style={{ flexDirection: 'row' }}>
-              {avatars.slice(0, 5).map(avatar => avatar)}
-              <Text>
-                {avatars.length > 0 ? avatars.length > 5 ? (
-                  `and ${avatars.length - 5} more`
-                ) : (
-                  ''
-                ) : (
-                  'No participants'
-                )}
-              </Text>
-            </View>
-          </TouchableOpacity>
+            </Text>
+          </View>
         </CardSection>
 
         <CardSection>
-          <View style={{ flex: 1, flexDirection: 'row', paddingBottom: 9 }}>
-            <View style={{ flex: 1 }}>{this.renderDateAndTime(date)}</View>
-
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity onPress={() => this.openMap(city, address)}>
-                <Text style={{ textAlign: 'right' }}>
-                  {city ? `${city}` : 'Narnia'}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          {this.renderDateAndTime(date)}
+          <Text
+            style={{ textAlign: 'right', paddingTop: 5, paddingBottom: 9 }}
+            onPress={() => this.openMap(city, address)}
+          >
+            {city ? `${city}` : 'Narnia'}
+          </Text>
         </CardSection>
       </Card>
     );
@@ -167,8 +143,6 @@ const styles = StyleSheet.create({
     fontFamily: 'NunitoSans-Bold',
   },
   imageContainer: {
-    flexGrow: 1,
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },

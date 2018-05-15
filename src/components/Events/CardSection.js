@@ -12,10 +12,10 @@ const styles = {
     paddingTop: 6,
     paddingBottom: 6,
     backgroundColor: '#fff',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     flexDirection: 'row',
+    flexWrap: 'wrap',
     borderColor: '#ddd',
-    position: 'relative',
   },
 };
 

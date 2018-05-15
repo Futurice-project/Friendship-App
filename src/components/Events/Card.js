@@ -1,12 +1,17 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
-const Card = ({ children }) => {
-  return <View style={styles.containerStyle}>{children}</View>;
+const Card = ({ children, onPress }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.containerStyle}>
+      {children}
+    </TouchableOpacity>
+  );
 };
 
 const styles = {
   containerStyle: {
+    display: 'flex',
     borderWidth: 1,
     borderRadius: 2,
     borderColor: '#ddd',

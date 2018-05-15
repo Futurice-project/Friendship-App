@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import { Details, EventTitleText, LocationText } from '../Layout/TextLayout';
-import waveShape from '../../../assets/img/roundTab/roundTab.png';
+import waveShape from '../../../assets/img/curve/curve.png';
 import resolveAssetSource from 'resolveAssetSource';
 
 const { width, height } = resolveAssetSource(waveShape);
@@ -52,42 +52,47 @@ const EventTopPart = props => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View>
       <Image style={styles.imageEvent} source={srcImage} />
-      <View style={styles.backAndSettingsView}>
-        <TouchableOpacity onPress={navigateBack}>
-          <Icon name="md-arrow-back" size={26} style={styles.backButton} />
-        </TouchableOpacity>
-      </View>
-
       <View
         style={{
-          backgroundColor: 'transparent',
-          justifyContent: 'center',
-          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '100%',
+          width: '100%',
           position: 'absolute',
           bottom: 0,
+          left: 0,
         }}
       >
-        <Image source={waveShape} style={styles.waveShape} />
+        <View style={styles.backAndSettingsView}>
+          <TouchableOpacity onPress={navigateBack}>
+            <Icon name="md-arrow-back" size={26} style={styles.backButton} />
+          </TouchableOpacity>
+        </View>
         <View
           style={{
-            flex: 1,
-            flexDirection: 'column',
+            flex: 2,
+            backgroundColor: 'transparent',
             justifyContent: 'center',
-            alignItems: 'center',
-            height: 70,
-            paddingBottom: 15,
-            top: '25%',
-            left: '10%',
-            right: '10%',
-            position: 'absolute',
           }}
         >
-          <EventTitleText style={styles.eventTitle}>
-            {eventTitle}
-          </EventTitleText>
-          <View style={{ backgroundColor: '#F9F6F1' }}>
+          <Image
+            source={waveShape}
+            style={styles.waveShape}
+            resizeMode="stretch"
+          />
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              backgroundColor: '#F9F6F1',
+            }}
+          >
+            <EventTitleText style={{ paddingBottom: 10 }}>
+              {eventTitle}
+            </EventTitleText>
             <View style={styles.detailView}>
               <Image
                 source={require('../../../assets/icon_calendar_dark.png')}
@@ -96,8 +101,10 @@ const EventTopPart = props => {
                 {renderDateAndTime(eventDate)}
               </Details>
             </View>
-
-            <TouchableOpacity onPress={() => openMap(city, address)}>
+            <TouchableOpacity
+              style={{ alignItems: 'center' }}
+              onPress={() => openMap(city, address)}
+            >
               <View style={styles.detailView}>
                 <Image
                   source={require('../../../assets/icon_location_dark.png')}
@@ -117,27 +124,22 @@ const EventTopPart = props => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {},
-  eventTitle: {
-    marginTop: 25,
-  },
   waveShape: {
-    height: Dimensions.get('window').width * height / width + 35,
+    height: 40,
     width: Dimensions.get('window').width,
     tintColor: '#F9F6F1',
   },
   imageEvent: {
     width: Dimensions.get('window').width,
-    height: Platform.OS === 'android' ? 330 : 250,
+    height: 350,
   },
   backAndSettingsView: {
     marginTop: 10,
     marginLeft: 5,
     width: Dimensions.get('window').width - 10,
-    flex: 1,
+    flex: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    position: 'absolute',
   },
   detailView: {
     flexDirection: 'row',

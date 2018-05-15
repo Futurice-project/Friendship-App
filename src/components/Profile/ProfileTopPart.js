@@ -19,7 +19,7 @@ import {
 } from '../Layout/TextLayout';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import waveShape from '../../../assets/img/roundTab/roundTab.png';
+import waveShape from '../../../assets/img/curve/curve.png';
 import resolveAssetSource from 'resolveAssetSource';
 
 const { width, height } = resolveAssetSource(waveShape);
@@ -88,82 +88,94 @@ const ProfileTopPart = props => {
   return (
     <View>
       <Image style={styles.imageUser} source={{ uri: srcImage }} />
-      <View style={styles.backAndSettingsView}>
-        <TouchableOpacity onPress={navigateBack}>
-          <Icon name="md-arrow-back" size={26} style={styles.backButton} />
-        </TouchableOpacity>
-        {displaySettingsButton()}
-      </View>
-
-      <View style={styles.avatarCircle}>
-        <Image source={{ uri: avatar }} style={{ width: 64, height: 64 }} />
-      </View>
-
       <View
         style={{
-          backgroundColor: 'transparent',
-          justifyContent: 'flex-end',
-          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '100%',
+          width: '100%',
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
         }}
       >
-        <Image source={waveShape} style={styles.waveShape} />
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            top: '25%',
-            left: '25%',
-            position: 'absolute',
-          }}
-        >
+        <View style={styles.backAndSettingsView}>
+          <TouchableOpacity onPress={navigateBack}>
+            <Icon name="md-arrow-back" size={26} style={styles.backButton} />
+          </TouchableOpacity>
+          {displaySettingsButton()}
+        </View>
+        <View style={{ flex: 3, flexDirection: 'column' }}>
+          <View style={styles.avatarCircle}>
+            <Image
+              source={{ uri: avatar }}
+              style={{
+                width: 64,
+                height: 64,
+                backgroundColor: 'transparent',
+                marginRight: 15,
+              }}
+            />
+          </View>
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
+              backgroundColor: 'transparent',
+              flex: 2,
             }}
           >
-            <UsernameText>
-              {username.length > 15 ? (
-                username.substr(0, 15).concat('…')
-              ) : (
-                username
-              )}
-            </UsernameText>
-            {myProfile ? (
-              <TouchableOpacity onPress={() => showEditForm()}>
-                <Image
-                  source={require('../../../assets/edit.png')}
-                  style={{ width: 38, height: 38 }}
-                />
-              </TouchableOpacity>
-            ) : null}
+            <Image
+              source={waveShape}
+              style={styles.waveShape}
+              resizeMode="stretch"
+            />
+            <View style={{ flex: 3, backgroundColor: '#F9F6F1' }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <UsernameText>
+                  {username.length > 15 ? (
+                    username.substr(0, 15).concat('…')
+                  ) : (
+                    username
+                  )}
+                </UsernameText>
+                {myProfile ? (
+                  <TouchableOpacity onPress={() => showEditForm()}>
+                    <Image
+                      source={require('../../../assets/edit.png')}
+                      style={{ width: 38, height: 38 }}
+                    />
+                  </TouchableOpacity>
+                ) : null}
+              </View>
+              <CompatibilityText
+                style={{
+                  textAlign: 'center',
+                  marginBottom: 0,
+                }}
+              >
+                {myProfile ? 'You have ' : null}
+                <YeahColor>
+                  {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>
+                </YeahColor>
+                &
+                <NaahColor>
+                  {' ' + numberOfNaah} <FrienshipFont> NAAHS </FrienshipFont>
+                </NaahColor>
+                {myProfile ? null : ' in common'}
+              </CompatibilityText>
+              <Details>
+                <LocationText>{location ? location : 'Narnia'}</LocationText>
+                {', ' + getAge() + ', '}
+                {getGenders()}
+              </Details>
+            </View>
           </View>
-          <CompatibilityText
-            style={{
-              textAlign: 'center',
-              marginBottom: 0,
-            }}
-          >
-            {myProfile ? 'You have ' : null}
-            <YeahColor>
-              {numberOfYeah} <FrienshipFont> YEAHS </FrienshipFont>
-            </YeahColor>
-            &
-            <NaahColor>
-              {' ' + numberOfNaah} <FrienshipFont> NAAHS </FrienshipFont>
-            </NaahColor>
-            {myProfile ? null : ' in common'}
-          </CompatibilityText>
-        </View>
-        <View style={{ backgroundColor: '#F9F6F1' }}>
-          <Details>
-            <LocationText>{location ? location : 'Narnia'}</LocationText>
-            {', ' + getAge() + ', '}
-            {getGenders()}
-          </Details>
         </View>
       </View>
     </View>
@@ -173,12 +185,9 @@ const ProfileTopPart = props => {
 const styles = StyleSheet.create({
   avatarCircle: {
     alignSelf: 'flex-end',
-    marginRight: 5,
-    marginTop: 80,
-    width: 64,
-    height: 64,
-    borderRadius: 64,
+    alignItems: 'flex-end',
     backgroundColor: 'transparent',
+    width: '100%',
   },
   avatar: {
     backgroundColor: 'transparent',
@@ -187,27 +196,24 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   waveShape: {
-    height: Dimensions.get('window').width * height / width,
+    height: 40,
     width: Dimensions.get('window').width,
     tintColor: '#F9F6F1',
   },
   imageUser: {
     width: Dimensions.get('window').width,
-    height: Platform.OS === 'android' ? 330 : 300,
-    position: 'absolute',
+    height: 350,
   },
   backAndSettingsView: {
     marginTop: 10,
     marginRight: 5,
     marginLeft: 5,
-    flex: 1,
+    flex: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   backButton: {
-    paddingTop: 10,
     paddingLeft: 10,
-    padding: 20,
     backgroundColor: 'transparent',
   },
   settingsIcon: {

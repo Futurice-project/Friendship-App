@@ -102,7 +102,6 @@ export class PeopleView extends React.Component {
         <Centered
           style={{ backgroundColor: '#fff', flex: 1, paddingBottom: 20 }}
         >
-          {/*, borderStyle: 'dashed', borderWidth: 2*/}
           <FlatList
             data={data}
             keyExtractor={(item, index) => 'list-item-' + index}

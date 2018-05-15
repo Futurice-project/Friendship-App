@@ -57,11 +57,9 @@ export const UsernameText = styled.Text`
 
 export const EventTitleText = styled.Text`
   background-color: transparent;
-  height: 27;
   font-family: 'NunitoSans-Bold';
-  font-size: 20;
-  font-weight: bold;
-  letter-spacing: 2.44;
+  font-size: 25;
+  letter-spacing: 2;
   text-align: center;
   color: #60686d;
 `;
