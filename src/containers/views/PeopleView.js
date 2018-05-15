@@ -97,9 +97,12 @@ export class PeopleView extends React.Component {
         ? this.props.usersSearch.data
         : this.state.userData;
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <RoundTab tint="#ffffff" title="PEOPLE" />
-        <Centered style={{ paddingBottom: 45, backgroundColor: '#fff' }}>
+        <Centered
+          style={{ backgroundColor: '#fff', flex: 1, paddingBottom: 20 }}
+        >
+          {/*, borderStyle: 'dashed', borderWidth: 2*/}
           <FlatList
             data={data}
             keyExtractor={(item, index) => 'list-item-' + index}
@@ -110,6 +113,7 @@ export class PeopleView extends React.Component {
               this.onEndReachedCalledDuringMomentum = false;
             }}
             horizontal
+            style={{ maxHeight: 500 }}
           />
         </Centered>
       </View>
@@ -118,7 +122,7 @@ export class PeopleView extends React.Component {
 
   render() {
     return (
-      <ViewContainerTop style={{ backgroundColor: '#e8e9e8' }}>
+      <View style={{ height: '100%', backgroundColor: '#e8e9e8' }}>
         <SearchBar
           lightTheme
           containerStyle={{
@@ -130,17 +134,19 @@ export class PeopleView extends React.Component {
           }}
           inputStyle={{ backgroundColor: '#fff' }}
           onChangeText={username => this.getUserByUsername(username)}
+          onClearText={username => this.getUserByUsername(username)}
           autoCapitalize="none"
           autoCorrect={false}
           placeholder="Search People"
           clearIcon
+          value={this.state.searchedUsername}
         />
         {!this.props.usersByPage.data.data ? (
           <ActivityIndicator />
         ) : (
           this.renderPeopleList()
         )}
-      </ViewContainerTop>
+      </View>
     );
   }
 }
