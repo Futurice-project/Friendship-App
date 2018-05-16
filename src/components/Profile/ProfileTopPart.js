@@ -73,11 +73,21 @@ const ProfileTopPart = props => {
   const displaySettingsButton = () => {
     if (myProfile) {
       return (
-        <TouchableOpacity onPress={showModal} style={styles.settings}>
-          <Image
-            style={styles.settingsIcon}
-            source={require('../../../assets/settingsIcon.png')}
-          />
+        <TouchableOpacity
+          onPress={showModal}
+          style={{
+            backgroundColor: 'rgb(255, 138, 101)',
+            height: 35,
+            width: 35,
+            borderRadius: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingTop: 2,
+            paddingLeft: 2,
+            marginRight: 10,
+          }}
+        >
+          <Icon name="md-settings" size={26} style={styles.backButton} />
         </TouchableOpacity>
       );
     }
@@ -103,7 +113,15 @@ const ProfileTopPart = props => {
         <View style={styles.backAndSettingsView}>
           <TouchableOpacity
             onPress={navigateBack}
-            style={{ shadowColor: '#fff', shadowOpacity: 0.5, elevation: 5 }}
+            style={{
+              backgroundColor: 'rgb(255, 138, 101)',
+              height: 35,
+              width: 35,
+              borderRadius: 25,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: 10,
+            }}
           >
             <Icon name="md-arrow-back" size={26} style={styles.backButton} />
           </TouchableOpacity>
@@ -209,25 +227,13 @@ const styles = StyleSheet.create({
   },
   backAndSettingsView: {
     marginTop: 10,
-    marginRight: 5,
-    marginLeft: 5,
     flex: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   backButton: {
-    paddingLeft: 10,
     backgroundColor: 'transparent',
-  },
-  settingsIcon: {
-    width: 24,
-    height: 24,
-    tintColor: '#000',
-  },
-  settings: {
-    shadowColor: '#fff',
-    shadowOpacity: 0.5,
-    elevation: 5,
+    color: 'rgba(255, 255, 255, 0.9)',
   },
 });
 

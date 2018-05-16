@@ -37,8 +37,8 @@ export const ViewContainerTop = styled.ScrollView.attrs({
 
 export const HeaderButton = styled.View`
   position: absolute;
-  top: 3;
-  right: 30;
+  top: 10;
+  right: 40;
 `;
 
 export const Padding = styled.View`padding: 16px;`;

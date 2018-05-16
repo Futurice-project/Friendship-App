@@ -72,7 +72,7 @@ class ChatView extends Component {
       headerLeft: (
         <Icon
           style={{ paddingLeft: 15, fontSize: 26 }}
-          name={'ios-arrow-back'}
+          name={'md-arrow-back'}
           onPress={() => {
             navigation.dispatch(
               NavigationActions.reset({

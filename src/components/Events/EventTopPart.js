@@ -67,7 +67,18 @@ const EventTopPart = props => {
         }}
       >
         <View style={styles.backAndSettingsView}>
-          <TouchableOpacity onPress={navigateBack}>
+          <TouchableOpacity
+            onPress={navigateBack}
+            style={{
+              backgroundColor: 'rgb(255, 138, 101)',
+              height: 35,
+              width: 35,
+              borderRadius: 25,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: 10,
+            }}
+          >
             <Icon name="md-arrow-back" size={26} style={styles.backButton} />
           </TouchableOpacity>
         </View>
@@ -147,10 +158,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   backButton: {
-    paddingLeft: 10,
-    paddingRight: 20,
-    paddingBottom: 20,
     backgroundColor: 'transparent',
+    color: 'rgba(255, 255, 255, 0.9)',
   },
   settingsIcon: {
     width: 24,
