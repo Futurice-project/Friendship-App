@@ -7,6 +7,10 @@ import {
   TouchableOpacity,
   View,
   Platform,
+  KeyboardAvoidingView,
+  Image,
+  Dimensions,
+  ScrollView,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import {
@@ -16,6 +20,8 @@ import {
 
 import rest from '../../../utils/rest';
 import RoundTab from '../../../components/RoundTab';
+
+import waveShape from '../../../../assets/img/curve/curve.png';
 
 const mapStateToProps = state => ({
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
@@ -54,7 +60,23 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export class ChatRequest extends React.Component {
-  state = { text: '' };
+  state = { text: '', scrollable: false };
+
+  componentDidMount() {
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this._updateScrollable,
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this._updateScrollable,
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
 
   createChatroom = () => {
     const userCreatorId = this.props.currentUserId;
@@ -69,7 +91,7 @@ export class ChatRequest extends React.Component {
     this.props.openChatView(
       chatroomId,
       username,
-      emoji,
+      avatar,
       this.props.navigation.state.params.user.id,
       this.props.navigation.state.params.route,
     );
@@ -81,56 +103,106 @@ export class ChatRequest extends React.Component {
     );
   };
 
+  _updateScrollable = () => {
+    this.setState(prevState => ({ scrollable: !prevState.scrollable }));
+  };
+
+  _onLayoutChange = () => {
+    this.refs.scroll.scrollToEnd();
+  };
+
   render() {
     const { username } = this.props.navigation.state.params.user;
-    console.log(this.props);
     return (
-      <View style={{ flex: 1, marginTop: 20 }}>
-        <View style={styles.headerWrapper}>
+      <KeyboardAvoidingView
+        style={{
+          backgroundColor: '#e8e9e8',
+          display: 'flex',
+          flexDirection: 'column',
+          paddingTop: 30,
+          height: '100%',
+          width: '100%',
+        }}
+        enabled={true}
+        keyboardVerticalOffset={0}
+        behavior={'padding'}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+          }}
+        >
           <Text
-            onPress={() => this.props.navigation.goBack()}
             style={styles.cancelButton}
+            onPress={() => this.props.navigation.goBack()}
           >
             CANCEL
           </Text>
-          <ShowWithKeyboard>
-            <Text
-              onPress={() => this.createChatroom()}
-              style={styles.sendButtonHeader}
-            >
-              SEND
-            </Text>
-          </ShowWithKeyboard>
         </View>
-        <RoundTab tint="#fff" />
-        <Text style={styles.inviteText}>
-          {`Tell ${username} what you would like to talk about:`}
-        </Text>
-        <View style={{ flex: 1, backgroundColor: '#fff' }}>
-          <TextInput
-            style={styles.messageInput}
-            placeholder={'Message'}
-            onChangeText={text => this.setState({ text })}
-            value={this.state.text}
-            onSubmitEditing={() => {}}
+        <View style={{ flex: 10 }}>
+          <Image
+            source={waveShape}
+            resizeMode="stretch"
+            style={{ width: '100%', tintColor: '#fff' }}
           />
-          <TouchableOpacity
-            style={styles.sendButton}
-            onPress={() => this.createChatroom()}
-            disabled={!this.state.text.trim().length > 0}
+          <ScrollView
+            ref="scroll"
+            style={{
+              width: '100%',
+              backgroundColor: '#fff',
+              paddingHorizontal: 20,
+              paddingTop: 20,
+            }}
+            scrollEnabled={this.state.scrollable}
+            onContentSizeChange={this._onLayoutChange}
           >
             <Text
+              style={styles.inviteText}
+            >{`Tell ${username} what you would like to talk about:`}</Text>
+            <TextInput
               style={{
-                fontSize: 20,
-                color: '#faf5f0',
-                fontFamily: 'NunitoSans-Bold',
+                borderRadius: 30,
+                backgroundColor: '#e8e9e8',
+                width: '100%',
+                minHeight: 150,
+                maxHeight: 250,
+                marginTop: 20,
+                padding: 20,
+                paddingTop: 20,
+                textAlignVertical: 'top',
               }}
+              autoFocus={true}
+              placeholder={'Write your message here'}
+              multiline={true}
+              onChangeText={text => this.setState({ text })}
+              underlineColorAndroid="transparent"
+            />
+            <TouchableOpacity
+              style={{
+                ...styles.sendButton,
+                backgroundColor:
+                  this.state.text.trim().length > 0 ? '#3b3b3d' : 'grey',
+              }}
+              onPress={() => this.createChatroom()}
+              disabled={!this.state.text.trim().length > 0}
             >
-              Send
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: '#faf5f0',
+                  fontFamily: 'NunitoSans-Bold',
+                }}
+              >
+                Send
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -145,7 +217,8 @@ const styles = {
     fontSize: 13,
     color: '#3b3b3b',
     fontFamily: 'NunitoSans-Bold',
-    margin: 18,
+    paddingLeft: 18,
+    paddingTop: 18,
   },
   sendButtonHeader: {
     ...Platform.select({
@@ -163,13 +236,10 @@ const styles = {
   },
   inviteText: {
     backgroundColor: 'transparent',
-    position: 'absolute',
-    top: 60,
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 25,
+    fontFamily: 'NunitoSans-Regular',
     color: '#60686d',
-    padding: 40,
-    zIndex: 2,
   },
   messageInput: {
     borderBottomColor: 'gray',
@@ -182,13 +252,13 @@ const styles = {
     zIndex: 10,
   },
   sendButton: {
-    width: 250,
-    height: 55,
     borderRadius: 50,
-    backgroundColor: '#3b3b3d',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
+    width: '70%',
+    height: 50,
+    marginTop: 20,
   },
 };
 
