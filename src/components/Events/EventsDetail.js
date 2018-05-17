@@ -85,15 +85,10 @@ class EventsDetail extends Component {
     } = this.props;
     const { titleTextStyle } = styles;
 
-    // if there is no picture for the user we use a default image
-    const eventImage = srcImage
-      ? { uri: 'data:image/png;base64,' + srcImage }
-      : require('../../../assets/img/placeholder/grone.jpg');
-
     return (
       <Card onPress={() => this.props.openEvent(id)}>
         <Image
-          source={eventImage}
+          source={{ uri: srcImage }}
           style={{ width: '100%', height: 250 }}
           resizeMode="stretch"
         />

@@ -1,9 +1,24 @@
 import apiRoot from './api.config';
 
-export const getPreSignedUrl = async formValues =>
-  await fetch(
-    `${apiRoot}/sign-s3?file-name=profile/${formValues.username}.jpg&file-type=${formValues
-      .image.type}`,
+export const getPreSignedUrl = async (type, formValues) => {
+  let link = '/sign-s3?file-name=';
+  let data;
+  switch (type) {
+    case 'PROFILE':
+      link += 'profile/';
+      data = {
+        itemName: formValues.username,
+        imgType: formValues.image.type,
+        url: formValues.image.uri,
+      };
+      break;
+    case 'EVENT':
+      link += 'events/';
+      data = formValues;
+      break;
+  }
+  return await fetch(
+    `${apiRoot}${link}${data.itemName}.jpg&file-type=${data.imgType}`,
   )
     .then(function(response) {
       return response.json();
@@ -23,9 +38,10 @@ export const getPreSignedUrl = async formValues =>
       };
       xhr.setRequestHeader('Content-Type', 'image/jpeg');
       xhr.send({
-        uri: formValues.image.uri,
+        uri: data.url,
         type: 'image/jpeg',
-        name: `${formValues.username}.jpg`,
+        name: `${data.itemName}.jpg`,
       });
       return url;
     });
+};

@@ -9,18 +9,15 @@ import rest from '../../utils/rest';
 import { EventContainer } from '../../components/Layout/Layout';
 
 const mapDispatchToProps = dispatch => ({
-  createEvent: formData =>
-    dispatch(
+  createEvent: formData => {
+    console.log(formData);
+    return dispatch(
       rest.actions.createEvent(
         {},
-        {
-          body: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
+        { body: formData, headers: { 'Content-Type': 'multipart/form-data' } },
       ),
-    ),
+    );
+  },
   fetchEvents: userId =>
     dispatch(
       rest.actions.events.get({

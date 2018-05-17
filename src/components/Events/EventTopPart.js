@@ -53,7 +53,7 @@ const EventTopPart = props => {
 
   return (
     <View>
-      <Image style={styles.imageEvent} source={srcImage} />
+      <Image style={styles.imageEvent} source={{ uri: srcImage }} />
       <View
         style={{
           display: 'flex',

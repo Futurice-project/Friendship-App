@@ -94,7 +94,7 @@ async function createFormData(formValues) {
     return appendFieldToFormdata(formValues);
   }
 
-  return await getPreSignedUrl(formValues)
+  return await getPreSignedUrl('PROFILE', formValues)
     .then(url => appendFieldToFormdata(formValues, url))
     .catch(e => {
       console.error(e);

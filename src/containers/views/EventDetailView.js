@@ -135,16 +135,8 @@ class EventDetailView extends Component {
         city,
         address,
         eventDate,
+        eventImage,
       } = this.props.eventDetails.data;
-
-      // if there is no picture for the user we use a default image
-      const srcImage = this.props.eventDetails.data.eventImage
-        ? {
-            uri:
-              'data:image/png;base64,' +
-              this.props.eventDetails.data.eventImage,
-          }
-        : require('../../../assets/img/placeholder/grone.jpg');
 
       return (
         <EventContainer>
@@ -152,7 +144,7 @@ class EventDetailView extends Component {
             eventTitle={title}
             address={address}
             city={city}
-            srcImage={srcImage}
+            srcImage={eventImage}
             navigateBack={this.navigateBack}
             eventDate={eventDate}
             isHost={this.props.eventDetails.data.hostId === userId}
