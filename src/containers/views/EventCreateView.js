@@ -10,7 +10,6 @@ import { EventContainer } from '../../components/Layout/Layout';
 
 const mapDispatchToProps = dispatch => ({
   createEvent: formData => {
-    console.log(formData);
     return dispatch(
       rest.actions.createEvent(
         {},
