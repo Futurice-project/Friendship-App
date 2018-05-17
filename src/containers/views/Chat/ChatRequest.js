@@ -127,23 +127,13 @@ export class ChatRequest extends React.Component {
         keyboardVerticalOffset={0}
         behavior={'padding'}
       >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-          }}
-        >
+        <View style={{ flex: 1 }}>
           <Text
             style={styles.cancelButton}
             onPress={() => this.props.navigation.goBack()}
           >
             CANCEL
           </Text>
-        </View>
-        <View style={{ flex: 10 }}>
           <Image
             source={waveShape}
             resizeMode="stretch"
@@ -218,7 +208,7 @@ const styles = {
     color: '#3b3b3b',
     fontFamily: 'NunitoSans-Bold',
     paddingLeft: 18,
-    paddingTop: 18,
+    paddingBottom: 20,
   },
   sendButtonHeader: {
     ...Platform.select({
