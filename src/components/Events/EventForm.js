@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
   Alert,
   Image,
+  ScrollView,
   Slider,
   StyleSheet,
   Text,
@@ -243,7 +244,7 @@ class EventForm extends Component {
     ];
 
     return (
-      <View>
+      <ScrollView>
         <View style={{ backgroundColor: '#f9f7f6' }}>
           <TouchableOpacity onPress={this.props.navigateBack}>
             <Icon name="md-arrow-back" size={26} style={styles.backButton} />
@@ -252,54 +253,40 @@ class EventForm extends Component {
             {this.props.edit ? 'EDIT EVENT' : 'NEW EVENT'}
           </Text>
         </View>
-        <View style={{ backgroundColor: '#e8e9e8' }}>
-          <LabelContainer>
-            <LabelView>
-              <TextInput
-                style={styles.input}
-                autoCorrect={false}
-                returnKeyType="next"
-                keyboardType="email-address"
-                underlineColorAndroid="transparent"
-                placeholderTextColor="#4a4a4a"
-                placeholder="TITLE*"
-                onChangeText={title =>
-                  this.setState({
-                    title,
-                    validationError: '',
-                    error: false,
-                  })}
-                value={this.state.title}
-                // onSubmitEditing={() => {
-                //   this._emailInput.focus();
-                // }}
-              />
-            </LabelView>
-          </LabelContainer>
-
-          <LabelContainer>
-            <LabelView>
-              <TextInput
-                style={styles.input}
-                autoCorrect={false}
-                returnKeyType="next"
-                keyboardType="email-address"
-                underlineColorAndroid="transparent"
-                placeholderTextColor="#4a4a4a"
-                placeholder="DESCRIPTION"
-                onChangeText={description =>
-                  this.setState({
-                    description,
-                  })}
-                value={this.state.description}
-                // onSubmitEditing={() => {
-                //   this._emailInput.focus();
-                // }}
-              />
-            </LabelView>
-          </LabelContainer>
-
-          <LabelContainer style={{ marginBottom: 10, marginTop: 10 }}>
+        <View style={{ backgroundColor: '#e8e9e8', padding: 10 }}>
+          <View>
+            <TextInput
+              style={styles.input}
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+              placeholderTextColor="#4a4a4a"
+              placeholder="TITLE*"
+              onChangeText={title =>
+                this.setState({
+                  title,
+                  validationError: '',
+                  error: false,
+                })}
+              value={this.state.title}
+              multiline={true}
+            />
+          </View>
+          <View>
+            <TextInput
+              style={styles.input}
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+              placeholderTextColor="#4a4a4a"
+              placeholder="DESCRIPTION"
+              onChangeText={description =>
+                this.setState({
+                  description,
+                })}
+              value={this.state.description}
+              multiline={true}
+            />
+          </View>
+          <LabelContainer style={{ marginTop: 10 }}>
             <View
               style={{
                 width: 300,
@@ -308,7 +295,7 @@ class EventForm extends Component {
               }}
             >
               <DatePicker
-                style={{ width: 185 }}
+                style={{ width: '50%' }}
                 date={this.state.date}
                 mode="date"
                 placeholder="DATE*"
@@ -324,7 +311,7 @@ class EventForm extends Component {
                     borderBottomWidth: 2,
                     borderBottomColor: '#979797',
                     alignItems: 'flex-start',
-                    // justifyContent: 'flex-start',
+                    height: 35,
                   },
                   placeholderText: {
                     fontSize: 17,
@@ -335,6 +322,17 @@ class EventForm extends Component {
                     fontSize: 17,
                     textAlign: 'center',
                     width: 185,
+                  },
+                  btnConfirm: {
+                    padding: 0,
+                    paddingRight: 20,
+                  },
+                  btnCancel: {
+                    padding: 0,
+                    paddingLeft: 20,
+                  },
+                  btnTextConfirm: {
+                    color: '#ff8a65',
                   },
                 }}
                 onDateChange={date => {
@@ -373,6 +371,17 @@ class EventForm extends Component {
                     textAlign: 'center',
                     width: 100,
                   },
+                  btnConfirm: {
+                    padding: 0,
+                    paddingRight: 20,
+                  },
+                  btnCancel: {
+                    padding: 0,
+                    paddingLeft: 20,
+                  },
+                  btnTextConfirm: {
+                    color: '#ff8a65',
+                  },
                 }}
                 onDateChange={time => {
                   this.setState({
@@ -385,7 +394,7 @@ class EventForm extends Component {
             </View>
           </LabelContainer>
 
-          <LabelContainer style={{ marginBottom: 20 }}>
+          <LabelContainer style={{ marginBottom: 10 }}>
             <View style={{ width: 300 }}>
               <PickerSelect
                 placeholder={{
@@ -405,29 +414,23 @@ class EventForm extends Component {
             </View>
           </LabelContainer>
 
-          <LabelContainer>
-            <LabelView>
-              <TextInput
-                style={styles.input}
-                autoCorrect={false}
-                returnKeyType="next"
-                keyboardType="email-address"
-                underlineColorAndroid="transparent"
-                placeholderTextColor="#4a4a4a"
-                placeholder="STREET ADDRESS*"
-                onChangeText={address =>
-                  this.setState({
-                    address,
-                    validationError: '',
-                    error: false,
-                  })}
-                value={this.state.address}
-                // onSubmitEditing={() => {
-                //   this._emailInput.focus();
-                // }}
-              />
-            </LabelView>
-          </LabelContainer>
+          <View>
+            <TextInput
+              style={styles.input}
+              autoCorrect={false}
+              multiline={true}
+              underlineColorAndroid="transparent"
+              placeholderTextColor="#4a4a4a"
+              placeholder="STREET ADDRESS*"
+              onChangeText={address =>
+                this.setState({
+                  address,
+                  validationError: '',
+                  error: false,
+                })}
+              value={this.state.address}
+            />
+          </View>
         </View>
 
         <View
@@ -623,7 +626,7 @@ class EventForm extends Component {
             />
           </RoundTabContainer>
         </BottomLabelWrapper>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -719,6 +722,10 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: 'NunitoSans-Regular',
     fontSize: 18,
+    borderBottomWidth: 2,
+    borderColor: '#979797',
+    marginVertical: 10,
+    paddingBottom: 5,
   },
   scrollViewPhotoContainer: {
     justifyContent: 'space-around',

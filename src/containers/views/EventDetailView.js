@@ -40,6 +40,13 @@ const mapDispatchToProps = dispatch => ({
   fetchEventParticipantsNum: () =>
     dispatch(rest.actions.eventParticipantsNum.get()),
   fetchEvents: userId => dispatch(rest.actions.events.get({ userId })),
+  openEditForm: eventDetails =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'EventEditView',
+        params: { eventDetails },
+      }),
+    ),
 });
 
 class EventDetailView extends Component {
@@ -164,11 +171,8 @@ class EventDetailView extends Component {
             eventFull={this.props.eventDetails.data.maxParticipantNumberExceed}
             currentUser={userId}
             hostId={this.props.eventDetails.data.hostId}
-          />
-          <MyEventModal
             eventDetails={this.props.eventDetails.data}
-            hideModal={this._hideModal}
-            isModalVisible={this.state.isModalVisible}
+            openEditForm={this.props.openEditForm}
           />
         </EventContainer>
       );
