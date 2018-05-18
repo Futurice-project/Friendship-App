@@ -19,6 +19,7 @@ import Avatar from '../SignUp/Avatar';
 import LoadingIndicator from '../LoadingIndicator';
 import Modal from 'react-native-modal';
 import apiRoot from '../../utils/api.config';
+import { getPreSignedUrl } from '../../utils/aws';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -26,14 +27,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  signUp: formData => {
-    dispatch(
-      rest.actions.register(
-        {},
-        { body: formData, headers: { 'Content-Type': 'multipart/form-data' } },
-      ),
-    );
-  },
   fetchAvatars: () => dispatch(rest.actions.avatars()),
 });
 
@@ -64,13 +57,11 @@ class EditForm extends React.Component {
         birthyear: this.props.userData.birthyear.toString(),
         genderArr: this.getGendersById(this.props.userData.genderlist),
         avatarUri: this.props.userData.avatar,
+        image: { uri: this.props.userData.image },
       });
     }
   }
 
-  //const srcImage = this.props.currentUser.data.image
-  //? { uri: 'data:image/png;base64,' + this.props.currentUser.data.image }
-  //: require('../../../assets/img/placeholder/grone.jpg');
   getGendersById(exsitingGenders) {
     // a helper function to get the current user's exsitingGenders
     let genderArry = [];
@@ -99,7 +90,7 @@ class EditForm extends React.Component {
     });
 
     if (!result.cancelled) {
-      this.setState({ image: result.uri, error: false });
+      this.setState({ image: result, error: false });
     }
   };
 
@@ -135,7 +126,7 @@ class EditForm extends React.Component {
       .catch(() => this.setState({ isModalVisible: true })); //show error modal if fail!
   };
 
-  onSubmit() {
+  async onSubmit() {
     const {
       email,
       password,
@@ -145,42 +136,52 @@ class EditForm extends React.Component {
       image,
       avatarUri,
     } = this.state;
-    let userData = { email, password, birthyear, username, avatar: avatarUri };
+    let userData = {
+      email,
+      password,
+      birthyear,
+      username,
+      avatar: avatarUri,
+      image,
+    };
 
     if (!email || !username || !birthyear) {
       return this.setState({
         validationError: 'Please enter all required fields',
       });
     }
-    let formdata = this.createFormData(userData, image, genderArr);
+    let formdata = await this.createFormData(userData, genderArr);
     this.updateProfile(this.props.userData.id, formdata);
   }
 
-  createFormData(userData, image, genderArr) {
+  appendFieldToFormdata(userData, url = '', genderArr) {
     let tempFormData = new FormData();
 
-    if (image) {
-      tempFormData.append('image', {
-        uri: image,
-        name: 'image.png',
-        type: 'multipart/form-data',
-      });
+    for (const field in userData) {
+      tempFormData.append(field, userData[field]);
     }
 
     if (genderArr) {
-      tempFormData.append('genderArr', JSON.stringify(genderArr));
+      tempFormData.append('genders', JSON.stringify(genderArr));
     }
 
-    if (userData) {
-      for (var key in userData) {
-        if (userData[key]) {
-          tempFormData.append(key, userData[key]);
-        }
-      }
+    if (url) {
+      tempFormData.append('image', url);
     }
 
-    console.log(tempFormData);
     return tempFormData;
+  }
+
+  async createFormData(formValues, genderArr) {
+    if (!formValues.image) {
+      return this.appendFieldToFormdata(formValues, genderArr);
+    }
+
+    return await getPreSignedUrl('PROFILE', formValues)
+      .then(url => this.appendFieldToFormdata(formValues, url, genderArr))
+      .catch(e => {
+        console.error(e);
+      });
   }
 
   updateGenders(value) {
@@ -223,12 +224,7 @@ class EditForm extends React.Component {
   }
 
   render() {
-    const srcImage = require('../../../assets/img/placeholder/grone.jpg'); //if the user doesnt have profile pic, then this is the defult one we give to the user
     this.renderStatus();
-    const image =
-      this.props.userData.image && !this.state.image //if the user already has his own profile pic
-        ? { uri: 'data:image/png;base64,' + this.props.userData.image }
-        : { uri: this.state.image };
     return (
       <KeyboardAwareScrollView
         extraHeight={30}
@@ -437,17 +433,10 @@ class EditForm extends React.Component {
               horizontal
             >
               <PhotoBox onPress={this.openImageGallery}>
-                {image.uri ? (
-                  <Image
-                    style={{ width: 93, height: 93 }}
-                    source={{ uri: this.props.userData.image }}
-                  />
-                ) : (
-                  <Image
-                    style={{ width: 93, height: 93 }}
-                    source={{ uri: this.props.userData.image }}
-                  />
-                )}
+                <Image
+                  style={{ width: 93, height: 93 }}
+                  source={{ uri: this.state.image.uri }}
+                />
               </PhotoBox>
             </ScrollViewPhoto>
             <RoundTabContainer>
