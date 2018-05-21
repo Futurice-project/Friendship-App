@@ -4,7 +4,6 @@
     "sdkVersion": "27.0.0",
     "privacy": "unlisted",
     "slug": "friendship",
-    "icon": "https://s3.eu-west-2.amazonaws.com/friendshipapp/splash.png",
     "orientation": "portrait",
     "splash": {
       "image": "https://s3.eu-west-2.amazonaws.com/friendshipapp/splash.png"
