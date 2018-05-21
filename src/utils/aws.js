@@ -1,13 +1,13 @@
 import apiRoot from './api.config';
 
-export const getPreSignedUrl = async (type, formValues) => {
+export const getPreSignedUrl = async (type, formValues, username = '') => {
   let link = '/sign-s3?file-name=';
   let data;
   switch (type) {
     case 'PROFILE':
       link += 'profile/';
       data = {
-        itemName: formValues.username,
+        itemName: username ? username : formValues.username,
         imgType: formValues.image.type,
         url: formValues.image.uri,
       };

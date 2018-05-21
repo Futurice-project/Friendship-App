@@ -16,13 +16,14 @@ import {
   FullscreenCentered,
   AppContainer,
 } from './src/components/Layout/Layout';
-import { Font } from 'expo';
+import { Font, Permissions } from 'expo';
 import { MenuProvider } from 'react-native-popup-menu';
 
 export default class App extends React.Component {
   state = {
     rehydrated: false,
     fontLoaded: false,
+    cameraRoll: false,
   };
 
   componentDidMount = async () => {
@@ -52,6 +53,19 @@ export default class App extends React.Component {
       'keyboardDidShow',
       this.keyboardDidShowListener,
     );
+
+    const { status } = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+    if (status !== 'granted') {
+      this.askPermissionsAsync()
+        .then(() => this.setState({ cameraRoll: true }))
+        .catch(e => console.log(e));
+    } else {
+      this.setState({ cameraRoll: true });
+    }
+  };
+
+  askPermissionsAsync = async () => {
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
   };
 
   /**
@@ -80,14 +94,16 @@ export default class App extends React.Component {
   };
 
   renderActivityIndicator = () =>
-    this.state.rehydrated && this.state.fontLoaded ? null : (
+    this.state.rehydrated &&
+    this.state.fontLoaded &&
+    this.state.cameraRoll ? null : (
       <FullscreenCentered>
         <ActivityIndicator size="large" />
       </FullscreenCentered>
     );
 
   renderApp = () =>
-    this.state.rehydrated && this.state.fontLoaded ? (
+    this.state.rehydrated && this.state.fontLoaded && this.state.cameraRoll ? (
       <MenuProvider>
         <Provider store={store}>
           <Navigator />
@@ -95,10 +111,12 @@ export default class App extends React.Component {
       </MenuProvider>
     ) : null;
 
-  render = () => (
-    <AppContainer>
-      {this.renderActivityIndicator()}
-      {this.renderApp()}
-    </AppContainer>
-  );
+  render = () => {
+    return (
+      <AppContainer>
+        {this.renderActivityIndicator()}
+        {this.renderApp()}
+      </AppContainer>
+    );
+  };
 }

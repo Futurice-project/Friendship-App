@@ -31,35 +31,33 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class EditForm extends React.Component {
-  state = {
-    email: '',
-    password: '',
-    username: '',
-    birthyear: '',
-    genderArr: '', // because tne name "genders" in conflit with the global genders in the backend, so i changed the name to genderArr
+  initialState = {
+    newEmail: '',
+    newPassword: '',
+    newUsername: '',
+    newBirthyear: '',
     loading: false,
     error: false,
     validationError: '',
-    exsitingGenders: '', // get the exsitingGenders that the users have
-    image: '',
+    newImage: '',
+    newAvatar: '',
+    genders: [],
     isModalVisible: false, //for error handling,
   };
 
   componentWillMount() {
     this.props.fetchAvatars();
+    const genders = this.getGendersById(this.props.userData.genderlist);
+    this.setState({ oldGenders: genders });
   }
 
-  componentDidMount() {
-    if (this.props.userData) {
-      this.setState({
-        email: this.props.userData.email,
-        username: this.props.userData.username,
-        birthyear: this.props.userData.birthyear.toString(),
-        genderArr: this.getGendersById(this.props.userData.genderlist),
-        avatarUri: this.props.userData.avatar,
-        image: { uri: this.props.userData.image },
-      });
-    }
+  constructor() {
+    super();
+    this.state = this.initialState;
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ error: true });
   }
 
   getGendersById(exsitingGenders) {
@@ -79,10 +77,6 @@ class EditForm extends React.Component {
     return genderArry;
   }
 
-  componentWillReceiveProps() {
-    this.setState({ error: true });
-  }
-
   openImageGallery = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -90,7 +84,7 @@ class EditForm extends React.Component {
     });
 
     if (!result.cancelled) {
-      this.setState({ image: result, error: false });
+      this.setState({ newImage: result, error: false });
     }
   };
 
@@ -118,6 +112,7 @@ class EditForm extends React.Component {
       method: 'PATCH',
       headers: {
         Authorization: this.props.auth.data.token,
+        'Content-Type': 'multipart/form-data',
       },
       body: formData,
     })
@@ -127,42 +122,60 @@ class EditForm extends React.Component {
   };
 
   async onSubmit() {
-    const {
-      email,
-      password,
-      username,
-      birthyear,
-      genderArr,
-      image,
-      avatarUri,
-    } = this.state;
-    let userData = {
-      email,
-      password,
-      birthyear,
-      username,
-      avatar: avatarUri,
-      image,
+    let formValues = {
+      email: this.state.newEmail,
+      password: this.state.newPassword,
+      username: this.state.newUsername,
+      birthyear: this.state.newBirthyear,
+      image: this.state.newImage,
+      avatar: this.state.newAvatar,
     };
 
-    if (!email || !username || !birthyear) {
-      return this.setState({
-        validationError: 'Please enter all required fields',
-      });
+    for (let field in formValues) {
+      if (formValues[field].length <= 0) {
+        delete formValues[field];
+      }
     }
-    let formdata = await this.createFormData(userData, genderArr);
-    this.updateProfile(this.props.userData.id, formdata);
+
+    if (this.state.genders.length > 0) {
+      formValues['genders'] = this.state.genders;
+    }
+
+    if (Object.keys(formValues).length > 0) {
+      let formdata = await this.createFormData(formValues);
+      this.updateProfile(this.props.userData.id, formdata);
+    } else {
+      this.props.closeEditForm();
+    }
   }
 
-  appendFieldToFormdata(userData, url = '', genderArr) {
+  async createFormData(formValues) {
+    if (!formValues.image) {
+      return this.appendFieldToFormdata(formValues);
+    }
+
+    return await getPreSignedUrl(
+      'PROFILE',
+      formValues,
+      this.props.userData.username,
+    )
+      .then(url => this.appendFieldToFormdata(formValues, url))
+      .catch(e => {
+        console.error(e);
+      });
+  }
+
+  appendFieldToFormdata(userData, url = '') {
     let tempFormData = new FormData();
 
     for (const field in userData) {
-      tempFormData.append(field, userData[field]);
+      if (field !== 'image' && field !== 'genders') {
+        tempFormData.append(field, userData[field]);
+      }
     }
 
-    if (genderArr) {
-      tempFormData.append('genders', JSON.stringify(genderArr));
+    if (userData.genders) {
+      tempFormData.append('genders', JSON.stringify(userData.genders));
     }
 
     if (url) {
@@ -172,40 +185,33 @@ class EditForm extends React.Component {
     return tempFormData;
   }
 
-  async createFormData(formValues, genderArr) {
-    if (!formValues.image) {
-      return this.appendFieldToFormdata(formValues, genderArr);
-    }
-
-    return await getPreSignedUrl('PROFILE', formValues)
-      .then(url => this.appendFieldToFormdata(formValues, url, genderArr))
-      .catch(e => {
-        console.error(e);
-      });
-  }
-
   updateGenders(value) {
-    if (this.state.genderArr.indexOf(value) > -1) {
-      const genders = this.state.genderArr.slice();
-      genders.splice(this.state.genderArr.indexOf(value), 1);
-      return this.setState({ genderArr: genders, error: false });
+    let newSelectedGenders = this.state.genders
+      ? this.state.genders
+      : this.state.oldGenders;
+    const pos = newSelectedGenders.indexOf(value);
+    if (pos < 0) {
+      newSelectedGenders.push(value);
+    } else {
+      newSelectedGenders.slice();
+      newSelectedGenders.splice(pos, 1);
     }
-    return this.setState({
-      genderArr: [...this.state.genderArr, value],
-      error: false,
-    });
+    newSelectedGenders.sort();
+    this.setState({ genders: newSelectedGenders });
   }
 
   updateAvatar(avatarUri) {
     if (avatarUri === this.state.avatarUri) {
-      return this.setState({ avatarUri: '', error: false });
+      return this.setState({ newAvatar: '', error: false });
     }
-    return this.setState({ avatarUri, error: false });
+    return this.setState({ newAvatar: avatarUri, error: false });
   }
 
   renderAvatars() {
     return this.props.avatars.data.map(avatar => {
-      let sel = this.state.avatarUri === avatar.uri;
+      let sel = this.state.newAvatar
+        ? this.state.newAvatar === avatar.uri
+        : this.props.userData.avatar === avatar.uri;
       return (
         <Avatar
           updateAvatar={avatarUri => this.updateAvatar(avatarUri)}
@@ -224,6 +230,7 @@ class EditForm extends React.Component {
   }
 
   render() {
+    console.log(this.state);
     this.renderStatus();
     return (
       <KeyboardAwareScrollView
@@ -272,11 +279,17 @@ class EditForm extends React.Component {
                   placeholder="(NICK)NAME*"
                   onChangeText={username =>
                     this.setState({
-                      username,
+                      newUsername: username,
                       validationError: '',
                       error: false,
                     })}
-                  value={this.state.username}
+                  value={
+                    this.state.newUsername ? (
+                      this.state.newUsername
+                    ) : (
+                      this.props.userData.username
+                    )
+                  }
                   onSubmitEditing={() => {
                     this._emailInput.focus();
                   }}
@@ -302,8 +315,18 @@ class EditForm extends React.Component {
                   placeholderTextColor="#4a4a4a"
                   placeholder="EMAIL*"
                   onChangeText={email =>
-                    this.setState({ email, validationError: '', error: false })}
-                  value={this.state.email}
+                    this.setState({
+                      newEmail: email,
+                      validationError: '',
+                      error: false,
+                    })}
+                  value={
+                    this.state.newEmail ? (
+                      this.state.newEmail
+                    ) : (
+                      this.props.userData.email
+                    )
+                  }
                 />
               </LabelView>
               <View style={{ width: 278 }}>
@@ -326,11 +349,11 @@ class EditForm extends React.Component {
                   placeholder="PASSWORD"
                   onChangeText={password =>
                     this.setState({
-                      password,
+                      newPassword: password,
                       validationError: '',
                       error: false,
                     })}
-                  value={this.state.password}
+                  value={this.state.newPassword}
                 />
               </LabelView>
               <View style={{ width: 278 }}>
@@ -354,11 +377,17 @@ class EditForm extends React.Component {
                   placeholder="BIRTH YEAR*"
                   onChangeText={birthyear =>
                     this.setState({
-                      birthyear,
+                      newBirthyear: birthyear,
                       validationError: '',
                       error: false,
                     })}
-                  value={this.state.birthyear}
+                  value={
+                    this.state.newBirthyear ? (
+                      this.state.newBirthyear.toString()
+                    ) : (
+                      this.props.userData.birthyear.toString()
+                    )
+                  }
                 />
               </LabelView>
               <View style={{ width: 278 }}>
@@ -384,13 +413,25 @@ class EditForm extends React.Component {
               <GenderBoxContainer style={{ height: 44 }}>
                 <GenderBox
                   updateGenderById={value => this.updateGenders(value)}
-                  exsitingGenders={this.props.userData.genderlist}
+                  existingGenders={
+                    this.state.genders.length > 0 ? (
+                      this.state.genders
+                    ) : (
+                      this.state.oldGenders
+                    )
+                  }
                   updateGenders={() => this.updateGenders(1)}
                   gender="WOMAN"
                 />
                 <GenderBox
                   updateGenderById={value => this.updateGenders(value)}
-                  exsitingGenders={this.props.userData.genderlist}
+                  existingGenders={
+                    this.state.genders.length > 0 ? (
+                      this.state.genders
+                    ) : (
+                      this.state.oldGenders
+                    )
+                  }
                   updateGenders={() => this.updateGenders(2)}
                   gender="MAN"
                 />
@@ -398,13 +439,25 @@ class EditForm extends React.Component {
               <GenderBoxContainer style={{ height: 44, marginLeft: '38%' }}>
                 <GenderBox
                   updateGenderById={value => this.updateGenders(value)}
-                  exsitingGenders={this.props.userData.genderlist}
+                  existingGenders={
+                    this.state.genders.length > 0 ? (
+                      this.state.genders
+                    ) : (
+                      this.state.oldGenders
+                    )
+                  }
                   updateGenders={() => this.updateGenders(3)}
                   gender="HUMAN"
                 />
                 <GenderBox
                   updateGenderById={value => this.updateGenders(value)}
-                  exsitingGenders={this.props.userData.genderlist}
+                  existingGenders={
+                    this.state.genders.length > 0 ? (
+                      this.state.genders
+                    ) : (
+                      this.state.oldGenders
+                    )
+                  }
                   updateGenders={() => this.updateGenders(4)}
                   gender="OTHER"
                 />
@@ -435,7 +488,11 @@ class EditForm extends React.Component {
               <PhotoBox onPress={this.openImageGallery}>
                 <Image
                   style={{ width: 93, height: 93 }}
-                  source={{ uri: this.state.image.uri }}
+                  source={{
+                    uri: this.state.newImage
+                      ? this.state.newImage.uri
+                      : this.props.userData.image,
+                  }}
                 />
               </PhotoBox>
             </ScrollViewPhoto>
