@@ -58,7 +58,7 @@ class EventsDetail extends Component {
     if (eventDate === 'Today' || eventDate === 'Tomorrow') {
       return (
         <View style={{ flexDirection: 'row', paddingTop: 5 }}>
-          <Text style={{ fontWeight: 'bold' }}>{eventDate}</Text>
+          <Text style={{ fontFamily: 'NunitoSans-Bold' }}>{eventDate}</Text>
           <Text style={{ marginLeft: 5 }}>{eventTime}</Text>
         </View>
       );
