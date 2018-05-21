@@ -230,7 +230,6 @@ class EditForm extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     this.renderStatus();
     return (
       <KeyboardAwareScrollView
