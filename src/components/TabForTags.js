@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
@@ -7,74 +7,117 @@ import Person from './Person';
 
 export default class TabForTags extends PureComponent {
   state = {
-    backcolor: '#faf6f0',
-    colorActif: '#6eb1ea',
-    colorInactif: '#2d4359',
-    colorTextButton: '#faf6f0',
-    colorBackButton: '#2d4359',
-    tabIndex: 0,
+    bckColor: '#2a343c',
+    yeahsTextColor: '#ff8a65',
+    nahsTextColor: '#949795',
+    tabIndex: true,
   };
 
-  //allow when we change the tab to have the good colors
-  handleChangeTab = ({ i }) => {
-    // **Update ** save current page index
-    if (i === 0) {
-      // NAAHS
-      this.setState({
-        backcolor: '#faf6f0',
-        colorInactif: '#2d4359',
-        colorActif: '#6eb1ea',
-        colorTextButton: '#faf6f0',
-        colorBackButton: '#2d4359',
-      });
-    } else {
-      // YEAH
-      this.setState({
-        backcolor: '#2d4359',
-        colorActif: '#ff8a65',
-        colorInactif: '#faf6f0',
-        colorTextButton: '#6eb1ea',
-        colorBackButton: '#faf6f0',
-      });
+  onChangeTab() {
+    const { tabIndex } = this.state;
+    let tmpState;
+    switch (tabIndex) {
+      case false:
+        tmpState = {
+          bckColor: '#2a343c',
+          yeahsTextColor: '#ff8a65',
+          nahsTextColor: '#949795',
+          btnType: 'dark',
+          tabIndex: true,
+        };
+        break;
+      default:
+        tmpState = {
+          bckColor: '#ffffff',
+          yeahsTextColor: '#949795',
+          nahsTextColor: '#99ccff',
+          btnType: 'light',
+          tabIndex: false,
+        };
     }
-  };
+    this.setState(tmpState);
+  }
+
+  renderUsers(users) {
+    const { tabIndex } = this.state;
+    return (
+      <View>
+        <View>
+          <View style={styles.tagList}>
+            {users.map(user => <Person key={user.userId} data={user} />)}
+          </View>
+        </View>
+      </View>
+    );
+  }
 
   render = () => {
     return (
-      <View>
-        <ScrollableTabView
-          onChangeTab={this.handleChangeTab}
-          tabBarTextStyle={styles.tabLabel}
-          style={{ marginTop: 0, backgroundColor: this.state.backcolor }}
-          initialPage={0}
-          renderTabBar={() => <ScrollableTabBar />}
-          tabBarActiveTextColor={this.state.colorActif}
-          tabBarInactiveTextColor={this.state.colorInactif}
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          backgroundColor: this.state.bckColor,
+        }}
+      >
+        <View
+          style={{ display: 'flex', flexDirection: 'row', marginBottom: 20 }}
         >
-          <View tabLabel="NAAHS">
-            {this.props.usersHate.length > 0 && (
-              <View>
-                <View style={styles.tagList}>
-                  {this.props.usersHate.map(user => (
-                    <Person key={user.userId} data={user} dark />
-                  ))}
-                </View>
-              </View>
-            )}
-          </View>
-
-          <View tabLabel="YEAH">
-            {this.props.usersLove.length > 0 && (
-              <View>
-                <View style={styles.tagList}>
-                  {this.props.usersLove.map(user => (
-                    <Person key={user.userId} data={user} />
-                  ))}
-                </View>
-              </View>
-            )}
-          </View>
-        </ScrollableTabView>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              borderBottomColor: this.state.yeahsTextColor,
+              borderBottomWidth: 2,
+              marginHorizontal: 15,
+            }}
+            onPress={() => {
+              if (!this.state.tabIndex) {
+                this.onChangeTab();
+              }
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontFamily: 'Friendship_version_2',
+                fontSize: 30,
+                letterSpacing: 3.2,
+                color: this.state.yeahsTextColor,
+              }}
+            >
+              YEAHS
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              borderBottomColor: this.state.nahsTextColor,
+              borderBottomWidth: 2,
+              marginHorizontal: 15,
+            }}
+            onPress={() => {
+              if (this.state.tabIndex) {
+                this.onChangeTab();
+              }
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontFamily: 'Friendship_version_2',
+                fontSize: 30,
+                letterSpacing: 3.2,
+                color: this.state.nahsTextColor,
+              }}
+            >
+              NAHS
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {this.renderUsers(
+          this.state.tabIndex ? this.props.usersLove : this.props.usersHate,
+        )}
       </View>
     );
   };

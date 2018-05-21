@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 
   item: {
     height: 20,
-    // fontFamily: "NunitoSans",
+    fontFamily: 'NunitoSans-Bold',
     paddingRight: 10,
     paddingLeft: 10,
     fontSize: 14,
