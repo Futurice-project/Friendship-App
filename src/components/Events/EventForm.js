@@ -253,7 +253,13 @@ class EventForm extends Component {
             {this.props.edit ? 'EDIT EVENT' : 'NEW EVENT'}
           </Text>
         </View>
-        <View style={{ backgroundColor: '#e8e9e8', padding: 10 }}>
+        <View
+          style={{
+            backgroundColor: '#e8e9e8',
+            paddingHorizontal: 40,
+            paddingVertical: 20,
+          }}
+        >
           <View>
             <TextInput
               style={styles.input}
@@ -289,13 +295,12 @@ class EventForm extends Component {
           <LabelContainer style={{ marginTop: 10 }}>
             <View
               style={{
-                width: 300,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}
             >
               <DatePicker
-                style={{ width: '50%' }}
+                style={{ flex: 2 }}
                 date={this.state.date}
                 mode="date"
                 placeholder="DATE*"
@@ -312,6 +317,7 @@ class EventForm extends Component {
                     borderBottomColor: '#979797',
                     alignItems: 'flex-start',
                     height: 35,
+                    marginRight: 10,
                   },
                   placeholderText: {
                     fontSize: 17,
@@ -344,7 +350,7 @@ class EventForm extends Component {
                 }}
               />
               <DatePicker
-                style={{ width: 100 }}
+                style={{ flex: 1 }}
                 date={this.state.time}
                 mode="time"
                 placeholder="TIME*"
@@ -360,6 +366,7 @@ class EventForm extends Component {
                     borderBottomWidth: 2,
                     borderBottomColor: '#979797',
                     alignItems: 'flex-start',
+                    height: 35,
                   },
                   placeholderText: {
                     fontSize: 17,
@@ -395,23 +402,21 @@ class EventForm extends Component {
           </LabelContainer>
 
           <LabelContainer style={{ marginBottom: 10 }}>
-            <View style={{ width: 300 }}>
-              <PickerSelect
-                placeholder={{
-                  label: 'CITY*',
-                  value: null,
-                }}
-                items={cities}
-                value={this.state.city}
-                onValueChange={city =>
-                  this.setState({
-                    city,
-                    validationError: '',
-                    error: false,
-                  })}
-                style={{ ...pickerSelectStyles }}
-              />
-            </View>
+            <PickerSelect
+              placeholder={{
+                label: 'CITY*',
+                value: null,
+              }}
+              items={cities}
+              value={this.state.city}
+              onValueChange={city =>
+                this.setState({
+                  city,
+                  validationError: '',
+                  error: false,
+                })}
+              style={{ ...pickerSelectStyles }}
+            />
           </LabelContainer>
 
           <View>
@@ -435,24 +440,23 @@ class EventForm extends Component {
 
         <View
           style={{
-            alignItems: 'center',
             width: '100%',
             backgroundColor: '#f9f7f6',
+            paddingHorizontal: 40,
+            alignItems: 'center',
           }}
         >
           <Text
             style={{
-              width: 300,
               marginTop: 40,
               marginBottom: 10,
-              paddingLeft: 21,
               color: '#4a4a4a',
               fontSize: 18,
             }}
           >
             MAX. PARTICIPANTS *
           </Text>
-          <View style={{ width: 300 }}>
+          <LabelContainer style={{ backgroundColor: '#f9f7f6', marginTop: 0 }}>
             <PickerSelect
               items={maxParticipantsData}
               value={this.state.maxParticipants}
@@ -464,7 +468,7 @@ class EventForm extends Component {
                 })}
               style={{ ...pickerSelectStyles }}
             />
-          </View>
+          </LabelContainer>
           <LabelTextHelper
             style={{
               width: 270,
@@ -481,11 +485,11 @@ class EventForm extends Component {
             alignItems: 'center',
             width: '100%',
             backgroundColor: '#f9f7f6',
+            paddingHorizontal: 40,
           }}
         >
           <Text
             style={{
-              width: 300,
               marginTop: 40,
               marginBottom: 10,
               paddingLeft: 21,
@@ -495,7 +499,7 @@ class EventForm extends Component {
           >
             PEOPLE MIX
           </Text>
-          <View style={{ width: 300 }}>
+          <View style={{ width: '100%' }}>
             <Slider
               maximumValue={100}
               minimumValue={25}
@@ -512,7 +516,6 @@ class EventForm extends Component {
           </View>
           <Text
             style={{
-              width: 300,
               marginBottom: 20,
               marginTop: 10,
               color: '#2e4358',
@@ -523,7 +526,6 @@ class EventForm extends Component {
           </Text>
           <LabelTextHelper
             style={{
-              width: 270,
               textAlign: 'center',
               marginBottom: 40,
             }}
@@ -548,11 +550,11 @@ class EventForm extends Component {
               paddingTop: 29,
               paddingBottom: 31,
               backgroundColor: '#e8e9e8',
+              paddingHorizontal: 40,
             }}
           >
             <LabelText
               style={{
-                marginLeft: 30,
                 color: '#4a4a4a',
                 fontSize: 15,
                 fontFamily: 'NunitoSans-SemiBold',
@@ -560,18 +562,10 @@ class EventForm extends Component {
             >
               {this.props.edit ? 'CHANGE PHOTO' : 'ADD PHOTO'}
             </LabelText>
-            <View style={{ width: 278, marginLeft: 30 }}>
-              <LabelTextHelper>
-                Add a photo that best describes the event.
-              </LabelTextHelper>
-            </View>
-            <ScrollViewPhoto
-              contentContainerStyle={styles.scrollViewPhotoContainer}
-              horizontal
-              style={{
-                paddingBottom: 12,
-              }}
-            >
+            <LabelTextHelper>
+              Add a photo that best describes the event.
+            </LabelTextHelper>
+            <View style={{ marginTop: 10 }}>
               {this.state.eventImage ? (
                 <TouchableOpacity
                   style={{
@@ -582,8 +576,9 @@ class EventForm extends Component {
                     position: 'absolute',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    right: 0,
-                    zIndex: 1,
+                    left: 80,
+                    top: -10,
+                    zIndex: 5,
                   }}
                   onPress={this.deleteEventImage}
                 >
@@ -596,26 +591,26 @@ class EventForm extends Component {
               >
                 {this.state.eventImage ? (
                   <Image
-                    style={{ width: 83, height: 83 }}
+                    style={{ width: 93, height: 93 }}
                     source={{ uri: this.state.eventImage.uri }}
                   />
                 ) : (
                   <PlusSignText>+</PlusSignText>
                 )}
               </PhotoBox>
-            </ScrollViewPhoto>
+            </View>
+            {this.props.edit ? (
+              <ButtonOption>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.deleteEvent(this.props.eventDetails.id)}
+                  style={styles.buttonStyle}
+                >
+                  <Text style={styles.textButtonStyle}>Cancel Event</Text>
+                </TouchableOpacity>
+              </ButtonOption>
+            ) : null}
           </View>
-          {this.props.edit ? (
-            <ButtonOption>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.deleteEvent(this.props.eventDetails.id)}
-                style={styles.buttonStyle}
-              >
-                <Text style={styles.textButtonStyle}>Cancel Event</Text>
-              </TouchableOpacity>
-            </ButtonOption>
-          ) : null}
           <RoundTabContainer>
             <RoundTab
               titleColor="white"
@@ -640,7 +635,6 @@ const ButtonOption = styled.View`
 
 const LabelContainer = styled.View`
   height: 50;
-  align-items: center;
   width: 100%;
   margin-top: 20;
   background-color: #e8e9e8;
@@ -689,8 +683,6 @@ const PhotoBox = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-const ScrollViewPhoto = styled.ScrollView`margin-top: 11;`;
-
 const RoundTabContainer = styled.View`margin-top: auto;`;
 
 const pickerSelectStyles = StyleSheet.create({
@@ -700,6 +692,12 @@ const pickerSelectStyles = StyleSheet.create({
     paddingRight: 10,
     paddingLeft: 20,
     paddingBottom: 12,
+    borderRadius: 100,
+    backgroundColor: 'white',
+  },
+  viewContainer: {
+    paddingRight: 10,
+    paddingLeft: 20,
     borderRadius: 100,
     backgroundColor: 'white',
   },
