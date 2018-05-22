@@ -82,15 +82,9 @@ export const PopUpMenuCard = styled.View`
   padding-top: 0px;
 `;
 
-export const ProfileContainer = styled.ScrollView`
-  flex: 1;
-  margin-top: 20;
-`;
+export const ProfileContainer = styled.ScrollView`flex: 1;`;
 
-export const EventContainer = styled.ScrollView`
-  flex: 1;
-  margin-top: 20;
-`;
+export const EventContainer = styled.ScrollView`flex: 1;`;
 
 export const SignUpWrapper = styled.View`
   flex: 1;

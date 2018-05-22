@@ -27,6 +27,7 @@
     "jest-expo": "~26.0.0",
     "lint-staged": "^4.0.4",
     "prettier": "1.6.1",
+    "prop-types": "^15.6.1",
     "react-dom": "^16.0.0",
     "react-native-scripts": "1.11.1",
     "react-test-renderer": "^16.0.0-alpha.12",
@@ -38,10 +39,8 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
-    "test":
-      "node node_modules/jest/bin/jest.js -u && echo \"Full report in browser: file://${PWD}/coverage/index.html \" ",
-    "test-watch":
-      "node node_modules/jest/bin/jest.js  --watch && echo \"Full report in browser: file://${PWD}/coverage/index.html \" ",
+    "test": "node node_modules/jest/bin/jest.js -u && echo \"Full report in browser: file://${PWD}/coverage/index.html \" ",
+    "test-watch": "node node_modules/jest/bin/jest.js  --watch && echo \"Full report in browser: file://${PWD}/coverage/index.html \" ",
     "precommit": "lint-staged",
     "prettier": "prettier --single-quote --trailing-comma all --write \"{,!(android|ios|node_modules)/**/}*.js\""
   },

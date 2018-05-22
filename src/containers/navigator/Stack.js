@@ -1,7 +1,7 @@
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, NavigationActions } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
-import Header from './Header';
+
 // ## View Imports ##
 import Tabs from './Tabs';
 import WelcomeView from '../views/WelcomeView';
@@ -17,15 +17,13 @@ import Feedback from '../views/Feedback/Feedback';
 import Signup from '../views/SignUp/Signup';
 import PeopleProfileView from '../views/PeopleProfileView';
 import MyProfileView from '../views/MyProfileView';
+import Header from '../../components/Header';
+import Button from '../../components/Button/Button';
+import HeaderContainer from '../HeaderContainer/HeaderContainer';
 
-const StackNavigatorConfig = {
+/*const StackNavigatorConfig = {
   navigationOptions: {
-    header: props => <Header {...props} />,
-    headerStyle: {
-      backgroundColor: '#e8e9e8',
-      elevation: 0, // disable header elevation when TabNavigator visible
-    },
-    headerTintColor: '#ff8a65',
+    header: props => {console.log(props); return <Header {...props} />},
   },
   transitionConfig: () => ({
     screenInterpolator: screenProps => {
@@ -41,23 +39,22 @@ const StackNavigatorConfig = {
       return CardStackStyleInterpolator.forHorizontal(screenProps);
     },
   }),
-};
+};*/
 
+//props => (<Header title='Welcome' {...props}/>)
 export default StackNavigator(
   {
     Welcome: {
       screen: WelcomeView,
-      navigationOptions: { header: () => null },
+      navigationOptions: { header: null },
     },
-    /* First view of the sign up process
-     * Basic information about the user are asked in that view */
     SignUp: {
       screen: Signup,
-      navigationOptions: { header: () => null },
+      navigationOptions: { header: null },
     },
     Tabs: {
       screen: Tabs,
-      navigationOptions: { header: () => null },
+      navigationOptions: { header: null },
     },
     UsersForTag: {
       screen: UsersForTagView,
@@ -65,44 +62,48 @@ export default StackNavigator(
     },
     SignIn: {
       screen: SignInView,
-      navigationOptions: { header: () => null },
+      navigationOptions: {
+        header: props => (
+          <HeaderContainer left="cancel" right="join" {...props} />
+        ),
+      },
     },
     ChatView: {
       screen: ChatView,
     },
     ChatRequest: {
       screen: ChatRequest,
-      navigationOptions: { header: () => null },
+      navigationOptions: { header: null },
     },
     EventDetailView: {
       screen: EventDetailView,
-      navigationOptions: { header: () => null },
+      navigationOptions: { header: null },
     },
     EventCreateView: {
       screen: EventCreateView,
-      navigationOptions: { header: () => null },
+      navigationOptions: { header: null },
     },
     EventEditView: {
       screen: EventEditView,
-      navigationOptions: { header: () => null },
+      navigationOptions: { header: null },
     },
     Report: {
       screen: Report,
-      navigationOptions: { header: () => null },
+      navigationOptions: { header: null },
     },
     Feedback: {
       screen: Feedback,
-      navigationOptions: { header: () => null },
+      navigationOptions: { header: null },
     },
     PeopleProfileView: {
       screen: PeopleProfileView,
-      navigationOptions: { header: () => null },
+      navigationOptions: { header: null },
     },
     MyProfileView: {
       screen: MyProfileView,
-      navigationOptions: { header: () => null },
+      navigationOptions: { header: null },
     },
     // ## End StackNavigator Views ##
   },
-  StackNavigatorConfig,
+  // StackNavigatorConfig,
 );
