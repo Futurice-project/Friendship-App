@@ -2,29 +2,26 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import {
-  Image,
   Dimensions,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
+  Image,
   Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import NavigationBackgroundAsset from '../../assets/drawable-mdpi/combined_shape_copy_2.png';
 
-import { FlexRow } from './Layout';
+import { FlexRow } from './Layout/Layout';
 import {
   BoldDescription,
-  Details,
   CompatibilityText,
   FrienshipFont,
   LocationText,
-  YeahColor,
   NaahColor,
-} from './Text';
-import styled from 'styled-components/native';
+  YeahColor,
+} from './Layout/TextLayout';
 
-const mapStateToProps = state => ({});
+const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => ({
   openProfile: (personId, personName) =>
     dispatch(
@@ -56,7 +53,7 @@ class Person extends React.Component {
     const genders = this.props.data.genderlist
       ? this.props.data.genderlist.map(x => x && x.toLowerCase()).join(', ')
       : '';
-    this.setState({ genders: genders });
+    this.setState({ genders });
   };
 
   getAge = () => {
@@ -64,9 +61,6 @@ class Person extends React.Component {
     const now = new Date();
     let age = now.getFullYear() - birthYear;
 
-    const early = [0, 1, 2, 3];
-    const mid = [4, 5, 6];
-    const late = [7, 8, 9];
     let ageName = '';
     const lastDigit = age.toString().substr(age.toString().length - 1);
     if (age && age < 20) {
@@ -83,96 +77,93 @@ class Person extends React.Component {
     const locations = this.props.data.locations
       ? this.props.data.locations.join(',')
       : 'Narnia';
-    this.setState({ locations: locations });
+    this.setState({ locations });
   };
+
   cutNames = () => {
     const shortUser =
       this.props.data.username.length > 8
-        ? this.props.data.username.substring(0, 8)
+        ? `${this.props.data.username.substring(0, 8)}...`
         : this.props.data.username;
-    this.setState({ shortUser: shortUser });
+    this.setState({ shortUser });
   };
+
   renderBox = () => {
-    const srcImage = this.props.data.image
-      ? {
-          uri: 'data:image/png;base64,' + this.props.currentUser.data.image,
-        }
-      : require('../../assets/img/placeholder/grone.jpg');
     return (
-      <Image style={styles.topPart} source={srcImage}>
-        <View style={{ flex: 70, backgroundColor: 'rgba(96, 104, 109, 0.55)' }}>
-          <BoldDescription style={styles.topText}>
-            {this.props.data.description}
-          </BoldDescription>
-          <LocationText style={{ textAlign: 'center', paddingTop: 20 }}>
-            {this.state.locations}
-          </LocationText>
+      <TouchableOpacity
+        style={styles.mainView}
+        onPress={() =>
+          this.props.openProfile(this.props.data.id, this.props.data.username)}
+      >
+        <View style={styles.topPart}>
+          <Image
+            style={styles.peoplePicture}
+            source={{ uri: this.props.data.image }}
+          />
+          <View
+            style={{
+              height: '70%',
+              width: '100%',
+              backgroundColor: 'rgba(96, 104, 109, 0.55)',
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              justifyContent: 'center',
+            }}
+          >
+            <BoldDescription style={styles.topText}>
+              {this.props.data.description}
+            </BoldDescription>
+            <LocationText style={{ textAlign: 'center', paddingTop: 20 }}>
+              {this.state.locations}
+            </LocationText>
+          </View>
         </View>
         <FlexRow style={styles.bottomPart}>
-          {/* with flex:1 long username don't go exceed the bottom part  */}
-
-          <View style={styles.flexRow}>
-            <View style={styles.whiteCircle}>
-              <Text style={styles.emoji}>{this.props.data.emoji}</Text>
-            </View>
-            <View style={styles.viewBottom}>
-              <TouchableOpacity
-                style={styles.nameView}
-                onPress={() =>
-                  this.props.openProfile(
-                    this.props.data.id,
-                    this.props.data.username,
-                  )}
-              >
-                <Text style={styles.textName}>{this.state.shortUser}</Text>
-              </TouchableOpacity>
-              <Text style={styles.textDetails}>
-                {this.state.age}
-                {this.state.genders}
-              </Text>
-              <CompatibilityText style={{ marginBottom: 0, marginTop: 3 }}>
-                <YeahColor>
-                  {this.props.data.loveCommon ? this.props.data.loveCommon : 0}
-                  <FrienshipFont> YEAH</FrienshipFont>
-                </YeahColor>{' '}
-                &{' '}
-                <NaahColor>
-                  {this.props.data.hateCommon ? this.props.data.hateCommon : 0}
-                  <FrienshipFont> NAAH</FrienshipFont>
-                </NaahColor>{' '}
-              </CompatibilityText>
-              <Text
-                style={{
-                  flexWrap: 'wrap',
-                  fontSize: 12,
-                  color: '#4a4a4a',
-                  marginTop: -3,
-                }}
-              >
-                in common
-              </Text>
-            </View>
+          <Image
+            source={{ uri: this.props.data.avatar }}
+            style={styles.whiteCircle}
+          />
+          <View style={styles.viewBottom}>
+            <Text style={styles.textName}>{this.state.shortUser}</Text>
+            <Text style={styles.textDetails}>
+              {this.state.age}
+              {this.state.genders}
+            </Text>
+            <CompatibilityText style={{ marginBottom: 0, marginTop: 3 }}>
+              <YeahColor>
+                {this.props.data.loveCommon ? this.props.data.loveCommon : 0}
+                <FrienshipFont> YEAH</FrienshipFont>
+              </YeahColor>{' '}
+              &{' '}
+              <NaahColor>
+                {this.props.data.hateCommon ? this.props.data.hateCommon : 0}
+                <FrienshipFont> NAAH</FrienshipFont>
+              </NaahColor>{' '}
+            </CompatibilityText>
+            <Text
+              style={{
+                flexWrap: 'wrap',
+                fontSize: 12,
+                color: '#4a4a4a',
+                marginTop: -3,
+              }}
+            >
+              in common
+            </Text>
           </View>
         </FlexRow>
-      </Image>
+      </TouchableOpacity>
     );
   };
 
-  renderSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: '100%',
-          backgroundColor: '#CED0CE',
-        }}
-      />
-    );
-  };
   renderLine = () => (
     <FlexRow style={styles.listItem}>
       <View>
-        <Text style={styles.listEmoji}>{this.props.data.emoji}</Text>
+        <Image
+          source={{ uri: this.props.data.avatar }}
+          style={styles.listEmoji}
+        />
       </View>
 
       <TouchableOpacity
@@ -188,28 +179,37 @@ class Person extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  viewBottom: {
-    justifyContent: 'flex-start',
-    width: 121,
+  mainView: {
+    display: 'flex',
     flexDirection: 'column',
   },
+  peoplePicture: {
+    flex: 1,
+  },
+  viewBottom: {
+    flex: 1,
+    flexDirection: 'column',
+    paddingLeft: 10,
+  },
   flexRow: {
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
     flexDirection: 'row',
+    alignItems: 'center',
   },
 
   textName: {
     color: '#60686D',
     fontFamily: 'NunitoSans-Bold',
-    fontSize: 25,
+    fontSize: 24,
   },
   textDetails: {
     color: '#60686D',
     fontSize: 12,
   },
   topPart: {
-    height: 333,
-    width: 220,
+    flex: 8,
+    justifyContent: 'flex-end',
+    width: 260,
     marginLeft: 20,
     backgroundColor: 'transparent',
     borderRadius: 3,
@@ -222,27 +222,27 @@ const styles = StyleSheet.create({
   },
 
   bottomPart: {
-    width: 220,
+    width: 260,
     padding: 10,
+    marginLeft: 20,
     paddingVertical: 13,
     backgroundColor: '#f1f1f3',
-    flex: 26,
-    alignSelf: 'flex-end',
-    flexDirection: 'column',
+    flex: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomLeftRadius: 3,
     borderBottomRightRadius: 3,
+    //borderWidth: 2,
+    //borderStyle: 'dashed',
+    //borderColor: 'red'
   },
   whiteCircle: {
     width: 66,
     height: 66,
-    borderRadius: 132 / 2,
-    backgroundColor: 'white',
-    alignItems: 'center',
     marginRight: 10,
-    marginTop: 8,
-    justifyContent: 'flex-start',
+    marginLeft: 10,
   },
-  emoji: {
+  avatar: {
     backgroundColor: 'transparent',
     marginTop: 7,
     fontSize: Platform.OS === 'android' ? 35 : 45,
@@ -263,12 +263,12 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   listEmoji: {
-    backgroundColor: 'transparent',
     margin: 5,
     marginHorizontal: 10,
     alignSelf: 'center',
-    fontSize: Platform.OS === 'android' ? 35 : 45,
     alignItems: 'center',
+    height: 40,
+    width: 40,
   },
 });
 

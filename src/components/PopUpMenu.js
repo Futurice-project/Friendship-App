@@ -1,25 +1,17 @@
 import React from 'react';
-import { Text, View, TouchableHighlight } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { StyleSheet, View, Platform, Dimensions } from 'react-native';
 import {
   Menu,
-  MenuContext,
-  MenuOptions,
   MenuOption,
+  MenuOptions,
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
-
-import Modal from 'react-native-modal';
-import {
-  PopUpMenuCard,
-  TouchableHighlightButton,
-  HeaderButton,
-} from './Layout';
+import { HeaderButton, PopUpMenuCard } from './Layout/Layout';
 
 class PopUpMenu extends React.Component {
   closeMenu() {
-    console.log(this);
     this.menu.close();
   }
   onRef = r => {
@@ -28,77 +20,63 @@ class PopUpMenu extends React.Component {
   renderProfile = () => (
     <HeaderButton>
       <PopUpMenuCard>
-        <MenuContext>
-          <Menu
-            ref={this.onRef}
-            renderer={renderers.SlideInMenu}
-            onBackdropPress={() => this.closeMenu()}
-          >
-            <MenuTrigger customStyles={styles.triggerStyles}>
-              <Icon name="more-vert" />
-            </MenuTrigger>
-            <MenuOptions customStyles={styles.optionsStyles}>
-              <MenuOption
-                value={1}
-                onSelect={() => alert('navigate to send message')}
-                text="Follow Profile"
-              />
-              <MenuOption
-                value={2}
-                onSelect={() => alert('navigate to send message')}
-                text="Chat"
-              />
-              <MenuOption
-                onSelect={() => alert('navigate to send message')}
-                text="Invite to Group"
-              />
-              <MenuOption
-                onSelect={() => alert('navigate to send message')}
-                text="Invite to Happening"
-              />
-              <MenuOption text="Close" />
-              <MenuOption onSelect={this.props.isReportVisible} text="Report" />
-            </MenuOptions>
-          </Menu>
-        </MenuContext>
+        <Menu ref={this.onRef} onBackdropPress={() => this.closeMenu()}>
+          <MenuTrigger customStyles={styles.triggerStyles}>
+            <Icon name="more-vert" size={26} />
+          </MenuTrigger>
+          <MenuOptions customStyles={styles.optionsStyles}>
+            <MenuOption
+              value={1}
+              onSelect={() => alert('navigate to send message')}
+              text="Follow Profile"
+            />
+            <MenuOption
+              value={2}
+              onSelect={() => alert('navigate to send message')}
+              text="Chat"
+            />
+            <MenuOption
+              onSelect={() => alert('navigate to send message')}
+              text="Invite to Group"
+            />
+            <MenuOption
+              onSelect={() => alert('navigate to send message')}
+              text="Invite to Happening"
+            />
+            <MenuOption onSelect={this.props.isReportVisible} text="Report" />
+          </MenuOptions>
+        </Menu>
       </PopUpMenuCard>
     </HeaderButton>
   );
 
   renderChatroom = () => (
-    <MenuContext>
-      <Menu
-        ref={this.onRef}
-        renderer={renderers.SlideInMenu}
-        onBackdropPress={() => this.closeMenu()}
-      >
-        <MenuTrigger customStyles={styles.triggerStyles}>
-          <Icon name="more-vert" />
-        </MenuTrigger>
-        <MenuOptions customStyles={styles.optionsStyles}>
-          <MenuOption
-            value={1}
-            onSelect={() => alert('View prof')}
-            text="View Profile"
-          />
-          <MenuOption
-            value={2}
-            onSelect={() => alert('navigate to send message')}
-            text="Invite to squad"
-          />
-          <MenuOption
-            onSelect={() => alert('navigate to send message')}
-            text="Invite to happening"
-          />
-          <MenuOption
-            onSelect={() => alert('navigate to send message')}
-            text="Block"
-          />
-          <MenuOption text="Close" />
-          <MenuOption onSelect={this.props.isReportVisible} text="Report" />
-        </MenuOptions>
-      </Menu>
-    </MenuContext>
+    <Menu ref={this.onRef} onBackdropPress={() => this.closeMenu()}>
+      <MenuTrigger customStyles={styles.chatroomTriggerStyle}>
+        <Icon name="more-vert" />
+      </MenuTrigger>
+      <MenuOptions customStyles={styles.optionsStyles}>
+        <MenuOption
+          value={1}
+          onSelect={() => alert('View prof')}
+          text="View Profile"
+        />
+        <MenuOption
+          value={2}
+          onSelect={() => alert('navigate to send message')}
+          text="Invite to squad"
+        />
+        <MenuOption
+          onSelect={() => alert('navigate to send message')}
+          text="Invite to happening"
+        />
+        <MenuOption
+          onSelect={() => alert('navigate to send message')}
+          text="Block"
+        />
+        <MenuOption onSelect={this.props.isReportVisible} text="Report" />
+      </MenuOptions>
+    </Menu>
   );
   render = () =>
     this.props.chat ? this.renderChatroom() : this.renderProfile();
@@ -112,9 +90,22 @@ const styles = {
   },
   triggerStyles: {
     triggerWrapper: {
-      paddingTop: 10,
-      paddingBottom: 10,
-      paddingRight: 10,
+      backgroundColor: 'rgba(255, 255, 255, 0.3)',
+      borderRadius: 25,
+      height: 27,
+      width: 27,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    triggerTouchable: {
+      // underlayColor: '#ff8a65',
+      // activeOpacity: 70,
+    },
+  },
+  chatroomTriggerStyle: {
+    triggerWrapper: {
+      height: 30,
+      width: 30,
     },
     triggerTouchable: {
       // underlayColor: '#ff8a65',
@@ -122,19 +113,8 @@ const styles = {
     },
   },
   optionsStyles: {
-    optionsContainer: {
-      backgroundColor: '#2a343c',
-      marginLeft: -185,
-      marginTop: 270,
-      width: 220,
-      borderWidth: 0,
-    },
     optionText: {
-      color: '#ffffff',
       fontSize: 18,
-    },
-    optionWrapper: {
-      padding: 11,
     },
   },
   touchableHighlightProps: {

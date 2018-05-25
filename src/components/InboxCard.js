@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { TouchableHighlight, View, Text } from 'react-native';
+import { Image, Text, TouchableHighlight, View } from 'react-native';
 
 const mapStateToProps = state => ({
   currentUserId: state.auth.data.decoded ? state.auth.data.decoded.id : null,
@@ -23,6 +23,11 @@ class InboxCard extends React.Component {
   };
 
   componentDidMount() {
+    let messArr = this.props.data.messages;
+    if (messArr.length !== 0) {
+      for (let message of messArr) {
+      }
+    }
     this.getTime();
   }
 
@@ -89,25 +94,35 @@ class InboxCard extends React.Component {
           ' ' +
           msgTime.toTimeString().split(' ')[0];
       }
-      this.setState({ time: time });
+      this.setState({ time });
     }
   };
 
   render() {
     const { creator, receiver, messages } = this.props.data;
+    const totalUnreadMessages = messages.filter(
+      message =>
+        message.read === false && message.user_id !== this.props.currentUserId,
+    );
+    const unreadMessagesText =
+      totalUnreadMessages.length > 0
+        ? `( ${totalUnreadMessages.length} unread messages )`
+        : '';
     const lastMessage = messages[messages.length - 1];
     const lastMessageText =
       lastMessage.text_message.length > 35
         ? lastMessage.text_message.slice(0, 35) + '...'
         : lastMessage.text_message;
     const userId =
-      this.props.currentUserId == creator.id ? receiver.id : creator.id;
+      this.props.currentUserId === creator.id ? receiver.id : creator.id;
     const username =
-      this.props.currentUserId == creator.id
+      this.props.currentUserId === creator.id
         ? receiver.username
         : creator.username;
     const emoji =
-      this.props.currentUserId == creator.id ? receiver.emoji : creator.emoji;
+      this.props.currentUserId === creator.id
+        ? receiver.avatar
+        : creator.avatar;
     return (
       <TouchableHighlight
         onPress={() =>
@@ -116,15 +131,17 @@ class InboxCard extends React.Component {
       >
         <View style={styles.inboxCard}>
           <View style={styles.inboxCardIcon}>
-            <View style={styles.iconHolder}>
-              <Text style={styles.userEmoji}>{emoji}</Text>
-            </View>
+            <Image
+              source={{ uri: this.props.data.receiver.avatar }}
+              style={{ width: 50, height: 50 }}
+            />
           </View>
           <View style={styles.inboxCardContent}>
             <View style={styles.inboxCardHeader}>
               <Text style={styles.inboxCardName}>{username}</Text>
               <Text style={styles.inboxCardTime}>{this.state.time}</Text>
             </View>
+            <Text style={styles.inboxCardMessage}>{unreadMessagesText}</Text>
             <Text style={styles.inboxCardMessage}>{lastMessageText}</Text>
           </View>
         </View>
