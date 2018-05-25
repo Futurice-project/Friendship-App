@@ -66,9 +66,10 @@ export default StackNavigator(
     SignUp: {
       screen: Signup,
       navigationOptions: {
-        header: props => (
-          <HeaderContainer left="cancel" color="light" {...props} />
-        ),
+        // header: props => (
+        //   <HeaderContainer left="cancel" color="light" {...props} />
+        // ),
+        header: null,
       },
     },
     Tabs: {

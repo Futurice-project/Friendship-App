@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: Dimensions.get('window').width,
     height: 10,
-    marginTop: 60,
     justifyContent: 'flex-start',
   },
 });
