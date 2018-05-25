@@ -99,6 +99,9 @@ class SignInView extends React.Component {
               inputProps={{
                 placeholder: 'HELLO@FRIENDSHIP.COM',
                 keyboardType: 'email-address',
+                returnKeyType: 'next',
+                onSubmitEditing: () => this._password.focus(),
+                ref: component => (this._email = component),
               }}
               title="EMAIL"
               style={[styles.input]}
@@ -107,6 +110,9 @@ class SignInView extends React.Component {
             <Input
               inputProps={{
                 placeholder: '*************',
+                returnKeyType: 'go',
+                onSubmitEditing: () => this.signIn(),
+                ref: component => (this._password = component),
               }}
               secureTextEntry
               title="PASSWORD"
