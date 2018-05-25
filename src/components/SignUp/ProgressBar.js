@@ -1,13 +1,12 @@
 import React from 'react';
 import { Dimensions, View, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
+import { paddings } from '../../styles';
 
 const HorizontalLine = styled.View`
   height: 9;
   background-color: ${props => props.color || '#d8d8d8'};
   width: ${Dimensions.get('window').width / 5 - 4};
-  margin-top: 27;
-  margin-bottom: 30;
   margin-left: 2;
   margin-right: 2;
 `;
@@ -35,6 +34,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: Dimensions.get('window').width,
     height: 10,
+    marginTop: 60,
     justifyContent: 'flex-start',
   },
 });
