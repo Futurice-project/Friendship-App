@@ -55,3 +55,9 @@ export const styles = {
     marginTop: Platform.OS === 'ios' ? 20 : 24,
   },
 };
+
+export const footerText = {
+  fontFamily: fonts.REGULAR,
+  fontSize: fontSizes.BODY_TEXT,
+  color: colors.WHITE,
+};

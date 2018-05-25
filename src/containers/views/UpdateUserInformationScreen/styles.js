@@ -1,10 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { colors, fonts, fontSizes } from '../../../styles';
+import { colors, fonts, fontSizes, footerText } from '../../../styles';
 
 export default StyleSheet.create({
-  footerText: {
-    fontFamily: fonts.REGULAR,
-    fontSize: fontSizes.BODY_TEXT,
-    color: colors.WHITE,
-  },
+  footerText,
 });
