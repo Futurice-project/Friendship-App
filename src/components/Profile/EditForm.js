@@ -20,6 +20,8 @@ import LoadingIndicator from '../LoadingIndicator';
 import Modal from 'react-native-modal';
 import apiRoot from '../../utils/api.config';
 import { getPreSignedUrl } from '../../utils/aws';
+import { NavigationActions } from 'react-navigation';
+import { paddings } from '../../styles';
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -28,6 +30,30 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchAvatars: () => dispatch(rest.actions.avatars()),
+  update: (userId, formData, token) =>
+    dispatch(
+      rest.actions.updateUserInformation(
+        { id: userId },
+        {
+          body: formData,
+          headers: {
+            Authorization: token,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      ),
+    ),
+  closeEditForm: () =>
+    dispatch(
+      NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({
+            routeName: 'Tabs',
+          }),
+        ],
+      }),
+    ),
 });
 
 class EditForm extends React.Component {
@@ -47,7 +73,9 @@ class EditForm extends React.Component {
 
   componentWillMount() {
     this.props.fetchAvatars();
-    const genders = this.getGendersById(this.props.userData.genderlist);
+    const genders = this.getGendersById(
+      this.props.navigation.state.params.userData.genderlist,
+    );
     this.setState({ oldGenders: genders });
   }
 
@@ -107,20 +135,6 @@ class EditForm extends React.Component {
     }
   }
 
-  updateProfile = (id, formData) => {
-    fetch(`${apiRoot}/users/${id}`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: this.props.auth.data.token,
-        'Content-Type': 'multipart/form-data',
-      },
-      body: formData,
-    })
-      .then(() => this.props.closeEditForm()) //close the form
-      .then(() => this.props.onRefresh()) //do a fetch to fetch the latest user data
-      .catch(() => this.setState({ isModalVisible: true })); //show error modal if fail!
-  };
-
   async onSubmit() {
     let formValues = {
       email: this.state.newEmail,
@@ -143,7 +157,11 @@ class EditForm extends React.Component {
 
     if (Object.keys(formValues).length > 0) {
       let formdata = await this.createFormData(formValues);
-      this.updateProfile(this.props.userData.id, formdata);
+      this.props.update(
+        this.props.navigation.state.params.userData.id,
+        formdata,
+        this.props.auth.data.token,
+      );
     } else {
       this.props.closeEditForm();
     }
@@ -157,7 +175,7 @@ class EditForm extends React.Component {
     return await getPreSignedUrl(
       'PROFILE',
       formValues,
-      this.props.userData.username,
+      this.props.navigation.state.params.userData.username,
     )
       .then(url => this.appendFieldToFormdata(formValues, url))
       .catch(e => {
@@ -211,7 +229,7 @@ class EditForm extends React.Component {
     return this.props.avatars.data.map(avatar => {
       let sel = this.state.newAvatar
         ? this.state.newAvatar === avatar.uri
-        : this.props.userData.avatar === avatar.uri;
+        : this.props.navigation.state.params.userData.avatar === avatar.uri;
       return (
         <Avatar
           updateAvatar={avatarUri => this.updateAvatar(avatarUri)}
@@ -237,23 +255,10 @@ class EditForm extends React.Component {
         enableResetScrollToCoords={false}
         enableOnAndroid={true}
         enableAutoAutomaticScroll={true}
+        style={{ marginTop: 60 }}
       >
         <ViewContainer>
           <HeaderWrapper>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: 30,
-                marginLeft: 20,
-                marginRight: 20,
-              }}
-            >
-              <TouchableOpacity onPress={() => this.props.closeEditForm()}>
-                <Text style={styles.headerText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
             <SignUpTitle>EDIT PROFILE</SignUpTitle>
             <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
               PICK YOUR MOOD
@@ -286,7 +291,7 @@ class EditForm extends React.Component {
                     this.state.newUsername ? (
                       this.state.newUsername
                     ) : (
-                      this.props.userData.username
+                      this.props.navigation.state.params.userData.username
                     )
                   }
                   onSubmitEditing={() => {
@@ -323,7 +328,7 @@ class EditForm extends React.Component {
                     this.state.newEmail ? (
                       this.state.newEmail
                     ) : (
-                      this.props.userData.email
+                      this.props.navigation.state.params.userData.email
                     )
                   }
                 />
@@ -384,7 +389,7 @@ class EditForm extends React.Component {
                     this.state.newBirthyear ? (
                       this.state.newBirthyear.toString()
                     ) : (
-                      this.props.userData.birthyear.toString()
+                      this.props.navigation.state.params.userData.birthyear.toString()
                     )
                   }
                 />
@@ -490,7 +495,7 @@ class EditForm extends React.Component {
                   source={{
                     uri: this.state.newImage
                       ? this.state.newImage.uri
-                      : this.props.userData.image,
+                      : this.props.navigation.state.params.userData.image,
                   }}
                 />
               </PhotoBox>

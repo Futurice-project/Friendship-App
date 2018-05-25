@@ -43,7 +43,11 @@ class Button extends Component {
         style={[style, { width: buttonWidth }]}
         onPress={onPress}
       >
-        <Text style={[styles.text, { color: buttonTextColor }]}>{text}</Text>
+        {this.props.icon ? (
+          this.props.icon
+        ) : (
+          <Text style={[styles.text, { color: buttonTextColor }]}>{text}</Text>
+        )}
       </TouchableOpacity>
     );
   }

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => ({
@@ -15,6 +16,43 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Tag extends React.Component {
+  componentWillMount() {
+    this.setState({ selected: this.props.selected });
+  }
+
+  updateTag = () => {
+    this.props.updateTags(this.props.data, this.state.selected);
+    this.setState(prevState => ({
+      selected: prevState.selected >= 1 ? -1 : prevState.selected === 0 ? 1 : 0,
+    }));
+  };
+
+  renderIcon = () => {
+    if (this.props.edit) {
+      let icon = '';
+      let color = 'green';
+      switch (this.state.selected) {
+        case -1:
+          icon = 'md-thumbs-down';
+          color = 'red';
+          break;
+        case 1:
+          icon = 'md-thumbs-up';
+          break;
+        default:
+          return;
+      }
+      return (
+        <Icon
+          name={icon}
+          size={20}
+          color={color}
+          style={{ position: 'absolute', top: 0, right: 30, zIndex: 1 }}
+        />
+      );
+    }
+  };
+
   render() {
     let color = this.props.dark ? '#6eb1ea' : '#ff8a65';
     return (
@@ -38,9 +76,18 @@ class Tag extends React.Component {
             </Text>
           </View>
         )}
+        {this.renderIcon()}
         <TouchableOpacity
-          style={[styles.rectangle, { backgroundColor: color }]}
-          onPress={() => this.props.openSearchTag(this.props.data.id)}
+          style={[
+            styles.rectangle,
+            this.props.style,
+            { backgroundColor: color },
+          ]}
+          onPress={() => {
+            this.props.edit
+              ? this.updateTag()
+              : this.props.openSearchTag(this.props.data.id);
+          }}
         >
           <Text style={styles.item}>{this.props.data.name}</Text>
         </TouchableOpacity>
@@ -48,6 +95,7 @@ class Tag extends React.Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   rectangle: {
     padding: 10,

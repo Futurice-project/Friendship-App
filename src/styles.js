@@ -41,6 +41,7 @@ export const fontSizes = {
 };
 
 export const paddings = {
+  HEADER: 35,
   XL: 50,
   LG: 25,
   MD: 20,

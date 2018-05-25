@@ -20,6 +20,7 @@ import chillOut from '../../../assets/img/personalities/4_chillout_128.png';
 import chillOutSmall from '../../../assets/img/personalities/4_chillout_60.png';
 import goingOut from '../../../assets/img/personalities/4_goingout_128.png';
 import goingOutSmall from '../../../assets/img/personalities/4_goingout_60.png';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 //style for the image
 const ImageContainer = styled.Image`
@@ -184,6 +185,14 @@ export default class Personality extends React.Component {
   render = () => {
     return (
       <View style={{ display: 'flex', paddingLeft: 7, paddingRight: 7 }}>
+        {this.props.edit && this.props.selected ? (
+          <Icon
+            name="md-checkmark-circle"
+            size={20}
+            color={'green'}
+            style={{ position: 'absolute', top: 0, left: 0 }}
+          />
+        ) : null}
         <TouchableOpacity
           style={{ height: this.state.imageHeight + 10 }}
           onPress={this.props.onPress}

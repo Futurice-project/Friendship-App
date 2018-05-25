@@ -38,6 +38,14 @@ const mapDispatchToProps = dispatch => ({
   signOut: () => {
     dispatch({ type: 'SIGN_OUT' });
   },
+  openEditForm: userData =>
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'EditForm',
+        // params: { userId: userData, updateScreen: 'tags' },
+        params: { userData },
+      }),
+    ),
 });
 
 class MyProfile extends React.Component {
@@ -171,20 +179,6 @@ class MyProfile extends React.Component {
       return <ActivityIndicator />;
     }
 
-    if (this.state.showEditForm) {
-      return (
-        <EditForm
-          userData={this.props.currentUser.data}
-          closeEditForm={() => this.setState({ showEditForm: false })}
-          onRefresh={() => this.fetchCurrentUserInfo()}
-        />
-        /*<EditProfile
-          closeEditForm={() => this.setState({ showEditForm: false })}
-          userData={this.props.currentUser.data}
-        />*/
-      );
-    }
-
     return (
       <ProfileContainer>
         <ProfileTopPart
@@ -200,7 +194,9 @@ class MyProfile extends React.Component {
           myProfile
           birthyear={this.props.currentUser.data.birthyear}
           genderList={this.props.currentUser.data.genderlist}
-          showEditForm={() => this.setState({ showEditForm: true })}
+          showEditForm={() =>
+            this.props.openEditForm(this.props.currentUser.data)}
+          // this.props.openEditForm(this.props.currentUser.data.id)}
         />
 
         <DescriptionWrapper>

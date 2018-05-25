@@ -1,7 +1,5 @@
 import React from 'react';
-import { StackNavigator, NavigationActions } from 'react-navigation';
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
-
+import { StackNavigator } from 'react-navigation';
 // ## View Imports ##
 import Tabs from './Tabs';
 import WelcomeView from '../views/WelcomeView';
@@ -17,14 +15,12 @@ import Feedback from '../views/Feedback/Feedback';
 import Signup from '../views/SignUp/Signup';
 import PeopleProfileView from '../views/PeopleProfileView';
 import MyProfileView from '../views/MyProfileView';
-import Header from '../../components/Header';
-import Button from '../../components/Button/Button';
 import HeaderContainer from '../HeaderContainer/HeaderContainer';
+import UpdateUserInformationScreen from '../views/UpdateUserInformationScreen';
+import EditForm from '../../components/Profile/EditForm';
+import CardStackStyleInterpolator from 'react-navigation/lib-rn/views/CardStackStyleInterpolator';
 
-/*const StackNavigatorConfig = {
-  navigationOptions: {
-    header: props => {console.log(props); return <Header {...props} />},
-  },
+const StackNavigatorConfig = {
   transitionConfig: () => ({
     screenInterpolator: screenProps => {
       // Disable the transition animation when resetting to the welcome screen.
@@ -39,7 +35,7 @@ import HeaderContainer from '../HeaderContainer/HeaderContainer';
       return CardStackStyleInterpolator.forHorizontal(screenProps);
     },
   }),
-};*/
+};
 
 //props => (<Header title='Welcome' {...props}/>)
 export default StackNavigator(
@@ -47,6 +43,25 @@ export default StackNavigator(
     Welcome: {
       screen: WelcomeView,
       navigationOptions: { header: null },
+    },
+    EditUserProfile: {
+      screen: UpdateUserInformationScreen,
+      navigationOptions: {
+        header: props => <HeaderContainer left="back" {...props} />,
+      },
+    },
+    EditForm: {
+      screen: EditForm,
+      navigationOptions: {
+        header: props => (
+          <HeaderContainer
+            left="cancel"
+            right="edit-more"
+            color="light"
+            {...props}
+          />
+        ),
+      },
     },
     SignUp: {
       screen: Signup,
@@ -105,5 +120,5 @@ export default StackNavigator(
     },
     // ## End StackNavigator Views ##
   },
-  // StackNavigatorConfig,
+  StackNavigatorConfig,
 );

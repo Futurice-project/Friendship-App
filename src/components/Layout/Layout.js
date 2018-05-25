@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { Dimensions, StyleSheet } from 'react-native';
+import { paddings } from '../../styles';
 
 const styles = StyleSheet.create({
   contentContainerStyle: {

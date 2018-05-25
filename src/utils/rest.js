@@ -148,6 +148,63 @@ const rest = reduxApi({
       },
     ],
   },
+  updateUserPersonalities: {
+    url: `${apiRoot}/updatePersonalities`,
+    crud: true,
+    options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: 'Tabs',
+              }),
+            ],
+          }),
+        );
+      },
+    ],
+  },
+  updateUserTags: {
+    url: `${apiRoot}/user_tags`,
+    crud: true,
+    options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: 'Tabs',
+              }),
+            ],
+          }),
+        );
+      },
+    ],
+  },
+  updateUserInformation: {
+    url: `${apiRoot}/users/:id`,
+    crud: true,
+    options: { method: 'PATCH' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: 'Tabs',
+              }),
+            ],
+          }),
+        );
+      },
+    ],
+  },
   register: {
     url: `${apiRoot}/users`,
     transformer: authTransformer,

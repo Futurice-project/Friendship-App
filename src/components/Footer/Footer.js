@@ -7,7 +7,7 @@ import styles from './styles';
 
 class Footer extends Component {
   render() {
-    const { children, color, activeOpacity, onPress } = this.props;
+    const { children, color, activeOpacity, onPress, secondary } = this.props;
     const { width } = Dimensions.get('window');
 
     let tintColor;
@@ -18,9 +18,11 @@ class Footer extends Component {
         break;
     }
 
+    let footerStyle = secondary ? styles.secondaryFooter : styles.footer;
+
     return (
       <TouchableOpacity
-        style={styles.footer}
+        style={footerStyle}
         onPress={onPress}
         activeOpacity={activeOpacity}
       >
@@ -54,12 +56,14 @@ Footer.propTypes = {
   color: PropTypes.string,
   onPress: PropTypes.func,
   activeOpacity: PropTypes.number,
+  secondary: PropTypes.bool,
 };
 
 Footer.defaultProps = {
   color: 'orange',
   onPress: () => {},
   activeOpacity: 1,
+  secondary: false,
 };
 
 export default Footer;
