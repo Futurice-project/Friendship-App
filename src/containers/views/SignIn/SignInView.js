@@ -8,7 +8,7 @@ import rest from '../../../utils/rest';
 import Input from '../../../components/Input/Input';
 import Background from '../../../components/Background';
 import Footer from '../../../components/Footer';
-import { colors, fonts, fontSizes, paddings } from '../../../styles';
+import styles from './styles';
 
 /**
  * Maps the auth state from to the props of this component
@@ -51,7 +51,9 @@ class SignInView extends React.Component {
   renderStatus() {
     if (this.state.validationError) {
       return (
-        <Text style={styles.statusTextStyle}>{this.state.validationError}</Text>
+        <Text style={[styles.statusTextStyle]}>
+          {this.state.validationError}
+        </Text>
       );
     }
     const { data, error, loading } = this.props.auth;
@@ -89,25 +91,17 @@ class SignInView extends React.Component {
         behavior="padding"
         enabled
         keyboardVerticalOffset={20}
-        style={{ height: '100%', width: '100%' }}
+        style={[styles.keyboardView]}
       >
         <Background scrollable>
-          <View
-            style={{
-              flexDirection: 'column',
-              flex: 1,
-              width: '100%',
-              paddingHorizontal: paddings.MD,
-              justifyContent: 'center',
-            }}
-          >
+          <View style={[styles.container]}>
             <Input
               inputProps={{
                 placeholder: 'HELLO@FRIENDSHIP.COM',
                 keyboardType: 'email-address',
               }}
               title="EMAIL"
-              style={{ marginBottom: 30 }}
+              style={[styles.input]}
               handleChange={value => this.setState({ email: value })}
             />
             <Input
@@ -122,28 +116,11 @@ class SignInView extends React.Component {
           </View>
         </Background>
         <Footer onPress={() => this.signIn()}>
-          <Text style={styles.footerText}>Log in</Text>
+          <Text style={[styles.footerText]}>Log in</Text>
         </Footer>
       </KeyboardAvoidingView>
     );
   }
 }
-
-const styles = {
-  statusTextStyle: {
-    fontFamily: 'NunitoSans-Regular',
-    width: '100%',
-    height: 20,
-    fontSize: 15,
-    textAlign: 'center',
-    color: '#f673f7',
-    marginTop: 20,
-  },
-  footerText: {
-    fontFamily: fonts.BOLD,
-    fontSize: fontSizes.BODY_TEXT,
-    color: colors.WHITE,
-  },
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignInView);

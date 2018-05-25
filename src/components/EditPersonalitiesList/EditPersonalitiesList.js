@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import Personality from '../SignUp/Personality';
 import { colors, paddings } from '../../styles';
 import EditTwoPersonalities from '../EditTwoPersonalities';
+import styles from './styles';
 
 const mapStateToProps = state => ({
   personalities: state.personalities,
@@ -63,11 +64,7 @@ class EditPersonalitiesList extends Component {
         renderItem={({ item }) =>
           renderItem(item, updatePersonalities, selectedPersonalities)}
         keyExtractor={keyExtractor}
-        style={{
-          width: '100%',
-          marginBottom: paddings.SM,
-          marginTop: paddings.HEADER,
-        }}
+        style={[styles.personalitiesList]}
       />
     );
   }

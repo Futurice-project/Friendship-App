@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Text, View } from 'react-native';
 import Personality from '../SignUp/Personality';
+import styles from './styles';
 
 class EditTwoPersonalities extends Component {
   componentWillMount() {
@@ -13,14 +14,7 @@ class EditTwoPersonalities extends Component {
     const { selected } = this.state;
 
     return (
-      <View
-        style={{
-          marginVertical: 20,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-        }}
-      >
+      <View style={[styles.twoPersonalities]}>
         <Personality
           edit
           profile
@@ -37,7 +31,7 @@ class EditTwoPersonalities extends Component {
           }}
           selected={selected}
         />
-        <Text>or</Text>
+        <Text style={[styles.text]}>or</Text>
         <Personality
           edit
           profile

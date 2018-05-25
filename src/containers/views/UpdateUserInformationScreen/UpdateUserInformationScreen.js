@@ -6,6 +6,7 @@ import EditPersonalitiesScreen from '../EditPersonalitiesScreen';
 import rest from '../../../utils/rest';
 import { connect } from 'react-redux';
 import EditYeahsAndNahsScreen from '../EditYeahsAndNahsScreen/EditYeahsAndNahsScreen';
+import styles from './styles';
 
 const mapDispatchToProps = dispatch => ({
   updateUserPersonalities: credentials =>
@@ -80,7 +81,7 @@ class UpdateUserInformationScreen extends Component {
       <Background>
         {screen}
         <Footer secondary onPress={updateMethod}>
-          <Text>SAVE</Text>
+          <Text style={styles.footerText}>SAVE</Text>
         </Footer>
       </Background>
     );
