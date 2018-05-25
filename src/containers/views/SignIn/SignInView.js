@@ -100,6 +100,7 @@ class SignInView extends React.Component {
                 placeholder: 'HELLO@FRIENDSHIP.COM',
                 keyboardType: 'email-address',
                 returnKeyType: 'next',
+                autoCapitalize: 'none',
                 onSubmitEditing: () => this._password.focus(),
                 ref: component => (this._email = component),
               }}
@@ -111,6 +112,7 @@ class SignInView extends React.Component {
               inputProps={{
                 placeholder: '*************',
                 returnKeyType: 'go',
+                autoCapitalize: 'none',
                 onSubmitEditing: () => this.signIn(),
                 ref: component => (this._password = component),
               }}
