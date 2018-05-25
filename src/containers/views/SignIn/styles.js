@@ -1,5 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { colors, fonts, fontSizes, paddings } from '../../../styles';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  footerText,
+  paddings,
+} from '../../../styles';
 
 export default StyleSheet.create({
   statusTextStyle: {
@@ -11,11 +17,7 @@ export default StyleSheet.create({
     color: '#f673f7',
     marginTop: 20,
   },
-  footerText: {
-    fontFamily: fonts.BOLD,
-    fontSize: fontSizes.BODY_TEXT,
-    color: colors.WHITE,
-  },
+  footerText,
   container: {
     flexDirection: 'column',
     flex: 1,

@@ -76,7 +76,7 @@ class EditForm extends React.Component {
     const genders = this.getGendersById(
       this.props.navigation.state.params.userData.genderlist,
     );
-    this.setState({ oldGenders: genders });
+    this.setState({ oldGenders: genders, genders, gendersUpdate: false });
   }
 
   constructor() {
@@ -151,7 +151,7 @@ class EditForm extends React.Component {
       }
     }
 
-    if (this.state.genders.length > 0) {
+    if (this.state.gendersUpdate && this.state.genders.length > 0) {
       formValues['genders'] = this.state.genders;
     }
 
@@ -204,9 +204,7 @@ class EditForm extends React.Component {
   }
 
   updateGenders(value) {
-    let newSelectedGenders = this.state.genders
-      ? this.state.genders
-      : this.state.oldGenders;
+    let newSelectedGenders = this.state.genders;
     const pos = newSelectedGenders.indexOf(value);
     if (pos < 0) {
       newSelectedGenders.push(value);
@@ -215,7 +213,7 @@ class EditForm extends React.Component {
       newSelectedGenders.splice(pos, 1);
     }
     newSelectedGenders.sort();
-    this.setState({ genders: newSelectedGenders });
+    this.setState({ genders: newSelectedGenders, gendersUpdate: true });
   }
 
   updateAvatar(avatarUri) {
@@ -417,25 +415,13 @@ class EditForm extends React.Component {
               <GenderBoxContainer style={{ height: 44 }}>
                 <GenderBox
                   updateGenderById={value => this.updateGenders(value)}
-                  existingGenders={
-                    this.state.genders.length > 0 ? (
-                      this.state.genders
-                    ) : (
-                      this.state.oldGenders
-                    )
-                  }
+                  existingGenders={this.state.genders}
                   updateGenders={() => this.updateGenders(1)}
                   gender="WOMAN"
                 />
                 <GenderBox
                   updateGenderById={value => this.updateGenders(value)}
-                  existingGenders={
-                    this.state.genders.length > 0 ? (
-                      this.state.genders
-                    ) : (
-                      this.state.oldGenders
-                    )
-                  }
+                  existingGenders={this.state.genders}
                   updateGenders={() => this.updateGenders(2)}
                   gender="MAN"
                 />
@@ -443,25 +429,13 @@ class EditForm extends React.Component {
               <GenderBoxContainer style={{ height: 44, marginLeft: '38%' }}>
                 <GenderBox
                   updateGenderById={value => this.updateGenders(value)}
-                  existingGenders={
-                    this.state.genders.length > 0 ? (
-                      this.state.genders
-                    ) : (
-                      this.state.oldGenders
-                    )
-                  }
+                  existingGenders={this.state.genders}
                   updateGenders={() => this.updateGenders(3)}
                   gender="HUMAN"
                 />
                 <GenderBox
                   updateGenderById={value => this.updateGenders(value)}
-                  existingGenders={
-                    this.state.genders.length > 0 ? (
-                      this.state.genders
-                    ) : (
-                      this.state.oldGenders
-                    )
-                  }
+                  existingGenders={this.state.genders}
                   updateGenders={() => this.updateGenders(4)}
                   gender="OTHER"
                 />

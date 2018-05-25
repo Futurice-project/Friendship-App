@@ -38,8 +38,7 @@ const HeaderWrapper = styled.View`
 `;
 
 const SignUpTitle = styled.Text`
-  width: 320;
-  height: 45;
+  width: 100%;
   font-family: 'Friendship_version_2';
   font-size: 40;
   line-height: 45;
@@ -47,5 +46,4 @@ const SignUpTitle = styled.Text`
   color: #839297;
   margin-left: 30;
   margin-right: 10;
-  margin-top: 37;
 `;
