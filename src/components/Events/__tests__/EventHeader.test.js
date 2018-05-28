@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import EventsHeader from '../EventsHeader';
+import EventsHeader from '../../EventsHeader/EventsHeader';
 
 describe('Test EventsHeader', () => {
   test('should render properly', () => {

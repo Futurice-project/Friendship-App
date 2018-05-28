@@ -4,7 +4,7 @@ import React from 'react';
 export const colors = {
   DARK_BLUE: '#2a343c',
   LIGHT_GREY: '#f9f7f6',
-  MEDIUM_GREY: '#efebe9',
+  MEDIUM_GREY: '#e8e9e8',
   DARK_GREY: '#d8d8d8',
   ORANGE: '#ff8a65',
   BLUE: '#99ccff',

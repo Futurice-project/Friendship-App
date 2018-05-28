@@ -4,18 +4,16 @@ import { IconImage } from '../../components/Layout/Layout';
 
 import InboxChat from './InboxChat';
 import PeopleChat from './PeopleChat';
-import PeopleView from '../views/PeopleView';
-import InboxView from '../views/Chat/ChatInbox';
 import MyProfile from '../views/MyProfileView';
 import EventsView from '../views/EventsView';
 import {
   Chat,
-  Events,
-  People,
-  Profile,
   Chat_selected,
+  Events,
   Events_selected,
+  People,
   People_selected,
+  Profile,
   Profile_selected,
 } from '../../../assets/tabIcons';
 

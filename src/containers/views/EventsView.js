@@ -1,13 +1,3 @@
-/**
- * TODO:
- * Keep doing the EventsView.test.js. It contains redux so you gotta declare mockStore with initial State.
- * Runs app to see initial state.
- * Test FullDOM
- * https://medium.com/netscape/testing-a-react-redux-app-using-jest-and-enzyme-b349324803a9
- * https://hackernoon.com/implementing-basic-component-tests-using-jest-and-enzyme-d1d8788d627a
- * 
- */
-
 import React, { Component } from 'react';
 import { ActivityIndicator, BackHandler, Text, View } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -19,8 +9,9 @@ import _ from 'lodash';
 import rest from '../../utils/rest';
 import { connect } from 'react-redux';
 import { IconImage } from '../../components/Layout/Layout';
-import EventsHeader from '../../components/Events/EventsHeader';
+import EventsHeader from '../../components/EventsHeader';
 import EventsList from '../../components/Events/EventsList';
+import Background from '../../components/Background';
 
 const mapStateToProps = state => ({
   events: state.events,
@@ -201,7 +192,7 @@ export class EventsView extends Component {
       );
     }
     return (
-      <View style={{ flex: 1 }}>
+      <Background color="grey">
         <EventsHeader headerText="Events" rightText={this.rightText()} />
         {this.renderContent()}
         <ActionButton
@@ -213,7 +204,7 @@ export class EventsView extends Component {
         >
           <Icon name="md-add" />
         </ActionButton>
-      </View>
+      </Background>
     );
   };
 }
