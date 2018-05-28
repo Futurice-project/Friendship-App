@@ -2,17 +2,29 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity } from 'react-native';
 import styles from './styles';
-import { colors } from '../../styles';
+import { colors, paddings } from '../../styles';
 
 class Button extends Component {
   render() {
-    const { primary, text, width, onPress, header, color } = this.props;
+    const { type, text, width, onPress, header, color } = this.props;
 
-    let style = primary
-      ? styles.button
-      : header ? styles.headerButton : styles.buttonSecondary;
+    let style;
+    let backgroundColor;
+    switch (type) {
+      case 'primary':
+        style = styles.button;
+        backgroundColor = colors.BEIGE;
+        break;
+      case 'secondary':
+        style = header ? styles.headerButton : styles.buttonSecondary;
+        break;
+      case 'floatingButton':
+        style = styles.floatingButton;
+        backgroundColor = colors.ORANGE;
+        break;
+    }
+
     let buttonTextColor;
-
     switch (color) {
       case 'orange':
         buttonTextColor = colors.ORANGE;
@@ -23,7 +35,6 @@ class Button extends Component {
     }
 
     let buttonWidth;
-
     switch (width) {
       case 'sm':
         buttonWidth = 100;
@@ -40,7 +51,7 @@ class Button extends Component {
 
     return (
       <TouchableOpacity
-        style={[style, { width: buttonWidth }]}
+        style={[style, { width: buttonWidth, backgroundColor }]}
         onPress={onPress}
       >
         {this.props.icon ? (
@@ -56,13 +67,13 @@ class Button extends Component {
 Button.propTypes = {
   width: PropTypes.string,
   text: PropTypes.string,
-  primary: PropTypes.bool,
+  type: PropTypes.string,
   color: PropTypes.string,
 };
 
 Button.defaultProps = {
   text: 'A Button',
-  primary: false,
+  type: 'primary',
   width: 'noFixedWidth',
   color: 'orange',
   onPress: () => {},

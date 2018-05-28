@@ -131,10 +131,7 @@ class InboxCard extends React.Component {
       >
         <View style={styles.inboxCard}>
           <View style={styles.inboxCardIcon}>
-            <Image
-              source={{ uri: this.props.data.receiver.avatar }}
-              style={{ width: 50, height: 50 }}
-            />
+            <Image source={{ uri: emoji }} style={{ width: 50, height: 50 }} />
           </View>
           <View style={styles.inboxCardContent}>
             <View style={styles.inboxCardHeader}>

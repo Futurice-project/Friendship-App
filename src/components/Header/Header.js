@@ -6,7 +6,13 @@ import { colors } from '../../styles';
 
 class Header extends Component {
   render() {
-    const { color, leftComponent, rightComponent, title } = this.props;
+    const {
+      color,
+      leftComponent,
+      rightComponent,
+      title,
+      titleComponent,
+    } = this.props;
 
     let backgroundColor;
     switch (color) {
@@ -16,12 +22,15 @@ class Header extends Component {
       case 'light':
         backgroundColor = colors.LIGHT_GREY;
         break;
+      case 'transparent':
+        backgroundColor = 'transparent';
     }
 
     return (
       <View style={[styles.header, { backgroundColor }]}>
         {leftComponent}
         <Text>{title}</Text>
+        {titleComponent}
         {rightComponent}
       </View>
     );

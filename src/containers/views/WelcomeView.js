@@ -56,14 +56,10 @@ export class WelcomeView extends React.Component {
       <Background color="blue">
         <WelcomeMessage />
         <Footer>
-          <Button
-            text="Join"
-            primary
-            width="md"
-            onPress={this.props.openSignUp}
-          />
+          <Button text="Join" width="md" onPress={this.props.openSignUp} />
           <Button
             text="Log In"
+            type="secondary"
             width="md"
             onPress={this.props.openSignIn}
             color="white"

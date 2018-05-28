@@ -217,10 +217,10 @@ class ProfileUser extends React.Component {
           love={love}
           existingChatRoom={existingChatRoomId}
         />
-        <PopUpMenu
+        {/*<PopUpMenu
           isReportVisible={() =>
             this.props.navigation.navigate('Report', { data: Reportdata })}
-        />
+        />*/}
       </ProfileContainer>
     );
   };

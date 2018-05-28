@@ -71,10 +71,10 @@ const ProfileTopPart = props => {
   };
 
   const renderActionButton = () => {
-    if (!myProfile) {
+    if (myProfile) {
       return (
         <TouchableOpacity
-          onPress={navigateBack}
+          onPress={showModal}
           style={{
             backgroundColor: 'rgb(255, 138, 101)',
             height: 35,
@@ -82,33 +82,16 @@ const ProfileTopPart = props => {
             borderRadius: 25,
             alignItems: 'center',
             justifyContent: 'center',
-            marginLeft: 10,
+            paddingTop: 2,
+            paddingLeft: 2,
+            marginRight: 10,
+            alignSelf: 'flex-end',
           }}
         >
-          <Icon name="md-arrow-back" size={26} style={styles.backButton} />
+          <Icon name="md-settings" size={26} style={styles.backButton} />
         </TouchableOpacity>
       );
     }
-
-    return (
-      <TouchableOpacity
-        onPress={showModal}
-        style={{
-          backgroundColor: 'rgb(255, 138, 101)',
-          height: 35,
-          width: 35,
-          borderRadius: 25,
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingTop: 2,
-          paddingLeft: 2,
-          marginRight: 10,
-          alignSelf: 'flex-end',
-        }}
-      >
-        <Icon name="md-settings" size={26} style={styles.backButton} />
-      </TouchableOpacity>
-    );
   };
 
   return (

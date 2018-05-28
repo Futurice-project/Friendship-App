@@ -47,6 +47,7 @@ export const paddings = {
   MD: 20,
   SM: 15,
   XS: 10,
+  XXS: 5,
 };
 
 export const styles = {

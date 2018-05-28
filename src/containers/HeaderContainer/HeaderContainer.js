@@ -106,6 +106,7 @@ class HeaderContainer extends Component {
           leftComponent={this.getLeftComponent(this.props.left)}
           rightComponent={this.getRightComponent(this.props.right)}
           title={this.props.title}
+          titleComponent={this.props.titleComponent}
           color={this.props.color}
         />
       </View>
@@ -115,13 +116,32 @@ class HeaderContainer extends Component {
   getLeftComponent(type) {
     switch (type) {
       case 'cancel':
-        return <Button text="Cancel" header onPress={this.props.back} />;
+        return (
+          <Button
+            text="Cancel"
+            type="secondary"
+            header
+            onPress={this.props.back}
+          />
+        );
       case 'back':
         return (
           <Button
             icon={
               <Icon name={'md-arrow-back'} color={colors.ORANGE} size={26} />
             }
+            type="secondary"
+            header
+            onPress={this.props.back}
+          />
+        );
+      case 'white-back':
+        return (
+          <Button
+            icon={
+              <Icon name={'md-arrow-back'} color={colors.WHITE} size={26} />
+            }
+            type="floatingButton"
             header
             onPress={this.props.back}
           />
@@ -146,6 +166,7 @@ class HeaderContainer extends Component {
         return (
           <Button
             text="Join"
+            type="secondary"
             header
             onPress={() => this.props.navigation.navigate('SignUp')}
           />
@@ -154,6 +175,7 @@ class HeaderContainer extends Component {
         return (
           <Button
             text="+"
+            type="secondary"
             header
             onPress={() => {
               this.toggleDropdown(300);

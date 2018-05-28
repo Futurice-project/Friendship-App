@@ -7,7 +7,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: paddings.XS,
-    backgroundColor: colors.BEIGE,
   },
   buttonSecondary: {
     borderRadius: 50,
@@ -21,6 +20,12 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  floatingButton: {
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: paddings.XXS,
   },
   text: {
     color: colors.BEIGE,
