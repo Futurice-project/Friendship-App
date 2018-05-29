@@ -58,7 +58,16 @@ class EventDetailView extends Component {
 
   _hideModal = () => this.setState({ isModalVisible: false });
 
-  componentDidMount = () => {
+  componentWillMount = () => {
+    this.fetchInfos();
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler);
+  };
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
+  }
+
+  fetchInfos = () => {
     const { eventId } = this.props.navigation.state.params;
     const userId = this.props.auth.data.decoded
       ? this.props.auth.data.decoded.id
@@ -68,13 +77,12 @@ class EventDetailView extends Component {
     this.props.fetchEventPersonalities(eventId);
     this.props.fetchEventTags(eventId);
     this.props.fetchEventParticipation(eventId, userId);
-
-    BackHandler.addEventListener('hardwareBackPress', this.backHandler);
   };
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
-  }
+  openEditForm = eventsDetail => {
+    this.setState({ loaded: false });
+    this.props.openEditForm(eventsDetail);
+  };
 
   backHandler = () => {
     this.navigateBack();
@@ -172,7 +180,7 @@ class EventDetailView extends Component {
             currentUser={userId}
             hostId={this.props.eventDetails.data.hostId}
             eventDetails={this.props.eventDetails.data}
-            openEditForm={this.props.openEditForm}
+            openEditForm={eventsDetail => this.openEditForm(eventsDetail)}
           />
         </EventContainer>
       );

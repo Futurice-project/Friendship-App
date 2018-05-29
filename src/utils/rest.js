@@ -232,11 +232,43 @@ const rest = reduxApi({
     url: `${apiRoot}/events`,
     reducerName: 'events',
     options: { method: 'POST' },
+    postfetch: [
+      function({ data, dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 1,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Tabs' }),
+              NavigationActions.navigate({
+                routeName: 'EventDetailView',
+                params: { eventId: data.id },
+              }),
+            ],
+          }),
+        );
+      },
+    ],
   },
   updateEvent: {
     url: `${apiRoot}/events/:id`,
     reducerName: 'events',
     options: { method: 'PATCH' },
+    postfetch: [
+      function({ data, dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 1,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Tabs' }),
+              NavigationActions.navigate({
+                routeName: 'EventDetailView',
+                params: { eventId: data.data[0].id, refresh: true },
+              }),
+            ],
+          }),
+        );
+      },
+    ],
   },
   deleteEvent: {
     url: `${apiRoot}/events/:id`,
