@@ -78,7 +78,11 @@ export default StackNavigator(
     },
     UsersForTag: {
       screen: UsersForTagView,
-      navigationOptions: { title: 'Search page' },
+      navigationOptions: {
+        header: props => (
+          <HeaderContainer left="white-back" color="light" {...props} />
+        ),
+      },
     },
     SignIn: {
       screen: SignInView,

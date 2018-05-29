@@ -55,7 +55,9 @@ class UsersForTagView extends React.Component {
     }
 
     return (
-      <ViewContainerLight style={{ backgroundColor: '#faf6f0' }}>
+      <ViewContainerLight
+        style={{ backgroundColor: '#faf6f0', paddingTop: 58 }}
+      >
         <TabForTags
           usersHate={this.state.usersHate}
           usersLove={this.state.usersLove}
