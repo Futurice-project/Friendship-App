@@ -47,7 +47,7 @@ const EventsList = ({
       renderItem={renderItem}
       refreshing={isFetching}
       onRefresh={onRefresh}
-      style={{ marginTop: 20, paddingBottom: 20 }}
+      style={{ marginTop: 20, paddingBottom: 20, width: '100%' }}
     />
   );
 };
