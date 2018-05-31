@@ -21,15 +21,15 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchEvents: userId => dispatch(rest.actions.events.get({ userId })),
-  openEventForm: () => {
-    if (!this.touchableInactive) {
-      this.touchableInactive = true;
-      dispatch(
-        NavigationActions.navigate({
-          routeName: 'EventCreateView',
-        }),
-      );
-    }
+  openEventForm: setState => {
+    dispatch(
+      NavigationActions.navigate({
+        routeName: 'EventCreateView',
+      }),
+    );
+    setTimeout(() => {
+      setState();
+    }, 500);
   },
 
   fetchEventParticipantsNum: () =>
@@ -52,11 +52,11 @@ export class EventsView extends Component {
 
   constructor() {
     super();
-    this.touchableInactive = false;
     this.state = {
       initialOrder: true,
       sorting: 'Recommended',
     };
+    this.touchableInactive = false;
   }
 
   componentDidMount = () => {
@@ -183,7 +183,6 @@ export class EventsView extends Component {
   };
 
   render = () => {
-    touchableInactive = false;
     if (!this.props.auth.data.decoded) {
       return (
         <View style={{ marginTop: 30 }}>
@@ -199,7 +198,10 @@ export class EventsView extends Component {
           buttonColor="#ff6e40"
           degrees={0}
           onPress={() => {
-            this.props.openEventForm();
+            if (!this.touchableInactive) {
+              this.touchableInactive = true;
+              this.props.openEventForm(() => (this.touchableInactive = false));
+            }
           }}
         >
           <Icon name="md-add" />

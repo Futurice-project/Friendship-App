@@ -239,10 +239,7 @@ class EventForm extends Component {
 
     return (
       <ScrollView>
-        <View style={{ backgroundColor: '#f9f7f6' }}>
-          <TouchableOpacity onPress={this.props.navigateBack}>
-            <Icon name="md-arrow-back" size={26} style={styles.backButton} />
-          </TouchableOpacity>
+        <View style={{ backgroundColor: '#f9f7f6', paddingTop: 60 }}>
           <Text style={styles.formTitle}>
             {this.props.edit ? 'EDIT EVENT' : 'NEW EVENT'}
           </Text>

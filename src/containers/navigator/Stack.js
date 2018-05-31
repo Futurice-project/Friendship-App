@@ -105,7 +105,11 @@ export default StackNavigator(
     },
     EventCreateView: {
       screen: EventCreateView,
-      navigationOptions: { header: null },
+      navigationOptions: {
+        header: props => (
+          <HeaderContainer left="back" color="light" {...props} />
+        ),
+      },
     },
     EventEditView: {
       screen: EventEditView,
