@@ -132,12 +132,12 @@ class Person extends React.Component {
             </Text>
             <CompatibilityText style={{ marginBottom: 0, marginTop: 3 }}>
               <YeahColor>
-                {this.props.data.loveCommon ? this.props.data.loveCommon : 0}
+                {this.props.data.lovecommon ? this.props.data.lovecommon : 0}
                 <FrienshipFont> YEAH</FrienshipFont>
               </YeahColor>{' '}
               &{' '}
               <NaahColor>
-                {this.props.data.hateCommon ? this.props.data.hateCommon : 0}
+                {this.props.data.hatecommon ? this.props.data.hatecommon : 0}
                 <FrienshipFont> NAAH</FrienshipFont>
               </NaahColor>{' '}
             </CompatibilityText>
