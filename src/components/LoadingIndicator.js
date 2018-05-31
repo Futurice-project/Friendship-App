@@ -6,7 +6,7 @@ export default class LoadingIndicator extends Component {
   render() {
     return (
       <LoadingView>
-        <View></View>
+        <View />
         <ActivityIndicator color="darkblue" size="large" />
       </LoadingView>
     );

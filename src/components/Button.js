@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 /* Styling for button wrapper */
-const ButtonWrapper = styled.TouchableOpacity`
+export const ButtonWrapper = styled.TouchableOpacity`
   ${props => {
     if (props.primary) {
       return (
@@ -39,7 +39,7 @@ const TextWrapper = styled.View`
 
 /* Styling for button text */
 const ButtonText = styled.Text`
-  font-weight: bold;
+  font-family: 'NunitoSans-SemiBold'
   color: ${props => {
     switch (props.textColor) {
       case 'white':

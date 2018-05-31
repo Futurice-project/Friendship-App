@@ -1,35 +1,101 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-import { FlexRow } from './Layout';
-import styled from 'styled-components/native';
-
-const mapStateToProps = state => ({});
+const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => ({
   openSearchTag: tagId =>
     dispatch(
       NavigationActions.navigate({
-        routeName: 'SearchList',
+        routeName: 'UsersForTag',
         params: { tagId },
       }),
     ),
 });
 
 class Tag extends React.Component {
+  componentWillMount() {
+    this.setState({ selected: this.props.selected });
+  }
+
+  updateTag = () => {
+    this.props.updateTags(this.props.data, this.state.selected);
+    this.setState(prevState => ({
+      selected: prevState.selected >= 1 ? -1 : prevState.selected === 0 ? 1 : 0,
+    }));
+  };
+
+  renderIcon = () => {
+    if (this.props.edit) {
+      let icon = '';
+      let color = 'green';
+      switch (this.state.selected) {
+        case -1:
+          icon = 'md-thumbs-down';
+          color = 'red';
+          break;
+        case 1:
+          icon = 'md-thumbs-up';
+          break;
+        default:
+          return;
+      }
+      return (
+        <Icon
+          name={icon}
+          size={20}
+          color={color}
+          style={{ position: 'absolute', top: 0, right: 30, zIndex: 1 }}
+        />
+      );
+    }
+  };
+
   render() {
     let color = this.props.dark ? '#6eb1ea' : '#ff8a65';
     return (
-      <TouchableOpacity
-        style={[styles.rectangle, { backgroundColor: color }]}
-        onPress={() => this.props.openSearchTag(this.props.data.id)}
-      >
-        <Text style={styles.item}>{this.props.data.name}</Text>
-      </TouchableOpacity>
+      <View>
+        {this.props.amount && (
+          <View
+            style={{
+              height: 25,
+              width: 25,
+              borderRadius: 100,
+              backgroundColor: '#6c6c85',
+              position: 'absolute',
+              alignItems: 'center',
+              justifyContent: 'center',
+              right: 0,
+              zIndex: 1,
+            }}
+          >
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+              {this.props.amount}
+            </Text>
+          </View>
+        )}
+        {this.renderIcon()}
+        <TouchableOpacity
+          style={[
+            styles.rectangle,
+            this.props.style,
+            { backgroundColor: color },
+          ]}
+          onPress={() => {
+            this.props.edit
+              ? this.updateTag()
+              : this.props.openSearchTag(this.props.data.id);
+          }}
+        >
+          <Text style={styles.item}>{this.props.data.name}</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
+
 const styles = StyleSheet.create({
   rectangle: {
     padding: 10,
@@ -42,7 +108,7 @@ const styles = StyleSheet.create({
 
   item: {
     height: 20,
-    // fontFamily: "NunitoSans",
+    fontFamily: 'NunitoSans-Bold',
     paddingRight: 10,
     paddingLeft: 10,
     fontSize: 14,
