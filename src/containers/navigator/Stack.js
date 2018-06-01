@@ -19,6 +19,7 @@ import HeaderContainer from '../HeaderContainer/HeaderContainer';
 import UpdateUserInformationScreen from '../views/UpdateUserInformationScreen';
 import EditForm from '../../components/Profile/EditForm';
 import CardStackStyleInterpolator from 'react-navigation/lib-rn/views/CardStackStyleInterpolator';
+import ProfileCreatedScreen from '../views/ProfileCreatedScreen';
 
 const StackNavigatorConfig = {
   transitionConfig: () => ({
@@ -40,6 +41,12 @@ const StackNavigatorConfig = {
 //props => (<Header title='Welcome' {...props}/>)
 export default StackNavigator(
   {
+    ProfileCreated: {
+      screen: ProfileCreatedScreen,
+      navigationOptions: {
+        header: null,
+      },
+    },
     Welcome: {
       screen: WelcomeView,
       navigationOptions: { header: null },
