@@ -213,7 +213,7 @@ const rest = reduxApi({
     options: { method: 'POST' },
     postfetch: [
       function({ dispatch }) {
-        dispatch(NavigationActions.navigate({ routeName: 'Tabs' }));
+        dispatch(NavigationActions.navigate({ routeName: 'ProfileCreated' }));
       },
     ],
   },
