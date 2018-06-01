@@ -1,10 +1,13 @@
+coverage/
 node_modules/
 .expo/
 npm-debug.*
+.eslintrc
 .eslintrc.*
 
 # Ignore JetBrain files
 .idea
+*.iml
 
 # Ignore Mac DS_Store files
 .DS_Store
@@ -12,3 +15,19 @@ npm-debug.*
 
 Ignore Vscode jsconfig
 jsconfig.json
+
+#Vscode
+.vscode
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore test coverage
+coverage/
+
+# Ignore test snapshots
+**/__snapshots__/*
