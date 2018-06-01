@@ -41,12 +41,6 @@ const StackNavigatorConfig = {
 //props => (<Header title='Welcome' {...props}/>)
 export default StackNavigator(
   {
-    ProfileCreated: {
-      screen: ProfileCreatedScreen,
-      navigationOptions: {
-        header: null,
-      },
-    },
     Welcome: {
       screen: WelcomeView,
       navigationOptions: { header: null },
@@ -68,6 +62,12 @@ export default StackNavigator(
             {...props}
           />
         ),
+      },
+    },
+    ProfileCreated: {
+      screen: ProfileCreatedScreen,
+      navigationOptions: {
+        header: null,
       },
     },
     SignUp: {
