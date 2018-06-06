@@ -3,6 +3,7 @@ import adapterFetch from 'redux-api/lib/adapters/fetch';
 import jwtDecode from 'jwt-decode';
 import { NavigationActions } from 'react-navigation';
 import apiRoot from './api.config';
+import moment from 'moment';
 
 // don't delete this
 let store;
@@ -276,7 +277,7 @@ const rest = reduxApi({
     options: { method: 'DELETE' },
   },
   events: {
-    url: `${apiRoot}/events/:userId`,
+    url: `${apiRoot}/events/${moment().format()}`,
     transformer: transformers.array,
     crud: true,
   },
