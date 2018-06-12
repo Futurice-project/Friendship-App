@@ -15,7 +15,7 @@ const renderAvatarField = () => {
   return (
     <Part backgroundStyle={'light'}>
       <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
-        PICK YOUR MOOD
+        PICK YOUR AVATAR
       </LabelText>
       <Field name="avatar" component={AvatarList} />
     </Part>

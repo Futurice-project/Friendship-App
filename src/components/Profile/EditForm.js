@@ -259,7 +259,7 @@ class EditForm extends React.Component {
           <HeaderWrapper>
             <SignUpTitle>EDIT PROFILE</SignUpTitle>
             <LabelText style={{ marginTop: 21, marginLeft: 30 }}>
-              PICK YOUR MOOD
+              PICK YOUR AVATAR
             </LabelText>
             {/* change to FlatList later on to render form database? */}
             <ScrollViewPhoto
