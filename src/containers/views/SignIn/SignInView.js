@@ -9,6 +9,8 @@ import Input from '../../../components/Input/Input';
 import Background from '../../../components/Background';
 import Footer from '../../../components/Footer';
 import styles from './styles';
+import { registerForPushNotificationsAsync } from '../../../utils/notifications';
+import store from '../../../redux/store';
 
 /**
  * Maps the auth state from to the props of this component
@@ -23,14 +25,17 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   signIn: credentials => {
     dispatch(rest.actions.auth({}, { body: JSON.stringify(credentials) }))
-      .then(() =>
-        dispatch(
+      .then(() => {
+        registerForPushNotificationsAsync(
+          store.getState().auth.data.decoded.id,
+        );
+        return dispatch(
           NavigationActions.reset({
             index: 0, // active route = 0 (top of the stack)
             actions: [NavigationActions.navigate({ routeName: 'Tabs' })],
           }),
-        ),
-      )
+        );
+      })
       .catch(err => console.log(err));
   },
 });
