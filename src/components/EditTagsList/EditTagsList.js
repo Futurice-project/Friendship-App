@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import rest from '../../utils/rest';
 import {
   ActivityIndicator,
@@ -8,9 +7,9 @@ import {
   Text,
   View,
 } from 'react-native';
-import Tags from '../Tags';
 import { connect } from 'react-redux';
-import { paddings } from '../../styles';
+import { fonts, paddings } from '../../styles';
+import Tag from '../SignUp/Tag';
 
 const mapStateToProps = state => ({
   activities: state.activities,
@@ -57,12 +56,6 @@ class EditTagsList extends Component {
       return <ActivityIndicator />;
     }
 
-    /*<View>
-      {activities.data.map(tag => {
-        return <Tags key={tag.id} data={tag}/>
-      })}
-    </View>*/
-
     return (
       <ScrollView
         style={{
@@ -74,27 +67,27 @@ class EditTagsList extends Component {
         <Text style={styles.tagCategoriesLove}>ACTIVITIES</Text>
         <View style={styles.tagList}>
           {activities.data.map(tag => (
-            <Tags
+            <Tag
               key={tag.id}
-              data={tag}
+              activityId={tag.id}
+              activityName={tag.name}
               edit
               selected={this.isTagSelected(tag)}
-              updateTags={this.props.updateTags}
-              style={{ marginRight: paddings.XL }}
+              updateYeahsAndNahs={this.props.updateTags}
             />
           ))}
         </View>
         <Text style={styles.tagCategoriesHate}>INTERESTS</Text>
         <View style={styles.tagList}>
           {interests.data.map(tag => (
-            <Tags
+            <Tag
               key={tag.id}
-              data={tag}
+              activityId={tag.id}
+              activityName={tag.name}
               edit
               dark
               selected={this.isTagSelected(tag)}
-              updateTags={this.props.updateTags}
-              style={{ marginRight: paddings.XL }}
+              updateYeahsAndNahs={this.props.updateTags}
             />
           ))}
         </View>
@@ -110,7 +103,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(EditTagsList);
 const styles = StyleSheet.create({
   tagList: {
     marginVertical: 15,
-    marginHorizontal: 22,
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     flexDirection: 'row',
@@ -118,21 +110,23 @@ const styles = StyleSheet.create({
   textButtonStyle: {
     alignSelf: 'center',
     fontSize: 20,
-    fontFamily: 'NunitoSans-Bold',
+    fontFamily: fonts.BOLD,
   },
   tagCategoriesLove: {
     alignSelf: 'center',
     flexGrow: 1,
     textAlign: 'center',
+    fontFamily: fonts.REGULAR,
     color: '#ff8a65',
-    fontSize: 13,
+    fontSize: 20,
   },
   tagCategoriesHate: {
     alignSelf: 'center',
     flexGrow: 1,
     textAlign: 'center',
+    fontFamily: fonts.REGULAR,
     color: '#6eb1ea',
-    fontSize: 13,
+    fontSize: 20,
   },
   buttonStyle: {
     alignItems: 'center',
@@ -143,7 +137,7 @@ const styles = StyleSheet.create({
     borderRadius: 34,
   },
   tabLabel: {
-    fontFamily: 'Friendship_version_2',
+    fontFamily: fonts.title,
     fontSize: 30,
     letterSpacing: 3,
   },

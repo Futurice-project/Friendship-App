@@ -43,22 +43,25 @@ class EditYeahsAndNahsScreen extends Component {
     return -1;
   };
 
-  updateTags = (tag, oldState) => {
+  updateTags = (tag, category) => {
     let tagPos;
     let tmpYeahs = this.state.yeahs;
     let tmpNahs = this.state.nahs;
-    switch (oldState) {
+    switch (category) {
       case -1:
-        tagPos = this.getTagPos(tag.id, tmpNahs);
-        tmpNahs.splice(tagPos, 1);
+        tmpNahs.push(tag);
         break;
       case 1:
-        tagPos = this.getTagPos(tag.id, tmpYeahs);
-        tmpYeahs.splice(tagPos, 1);
-        tmpNahs.push(tag.id);
+        tmpYeahs.push(tag);
         break;
       default:
-        tmpYeahs.push(tag.id);
+        tagPos = this.getTagPos(tmpYeahs);
+        if (tagPos > -1) {
+          tmpYeahs.splice(tagPos, 1);
+        } else {
+          tagPos = this.getTagPos(tmpNahs);
+          tmpNahs.splice(tagPos, 1);
+        }
     }
     this.props.updateTags(tmpYeahs, tmpNahs);
     this.setState({ yeahs: tmpYeahs, nahs: tmpNahs });

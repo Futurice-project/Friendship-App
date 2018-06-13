@@ -101,6 +101,20 @@ export default class YeahAndNaah extends React.Component {
     }
   }
 
+  componentWillMount() {
+    if (
+      this.props.selected &&
+      (this.props.selected > 0 || this.props.selected < 0)
+    ) {
+      this.setState({
+        status: 0,
+        yeahButton: false,
+        nahButton: false,
+        wrapperColor: this.props.selected,
+      });
+    }
+  }
+
   state = {
     status: 0,
     yeahButton: true,
@@ -108,10 +122,14 @@ export default class YeahAndNaah extends React.Component {
     wrapperColor: 0,
   };
 
-  yeahActivity(updateYeahsAndNahs) {
+  yeahActivity(updateYeahsAndNahs, edit) {
     const { activityId } = this.props;
 
-    updateYeahsAndNahs('YEAH', activityId);
+    if (edit) {
+      updateYeahsAndNahs(activityId, 1);
+    } else {
+      updateYeahsAndNahs('YEAH', activityId);
+    }
 
     this.setState({
       wrapperColor: -1,
@@ -121,10 +139,14 @@ export default class YeahAndNaah extends React.Component {
     LayoutAnimation.configureNext(CustomLayoutSpring);
   }
 
-  nahActivity(updateYeahsAndNahs) {
+  nahActivity(updateYeahsAndNahs, edit) {
     const { activityId } = this.props;
 
-    updateYeahsAndNahs('NAH', activityId);
+    if (edit) {
+      updateYeahsAndNahs(activityId, -1);
+    } else {
+      updateYeahsAndNahs('NAH', activityId);
+    }
 
     this.setState({
       wrapperColor: 1,
@@ -134,10 +156,14 @@ export default class YeahAndNaah extends React.Component {
     LayoutAnimation.configureNext(CustomLayoutSpring);
   }
 
-  resetChoice(updateYeahsAndNahs) {
+  resetChoice(updateYeahsAndNahs, edit) {
     const { activityId } = this.props;
 
-    updateYeahsAndNahs('RESET', activityId);
+    if (edit) {
+      updateYeahsAndNahs(activityId, 0);
+    } else {
+      updateYeahsAndNahs('RESET', activityId);
+    }
 
     this.setState({
       wrapperColor: 0,
@@ -147,12 +173,12 @@ export default class YeahAndNaah extends React.Component {
     LayoutAnimation.configureNext(CustomLayoutSpring);
   }
 
-  renderYeah(updateYeahsAndNahs) {
+  renderYeah(updateYeahsAndNahs, edit) {
     if (this.state.yeahButton) {
       return (
         <LoveAndHatePart
           onPress={() => {
-            this.yeahActivity(updateYeahsAndNahs);
+            this.yeahActivity(updateYeahsAndNahs, edit);
           }}
         >
           <YeahLogo />
@@ -161,12 +187,12 @@ export default class YeahAndNaah extends React.Component {
     }
   }
 
-  renderNah(updateYeahsAndNahs) {
+  renderNah(updateYeahsAndNahs, edit) {
     if (this.state.nahButton) {
       return (
         <LoveAndHatePart
           onPress={() => {
-            this.nahActivity(updateYeahsAndNahs);
+            this.nahActivity(updateYeahsAndNahs, edit);
           }}
         >
           <NahLogo />
@@ -176,24 +202,24 @@ export default class YeahAndNaah extends React.Component {
   }
 
   render = () => {
-    const { updateYeahsAndNahs } = this.props;
+    const { updateYeahsAndNahs, edit } = this.props;
 
     return (
       <LoveAndHateWrapper wrapperColor={this.state.wrapperColor}>
         {/* Left part of the component. Contain the button to Yeah the activity */}
-        {this.renderYeah(updateYeahsAndNahs)}
+        {this.renderYeah(updateYeahsAndNahs, edit)}
         {/* Middle part of the component. Contain the button to Reset the choice Yeah or Nah */}
         <LoveAndHatePart
           textAligment={this.state.wrapperColor}
           onPress={() => {
-            this.resetChoice(updateYeahsAndNahs);
+            this.resetChoice(updateYeahsAndNahs, edit);
           }}
         >
           <Text style={styles.activity}>{this.props.activityName}</Text>
         </LoveAndHatePart>
 
         {/* Right part of the component. Contain the button to Nah the activity */}
-        {this.renderNah(updateYeahsAndNahs)}
+        {this.renderNah(updateYeahsAndNahs, edit)}
       </LoveAndHateWrapper>
     );
   };
