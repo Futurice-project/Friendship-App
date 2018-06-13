@@ -28,7 +28,7 @@ const LoveAndHateWrapper = styled.View`
   margin-top: 10;
 `;
 
-const LoveAndHatePart = styled.View`
+const LoveAndHatePart = styled.TouchableOpacity`
   flex: 1;
   justify-content: center;
   align-items: ${props => {
@@ -41,12 +41,6 @@ const LoveAndHatePart = styled.View`
         return 'center';
     }
   }};
-`;
-
-const LoveAndHateButton = styled.TouchableOpacity.attrs({
-  activeOpacity: 0.8,
-})`
-
 `;
 
 /* Component for the preview logo */
@@ -156,14 +150,12 @@ export default class YeahAndNaah extends React.Component {
   renderYeah(updateYeahsAndNahs) {
     if (this.state.yeahButton) {
       return (
-        <LoveAndHatePart>
-          <LoveAndHateButton
-            onPress={() => {
-              this.yeahActivity(updateYeahsAndNahs);
-            }}
-          >
-            <YeahLogo />
-          </LoveAndHateButton>
+        <LoveAndHatePart
+          onPress={() => {
+            this.yeahActivity(updateYeahsAndNahs);
+          }}
+        >
+          <YeahLogo />
         </LoveAndHatePart>
       );
     }
@@ -172,14 +164,12 @@ export default class YeahAndNaah extends React.Component {
   renderNah(updateYeahsAndNahs) {
     if (this.state.nahButton) {
       return (
-        <LoveAndHatePart>
-          <LoveAndHateButton
-            onPress={() => {
-              this.nahActivity(updateYeahsAndNahs);
-            }}
-          >
-            <NahLogo />
-          </LoveAndHateButton>
+        <LoveAndHatePart
+          onPress={() => {
+            this.nahActivity(updateYeahsAndNahs);
+          }}
+        >
+          <NahLogo />
         </LoveAndHatePart>
       );
     }
@@ -193,20 +183,13 @@ export default class YeahAndNaah extends React.Component {
         {/* Left part of the component. Contain the button to Yeah the activity */}
         {this.renderYeah(updateYeahsAndNahs)}
         {/* Middle part of the component. Contain the button to Reset the choice Yeah or Nah */}
-        <LoveAndHatePart textAligment={this.state.wrapperColor}>
-          <LoveAndHateButton
-            onPress={() => {
-              this.resetChoice(updateYeahsAndNahs);
-            }}
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            position={this.state.wrapperColor}
-          >
-            <Text style={styles.activity}>{this.props.activityName}</Text>
-          </LoveAndHateButton>
+        <LoveAndHatePart
+          textAligment={this.state.wrapperColor}
+          onPress={() => {
+            this.resetChoice(updateYeahsAndNahs);
+          }}
+        >
+          <Text style={styles.activity}>{this.props.activityName}</Text>
         </LoveAndHatePart>
 
         {/* Right part of the component. Contain the button to Nah the activity */}

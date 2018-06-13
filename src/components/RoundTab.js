@@ -43,7 +43,7 @@ export default class RoundTab extends React.Component {
   };
 
   render = () => (
-    <View>
+    <View style={this.props.style}>
       <ImageContainer
         tint={this.props.tint}
         style={{

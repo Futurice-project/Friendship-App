@@ -3,7 +3,7 @@ import rest from '../../../utils/rest';
 import { Text } from '../../../components/Layout/TextLayout';
 import { Padding, ViewContainer } from '../../../components/Layout/Layout';
 import styled from 'styled-components/native';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, Dimensions, View } from 'react-native';
 import ProgressBar from '../../../components/SignUp/ProgressBar';
 import RoundTab from '../../../components/RoundTab';
 import { connect } from 'react-redux';
@@ -153,8 +153,8 @@ export class SignUpLoveAndHate extends React.Component {
     }
 
     return (
-      <View>
-        <ViewContainer>
+      <View style={{ backgroundColor: '#2a343c' }}>
+        <ViewContainer style={{ marginBottom: 90 }}>
           <ProgressBar steps={INTERESTS} />
           <Padding>
             <View style={{ flexDirection: 'row' }}>
@@ -184,12 +184,13 @@ export class SignUpLoveAndHate extends React.Component {
           >
             {this.renderPage()}
           </Padding>
-          <RoundTab
-            title="NEXT"
-            tint="#faf5f0"
-            onPress={() => this.handleClick()}
-          />
         </ViewContainer>
+        <RoundTab
+          title="NEXT"
+          tint="#faf5f0"
+          onPress={() => this.handleClick()}
+          style={{ position: 'absolute', bottom: 0 }}
+        />
       </View>
     );
   }
