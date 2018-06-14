@@ -38,15 +38,25 @@ const mapDispatchToProps = dispatch => ({
         routeName: 'SignIn',
       }),
     ),
+  checkUser: () => dispatch(rest.actions.checkUserBan()),
 });
+
+async function checkUser(checkUser) {
+  const res = await checkUser();
+  return res[0];
+}
 
 export class WelcomeView extends React.Component {
   componentDidMount() {
     this.userAlreadyLoggedIn();
   }
 
-  userAlreadyLoggedIn = () => {
-    if (this.props.auth && this.props.auth.data.decoded) {
+  userAlreadyLoggedIn = async () => {
+    if (
+      this.props.auth &&
+      this.props.auth.data.decoded &&
+      (await !checkUser(this.props.checkUser))
+    ) {
       this.props.openTabs();
     }
   };

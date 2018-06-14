@@ -316,6 +316,11 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
+  checkUserBan: {
+    url: `${apiRoot}/users/isBanned`,
+    transformer: transformers.array,
+    crud: true,
+  },
 })
   .use('options', (url, params, getState) => {
     const { auth: { data: { token } } } = getState();
