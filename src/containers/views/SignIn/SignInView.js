@@ -75,7 +75,9 @@ class SignInView extends React.Component {
 
     return (
       <HideWithKeyboard>
-        <Text style={styles.statusTextStyle}>{status}</Text>
+        <Text style={styles.statusTextStyle} numberOfLines={2}>
+          {status}
+        </Text>
       </HideWithKeyboard>
     );
   }
