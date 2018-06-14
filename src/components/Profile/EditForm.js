@@ -474,15 +474,13 @@ class EditForm extends React.Component {
                 />
               </PhotoBox>
             </ScrollViewPhoto>
-            <RoundTabContainer>
-              <RoundTab
-                titleColor="white"
-                tint="#2d4359"
-                title="Submit"
-                style={{ flex: 1 }}
-                onPress={() => this.onSubmit()}
-              />
-            </RoundTabContainer>
+            <RoundTab
+              titleColor="white"
+              tint="#2d4359"
+              title="Submit"
+              style={{ flex: 2 }}
+              onPress={() => this.onSubmit()}
+            />
           </SecondLabelWrapper>
         </ViewContainer>
         {this.renderLoadingIndicator()}

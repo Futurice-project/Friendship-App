@@ -602,15 +602,13 @@ class EventForm extends Component {
               </ButtonOption>
             ) : null}
           </View>
-          <RoundTabContainer>
-            <RoundTab
-              titleColor="white"
-              tint="#2d4359"
-              title={this.props.edit ? 'Update' : 'Create'}
-              style={{ flex: 1 }}
-              onPress={() => this.submit()}
-            />
-          </RoundTabContainer>
+          <RoundTab
+            titleColor="white"
+            tint="#2d4359"
+            title={this.props.edit ? 'Update' : 'Create'}
+            style={{ flex: 2 }}
+            onPress={() => this.submit()}
+          />
         </BottomLabelWrapper>
       </ScrollView>
     );

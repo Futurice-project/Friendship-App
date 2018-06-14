@@ -13,16 +13,18 @@ class Footer extends React.Component {
   render() {
     const { dispatch } = this.props;
     return (
-      <Part style={{ paddingBottom: 0 }}>
-        <RoundTabContainer>
-          <RoundTab
-            titleColor={this.props.textColor === 'blue' ? '#2d4359' : '#ffffff'}
-            tint={this.props.textColor === 'blue' ? '#ff8a65' : '#2d4359'}
-            title="Next"
-            style={{ flex: 1 }}
-            onPress={() => dispatch(submit('signup'))}
-          />
-        </RoundTabContainer>
+      <Part style={[this.props.style, { paddingBottom: 0 }]}>
+        <RoundTab
+          titleColor={this.props.textColor === 'blue' ? '#2d4359' : '#ffffff'}
+          tint={this.props.textColor === 'blue' ? '#ff8a65' : '#2d4359'}
+          title="Next"
+          style={{
+            flex: 1,
+            alignItems: 'flex-end',
+            justifyContent: 'flex-end',
+          }}
+          onPress={() => dispatch(submit('signup'))}
+        />
       </Part>
     );
   }
