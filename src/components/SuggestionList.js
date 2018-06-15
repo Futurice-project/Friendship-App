@@ -1,16 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import Modal from 'react-native-modal';
 import {
-  View,
   FlatList,
   Text,
   TouchableOpacity,
-  TextInput,
-  Alert,
-  TouchableHighlight,
-  Icon,
+  View,
+  ActivityIndicator,
+  Image,
 } from 'react-native';
 
 import rest from '../utils/rest';
@@ -26,7 +23,7 @@ const styles = {
     width: 50,
     height: 50,
     borderRadius: 50,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -37,7 +34,7 @@ export class SuggestionList extends React.Component {
   //   this.props.usersByPage(0);
   // }
 
-  keyExtractor = item => item.id;
+  keyExtractor = (item, index) => 'list-item-' + index;
   renderItem = ({ item }) => {
     return (
       <TouchableOpacity
@@ -45,7 +42,10 @@ export class SuggestionList extends React.Component {
         onPress={() => this.props.openChatRequest(item)}
       >
         <View style={styles.iconWrapper}>
-          <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
+          <Image
+            source={{ uri: item.avatar }}
+            style={{ width: 50, height: 50 }}
+          />
         </View>
         <Text style={{ fontSize: 12, color: '#4a4a4a', margin: 2 }}>
           {item.username}
@@ -55,12 +55,23 @@ export class SuggestionList extends React.Component {
   };
 
   render() {
+    if (!this.props.existingChatRooms) {
+      return <ActivityIndicator />;
+    }
+    const exsitingUsers = this.props.existingChatRooms.map(
+      user => user.receiver.id,
+    );
+    const suggestedUsers = this.props.suggestionUsers
+      ? this.props.suggestionUsers.filter(
+          user => exsitingUsers.indexOf(user.id) < 0,
+        )
+      : [];
     return (
       <FlatList
-        data={this.props.suggestionUsers}
+        data={suggestedUsers}
         keyExtractor={this.keyExtractor}
         renderItem={this.renderItem}
-        style={{ height: 80, marginTop: 10 }}
+        style={{ marginTop: 10, height: 50 }}
         horizontal
         showsHorizontalScrollIndicator={false}
       />

@@ -1,9 +1,11 @@
 import reduxApi, { transformers } from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
 import jwtDecode from 'jwt-decode';
+import { NavigationActions } from 'react-navigation';
+import apiRoot from './api.config';
+import moment from 'moment';
 
-// import { showError } from '../modules/ErrorSnackbar';
-
+// don't delete this
 let store;
 
 export const injectStore = _store => {
@@ -19,15 +21,7 @@ export const injectStore = _store => {
  Information about request: `state.teams.error`, `state.teams.sync`, `state.teams.error`...
  */
 
-let apiRoot;
-
-if (process.env.NODE_ENV === 'development') {
-  apiRoot = 'http://localhost:3888';
-} else {
-  apiRoot = 'https://friendshipapp-backend.herokuapp.com';
-}
-
-authTransformer = (data = {}) => {
+const authTransformer = (data = {}) => {
   if (data.token) {
     return {
       ...data,
@@ -38,8 +32,14 @@ authTransformer = (data = {}) => {
 };
 
 const rest = reduxApi({
-  tags: {
-    url: `${apiRoot}/tags`,
+  activities: {
+    url: `${apiRoot}/activities`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  interests: {
+    url: `${apiRoot}/interests`,
+    transformer: transformers.array,
     crud: true,
   },
   userTags: {
@@ -48,14 +48,17 @@ const rest = reduxApi({
   },
   personalities: {
     url: `${apiRoot}/personalities`,
+    transformer: transformers.array,
     crud: true,
   },
   locations: {
     url: `${apiRoot}/locations`,
+    transformer: transformers.array,
     crud: true,
   },
   usersByPage: {
     url: `${apiRoot}/users/page/:number`,
+    transformer: transformers.array,
     crud: true,
   },
   usersSearch: {
@@ -109,6 +112,7 @@ const rest = reduxApi({
   },
   chatRoomsWithUserId: {
     url: `${apiRoot}/chatrooms/userid/:id`,
+    transformer: transformers.array,
     crud: true,
   },
   chatRoomMessages: {
@@ -128,6 +132,11 @@ const rest = reduxApi({
       },
     ],
   },
+  updateReadMessages: {
+    url: `${apiRoot}/messages/read`,
+    options: { method: 'PUT' },
+    crud: true,
+  },
   createUserPersonality: {
     url: `${apiRoot}/user_personality`,
     options: { method: 'POST' },
@@ -135,12 +144,79 @@ const rest = reduxApi({
   createUserPersonalities: {
     url: `${apiRoot}/user_personalities`,
     options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(NavigationActions.navigate({ routeName: 'YeahAndNaah' }));
+      },
+    ],
+  },
+  updateUserPersonalities: {
+    url: `${apiRoot}/updatePersonalities`,
+    crud: true,
+    options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: 'Tabs',
+              }),
+            ],
+          }),
+        );
+      },
+    ],
+  },
+  updateUserTags: {
+    url: `${apiRoot}/user_tags`,
+    crud: true,
+    options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: 'Tabs',
+              }),
+            ],
+          }),
+        );
+      },
+    ],
+  },
+  updateUserInformation: {
+    url: `${apiRoot}/users/:id`,
+    crud: true,
+    options: { method: 'PATCH' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: 'Tabs',
+              }),
+            ],
+          }),
+        );
+      },
+    ],
   },
   register: {
     url: `${apiRoot}/users`,
     transformer: authTransformer,
     reducerName: 'auth',
     options: { method: 'POST' },
+    postfetch: [
+      function({ dispatch }) {
+        dispatch(NavigationActions.navigate({ routeName: 'ProfileCreated' }));
+      },
+    ],
   },
   auth: {
     url: `${apiRoot}/users/authenticate`,
@@ -152,6 +228,98 @@ const rest = reduxApi({
   createUserLocations: {
     url: `${apiRoot}/user_locations`,
     options: { method: 'POST' },
+  },
+  createEvent: {
+    url: `${apiRoot}/events`,
+    reducerName: 'events',
+    options: { method: 'POST' },
+    postfetch: [
+      function({ data, dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 1,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Tabs' }),
+              NavigationActions.navigate({
+                routeName: 'EventDetailView',
+                params: { eventId: data.id },
+              }),
+            ],
+          }),
+        );
+      },
+    ],
+  },
+  updateEvent: {
+    url: `${apiRoot}/events/:id`,
+    reducerName: 'events',
+    options: { method: 'PATCH' },
+    postfetch: [
+      function({ data, dispatch }) {
+        dispatch(
+          NavigationActions.reset({
+            index: 1,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Tabs' }),
+              NavigationActions.navigate({
+                routeName: 'EventDetailView',
+                params: { eventId: data.data[0].id, refresh: true },
+              }),
+            ],
+          }),
+        );
+      },
+    ],
+  },
+  deleteEvent: {
+    url: `${apiRoot}/events/:id`,
+    reducerName: 'events',
+    options: { method: 'DELETE' },
+  },
+  events: {
+    url: `${apiRoot}/events/${moment().format()}`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  eventsParticipantsEmoji: {
+    url: `${apiRoot}/eventParticipantsNum`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  eventDetails: {
+    url: `${apiRoot}/event/:eventId`,
+    crud: true,
+  },
+  eventParticipants: {
+    url: `${apiRoot}/eventParticipants/:eventId/:userId`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  eventPersonalities: {
+    url: `${apiRoot}/eventPersonalities/:eventId`,
+    crud: true,
+  },
+  eventTags: {
+    url: `${apiRoot}/eventTopYeahsNahs/:eventId`,
+    crud: true,
+  },
+  eventParticipation: {
+    url: `${apiRoot}/eventParticipation/:eventId/:userId`,
+    crud: true,
+  },
+  eventParticipantsNum: {
+    url: `${apiRoot}/eventParticipantsNum`,
+    crud: true,
+  },
+  avatars: {
+    url: `${apiRoot}/avatars`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  checkUserBan: {
+    url: `${apiRoot}/users/isBanned`,
+    transformer: transformers.array,
+    crud: true,
   },
 })
   .use('options', (url, params, getState) => {
